@@ -38,9 +38,10 @@
         </style>
     </head>
     @php
-        $image_path = '/assets/images/template_cert.jpg';
+        // $image_path = '/assets/images/template_cert.jpg';
+        // dd($url_bg);
     @endphp
-    <body style="background-image: url({{ public_path() . $image_path  }}); background-repeat: no-repeat; background-attachment: fixed;  background-size: cover;">
+    <body style="background-image: url({{ $url_bg }}); background-repeat: no-repeat; background-attachment: fixed;  background-size: cover;">
         <br>
         <br>
         <br>

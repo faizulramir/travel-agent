@@ -59,7 +59,6 @@
         </div>
         <br>
         <br>
-        <br>
         <hr style="border: none; height: 1px; color: #333; background-color: #333;">
         <br>
         <div class="row">

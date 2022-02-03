@@ -19,6 +19,8 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use File;
+use Response;
 
 class AdminController extends Controller
 {
@@ -254,7 +256,7 @@ class AdminController extends Controller
             $order->email = $json[8];
             $order->dep_date = $json[9];
             $order->return_date = $json[10];
-            $order->pcr = $json[11];
+            $order->pcr = $json[11] == 'PCR' ? 'YES' : 'NO';
             $order->tpa = $json[12];
             $order->user_id = Auth::id();
             $order->file_id = $uploads->id;
@@ -417,15 +419,64 @@ class AdminController extends Controller
         return Storage::download('/'.$uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
     }
 
-    public function ecert_setting_admin()
+    public function setting_admin ()
     {
-        return view('admin.ecert-setting');
+        $url = Storage::url('/template/e_care_reg.xlsx');
+        $url_bg = Storage::path('template/template_cert.png');
+        // dd($url_bg);
+        // mkdir('storage/app/public/template', 0755, true);
+        return view('admin.setting', compact('url', 'url_bg'));
     }
 
-    public function excel_setting_admin()
+    public function change_ecert_background(Request $request)
     {
-        return view('admin.excel-setting');
+        if (Storage::url('/template/template_cert.png')) {
+            Storage::deleteDirectory('/template/template_cert.png');
+        }
+        $collection = collect($request->all());
+        $ext = $collection['img']->extension();
+        $path = $collection['img']->storeAs(
+            'template/', 'template_cert.'.$ext
+        );
+
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => 'Successfully Updated!'
+        ], 200);
     }
 
+    public function change_excel_template(Request $request)
+    {
+        if (Storage::url('/template/e_care_reg.xlsx')) {
+            Storage::deleteDirectory('/template/e_care_reg.xlsx');
+        }
 
+        $collection = collect($request->all());
+        $ext = $collection['excel']->extension();
+        $path = $collection['excel']->storeAs(
+            'template/', 'e_care_reg.'.$ext
+        );
+
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => 'Successfully Updated!'
+        ], 200);
+    }
+
+    public function getImg ($filename)
+    {
+        // dd($filename);
+        $path = Storage::path('template/' . $filename);
+        
+        if (!File::exists($path)) {
+            abort(404);
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+    
+        return $response;
+    }
 }

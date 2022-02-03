@@ -52,8 +52,8 @@ Route::get('/update_detail_agent/{id}/{status}', [App\Http\Controllers\AgentCont
 
 //admin
 Route::get('/excel_list_admin', [App\Http\Controllers\AdminController::class, 'excel_list_admin'])->name('excel_list_admin');
-Route::get('/ecert_setting_admin', [App\Http\Controllers\AdminController::class, 'ecert_setting_admin'])->name('ecert_setting_admin');
-Route::get('/excel_setting_admin', [App\Http\Controllers\AdminController::class, 'excel_setting_admin'])->name('excel_setting_admin');
+Route::get('/setting_admin', [App\Http\Controllers\AdminController::class, 'setting_admin'])->name('setting_admin');
+Route::get('/getImg/{filename}', [App\Http\Controllers\AdminController::class, 'getImg'])->name('getImg');
 Route::post('/excel_post_admin', [App\Http\Controllers\AdminController::class, 'excel_post_admin'])->name('excel_post_admin');
 Route::get('/download_excel/{id}', [App\Http\Controllers\AdminController::class, 'download_excel'])->name('download_excel');
 Route::get('/user_list', [App\Http\Controllers\AdminController::class, 'user_list'])->name('user_list');
@@ -66,6 +66,8 @@ Route::get('/post_role/{role_id}/{user_id}', [App\Http\Controllers\AdminControll
 Route::get('/excel_detail_admin/{id}', [App\Http\Controllers\AdminController::class, 'excel_detail_admin'])->name('excel_detail_admin');
 Route::get('/update_excel_status_admin/{id}/{status}', [App\Http\Controllers\AdminController::class, 'update_excel_status_admin'])->name('update_excel_status_admin');
 Route::get('/admin_payment_detail/{id}', [App\Http\Controllers\AdminController::class, 'admin_payment_detail'])->name('admin_payment_detail');
+Route::post('/change_ecert_background', [App\Http\Controllers\AdminController::class, 'change_ecert_background'])->name('change_ecert_background');
+Route::post('/change_excel_template', [App\Http\Controllers\AdminController::class, 'change_excel_template'])->name('change_excel_template');
 
 //individu
 Route::get('/application', [App\Http\Controllers\IndividuController::class, 'application'])->name('application');

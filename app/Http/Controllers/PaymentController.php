@@ -251,7 +251,6 @@ class PaymentController extends Controller
         }
         
         $amount = ($plan->price*1) + ($tpa ? $tpa->price*1 : 0) + ($pcr ? $pcr->price*1 : 0);
-
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.invoice', compact('user', 'date_today', 'tables', 'amount'));
         return $pdf->stream();
@@ -291,6 +290,7 @@ class PaymentController extends Controller
     public function create_cert_ind($order_id) {
         $orders = Order::where([['id', '=' ,$order_id],['status', '1']])->first();
         $plan = Plan::where('name', $orders->plan_type)->first();
+        $url_bg = Storage::path('template/template_cert.png');
 
         $cert_number = $orders->ecert;
 
@@ -309,7 +309,7 @@ class PaymentController extends Controller
         // $amount = $plan->price*1;
 
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number'));
+        $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg'));
         return $pdf->stream();
     }
 }
