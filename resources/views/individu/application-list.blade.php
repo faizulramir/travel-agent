@@ -199,9 +199,14 @@
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th data-priority="1">Traveller Name</th>
-                                                        <th data-priority="3">Passport</th>
-                                                        <th data-priority="1">ID Number</th>
+                                                        <th data-priority="1">Name</th>
+                                                        <th data-priority="3">Passport No</th>
+                                                        <th data-priority="1">IC No</th>
+                                                        <th data-priority="1">E-Care</th>
+                                                        <th data-priority="1">DEP Date</th>
+                                                        <th data-priority="1">RTN Date</th>
+                                                        <th data-priority="1">PCR</th>
+                                                        <th data-priority="1">TPA</th>
                                                         {{-- <th data-priority="3">Add. Days</th> --}}
                                                     </tr>
                                                 </thead>
@@ -379,7 +384,6 @@
                     else {
                         reader.readAsBinaryString($("#add_excel")[0].files[0]);
                     }
-                    $('#modal-choose').modal('hide');
                     $('#modal-excel').modal('show');
                 }
                 else {
@@ -392,23 +396,49 @@
         }
 
         function BindTable(jsondata, tableid) {/*Function used to convert the JSON array to Html Table*/
+            var rowCount = 0;
             var columns = BindTableHeader(jsondata, tableid); /*Gets all the column headings of Excel*/
             for (var i = 0; i < jsondata.length; i++) {
                 var row$ = $('<tr/>');
+                /*
                 for (var colIndex = 0; colIndex < 4; colIndex++) {
                     var cellValue = jsondata[i][columns[colIndex]];
                     if (cellValue == null)
                         cellValue = "";
                     row$.append($('<td/>').html(cellValue));
                 }
-                $(tableid).append(row$);
+                */
+                if (jsondata[i][columns[0]] == null) {}
+                else {
+                    for (var colIndex = 0; colIndex < 13; colIndex++) {
+                        if (colIndex!=4 && colIndex!=5 && colIndex!=6 && colIndex!=8) {
+                            var cellValue = jsondata[i][columns[colIndex]];
+                            if (cellValue == null) cellValue = "";
+                            else {
+                                if (colIndex==9 || colIndex==10) {
+                                    //console.log(i, colIndex,jsondata[i][columns[colIndex]]);
+                                    //console.log(new Date(Math.round((cellValue - 25569)*86400*1000)));
+                                    cellValue = ExcelDateToJSDate(cellValue);
+                                }
+                            }
+                            
+
+
+                            
+                            row$.append($('<td/>').html(cellValue));
+                        }
+                    }
+                    $(tableid).append(row$);
+                    ++rowCount;
+                }
             }
+            $("#total_records").text(rowCount);
         }
 
         var json_post
 
         function BindTableHeader(jsondata, tableid) {/*Function used to get all column names from JSON and bind the html table header*/
-            $("#total_records").text(jsondata.length);
+            //$("#total_records").text(jsondata.length);
             json_post = jsondata;
             var columnSet = [];
             var headerTr$ = $('<tr/>');
@@ -433,14 +463,14 @@
 
         function post_data() {
             var form_data = new FormData();
+            form_data.append("travel_agent", $('#travel_agent').val());
             form_data.append("file", $('#add_excel')[0].files[0]);
 			form_data.append("file_name", $('#add_excel').val().split('\\').pop());
 			form_data.append("json_post", JSON.stringify(json_post));
-            form_data.append("travel_agent", $('#travel_agent').val());
-            
-            if ($('#agreement').is(':checked')) {
+
+            if ($('#agreement').is(':checked') && $('#travel_agent').val()) {
                 $.ajax({
-				url: '/application_post_excel',
+				url: '/excel_post_ta',
 				type: 'POST',
 				data: form_data,
 				dataType: 'JSON',
@@ -453,11 +483,32 @@
                     }
                 });
             } else {
-                alert("Please tick agreement to submit!");
+                alert("Please check all input to submit!");
             }
 
 			return false;
 		}
+
+
+        function ExcelDateToJSDate(serial) {
+            var utc_days  = Math.floor(serial - 25569);
+            var utc_value = utc_days * 86400;                                        
+            var date_info = new Date(utc_value * 1000);
+
+            var fractional_day = serial - Math.floor(serial) + 0.0000001;
+
+            var total_seconds = Math.floor(86400 * fractional_day);
+
+            var seconds = total_seconds % 60;
+
+            total_seconds -= seconds;
+
+            var hours = Math.floor(total_seconds / (60 * 60));
+            var minutes = Math.floor(total_seconds / 60) % 60;
+
+            //return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+            return ''+( date_info.getDate()>9?date_info.getDate():'0'+date_info.getDate())+'-'+((date_info.getMonth()+1)>9? (date_info.getMonth()+1):'0'+(date_info.getMonth()+1))+'-'+date_info.getFullYear();
+        }
 
 
     </script>

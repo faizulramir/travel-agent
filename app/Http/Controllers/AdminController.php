@@ -350,7 +350,11 @@ class AdminController extends Controller
     {
         $plans = Plan::all();
 
-        return view('admin.plan', compact('plans'));
+        $orders = array();
+        foreach ($plans as $i => $plan) {
+            array_push($orders, count(Order::where('plan_type', $plan->name)->get()));
+        }
+        return view('admin.plan', compact('plans', 'orders'));
     }
 
     public function plan_add()
@@ -412,5 +416,16 @@ class AdminController extends Controller
 
         return Storage::download('/'.$uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
     }
+
+    public function ecert_setting_admin()
+    {
+        return view('admin.ecert-setting');
+    }
+
+    public function excel_setting_admin()
+    {
+        return view('admin.excel-setting');
+    }
+
 
 }

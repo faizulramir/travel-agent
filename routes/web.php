@@ -52,6 +52,8 @@ Route::get('/update_detail_agent/{id}/{status}', [App\Http\Controllers\AgentCont
 
 //admin
 Route::get('/excel_list_admin', [App\Http\Controllers\AdminController::class, 'excel_list_admin'])->name('excel_list_admin');
+Route::get('/ecert_setting_admin', [App\Http\Controllers\AdminController::class, 'ecert_setting_admin'])->name('ecert_setting_admin');
+Route::get('/excel_setting_admin', [App\Http\Controllers\AdminController::class, 'excel_setting_admin'])->name('excel_setting_admin');
 Route::post('/excel_post_admin', [App\Http\Controllers\AdminController::class, 'excel_post_admin'])->name('excel_post_admin');
 Route::get('/download_excel/{id}', [App\Http\Controllers\AdminController::class, 'download_excel'])->name('download_excel');
 Route::get('/user_list', [App\Http\Controllers\AdminController::class, 'user_list'])->name('user_list');

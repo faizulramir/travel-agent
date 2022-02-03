@@ -64,6 +64,17 @@
                             <li><a href="{{ route('plan_list') }}" key="t-plan-list">PLAN LIST</a></li>
                         </ul>
                     </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-extension"></i>
+                            <span key="t-ta">SETTINGS</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="{{ route('ecert_setting_admin') }}" key="t-excel-list-admin">ECERT</a></li>
+                            <li><a href="{{ route('excel_setting_admin') }}" key="t-user-list">EXCEL TEMPLATE</a></li>
+                        </ul>
+                    </li>
                 @endif
 
                 @if (auth()->user()->hasAnyRole('ind'))

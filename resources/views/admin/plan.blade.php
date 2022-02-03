@@ -38,6 +38,7 @@
                                     <th>#</th>
                                     <th data-priority="1">Name</th>
                                     <th data-priority="3">Price</th>
+                                    <th data-priority="1">Quantity</th>
                                     <th data-priority="1">Description</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
@@ -48,6 +49,7 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $plan->name }}</td>
                                         <td>{{ $plan->price }}</td>
+                                        <td>{{ $orders[$i] }}</td>
                                         <td>{{ $plan->description }}</td>
                                         <td>
                                             <a href="{{ route('plan_delete', $plan->id) }}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
