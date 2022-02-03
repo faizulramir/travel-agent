@@ -53,11 +53,15 @@
                                 </p>
                                 <label for="plan">Plan: PCR</label>
                                 <p>
-
+                                    {{-- @foreach ($invoice_arr as $inv) --}}
+                                    {{ $pcr_detail->cnt }} x {{ $pcr_detail->name }} = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
+                                    {{-- @endforeach --}}
                                 </p>
                                 <label for="plan">Plan: TPA</label>
                                 <p>
-
+                                    @foreach ($tpa_total_arr as $inv)
+                                        {{ $inv['COUNT'] }} x {{ $inv['PLAN'] }} = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                    @endforeach
                                 </p>
 
                             </div>
@@ -121,8 +125,8 @@
                                 {{-- <input type="hidden" value="{{ $id }}" name="id"> --}}
                                 <div class="row" style="display: {{ $uploads->status == '5' || $uploads->status == '4' ? 'none' : 'block' }}">
                                     <div class="col-md-12">
-                                        <a href="{{ route('payment', $uploads->id)}}" class="btn btn-primary waves-effect waves-light">Confirm Payment for Customer</a>
-                                        <a href="#" class="btn btn-primary waves-effect waves-light">Cancel</a>
+                                        <a href="{{ route('payment', $uploads->id) }}" class="btn btn-primary waves-effect waves-light">Confirm Payment for Customer</a>
+                                        <a href="{{ route('excel_list_admin') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
                                     </div>
                                 </div>
 

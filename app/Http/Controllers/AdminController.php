@@ -46,16 +46,20 @@ class AdminController extends Controller
 
         //prepare E-CARE plan group
         $plan_arr = array();
+        $tpa_arr = array();
         $costing_arr = array();
+        $pcr_arr = array();
 
         $tot_ecert = 0.00;
         $tot_pcr = 0.00;
         $tot_tpa = 0.00;
-        
 
+        $pcr_cnt = 0;
+        $tpa_cnt = 0;
+        $price_pcr = Plan::where([['name', '=' , 'pcr']])->pluck('price')->first();
         foreach ($orders as $order) {
 
-            if ($order->plan_type!=null && $order->plan_type!='' && $order->plan_type!='NO') {
+            if ($order->plan_type!=null && $order->plan_type!='' && $order->plan_type != 'NO') {
                 $date1 = date_create($order->dep_date);
                 $date2 = date_create($order->return_date);
                 $diff = date_diff($date1, $date2);
@@ -83,12 +87,25 @@ class AdminController extends Controller
 
                 //calculate for PCR
                 $pcr = 0.00;   //pcr price
-
-
+                $pcr_name = 'PCR';
+                if ($order->pcr == 'YES') {
+                    $pcr = $pcr + $price_pcr;
+                    $pcr_cnt = $pcr_cnt + 1;
+                    array_push($pcr_arr, $pcr_name);
+                }
 
                 //calculate for TPA
-                $tpa = 0.00;   //tpa price
+                $tpa_name = null;
+                $tpa_price = 0.00;
+                if ($order->tpa!=null && $order->tpa!='' && $order->tpa!='NO') {
+                    $tpa_name = $order->tpa;
+                    $plan_tpa_price = Plan::where([['name', '=' ,$tpa_name]])->pluck('price')->first();
+                    if ($plan_tpa_price && $plan_tpa_price > 0.00) {
+                        $tpa_price = $plan_tpa_price;
+                    }
 
+                    array_push($tpa_arr, $tpa_name);   //grouping the selected plans
+                }
 
 
                 //prepare costing array
@@ -104,52 +121,65 @@ class AdminController extends Controller
                     'COST' => $cost,
                     'ADDT' => $addt,
                     'PCR' => $pcr,
-                    'TPA' => $tpa,
+                    'TPA' => $tpa_price,
+                    'TPANAME' => $order->tpa,
                 );
                 array_push($costing_arr, $tmpArr); //prepare costing for each record
                 array_push($plan_arr, $order->plan_type);   //grouping the selected plans
             }
-
-            //echo $order;
-            //array_push($plan_arr,  $order->plan_type);
         }
-        // print_r($costing_arr);
-
-        //group ECERT plan
-        //$plan_arr = \Arr::where($plan_arr, function ($value, $key) {
-        //    return $value!=null && $value!='' && $value!='NO';
-        //});
+        
         $plan_arr = array_count_values($plan_arr);  //count plan grouping
-        //print_r($plan_arr);
+        $tpa_arr = array_count_values($tpa_arr);  //count tpa grouping
+        $pcr_arr = array_count_values($pcr_arr);  //count pcr grouping
+        
+        $tot_pcr = $pcr_arr['PCR'] * $price_pcr;
+        $pcr_detail = new \stdClass();
+        $pcr_detail->name = 'PCR';
+        $pcr_detail->price = $tot_pcr;
+        $pcr_detail->cnt = $pcr_arr['PCR'];
 
         $invoice_arr = array();
         foreach ($plan_arr as $plan => $tot_count) {
-            echo $plan .' === '. $tot_count ."<br>";
             $tot_cost = 0.00;
             foreach ($costing_arr as $cost) {
                 if ($cost['PLAN'] == $plan) {
-                    //echo $plan ." ==== ". $cost['COST'] ."<br>";
                     $tot_cost = $tot_cost + $cost['COST'];
                 }
             }
 
             $tmpArr =  array (
                 'PLAN' => $plan,
+                'PCR_COUNT' => $pcr_cnt,
+                'PCR_TOT' => $tot_pcr,
                 'COUNT' => $tot_count,
                 'COST' => $tot_cost,
             );
             array_push($invoice_arr, $tmpArr); //prepare costing for each record
 
             $tot_ecert = $tot_ecert + $tot_cost;
-            //echo "TOT_COST=".$tot_cost."<br>";
-            //echo "TOT_PLAN=".$tot_ecert."<br>";
         }
-        //print_r($invoice_arr);
 
+        $tpa_total_arr = array();
+        foreach ($tpa_arr as $tpa => $tot_count) {
+            $tpa_cost = 0.00;
+            foreach ($costing_arr as $cost) {
+                if ($cost['TPANAME'] == $tpa) {
+                    $tpa_cost = $tpa_cost + $cost['TPA'];
+                }
+            }
+
+            $tmpArr =  array (
+                'PLAN' => $tpa,
+                'COUNT' => $tot_count,
+                'COST' => $tpa_cost,
+            );
+            array_push($tpa_total_arr, $tmpArr); //prepare costing for each record
+            $tot_tpa = $tot_tpa + $tpa_cost;
+        }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
 
-        //die();
-        return view('admin.invoice', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec'));
+        return view('admin.invoice', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail'));
     }
 
     public function excel_list_admin()
@@ -173,7 +203,7 @@ class AdminController extends Controller
         $arr_json = request()->post('json_post');
 
         $dt = Carbon::now();
-        
+
         $uploads = new FileUpload;
         $uploads->file_name = request()->post('file_name');
         $uploads->upload_date = $dt->toDateString();
@@ -224,6 +254,8 @@ class AdminController extends Controller
             $order->email = $json[8];
             $order->dep_date = $json[9];
             $order->return_date = $json[10];
+            $order->pcr = $json[11];
+            $order->tpa = $json[12];
             $order->user_id = Auth::id();
             $order->file_id = $uploads->id;
             $order->ecert = $uploads->id;
@@ -346,14 +378,14 @@ class AdminController extends Controller
         $plans->price = request()->post('plan_price');
         $plans->price_per_day = request()->post('price_per_day');
         $plans->total_days = request()->post('total_days');
-        
+
         $plans->save();
-    
+
         return redirect()->route('plan_list');
     }
 
     public function post_role($role_id, $user_id)
-    {   
+    {
         $users = DashboardUser::where('id', $user_id)->first();
         $roles = Role::whereIn('id', [1, 2, 4])->get();
         foreach ($roles as $i => $role) {
@@ -380,5 +412,5 @@ class AdminController extends Controller
 
         return Storage::download('/'.$uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
     }
-    
+
 }

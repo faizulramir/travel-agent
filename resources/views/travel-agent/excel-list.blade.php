@@ -134,7 +134,7 @@
                                             @endif
 
 
-                                            @if ($upload->status == '4')
+                                            {{-- @if ($upload->status == '4')
                                                 <a href="#" class="waves-effect" style="color:#ed2994;">
                                                     <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
                                                 </a>
@@ -143,7 +143,7 @@
                                                 <a href="#" class="waves-effect" style="color:#ed2994;">
                                                     <i class="bx bxs-printer font-size-24" title="Print Receipt"></i>
                                                 </a>
-                                            @endif
+                                            @endif --}}
                                         </td>
                                     </tr>
                                 @endforeach

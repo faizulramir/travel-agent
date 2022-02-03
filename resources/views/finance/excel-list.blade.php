@@ -61,9 +61,9 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#" class="waves-effect" style="color: pink;">
+                                            {{-- <a href="#" class="waves-effect" style="color: pink;">
                                                 <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                            </a>
+                                            </a> --}}
                                             <a href="{{ route('payment_detail', $upload->id) }}" class="waves-effect" style="color: purple;">
                                                 <i class="bx bxs-collection font-size-24" title="Payment Detail"></i>
                                             </a>
