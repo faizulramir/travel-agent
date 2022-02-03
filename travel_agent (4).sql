@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2022 at 08:16 AM
+-- Generation Time: Feb 03, 2022 at 10:23 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.3.29
 
@@ -113,6 +113,10 @@ CREATE TABLE `orders` (
   `email` varchar(255) DEFAULT NULL,
   `dep_date` varchar(255) DEFAULT NULL,
   `return_date` varchar(255) DEFAULT NULL,
+  `tpa` varchar(20) DEFAULT NULL,
+  `pcr` varchar(20) DEFAULT NULL,
+  `ecert` varchar(255) DEFAULT NULL,
+  `invoice` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `file_id` int(11) DEFAULT NULL,
   `status` varchar(20) NOT NULL DEFAULT '1',
@@ -173,8 +177,8 @@ CREATE TABLE `plan` (
 --
 
 INSERT INTO `plan` (`id`, `name`, `price`, `description`, `price_per_day`, `total_days`, `created_at`, `updated_at`) VALUES
-(1, 'premium', '450', 'E-CARE PREMIUM', '10', '21', '2022-01-20 14:35:49', NULL),
-(5, 'standart', '280', 'E-Care Standard', '5', '14', '2022-01-24 21:20:52', '2022-01-24 21:20:52'),
+(1, 'premium', '450', 'PREMIUM', '10', '21', '2022-01-20 14:35:49', NULL),
+(5, 'standard', '280', 'STANDARD', '5', '14', '2022-01-24 21:20:52', '2022-01-24 21:20:52'),
 (6, 'basic', '120', 'basic', '5', '14', '2022-01-24 21:22:42', '2022-01-24 21:22:42'),
 (7, 'lite', '70', 'Lite', '5', '14', '2022-01-24 21:23:06', '2022-01-24 21:23:06'),
 (8, 'pcr', '169', 'pcr', '0', '0', '2022-01-24 21:23:56', '2022-01-24 21:23:56'),
@@ -356,7 +360,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `file_upload`
 --
 ALTER TABLE `file_upload`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -368,13 +372,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1848;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2393;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `permissions`

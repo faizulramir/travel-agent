@@ -7,6 +7,15 @@
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('/assets/libs/rwd-table/rwd-table.min.css') }}" rel="stylesheet" type="text/css" />
 
+
+    <style>
+
+        .action_icon {
+            font-size: 1.55rem;
+        }
+
+    </style>
+
 @endsection
 
 @section('content')
@@ -23,12 +32,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                            <a href="{{ route('download_template') }}" class="btn btn-primary w-md" target="_blank">Download Excel Template</a>
-                            <button type="submit" class="btn btn-primary w-md" id="add_button">Add Excel</button>
+                            <a href="{{ route('download_template') }}" class="btn btn-primary w-md" target="_blank" title="Download current template">Download Excel Template</a>
+                            <button type="submit" class="btn btn-primary w-md" id="add_button" title="Upload a new Excel">Add Excel</button>
                         </div>
                         <div class="col-md-6" style="text-align: right;">
-                            <button type="button" class="btn btn-primary w-md" id="refreshBtn">
-                                <i class="bx bx-loader-circle font-size-20" title="Refresh"></i>
+                            <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">
+                                Refresh
+                                <!--<i class="bx bx-loader-circle font-size-24" title="Refresh"></i>-->
                             </button>
                         </div>
                     </div>
@@ -38,7 +48,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th data-priority="1">File Name</th>
+                                    <th data-priority="1">Filename</th>
                                     <th data-priority="3">Upload Date</th>
                                     <th data-priority="1">Submission Date</th>
                                     <th data-priority="1">Status</th>
@@ -56,15 +66,15 @@
                                             @if ($upload->status == '0')
                                                 Pending Submission
                                             @elseif ($upload->status == '2')
-                                                <p>Waiting Approval</p>
+                                                <p>Pending AKC Approval</p>
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
-                                                <p>Waiting Finance Endorse</p>
+                                                <p>Pending AKC (Payment) Endorsement</p>
                                             @elseif ($upload->status == '5')
-                                                Finished
+                                                COMPLETED
                                             @elseif ($upload->status == '99')
-                                                Rejected
+                                                REJECTED
                                             @endif
                                         </td>
                                         <td>
@@ -72,57 +82,68 @@
                                             @if ($upload->status == '0')
                                                 <a class="waves-effect">
                                                     <a href="#" class="waves-effect" style="color: green;">
-                                                        <i class="bx bx-paper-plane font-size-20" title="Submit" onclick="clicked(event, {{$upload->id}})"></i>
+                                                        <i class="bx bx-paper-plane font-size-24" title="Submit to AKC" onclick="clicked(event, {{$upload->id}})"></i>
                                                     </a>
                                                 </a>
                                             {{-- @elseif ($upload->status == '1')
                                                 <a href="#" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-paper-plane font-size-20" title="Submit" onclick="clicked(event, {{$upload->id}})"></i>
+                                                    <i class="bx bx-paper-plane font-size-24" title="Submit to AKC" onclick="clicked(event, {{$upload->id}})"></i>
                                                 </a> --}}
                                                 {{-- <a href="#" class="waves-effect" style="color: yellow;">
-                                                    <i class="bx bxs-collection font-size-20" title="Detail"></i>
+                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
                                                 </a> --}}
                                             @elseif ($upload->status == '2')
-                                                {{-- <p>Waiting Approval</p> --}}
+                                                {{-- <p>Pending AKC Approval</p> --}}
                                             @elseif ($upload->status == '3')
                                                 <a href="{{ route('payment', $upload->id) }}" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-money font-size-20" title="Pay"></i>
+                                                    <i class="bx bx-money font-size-24" title="Make Payment"></i>
                                                 </a>
                                             @elseif ($upload->status == '4')
-                                                {{-- <p>Waiting Finance Endorse</p> --}}
+                                                {{-- <p>Pending AKC (Payment) Endorsement</p> --}}
                                             @elseif ($upload->status == '5')
                                                 {{-- <a href="{{ route('download_invoice') }}" class="waves-effect" style="color: blue;">
-                                                    <i class="bx bxs-printer font-size-20" title="Print Invoice"></i>
+                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
                                                 </a> --}}
                                             @elseif ($upload->status == '99')
                                                 <a href="#" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-no-entry font-size-20" title="Rejected"></i>
+                                                    <i class="bx bx-no-entry font-size-24" title="Rejected"></i>
                                                 </a>
                                             @endif
                                             
                                             @if ($upload->supp_doc == null)
                                                 <a href="#" class="waves-effect" style="color: blue;">
                                                     <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
-                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-20" title="Upload"></i>
+                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
                                                 </a>
                                             @endif
-
+                                            
                                             @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
-                                                <a href="{{ route('excel_detail_agent', $upload->id) }}" class="waves-effect" style="color: pink;">
-                                                    <i class="bx bxs-collection font-size-20" title="Detail"></i>
+                                                <a href="{{ route('excel_detail_agent', $upload->id) }}" class="waves-effect" style="color:#ed2994;">
+                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
                                                 </a>
                                             @else
-                                                <a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: pink;">
-                                                    <i class="bx bxs-collection font-size-20" title="Detail"></i>
+                                                <a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color:#ed2994;">
+                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
                                                 </a>
                                             @endif
                                             
                                             @if($upload->status == '0' || $upload->status == '1' || $upload->status == '3')
                                                 <a href="{{ route('delete_excel_agent', $upload->id)}}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-trash-alt font-size-20" title="Delete"></i>
+                                                    <i class="bx bx-trash-alt font-size-24" title="Delete Excel"></i>
                                                 </a>
                                             @endif
-                                            
+
+
+                                            {{-- @if ($upload->status == '4')
+                                                <a href="#" class="waves-effect" style="color:#ed2994;">
+                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                </a>
+                                            @endif
+                                            @if ($upload->status == '4')
+                                                <a href="#" class="waves-effect" style="color:#ed2994;">
+                                                    <i class="bx bxs-printer font-size-24" title="Print Receipt"></i>
+                                                </a>
+                                            @endif --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -138,7 +159,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content ">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmation</h5>
+                    <h5 class="modal-title">Confirm Excel Content</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
@@ -155,9 +176,14 @@
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th data-priority="1">Traveller Name</th>
-                                                        <th data-priority="3">Passport</th>
-                                                        <th data-priority="1">ID Number</th>
+                                                        <th data-priority="1">Name</th>
+                                                        <th data-priority="3">Passport No</th>
+                                                        <th data-priority="1">IC No</th>
+                                                        <th data-priority="1">E-Care</th>
+                                                        <th data-priority="1">DEP Date</th>
+                                                        <th data-priority="1">RTN Date</th>
+                                                        <th data-priority="1">PCR</th>
+                                                        <th data-priority="1">TPA</th>
                                                         {{-- <th data-priority="3">Add. Days</th> --}}
                                                     </tr>
                                                 </thead>
@@ -166,14 +192,14 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <br>
+                                    <br><br>
                                     <form action="#" method="POST">
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <div>
                                                     <label class="form-label">Travel Agent Name</label>
                                                     @if (auth()->user()->hasAnyRole('tra'))
-                                                        <input class="form-control" type="text" name="travel_agent" id="travel_agent" value="{{ auth()->user()->name }}" readonly>
+                                                        <input class="form-control" type="text" name="travel_agent" id="travel_agent" value="{{ strtoupper(auth()->user()->name) }}" readonly>
                                                     @elseif (auth()->user()->hasAnyRole('ag'))
                                                         <input class="form-control" type="text" name="travel_agent" id="travel_agent" value="" placeholder="Please Insert Travel Agent">
                                                     @endif
@@ -182,17 +208,18 @@
                                         </div>
                                         <br>
                                         <div class="row">
+                                            <br>
                                             <div class="col-lg-12">
                                                 <input class="form-check-input" type="checkbox" id="agreement">
-                                                <label class="form-check-label" for="agreement">
-                                                    Rekod telah disemak dan disahkan kesemua maklumat adalah betul dan lengkap
+                                                <label class="form-check-label" style="color:red;" for="agreement">
+                                                    &nbsp;&nbsp;<b>Rekod telah disemak dan disahkan kesemua maklumat adalah betul dan lengkap</b>
                                                 </label>
                                             </div>
                                         </div>
                                         <br>
                                         <div class="row">
-                                            <div class="col-md-12 text-center">
-                                                <button type="button" class="btn btn-primary w-md" onclick="post_data()" id="submit_form">Submit</button>
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-primary w-md" onclick="post_data()" id="submit_form">Confirm</button>
                                             </div>
                                         </div>
                                     </form>
@@ -222,7 +249,7 @@
 
         function clicked(e, id)
         {
-            if(!confirm('Are you sure to submit?')) {
+            if(!confirm('Confirm to submit this Excel?')) {
                 e.preventDefault();
             } else {
                 var form_data = new FormData();
@@ -347,23 +374,49 @@
         }
 
         function BindTable(jsondata, tableid) {/*Function used to convert the JSON array to Html Table*/
+            var rowCount = 0;
             var columns = BindTableHeader(jsondata, tableid); /*Gets all the column headings of Excel*/
             for (var i = 0; i < jsondata.length; i++) {
                 var row$ = $('<tr/>');
+                /*
                 for (var colIndex = 0; colIndex < 4; colIndex++) {
                     var cellValue = jsondata[i][columns[colIndex]];
                     if (cellValue == null)
                         cellValue = "";
                     row$.append($('<td/>').html(cellValue));
                 }
-                $(tableid).append(row$);
+                */
+                if (jsondata[i][columns[0]] == null) {}
+                else {
+                    for (var colIndex = 0; colIndex < 13; colIndex++) {
+                        if (colIndex!=4 && colIndex!=5 && colIndex!=6 && colIndex!=8) {
+                            var cellValue = jsondata[i][columns[colIndex]];
+                            if (cellValue == null) cellValue = "";
+                            else {
+                                if (colIndex==9 || colIndex==10) {
+                                    //console.log(i, colIndex,jsondata[i][columns[colIndex]]);
+                                    //console.log(new Date(Math.round((cellValue - 25569)*86400*1000)));
+                                    cellValue = ExcelDateToJSDate(cellValue);
+                                }
+                            }
+                            
+
+
+                            
+                            row$.append($('<td/>').html(cellValue));
+                        }
+                    }
+                    $(tableid).append(row$);
+                    ++rowCount;
+                }
             }
+            $("#total_records").text(rowCount);
         }
 
         var json_post
 
         function BindTableHeader(jsondata, tableid) {/*Function used to get all column names from JSON and bind the html table header*/
-            $("#total_records").text(jsondata.length);
+            //$("#total_records").text(jsondata.length);
             json_post = jsondata;
             var columnSet = [];
             var headerTr$ = $('<tr/>');
@@ -388,8 +441,8 @@
 
         function post_data() {
             var form_data = new FormData();
-            form_data.append("file", $('#add_excel')[0].files[0]);
             form_data.append("travel_agent", $('#travel_agent').val());
+            form_data.append("file", $('#add_excel')[0].files[0]);
 			form_data.append("file_name", $('#add_excel').val().split('\\').pop());
 			form_data.append("json_post", JSON.stringify(json_post));
 
@@ -408,11 +461,32 @@
                     }
                 });
             } else {
-                alert("Please tick agreement to submit!");
+                alert("Please check all input to submit!");
             }
-			
+
 			return false;
 		}
+
+
+        function ExcelDateToJSDate(serial) {
+            var utc_days  = Math.floor(serial - 25569);
+            var utc_value = utc_days * 86400;                                        
+            var date_info = new Date(utc_value * 1000);
+
+            var fractional_day = serial - Math.floor(serial) + 0.0000001;
+
+            var total_seconds = Math.floor(86400 * fractional_day);
+
+            var seconds = total_seconds % 60;
+
+            total_seconds -= seconds;
+
+            var hours = Math.floor(total_seconds / (60 * 60));
+            var minutes = Math.floor(total_seconds / 60) % 60;
+
+            //return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+            return ''+( date_info.getDate()>9?date_info.getDate():'0'+date_info.getDate())+'-'+((date_info.getMonth()+1)>9? (date_info.getMonth()+1):'0'+(date_info.getMonth()+1))+'-'+date_info.getFullYear();
+        }
 
 
     </script>
