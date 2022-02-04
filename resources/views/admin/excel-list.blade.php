@@ -68,9 +68,9 @@
                                             @elseif ($upload->status == '4')
                                                 Pending AKC (Payment) Endorsement
                                             @elseif ($upload->status == '5')
-                                                Finish
+                                                COMPLETED
                                             @elseif ($upload->status == '99')
-                                                Rejected
+                                                REJECTED
                                             @endif
                                         </td>
                                         <td>

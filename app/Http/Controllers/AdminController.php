@@ -91,7 +91,7 @@ class AdminController extends Controller
                 //calculate for PCR
                 $pcr = 0.00;   //pcr price
                 $pcr_name = 'PCR';
-                if ($order->pcr == 'YES') {
+                if ($order->pcr == 'YES' || $order->pcr == 'PCR') {
                     $pcr = $pcr + $price_pcr;
                     $pcr_cnt = $pcr_cnt + 1;
                     array_push($pcr_arr, $pcr_name);
@@ -187,7 +187,8 @@ class AdminController extends Controller
 
     public function excel_list_admin()
     {
-        $uploads = FileUpload::all();
+        //$uploads = FileUpload::all();
+        $uploads = FileUpload::where('status','!=','0')->get();
         $users = DashboardUser::all();
         return view('admin.excel-list', compact('uploads', 'users'));
     }
@@ -422,7 +423,7 @@ class AdminController extends Controller
 
     public function setting_admin ()
     {
-        $url = Storage::url('/template/e_care_reg.xlsx');
+        $url = Storage::url('/template/AKC-ECARE-TEMPLATE-v1.0.xlsx');
         $url_bg = Storage::path('template/template_cert.png');
         // dd($url_bg);
         // mkdir('storage/app/public/template', 0755, true);
@@ -448,14 +449,14 @@ class AdminController extends Controller
 
     public function change_excel_template(Request $request)
     {
-        if (Storage::url('/template/e_care_reg.xlsx')) {
-            Storage::deleteDirectory('/template/e_care_reg.xlsx');
+        if (Storage::url('/template/AKC-ECARE-TEMPLATE-v1.0.xlsx')) {
+            Storage::deleteDirectory('/template/AKC-ECARE-TEMPLATE-v1.0.xlsx');
         }
 
         $collection = collect($request->all());
         $ext = $collection['excel']->extension();
         $path = $collection['excel']->storeAs(
-            'template/', 'e_care_reg.'.$ext
+            'template/', 'AKC-ECARE-TEMPLATE-v1.0.'.$ext
         );
 
         return response()->json([

@@ -83,7 +83,7 @@ class PaymentController extends Controller
                 //calculate for PCR
                 $pcr = 0.00;   //pcr price
                 $pcr_name = 'PCR';
-                if ($order->pcr == 'YES') {
+                if ($order->pcr == 'YES' || $order->pcr == 'PCR') {
                     $pcr = $pcr + $price_pcr;
                     $pcr_cnt = $pcr_cnt + 1;
                     array_push($pcr_arr, $pcr_name);

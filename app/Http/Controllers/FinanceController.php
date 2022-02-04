@@ -99,10 +99,12 @@ class FinanceController extends Controller
                     }
                 }
 
+                //echo "<br>".($order->pcr);
+
                 //calculate for PCR
                 $pcr = 0.00;   //pcr price
                 $pcr_name = 'PCR';
-                if ($order->pcr == 'YES') {
+                if ($order->pcr == 'PCR' || $order->pcr == 'YES') {
                     $pcr = $pcr + $price_pcr;
                     $pcr_cnt = $pcr_cnt + 1;
                     array_push($pcr_arr, $pcr_name);
@@ -142,6 +144,10 @@ class FinanceController extends Controller
                 array_push($plan_arr, $order->plan_type);   //grouping the selected plans
             }
         }
+
+        //print_r($pcr_arr);
+        //die();
+        
         
         $plan_arr = array_count_values($plan_arr);  //count plan grouping
         $tpa_arr = array_count_values($tpa_arr);  //count tpa grouping
