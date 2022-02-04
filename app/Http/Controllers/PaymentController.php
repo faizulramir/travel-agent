@@ -128,11 +128,11 @@ class PaymentController extends Controller
         $tpa_arr = array_count_values($tpa_arr);  //count tpa grouping
         $pcr_arr = array_count_values($pcr_arr);  //count pcr grouping
         
-        $tot_pcr = $pcr_arr['PCR'] * $price_pcr;
+        $tot_pcr = (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0) * $price_pcr;
         $pcr_detail = new \stdClass();
         $pcr_detail->name = 'PCR';
         $pcr_detail->price = $tot_pcr;
-        $pcr_detail->cnt = $pcr_arr['PCR'];
+        $pcr_detail->cnt = (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0);
 
         $invoice_arr = array();
         foreach ($plan_arr as $plan => $tot_count) {
@@ -179,6 +179,12 @@ class PaymentController extends Controller
 
     public function submit_payment(Request $request)
     {
+        if (request()->post('pay_by') == 'cc') {
+            return redirect()->route('stripe', ['pay_id' => request()->post('id'), 'pay_total' => request()->post('pay_total'), 'pay_name' => 'cc']);
+        } else if (request()->post('pay_by') == 'fpx') {
+            return redirect()->route('stripe', ['pay_id' => request()->post('id'), 'pay_total' => request()->post('pay_total'), 'pay_name' => 'fpx']);
+        }
+
         $dt = Carbon::now();
 
         $file = $request->pay_file;

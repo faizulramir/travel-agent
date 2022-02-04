@@ -18,6 +18,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: right;">
+                            <a href="{{ route('user_add') }}" class="btn btn-primary w-md" >Add User</a>
+                        </div>
+                    </div>
+                    <br>
                     <div>
                         <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
@@ -61,9 +67,13 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{-- <a href="#" class="waves-effect" style="color: green;">
-                                                <i class="bx bx-paper-plane font-size-20" title="Submit" onclick="clicked(event, {{$user->id}})"></i>
-                                            </a> --}}
+                                            <a href="{{ route('user_delete', $user->id) }}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
+                                                <i class="bx bx-trash-alt font-size-20" title="Delete"></i>
+                                            </a>
+                                            <a href="{{ route('user_edit', $user->id) }}" class="waves-effect" style="color: purple;">
+                                                <i class="bx bx-book-open font-size-20" title="Edit"></i>
+                                            </a>
+                                            
                                         </td>
                                     </tr>
                                 @endforeach

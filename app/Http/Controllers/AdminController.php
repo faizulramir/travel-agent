@@ -21,6 +21,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use File;
 use Response;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -135,11 +136,11 @@ class AdminController extends Controller
         $tpa_arr = array_count_values($tpa_arr);  //count tpa grouping
         $pcr_arr = array_count_values($pcr_arr);  //count pcr grouping
         
-        $tot_pcr = $pcr_arr['PCR'] * $price_pcr;
+        $tot_pcr = (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0)  * $price_pcr;
         $pcr_detail = new \stdClass();
         $pcr_detail->name = 'PCR';
         $pcr_detail->price = $tot_pcr;
-        $pcr_detail->cnt = $pcr_arr['PCR'];
+        $pcr_detail->cnt = (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0);
 
         $invoice_arr = array();
         foreach ($plan_arr as $plan => $tot_count) {
@@ -478,5 +479,99 @@ class AdminController extends Controller
         $response->header("Content-Type", $type);
     
         return $response;
+    }
+
+    public function post_plan_edit ($id) {
+        $plan = Plan::where('id', $id)->first();
+        $plan->name = request()->post('plan_name');
+        $plan->description = request()->post('plan_desc');
+        $plan->price = request()->post('plan_price');
+        $plan->price_per_day = request()->post('price_per_day');
+        $plan->total_days = request()->post('total_days');
+
+        $plan->save();
+
+        return redirect()->route('plan_list');
+    }
+
+    public function plan_edit ($id) {
+        $plan = Plan::where('id', $id)->first();
+
+        return view('admin.plan-edit', compact('plan', 'id'));
+    }
+
+    public function user_add (Request $request) {
+        $roles = Role::whereIn('id', [1, 2, 4, 5])->get();
+
+        return view('admin.user-add', compact('roles'));
+    }
+
+    public function user_add_post (Request $request) {
+        // dd($request->all());
+
+        $input = $request->all();
+        $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => 'required|min:6',
+            'password_confirmation' => 'required|min:6|same:password',
+        ];
+
+        $messages = [
+            'password_confirmation.same' => 'Password Confirmation should match the Password',
+        ];
+        
+        $validator = Validator::make($input, $rules, $messages);
+        
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator->messages());
+        } else {
+            $user = new DashboardUser;
+            $user->email = $request->email;
+            $user->name = $request->name;
+            $user->password = Hash::make($request->password);
+            $user->dob =  date('Y-m-d', strtotime($request->dob));
+            
+            $user->save();
+
+            $role = Role::where('id', $request->role)->first();
+            $user->assignRole($role);
+
+            return redirect()->route('user_list');
+        }
+        // return redirect()->route('user_list');
+    }
+
+    public function user_edit ($id) {
+        $roles = Role::whereIn('id', [1, 2, 4, 5])->get();
+        $user = DashboardUser::where('id', $id)->first();
+
+        return view('admin.user-edit', compact('roles', 'user', 'id'));
+    }
+
+    public function user_edit_post (Request $request) {
+        // dd($request->all());
+        $user = DashboardUser::where('id', $request->id)->first();
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->dob =  date('Y-m-d', strtotime($request->dob));
+        
+        $user->save();
+
+        $roles = Role::whereIn('id', [1, 2, 4, 5])->get();
+        foreach ($roles as $i => $role) {
+            $user->removeRole($role);
+        }
+        $role = Role::where('id', $request->role)->first();
+        $user->assignRole($role);
+
+        return redirect()->route('user_list');
+    }
+
+    public function user_delete ($id) {
+        $user = DashboardUser::where('id', $id)->first();
+        $user->delete();
+
+        return redirect()->route('user_list');
     }
 }

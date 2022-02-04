@@ -90,15 +90,17 @@
                                         <option value="agent_name">Travel Agent Name</option>
                                         <option value="ecert">E-Cert Number</option>
                                         <option value="invoice">Invoice Number</option>
+                                        <option value="ic">IC Number</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="plan">Search Text</label>
                                     <input type="text" class="form-control" id="search_val" name="search_val" placeholder="Enter search text">
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-4">
                                     <label for="plan">&nbsp;</label>
-                                    <button class="btn btn-primary waves-effect waves-light col-md-12" type="button" title="Search Record" d="searchDash">Search</button>
+                                    <br>
+                                    <button class="btn btn-primary waves-effect waves-light col-md-4" type="button" title="Search Record" id="searchDash">Search</button>
                                 </div>                                
                             </div>
                             <!--

@@ -57,6 +57,11 @@ Route::get('/getImg/{filename}', [App\Http\Controllers\AdminController::class, '
 Route::post('/excel_post_admin', [App\Http\Controllers\AdminController::class, 'excel_post_admin'])->name('excel_post_admin');
 Route::get('/download_excel/{id}', [App\Http\Controllers\AdminController::class, 'download_excel'])->name('download_excel');
 Route::get('/user_list', [App\Http\Controllers\AdminController::class, 'user_list'])->name('user_list');
+Route::get('/user_add', [App\Http\Controllers\AdminController::class, 'user_add'])->name('user_add');
+Route::post('/user_add_post', [App\Http\Controllers\AdminController::class, 'user_add_post'])->name('user_add_post');
+Route::get('/user_edit/{id}', [App\Http\Controllers\AdminController::class, 'user_edit'])->name('user_edit');
+Route::post('/user_edit_post/{id}', [App\Http\Controllers\AdminController::class, 'user_edit_post'])->name('user_edit_post');
+Route::get('/user_delete/{id}', [App\Http\Controllers\AdminController::class, 'user_delete'])->name('user_delete');
 Route::get('/plan_list', [App\Http\Controllers\AdminController::class, 'plan_list'])->name('plan_list');
 Route::get('/plan_add', [App\Http\Controllers\AdminController::class, 'plan_add'])->name('plan_add');
 Route::get('/plan_delete/{id}', [App\Http\Controllers\AdminController::class, 'plan_delete'])->name('plan_delete');
@@ -68,6 +73,8 @@ Route::get('/update_excel_status_admin/{id}/{status}', [App\Http\Controllers\Adm
 Route::get('/admin_payment_detail/{id}', [App\Http\Controllers\AdminController::class, 'admin_payment_detail'])->name('admin_payment_detail');
 Route::post('/change_ecert_background', [App\Http\Controllers\AdminController::class, 'change_ecert_background'])->name('change_ecert_background');
 Route::post('/change_excel_template', [App\Http\Controllers\AdminController::class, 'change_excel_template'])->name('change_excel_template');
+Route::post('/post_plan_edit/{id}', [App\Http\Controllers\AdminController::class, 'post_plan_edit'])->name('post_plan_edit');
+Route::get('/plan_edit/{id}', [App\Http\Controllers\AdminController::class, 'plan_edit'])->name('plan_edit');
 
 //individu
 Route::get('/application', [App\Http\Controllers\IndividuController::class, 'application'])->name('application');
@@ -87,6 +94,10 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('roo
 
 //detail
 Route::get('/upload_detail/{id}', [App\Http\Controllers\UploadDetailController::class, 'upload_detail'])->name('upload_detail');
+
+//stripe
+Route::get('/stripe/{pay_id}/{pay_total}/{pay_name}', [App\Http\Controllers\StripeController::class, 'stripe'])->name('stripe');
+Route::post('/stripePost', [App\Http\Controllers\StripeController::class, 'stripePost'])->name('stripePost');
 
 //dashboard
 Route::post('/search_dashboard', [App\Http\Controllers\HomeController::class, 'search_dashboard'])->name('search_dashboard');

@@ -181,6 +181,8 @@ class HomeController extends Controller
                 }
             } else if ($search_by == 'invoice') {
                 $data = Order::where('invoice', 'like', "%$search_val%")->get();
+            } else if ($search_by == 'ic') {
+                $data = Order::where('ic_no', 'like', "%$search_val%")->get();
             }
         }
         return response()->json([

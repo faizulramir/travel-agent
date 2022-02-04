@@ -21,6 +21,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
+                        @if (Session::has('success'))
+                            <div class="alert alert-success text-center">
+                                <p>{{ Session::get('success') }}</p>
+                            </div>
+                        @endif
                         <div class="col-md-6">
                             <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                             <a href="{{ route('download_template') }}" class="btn btn-primary w-md" target="_blank">Download Excel Template</a>

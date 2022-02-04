@@ -21,6 +21,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
+                        @if (Session::has('success'))
+                            <div class="alert alert-success text-center">
+                                <p>{{ Session::get('success') }}</p>
+                            </div>
+                        @endif
                         <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                         <div class="col-md-6 text-left">
                             <a href="#" class="btn btn-primary w-md" id="button-choose">Apply</a>

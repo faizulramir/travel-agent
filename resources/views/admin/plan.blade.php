@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="text-align: right;">
                             <a href="{{ route('plan_add') }}" class="btn btn-primary w-md" >Add Plan</a>
                         </div>
                     </div>
@@ -54,6 +54,10 @@
                                         <td>
                                             <a href="{{ route('plan_delete', $plan->id) }}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
                                                 <i class="bx bx-trash-alt font-size-20" title="Delete"></i>
+                                            </a>
+
+                                            <a href="{{ route('plan_edit', $plan->id) }}" class="waves-effect" style="color: purple;">
+                                                <i class="bx bx-book-open font-size-20" title="Edit"></i>
                                             </a>
                                         </td>
                                     </tr>
