@@ -260,11 +260,12 @@ class AdminController extends Controller
             $order->return_date = $json[10];
             $order->pcr = $json[11] == 'PCR' ? 'YES' : 'NO';
             $order->tpa = $json[12];
-            $order->user_id = Auth::id();
+            $order->user_id = $uploads->user_id;;
             $order->file_id = $uploads->id;
             $order->ecert = $uploads->id;
             $order->invoice = $uploads->id;
-
+            $order->pcr_date = $json[10];
+            $order->pcr_result = null;
             $order->pcr = $json[11];
             $order->tpa = $json[12];
 
@@ -320,11 +321,12 @@ class AdminController extends Controller
                 $order->email = $json[8];
                 $order->dep_date = $json[9];
                 $order->return_date = $json[10];
-                $order->user_id = Auth::id();
+                $order->user_id = $uploads->user_id;
                 $order->file_id = $uploads->id;
                 $order->ecert = $uploads->id;
                 $order->invoice = $uploads->id;
-
+                $order->pcr_date = $json[10];
+                $order->pcr_result = null;
                 $order->pcr = $json[11];
                 $order->tpa = $json[12];
 

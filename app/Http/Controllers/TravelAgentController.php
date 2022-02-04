@@ -41,6 +41,7 @@ class TravelAgentController extends Controller
         Storage::deleteDirectory(Auth::id().'/excel/'.$uploads->id);
         Storage::deleteDirectory(Auth::id().'/supp_doc/'.$uploads->id);
         Storage::deleteDirectory(Auth::id().'/payment/'.$uploads->id);
+        Storage::deleteDirectory(Auth::id().'/pcr_result/'.$uploads->id);
         $uploads->delete();
 
         return redirect()->back();

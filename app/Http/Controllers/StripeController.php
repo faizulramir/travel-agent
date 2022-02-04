@@ -34,6 +34,7 @@ class StripeController extends Controller
                 ['payment_method_types' => ['fpx'], 'amount' => $str_4 * 100, 'currency' => 'myr']
             );
             $clientSecret = Arr::get($intent, 'client_secret');
+            
             return view('stripe.fpx', compact('pay_total', 'pay_id', 'clientSecret'));
         }
     }

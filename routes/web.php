@@ -112,6 +112,12 @@ Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->nam
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
+//pcr
+Route::get('/downloadPCR/{user_id}/{order_id}/{file_name}', [App\Http\Controllers\PcrController::class, 'downloadPCR'])->name('downloadPCR');
+Route::get('/pcr_excel_list', [App\Http\Controllers\PcrController::class, 'pcr_excel_list'])->name('pcr_excel_list');
+Route::get('/excel_detail_pcr/{id}', [App\Http\Controllers\PcrController::class, 'excel_detail_pcr'])->name('excel_detail_pcr');
+Route::get('/post_return_date/{val}/{id}', [App\Http\Controllers\PcrController::class, 'post_return_date'])->name('post_return_date');
+Route::post('/post_pcr_doc', [App\Http\Controllers\PcrController::class, 'post_pcr_doc'])->name('post_pcr_doc');
 
 
 
