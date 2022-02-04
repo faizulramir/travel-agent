@@ -72,6 +72,8 @@
                                                 Pending Submission
                                             @elseif ($upload->status == '2')
                                                 <p>Pending AKC Approval</p>
+                                            @elseif ($upload->status == '2.1')
+                                                <p>Pending Invoice</p>
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')

@@ -58,6 +58,8 @@
                                                 Pending (Payment) Endorsement
                                             @elseif ($upload->status == '5')
                                                 ENDORSED
+                                            @elseif ($upload->status == '2.1')
+                                                Pending (Invoice) Endorsement
                                             @endif
                                         </td>
                                         <td>

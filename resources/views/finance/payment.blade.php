@@ -69,21 +69,23 @@
                                 <label for="plan">Payment Method</label>
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required readonly="readonly" disabled>
                                     <option value="">Please Select</option>
-                                    <option value="fpx" {{ $pay->pay_by == 'fpx' ? 'selected' : '' }}>FPX - Online Banking</option>
-                                    <option value="cc" {{ $pay->pay_by == 'cc' ? 'selected' : '' }}>Credit Card / Debit Card</option>
-                                    <option value="other" {{ $pay->pay_by == 'other' ? 'selected' : '' }}>Others</option>
+                                    <option value="fpx" {{ isset($pay) ? $pay->pay_by == 'fpx' ? 'selected' : '' : '' }}>FPX - Online Banking</option>
+                                    <option value="cc" {{ isset($pay) ? $pay->pay_by == 'cc' ? 'selected' : '' : ''}}>Credit Card / Debit Card</option>
+                                    <option value="other" {{ isset($pay) ? $pay->pay_by == 'other' ? 'selected' : '' : '' }}>Others</option>
                                 </select>
                                 <br>
 
                                 <label for="plan">Payment Receipt</label>
-                                @if ($pay->pay_file == null)
-                                    <p>File not found</p>
-                                @else
-                                    <p>
-                                        <a href="{{ route('download_payment', [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary waves-effect waves-light">
-                                            Download Receipt
-                                        </a>
-                                    </p>
+                                @if(isset($pay))
+                                    @if ($pay->pay_file == null)
+                                        <p>File not found</p>
+                                    @else
+                                        <p>
+                                            <a href="{{ route('download_payment', [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary waves-effect waves-light">
+                                                Download Receipt
+                                            </a>
+                                        </p>
+                                    @endif
                                 @endif
                                 <br>
 
@@ -92,7 +94,7 @@
                             <div class="col-md-1"></div>
 
                             <div class="col-md-4">
-                                <div class="col-lg-12" style="display: {{ $uploads->status == '5' ? 'none' : 'block' }}">
+                                <div class="col-lg-12" style="display: {{ $uploads->status == '5' || $uploads->status == '2.1' ? 'none' : 'block' }}">
                                     <input class="form-check-input" type="checkbox" id="agreement">
                                     <label class="form-check-label" for="agreement" style="color:red;">
                                         &nbsp;&nbsp;Bayaran telah disemak dan amaun bayaran adalah betul 
@@ -102,6 +104,20 @@
                                     <br>
                                     {{-- <input type="hidden" value="{{ $id }}" name="id"> --}}
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">Confirm Payment Endorsement</button>
+                                    <a href="#" class="btn btn-primary waves-effect waves-light">Cancel</a>
+
+                                </div>
+
+                                <div class="col-lg-12" style="display: {{ $uploads->status == '2.1' ? 'block' : 'none' }}">
+                                    <input class="form-check-input" type="checkbox" id="agreement">
+                                    <label class="form-check-label" for="agreement" style="color:red;">
+                                        &nbsp;&nbsp;Invoice telah disemak dan amaun bayaran adalah betul 
+                                    </label>
+                                    <br>
+
+                                    <br>
+                                    {{-- <input type="hidden" value="{{ $id }}" name="id"> --}}
+                                    <button class="btn btn-primary waves-effect waves-light" type="submit">Confirm Payment Invoice</button>
                                     <a href="#" class="btn btn-primary waves-effect waves-light">Cancel</a>
 
                                 </div>

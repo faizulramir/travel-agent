@@ -63,6 +63,8 @@
                                         <td>
                                             @if ($upload->status == '0' || $upload->status == '2')
                                                 Pending AKC Approval
+                                            @elseif ($upload->status == '2.1')
+                                                <p>Pending AKC (Invoice) </p>
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
@@ -75,7 +77,7 @@
                                         </td>
                                         <td>
                                             @if ($upload->status == '2')
-                                                <a href="{{ route('update_excel_status_admin', [$upload->id, '3']) }}" class="waves-effect" style="color: green;">
+                                                <a href="{{ route('update_excel_status_admin', [$upload->id, '2.1']) }}" class="waves-effect" style="color: green;">
                                                     <i class="bx bx-paper-plane font-size-24" title="Approve" onclick="approved(event)"></i>
                                                 </a>
                                                 <a href="{{ route('update_excel_status_admin', [$upload->id, '99']) }}" class="waves-effect" style="color: red;">

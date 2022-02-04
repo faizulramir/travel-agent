@@ -31,7 +31,7 @@ class FinanceController extends Controller
     
     public function excel_list_finance()
     {
-        $uploads = FileUpload::whereIn('status', ['4', '5'])->get();
+        $uploads = FileUpload::whereIn('status', ['4', '5', '2.1'])->get();
         return view('finance.excel-list', compact('uploads'));
     }
 
@@ -206,8 +206,12 @@ class FinanceController extends Controller
     public function endorse_payment($id)
     {
         $uploads = FileUpload::where('id', $id)->first();
-        $uploads->status = '5';
-
+        if ($uploads->status == '2.1') {
+            $uploads->status = '3';
+        } else {
+            $uploads->status = '5';
+        }
+        
         $uploads->save();
         
         return redirect()->route('excel_list_finance');
