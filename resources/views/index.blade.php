@@ -15,7 +15,6 @@
         @slot('title') DASHBOARD @endslot
     @endcomponent
 
-    @if (auth()->user()->hasAnyRole('akc', 'tra', 'ag', 'ind', 'fin'))
     <a href="{{ route('excel_list_admin') }}">
         <div class="row">
             <div class="col-xl-12">
@@ -74,6 +73,9 @@
             </div>
         </div>
     </a>
+
+
+    @if (auth()->user()->hasAnyRole('akc', 'fin'))
     <div class="row">
         <div class="col-md-12">
             <div class="card mini-stats-wid">
