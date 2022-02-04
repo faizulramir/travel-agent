@@ -68,6 +68,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('pcr_excel_list') }}" class="waves-effect">
+                            <i class="bx bx-bolt-circle"></i>
+                            <span key="t-ta">PCR LIST</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('user_list') }}" class="waves-effect">
                             <i class="bx bxs-user-detail"></i>
                             <span key="t-ta">USER LIST</span>
