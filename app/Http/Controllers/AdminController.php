@@ -211,7 +211,7 @@ class AdminController extends Controller
         $uploads = new FileUpload;
         $uploads->file_name = request()->post('file_name');
         $uploads->upload_date = $dt->toDateString();
-        $uploads->status = '3';
+        $uploads->status = '2.1';
         $uploads->ta_name = request()->post('travel_agent');
         $uploads->user_id = request()->post('user');
         $uploads->submit_date = $dt->toDateString();
