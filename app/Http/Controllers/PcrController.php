@@ -48,7 +48,7 @@ class PcrController extends Controller
     public function post_return_date($val, $id)
     {
         $order = Order::where('id', $id)->first();
-        $order->return_date = $val;
+        $order->pcr_date = $val;
         $order->save();
 
         return response()->json([
