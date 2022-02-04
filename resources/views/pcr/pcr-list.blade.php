@@ -28,7 +28,7 @@
                                     <th data-priority="1">Name</th>
                                     <th data-priority="3">Passport No</th>
                                     <th data-priority="1">Ecert Number</th>
-                                    <th data-priority="3">Return Date</th>
+                                    <th data-priority="3">PCR Date</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
@@ -40,7 +40,7 @@
                                         <td>{{ $order->passport_no }}</td>
                                         <td>{{ $order->ecert }}</td>
                                         <td>
-                                            <input type="date" class="form-control" name="return_date{{$order->id}}" value="{{ $order->return_date }}" id="return_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
+                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{ $order->pcr_date }}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
                                         </td>
                                         <td>
                                             <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
@@ -112,10 +112,10 @@
             // if(!confirm('Are you sure to submit?')) {
             //     e.preventDefault();
             // } else {
-                $("#return_date" + id).change(function () {
+                $("#pcr_date" + id).change(function () {
                     var end = this.value;
                     var userId = id;
-                    var firstDropVal = $('#return_date' + id).val();
+                    var firstDropVal = $('#pcr_date' + id).val();
 
                     $.ajax({
                         type:'get',
