@@ -159,7 +159,7 @@ class TravelAgentController extends Controller
 
     public function download_template()
     {
-        return Storage::download('/template/e_care_reg.xlsx');
+        return Storage::download('/template/AKC-ECARE-TEMPLATE-v1.0.xlsx');
     }
 
     public function download_cert()
