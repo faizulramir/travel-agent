@@ -42,7 +42,7 @@
                                 <tr>
                                     <th data-priority="0">#</th>
                                     <th data-priority="1">Requester</th>
-                                    <th data-priority="1">File name</th>
+                                    <th data-priority="1">Filename</th>
                                     <th data-priority="3">Upload Date</th>
                                     <th data-priority="3">Submission Date</th>
                                     <th data-priority="1">Status</th>

@@ -147,7 +147,7 @@
                             <div class="card-body">
                                 <div class="media">
                                     <div class="media-body">
-                                        <p class="text-muted fw-medium">Travel Agent Request</p>
+                                        <p class="text-muted fw-medium">Total Invoice</p>
                                         <h4 class="mb-0">{{ $tra_uploads }}</h4>
                                     </div>
                                 </div>
@@ -159,13 +159,14 @@
                             <div class="card-body">
                                 <div class="media">
                                     <div class="media-body">
-                                        <p class="text-muted fw-medium">DIY Agent Request</p>
+                                        <p class="text-muted fw-medium">Total Payment</p>
                                         <h4 class="mb-0">{{ $agent_uploads }}</h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {{--
                     <div class="col-md-3">
                         <div class="card mini-stats-wid">
                             <div class="card-body">
@@ -190,6 +191,7 @@
                             </div>
                         </div>
                     </div>
+                    --}}
                 </div>
             </div>
         </div>
@@ -284,6 +286,8 @@
                 form_data.append("search_by", search_by);
                 form_data.append("search_val", search_val);
                 
+                console.log(form_data);
+
                 $.ajax({
                     url: '/search_dashboard',
                     type: 'POST',
@@ -314,8 +318,6 @@
                 });
             });
         });
-        
-        
         
         
     </script>

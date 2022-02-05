@@ -49,7 +49,7 @@
                                             @else
                                                 <input type="hidden" name="user_id{{$user->id}}" id="user_id{{$user->id}}" value="{{ $user->id }}">
                                                 <select id="role{{$user->id}}" name="role{{$user->id}}" class="form-control select2-search-disable" onclick="clicked(event, {{$user->id}})" required>
-                                                    <option value="" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>Please Select</option>
+                                                    <option value="" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>No Role (Not Activated)</option>
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->id }}" {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] == $role->name ? 'selected' : '' : ''}}>
                                                             @if ($role->name == 'ind')

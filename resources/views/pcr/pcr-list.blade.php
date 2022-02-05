@@ -20,6 +20,14 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6" style="text-align: left;">
+                            <a href="{{ route('pcr_excel_list') }}" class="btn btn-primary w-md">
+                                <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
                     <div>
                         <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>

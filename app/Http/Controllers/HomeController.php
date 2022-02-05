@@ -163,7 +163,6 @@ class HomeController extends Controller
 
     public function search_dashboard() 
     {
-
         $search_by = request()->post('search_by');
         $search_val = request()->post('search_val');
         $data = '';

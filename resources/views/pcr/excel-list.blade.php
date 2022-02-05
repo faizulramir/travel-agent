@@ -1,12 +1,11 @@
 @extends('layouts.master')
 
-@section('title') EXCEL LIST @endsection
+@section('title') PCR LIST @endsection
 
 @section('css')
     <!-- Responsive Table css -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('/assets/libs/rwd-table/rwd-table.min.css') }}" rel="stylesheet" type="text/css" />
-
 
     <style>
 
@@ -21,14 +20,26 @@
 @section('content')
 
     @component('components.breadcrumb')
-        @slot('li_1') PCR @endslot
-        @slot('title') EXCEL LIST @endslot
+        @slot('li_1') ADMIN @endslot
+        @slot('title') PCR LIST @endslot
     @endcomponent
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="row">
+                        @if (Session::has('success'))
+                            <div class="alert alert-success text-center">
+                                <p>{{ Session::get('success') }}</p>
+                            </div>
+                        @endif
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6" style="text-align: right;">
+                            <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">Refresh</button>
+                        </div>
+                    </div>
+                    <br>
                     <div>
                         <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
@@ -84,6 +95,14 @@
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.min.js" integrity="sha512-BMIFH0QGwPdinbGu7AraCzG9T4hKEkcsbbr+Uqv8IY3G5+JTzs7ycfGbz7Xh85ONQsnHYrxZSXgS1Pdo9r7B6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.6/xls.min.js" integrity="sha512-Nqu6bagCq6Jp2ZhezdTFaomiZBZYVhzafGww9teXy1xsvhfpw1ZW3FlVqMazRfLKPVWucbeBXNY5MgO925fpoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+
+        $('#refreshBtn').click(function() {
+            location.reload();
+        });
+
+    </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
