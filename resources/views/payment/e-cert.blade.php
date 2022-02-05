@@ -59,17 +59,19 @@
                 <p><b>{{ strtoupper($orders->upload->ta_name) }}</b></p>
                 <p style="padding-top: 30px;"><b>{{ strtoupper($orders->name) }}</b></p>
                 <p style="padding-top: 28px"><b>{{ strtoupper($orders->passport_no) }}</b></p>
-                <p style="padding-top: 28px"><b>{{ $orders->dob ? date('d-m-Y', strtotime($orders->dob)) : '' }}</b></p>
+                {{--<p style="padding-top: 28px"><b>{{ $orders->dob ? date('d-m-Y', strtotime($orders->dob)) : '' }}</b></p>--}}
+                <p style="padding-top: 28px"><b>{{ $newbirth }}</b></p>
             </div>
         </div>
         <br>
         <br>
         <div class="row">
             <div class="column" style="width: 35% !important; padding-left: 7.1% !important; padding-top:30px;">
-                <p style="color:red;"><b>{{ strtoupper($plan->name) }}</b></p>
+                <p style="color:blue;"><b>{{ strtoupper($plan->name) }}</b></p>
             </div>
             <div class="column" style="width: 50% !important; padding-left: 0 !important; padding-top:30px;">
-                <p style="color:red;"><b>({{ $orders->dep_date ? date('d-m-Y', strtotime($orders->dep_date)) : '' }}) TO ({{ $orders->return_date ? date('d-m-Y', strtotime($orders->return_date)) : '' }})</b></p>
+                {{--<p style="color:blue;"><b>({{ $orders->dep_date ? date('d-m-Y', strtotime($orders->dep_date)) : '' }}) TO ({{ $orders->return_date ? date('d-m-Y', strtotime($orders->return_date)) : '' }})</b></p>--}}
+                <p style="color:blue;"><b>{{ $duration }}</b></p>
             </div>
         </div>
     </body>

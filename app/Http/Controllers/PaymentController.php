@@ -300,6 +300,32 @@ class PaymentController extends Controller
 
         $cert_number = $orders->ecert;
 
+
+        //fix birth date
+        //dd($orders->ecert, $orders->dob, $orders->dep_date);
+        $dob = new Carbon($orders->dob);
+        $dobyear = 0 + $dob->format('Y');
+        $nowyear = Carbon::now()->year;
+        $correctyear = $dobyear;
+        $newbirth = $dob;
+        if ($dobyear > $nowyear) {
+            $correctyear = $dobyear - 100;
+            $newbirth = Carbon::create($correctyear, 0 + $dob->format('m'), 0 + $dob->format('d'));
+        }
+        //dd($orders->dob,  $dobyear, $nowyear, $correctyear, $newbirth->format('Y-m-d'));
+        $newbirth = $newbirth->format('d-m-Y');
+
+
+        //fix plan duration date
+        $total_days = $plan->total_days;
+        $addDays = (0 + $total_days) - 1;
+        $depdate = new Carbon($orders->dep_date);
+        $rtndate = new Carbon($orders->dep_date);
+        $rtndate->addDays($addDays);
+        $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
+
+        //dd($plan->name, $total_days, $orders->dep_date, $addDays, $depdate, $duration);
+
         // $user = DashboardUser::where('id', $orders->user_id)->first();
         // $dt = Carbon::now();
         // $date_today = $dt->toDateString();
@@ -315,7 +341,7 @@ class PaymentController extends Controller
         // $amount = $plan->price*1;
 
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg'));
+        $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
         return $pdf->stream();
     }
 }
