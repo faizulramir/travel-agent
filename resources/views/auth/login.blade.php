@@ -95,12 +95,7 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <div class="float-end">
-                                                        @if (Route::has('password.request'))
-                                                            <a href="{{ route('password.request') }}"
-                                                                class="text-muted">Forgot password?</a>
-                                                        @endif
-                                                    </div>
+
                                                     <label class="form-label">Password</label>
                                                     <div
                                                         class="input-group auth-pass-inputgroup @error('password') is-invalid @enderror">
@@ -132,6 +127,17 @@
                                                         In</button>
                                                 </div>
                                             </form>
+
+                                            <div class="text-center">
+                                                @if (Route::has('password.request'))
+                                                <br>
+                                                <p>
+                                                    <a href="{{ route('password.request') }}"
+                                                        class="text-muted">Forgot password?</a>
+                                                </p>
+                                                @endif
+                                            </div>
+
                                             <div class="mt-5 text-center">
                                                 <p>Don't have an account ? <a href="{{ url('register') }}"
                                                         class="fw-medium text-primary"> Signup now </a>

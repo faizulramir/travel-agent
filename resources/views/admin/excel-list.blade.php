@@ -32,10 +32,7 @@
                             <button type="submit" class="btn btn-primary w-md" id="add_button">Add Excel</button>
                         </div>
                         <div class="col-md-6" style="text-align: right;">
-                            <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">
-                                Refresh
-                                <!--<i class="bx bx-loader-circle font-size-24" title="Refresh"></i>-->
-                            </button>
+                            <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">Refresh</button>
                         </div>
                     </div>
                     <br>
@@ -43,13 +40,13 @@
                         <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th data-priority="0">#</th>
                                     <th data-priority="1">Requester</th>
-                                    <th data-priority="1">File Name</th>
+                                    <th data-priority="1">File name</th>
                                     <th data-priority="3">Upload Date</th>
-                                    <th data-priority="1">Submission Date</th>
+                                    <th data-priority="3">Submission Date</th>
                                     <th data-priority="1">Status</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="1">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,6 +114,17 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th data-priority="0"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="3"></th>
+                                    <th data-priority="3"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -280,8 +288,6 @@
             return supp_id;
         }
 
-        
-
         $("#add_button").click(function () {
             $("#add_excel").val(null);
             $("#add_excel").trigger("click");
@@ -381,9 +387,6 @@
                                 }
                             }
                             
-
-
-                            
                             row$.append($('<td/>').html(cellValue));
                         }
                     }
@@ -470,6 +473,31 @@
             return ''+( date_info.getDate()>9?date_info.getDate():'0'+date_info.getDate())+'-'+((date_info.getMonth()+1)>9? (date_info.getMonth()+1):'0'+(date_info.getMonth()+1))+'-'+date_info.getFullYear();
         }
 
+        //enabling datatable filters
+        $(document).ready(function() {
+            $('#datatable').DataTable( {
+                initComplete: function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        if (column[0]==1 || column[0]==2 || column[0]==3 || column[0]==5) {
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    column
+                                        .search( val ? '^'+val+'$' : '', true, false )
+                                        .draw();
+                                } );
+                            column.data().unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'">'+d+'</option>' )
+                            } );
+                        }
+                    } );
+                }
+            } );
+        } );
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

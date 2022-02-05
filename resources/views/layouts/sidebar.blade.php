@@ -102,6 +102,20 @@
                     </li>
                 @endif
 
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-link"></i>
+                        <span key="t-ta">AL KHAIRI Care</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="https://alkhairicare.com/brochure/" target="_blank">PRODUCT BROCHURES</a></li>
+                    </ul>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="https://alkhairicare.com/" target="_blank">WEBSITE</a></li>
+                    </ul>                    
+                </li>
+
             </ul>
         </div>
         <!-- Sidebar -->
