@@ -113,7 +113,10 @@
                     </ul>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="https://alkhairicare.com/" target="_blank">WEBSITE</a></li>
-                    </ul>                    
+                    </ul>     
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('search_cert_public') }}" target="_blank">ECERT Download</a></li>
+                    </ul>                                    
                 </li>
 
             </ul>

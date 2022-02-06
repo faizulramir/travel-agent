@@ -243,7 +243,8 @@ class AdminController extends Controller
         $dt = Carbon::now();
         $orderdate = $dt->toDateString();
         $orderdate = explode('-', $orderdate);
-        $year  = $orderdate[0];
+        $year = $orderdate[0];
+        $month = $orderdate[1];
 
         // dd($data_array);
         foreach ($data_array as $i => $json) {
@@ -273,7 +274,8 @@ class AdminController extends Controller
 
             $orders = Order::where('id', '=' ,$order->id)->first();
             $orders->ecert = 'A'.$year.$orders->file_id.$orders->id;
-            $orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
+            //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;  
+            $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
             $orders->save();
         }
         return response()->json([
@@ -307,6 +309,7 @@ class AdminController extends Controller
             $orderdate = $dt->toDateString();
             $orderdate = explode('-', $orderdate);
             $year  = $orderdate[0];
+            $month = $orderdate[1];
 
             // dd($data_array);
             foreach ($data_array as $i => $json) {
@@ -334,7 +337,9 @@ class AdminController extends Controller
 
                 $orders = Order::where('id', '=' ,$order->id)->first();
                 $orders->ecert = 'A'.$year.$orders->file_id.$orders->id;
-                $orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
+                //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
+                $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
+
                 $orders->save();
             }
         }

@@ -42,10 +42,15 @@
                                 <tr>
                                     <th>#</th>
                                     <th data-priority="1">Name</th>
-                                    <th data-priority="3">Passport No</th>
+                                    <th data-priority="1">Passport No</th>
                                     <th data-priority="1">IC NO</th>
-                                    <th data-priority="1">Dep. Date</th>
-                                    <th data-priority="3">Return Date</th>
+                                    <th data-priority="1">Dep. Date (DMY)</th>
+                                    <th data-priority="5">Return Date (DMY)</th>
+                                    @if ($uploads->status === '5')
+                                        <th data-priority="1">ECert</th>
+                                        <th data-priority="3">PCR</th>
+                                        <th data-priority="3">TPA</th>
+                                    @endif   
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
@@ -58,6 +63,11 @@
                                         <td>{{ $order->ic_no }}</td>
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : ''}}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>
+                                        @if ($uploads->status === '5')
+                                            <td>{{ $order->ecert }}</td>
+                                            <td>{{ $order->pcr }}</td>
+                                            <td>{{ $order->tpa }}</td>
+                                        @endif
                                         <td>
                                             @if (!$payment)
                                                 @if ($order->status == '1')

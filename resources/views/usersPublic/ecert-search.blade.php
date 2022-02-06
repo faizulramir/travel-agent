@@ -13,46 +13,87 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <form method="POST" action="{{ route('post_cert_public') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="passport">Passport No.</label>
-                                <input class="form-control input-md" type="text" name="passport" id="passport" placeholder="Passport Number" value="{{ old('passport') }}"/>
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label for="depart_date">Departure Date</label>
-                                <input class="form-control input-md" type="date" name="depart_date" id="depart_date" value="{{ old('depart_date') }}"/>
-                            </div>
-                            <br>
-                            @if(session()->has('error'))
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label for="depart_date">Result: {{ session()->get('error') }}</label>
-                                    </div>
-                                </div>
-                            @endif
 
-                            @if(session()->has('ecert'))
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label for="result">Result: {{ session()->get('success') }}</label>
-                                    </div>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4" style="background-color:#d4daf9;">
+                            <div style="height:200px;width:100%;">
+                                <div style="float:left;">
+                                    <img src="{{ URL::asset('/assets/images/wanita2.png') }}" height="200" alt="" class="auth-logo-dark" style="padding:10px;">
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label for="ecert_no">Ecert No.: <a href="{{ route('download_cert_public', session()->get('order_id')) }}">{{ session()->get('ecert') }} <i class="bx bx-cloud-download"></i></a></label>
-                                    </div>
+                                <div style="float:left;">
+                                    <br><br>
+                                    <a href="https://alkhairicare.com/" target="_blank">
+                                        <img src="{{ URL::asset('/assets/images/akc.png') }}" width="100%" alt="" height="50" class="auth-logo-dark">
+                                    </a>
                                 </div>
-                            @endif
-                            <div class="form-group text-center">
-                                <input type="submit" name="submit" class="btn btn-success btn-md" value="Search" />
+                                <div style="clear:both;"></div>
                             </div>
-                        </form>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <br>
+                            <div class="row">
+                                <form method="POST" action="{{ route('post_cert_public') }}">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="passport">Passport No</label>
+                                        <input class="form-control input-md" type="text" name="passport" id="passport" placeholder="Enter Passport Number" value="{{ old('passport') }}"/>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="depart_date">Departure Date</label>
+                                        <input class="form-control input-md" type="date" name="depart_date" id="depart_date" placeholder="Enter Departure Date (dd/mm/yyyy)" value="{{ old('depart_date') }}"/>
+                                    </div>
+                                    <br>
+                                    @if(session()->has('error'))
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <hr/>
+                                                <label for="depart_date">Result: {{ session()->get('error') }}</label>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if(session()->has('ecert'))
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <hr/>
+                                                <h4>Result for {{ session()->get('passport') }}</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="ecert_no" style="font-size:1.05rem;">Traveller: {{ session()->get('name') }}</label><br>
+                                                <label for="ecert_no" style="font-size:1.05rem;">ECert No: <a href="{{ route('download_cert_public', session()->get('order_id')) }}" title="Download ECert">{{ session()->get('ecert') }} <i class="bx bx-cloud-download font-size-24"></i></a></label>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="form-group text-center">
+                                        <input type="submit" name="submit" class="btn btn-success btn-md" value="Search" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script>document.write(new Date().getFullYear())</script> Copyright © AL-KHAIRI CARE | All rights reserved.
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-4"></div>
         </div>
     </div>
 @endsection

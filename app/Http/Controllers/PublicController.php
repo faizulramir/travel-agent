@@ -41,7 +41,7 @@ class PublicController extends Controller
         } else {
             Session::flash('success', 'Jemaah Found');
             Session::flash('order_id', $order->id);
-            return redirect()->back()->with(['ecert' => $order->ecert]);
+            return redirect()->back()->with(['ecert' => $order->ecert, 'name' => $order->name, 'passport' => $order->passport_no]);
         }
     }
 
@@ -64,7 +64,6 @@ class PublicController extends Controller
 
         $newbirth = $newbirth->format('d-m-Y');
 
-
         $total_days = $plan->total_days;
         $addDays = (0 + $total_days) - 1;
         $depdate = new Carbon($orders->dep_date);
@@ -74,6 +73,6 @@ class PublicController extends Controller
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
-        return $pdf->download('e-cert.pdf');
+        return $pdf->download($orders->passport_no.'-ecert.pdf');
     }
 }

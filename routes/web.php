@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//ecert public
+Route::get('/ecert/search', [App\Http\Controllers\PublicController::class, 'search_cert_public'])->name('search_cert_public');
+Route::post('/ecert/post', [App\Http\Controllers\PublicController::class, 'post_cert_public'])->name('post_cert_public');
+Route::get('/download_cert_public/{order_id}', [App\Http\Controllers\PublicController::class, 'download_cert_public'])->name('download_cert_public');
+
+
+
 Auth::routes();
 
 //finance
@@ -118,11 +125,6 @@ Route::get('/pcr_excel_list', [App\Http\Controllers\PcrController::class, 'pcr_e
 Route::get('/excel_detail_pcr/{id}', [App\Http\Controllers\PcrController::class, 'excel_detail_pcr'])->name('excel_detail_pcr');
 Route::get('/post_return_date/{val}/{id}', [App\Http\Controllers\PcrController::class, 'post_return_date'])->name('post_return_date');
 Route::post('/post_pcr_doc', [App\Http\Controllers\PcrController::class, 'post_pcr_doc'])->name('post_pcr_doc');
-
-//ecert public
-Route::get('/ecert/search', [App\Http\Controllers\PublicController::class, 'search_cert_public'])->name('search_cert_public');
-Route::post('/ecert/post', [App\Http\Controllers\PublicController::class, 'post_cert_public'])->name('post_cert_public');
-Route::get('/download_cert_public/{order_id}', [App\Http\Controllers\PublicController::class, 'download_cert_public'])->name('download_cert_public');
 
 
 

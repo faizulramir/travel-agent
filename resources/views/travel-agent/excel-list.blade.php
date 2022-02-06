@@ -73,7 +73,7 @@
                                             @elseif ($upload->status == '2')
                                                 <p>Pending AKC Approval</p>
                                             @elseif ($upload->status == '2.1')
-                                                <p>Pending Invoice</p>
+                                                <p>Pending AKC Invoice</p>
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
@@ -177,26 +177,28 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Filename: <s style="text-decoration: none" id="filename"></s></h5>
                                     <h5 class="card-title">Total Record: <s style="text-decoration: none" id="total_records"></s></h5>
-                                    <div class="table-rep-plugin">
-                                        <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                            <table id="exceltable" class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th data-priority="1">Name</th>
-                                                        <th data-priority="3">Passport No</th>
-                                                        <th data-priority="1">IC No</th>
-                                                        <th data-priority="1">E-Care</th>
-                                                        <th data-priority="1">DEP Date</th>
-                                                        <th data-priority="1">RTN Date</th>
-                                                        <th data-priority="1">PCR</th>
-                                                        <th data-priority="1">TPA</th>
-                                                        {{-- <th data-priority="3">Add. Days</th> --}}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+                                    <div style="max-height:420px;overflow-y:scroll;overflow-h:hidden;">
+                                        <div class="table-rep-plugin">
+                                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                                <table id="exceltable" class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th data-priority="1">Name</th>
+                                                            <th data-priority="3">Passport No</th>
+                                                            <th data-priority="1">IC No</th>
+                                                            <th data-priority="1">E-Care</th>
+                                                            <th data-priority="1">DEP Date</th>
+                                                            <th data-priority="1">RTN Date</th>
+                                                            <th data-priority="1">PCR</th>
+                                                            <th data-priority="1">TPA</th>
+                                                            {{-- <th data-priority="3">Add. Days</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                     <br><br>

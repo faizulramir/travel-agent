@@ -424,31 +424,35 @@
 
 
         function post_data() {
-            var form_data = new FormData();
-            form_data.append("travel_agent", $('#travel_agent').val());
-            form_data.append("user", $('#user').val());
-            form_data.append("file", $('#add_excel')[0].files[0]);
-			form_data.append("file_name", $('#add_excel').val().split('\\').pop());
-			form_data.append("json_post", JSON.stringify(json_post));
-            
-            if ($('#agreement').is(':checked') && $('#travel_agent').val()) {
-                $.ajax({
-				url: '/excel_post_admin',
-				type: 'POST',
-				data: form_data,
-				dataType: 'JSON',
-                cache: false,
-				contentType: false,
-                processData: false,
-                    success: function (data) {
-                        alert(data.Data)
-                        location.reload()
-                    }
-                });
+            if (!confirm('Confirm to submit this Excel?')) {
+                e.preventDefault();
             } else {
-                alert("Please check all input to submit!");
-            }
 
+                var form_data = new FormData();
+                form_data.append("travel_agent", $('#travel_agent').val());
+                form_data.append("user", $('#user').val());
+                form_data.append("file", $('#add_excel')[0].files[0]);
+                form_data.append("file_name", $('#add_excel').val().split('\\').pop());
+                form_data.append("json_post", JSON.stringify(json_post));
+                
+                if ($('#agreement').is(':checked') && $('#travel_agent').val()) {
+                    $.ajax({
+                    url: '/excel_post_admin',
+                    type: 'POST',
+                    data: form_data,
+                    dataType: 'JSON',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                        success: function (data) {
+                            alert(data.Data)
+                            location.reload()
+                        }
+                    });
+                } else {
+                    alert("Please check all input to submit!");
+                }
+            }
 			return false;
 		}
 
