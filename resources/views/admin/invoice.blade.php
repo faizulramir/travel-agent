@@ -89,7 +89,7 @@
                                 <br>
 
                                 <div class="col-md-12">
-                                    <a href="#" class="btn btn-primary waves-effect waves-light">Download Invoice</a>
+                                    <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">Download Invoice</a>
                                 </div>
 
                             </div>

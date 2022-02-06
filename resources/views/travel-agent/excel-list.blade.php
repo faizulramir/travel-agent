@@ -111,6 +111,9 @@
                                                 {{-- <a href="{{ route('download_invoice') }}" class="waves-effect" style="color: blue;">
                                                     <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
                                                 </a> --}}
+                                                <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                </a>
                                             @elseif ($upload->status == '99')
                                                 <a href="#" class="waves-effect" style="color: red;">
                                                     <i class="bx bx-no-entry font-size-24" title="Rejected"></i>

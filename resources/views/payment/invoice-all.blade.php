@@ -40,13 +40,17 @@
             td,th {padding: .5em 1em;}
         </style>
     </head>
-    <body>
+    @php
+        // $image_path = '/assets/images/template_cert.jpg';
+        // // dd($url_bg);
+    @endphp
+    <body >
         <div class="row">
             <div class="column" style="padding: 0; margin: 0;">
                 <h4 class="card-title">INVOICE</h4>
             </div>
             <div class="column" style="padding: 0; margin: 0; text-align: right;">
-                <h4 class="card-title" style="color: {{ $user->upload->status == '5' ? 'green' : 'red'}}">{{ $user->upload->status == '5' ? 'PAID' : 'UNPAID'}}</h4>
+                <h4 class="card-title" style="color: {{ $files->status == '5' ? 'green' : 'red'}}">{{ $files->status == '5' ? 'PAID' : 'UNPAID'}}</h4>
             </div>
         </div>
         <p>From</p>
@@ -55,12 +59,12 @@
         <div class="row">
             <div class="column">
                 <p><b>Bill To</b></p>
-                <p>{{ strtoupper($user->name) }}</p>
+                <p>{{ strtoupper($files->user->name) }}</p>
             </div>
             <div class="column-second">
             </div>
             <div class="column-third" >
-                <p><b>Invoice #</b>{{ $user->invoice }}</p>
+                <p><b>Invoice #</b></p>
                 <p><b>Invoice Date</b> {{ date('d-m-Y', strtotime($date_today)) }}</p>
             </div>
         </div>
@@ -79,12 +83,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($tables as $table)
+                    @foreach ($invoice_arr as $table)
                         <tr>
-                            <td>{{ $table->quantity }}</td>
-                            <td>{{ strtoupper($table->description) }}</td>
-                            <td>RM {{ $table->unit_price }}</td>
-                            <td>RM {{ $table->amount }}</td>
+                            <td>{{ $table['COUNT'] }}</td>
+                            <td>{{ strtoupper($table['PLAN']) }}</td>
+                            <td>RM {{ $table['PRICE'] }}</td>
+                            <td>RM {{ $table['COST'] }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -99,7 +103,7 @@
             <div class="column-second">
             </div>
             <div class="column-third">
-                <p><b>Total</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RM {{ $amount }}</p>
+                <p><b>Total</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RM {{ $tot_inv }}</p>
             </div>
         </div>
         <br>

@@ -69,9 +69,18 @@
                                             <a href="{{ route('payment_detail', $upload->id) }}" class="waves-effect" style="color: purple;">
                                                 <i class="bx bxs-collection font-size-24" title="Payment Detail"></i>
                                             </a>
-                                            <a href="{{ route('download_payment', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: green;">
-                                                <i class="bx bx-food-menu font-size-24" title="Show Payslip/Receipt"></i>
-                                            </a>
+
+                                            @if ($upload->status == '5')
+                                                <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                </a>
+                                            @endif
+
+                                            {{-- @if ($upload->payment)
+                                                <a href="{{ route('download_payment', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: green;">
+                                                    <i class="bx bx-food-menu font-size-24" title="Show Payslip/Receipt"></i>
+                                                </a>
+                                            @endif --}}
                                         </td>
                                     </tr>
                                 @endforeach
