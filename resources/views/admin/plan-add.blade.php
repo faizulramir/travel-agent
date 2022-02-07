@@ -32,7 +32,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Plan Price (RM)</label>
-                                    <input class="form-control" type="number" name="plan_price">
+                                    <input class="form-control" type="number" name="plan_price" step="0.01">
                                 </div>
                             </div>
                         </div>
