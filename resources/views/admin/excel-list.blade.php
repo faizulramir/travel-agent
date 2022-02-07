@@ -110,6 +110,12 @@
                                                 </a>
                                             @endif
 
+                                            @if($upload->status == '2' || $upload->status == '2.1')
+                                                <a href="{{ route('delete_excel_ta', $upload->id)}}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
+                                                    <i class="bx bx-trash-alt font-size-24" title="Delete Excel"></i>
+                                                </a>
+                                            @endif
+
                                             <a href="{{ route('download_excel', $upload->id) }}" class="waves-effect" style="color: blue;">
                                                 <i class="bx bxs-cloud-download font-size-24" title="Download Excel"></i>
                                             </a>

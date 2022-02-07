@@ -45,6 +45,7 @@
         // // dd($url_bg);
     @endphp
     <body >
+
         <div class="row">
             <div class="column" style="padding: 0; margin: 0;">
                 <h4 class="card-title">INVOICE</h4>
@@ -53,33 +54,40 @@
                 <h4 class="card-title" style="color: {{ $files->status == '5' ? 'green' : 'red'}}">{{ $files->status == '5' ? 'PAID' : 'UNPAID'}}</h4>
             </div>
         </div>
-        <p>From</p>
-        <p>AL KHAIRI CARE SDN. BHD. (1415158-U) <br>B-28-1 Star Avenue Commercial Centre, Jalan Zuhal U5/179, Section U5, <br> 40150 Shah Alam, Selangor. <br>  https://alkhairicare.com/ <br> alkhairiecare@gmail.com</p>
-        <br>
+
         <div class="row">
-            <div class="column">
+            <div class="column" style="padding: 0; margin: 0;">
+                <p><b>From</b></p>
+                <p>AL KHAIRI CARE SDN. BHD. (1415158-U) <br>B-28-1 Star Avenue Commercial Centre, <br>Jalan Zuhal U5/179, Section U5, <br>40150 Shah Alam, Selangor. <br>  https://alkhairicare.com/ <br> alkhairiecare@gmail.com</p>
+            </div>
+            <div class="column" style="padding: 0; margin: 0; text-align: center;">
+                <br><br>
+                <img src="assets/images/akc-logo.png" alt="" height="40">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="column" style="padding: 0; margin: 0;">
                 <p><b>Bill To</b></p>
                 <p>{{ strtoupper($files->user->name) }}</p>
             </div>
             <div class="column-second">
             </div>
             <div class="column-third" >
-                <p><b>Invoice #{{ $invoice_num }}</b></p>
+                <p><b>Invoice #</b> {{ $invoice_num }}</p>
                 <p><b>Invoice Date</b> {{ date('d-m-Y', strtotime($date_today)) }}</p>
             </div>
         </div>
-        <br>
-        <br>
+
         <hr style="border: none; height: 1px; color: #333; background-color: #333;">
-        <br>
         <div class="row">
-            <table>
+            <table border="0">
                 <thead>
                     <tr>
-                        <th>Quantity</th>
-                        <th>Description</th>
-                        <th>Unit Price</th>
-                        <th>Amount</th>
+                        <th width="15%">Quantity</th>
+                        <th width="45%">Description</th>
+                        <th width="15%"style="text-align: right !important;">Unit Price</th>
+                        <th width="25%"style="text-align: right !important;">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,33 +95,25 @@
                         <tr>
                             <td>{{ $table['COUNT'] }}</td>
                             <td>{{ strtoupper($table['PLAN']) }}</td>
-                            <td>RM {{ $table['PRICE'] }}</td>
-                            <td>RM {{ $table['COST'] }}</td>
+                            <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
+                            <td style="text-align: right !important;">{{ number_format((float)$table['COST'], 2, '.', ',') }}</td>
                         </tr>
                     @endforeach
+
+                    <tr>
+                        <td colspan="4">
+                            <hr style="border: none; height: 1px; color: #333; background-color: #333;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right !important;"><b>Total</b></td>
+                        <td style="text-align: right !important;">RM {{ number_format((float)$tot_inv, 2, '.', ',') }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-        <br>
-        <hr style="border: none; height: 1px; color: #333; background-color: #333;">
-        <br>
-        <div class="row">
-            <div class="column">
-            </div>
-            <div class="column-second">
-                <p><b>Total</b></p>
-            </div>
-            <div class="column-third">
-                <p>RM {{ $tot_inv }}</p>
-            </div>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
         <br>
         <p><b>Terms & Conditions</b></p>
         <p>Transfer are to be made payable to</p>
