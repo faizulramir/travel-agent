@@ -16,6 +16,27 @@
         @slot('title') EXCEL DETAIL @endslot
     @endcomponent
 
+    <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Center modal</h5>
+                    <button type="button" id="btnClose" onclick="deleteAll({{$id}})" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <button class="btn btn-primary" id="btnBefore" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                    </button>
+
+                    <a id="btnAfter" href="{{ route('download_all_cert', $id) }}" class="btn btn-primary">
+                        Download
+                    </a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -34,7 +55,7 @@
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
                         </div>
                         <div class="col-md-6" style="text-align: right; display: {{ count($check) != 0 ? 'block' : 'none' }}">
-                            <button type="submit" class="btn btn-primary w-md" id="download_cert">Download All Cert</button>
+                            <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$id}})">Download All Cert</button>
                         </div>
                     </div>
                     <br>
@@ -111,6 +132,43 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        
+
+        function downloadAll (id) {
+            $('#btnAfter').hide();
+            $('#btnClose').hide();
+            $('#pleaseWaitDialog').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            $('#pleaseWaitDialog').modal('show');
+            $('#modalTitle').text('Merging');
+            
+            $.ajax({
+                url: '/ecert_all/' + id,
+                type: 'GET',
+                success: function (data) {
+                    $('#modalTitle').text('Finished');
+                    $('#btnBefore').hide();
+                    $('#btnAfter').show();
+                    $('#btnClose').show();
+                    // $('#pleaseWaitDialog').modal('hide');
+                }
+            }); 
+        }
+
+        function deleteAll (id) {
+            $.ajax({
+                url: '/delete_all_cert/' + id,
+                type: 'GET',
+                success: function (data) {
+                    // $('#pleaseWaitDialog').modal('hide');
+                }
+            }); 
+        }
+
+       
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

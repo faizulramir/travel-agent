@@ -39,6 +39,7 @@ class TravelAgentController extends Controller
         $uploads = FileUpload::where('id', $id)->first();
 
         Storage::deleteDirectory(Auth::id().'/excel/'.$uploads->id);
+        Storage::deleteDirectory(Auth::id().'/ecert/'.$uploads->id);
         Storage::deleteDirectory(Auth::id().'/supp_doc/'.$uploads->id);
         Storage::deleteDirectory(Auth::id().'/payment/'.$uploads->id);
         Storage::deleteDirectory(Auth::id().'/pcr_result/'.$uploads->id);
@@ -54,7 +55,7 @@ class TravelAgentController extends Controller
         $payment = Payment::where('file_id', $id)->first();
         $check = FileUpload::where([['id', $id], ['status', '5']])->get();
 
-        return view('travel-agent.detail-excel', compact('orders', 'uploads', 'payment', 'check'));
+        return view('travel-agent.detail-excel', compact('orders', 'uploads', 'payment', 'check',  'id'));
     }
 
     public function update_detail_ta($id, $status)

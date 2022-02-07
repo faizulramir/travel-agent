@@ -31,6 +31,9 @@ Route::get('/download_payment/{user_id}/{file_id}', [App\Http\Controllers\Financ
 
 //payment
 Route::get('/payment/{id}', [App\Http\Controllers\PaymentController::class, 'payment'])->name('payment');
+Route::get('/ecert_all/{id}', [App\Http\Controllers\PaymentController::class, 'ecert_all'])->name('ecert_all');
+Route::get('/download_all_cert/{id}', [App\Http\Controllers\PaymentController::class, 'download_all_cert'])->name('download_all_cert');
+Route::get('/delete_all_cert/{id}', [App\Http\Controllers\PaymentController::class, 'delete_all_cert'])->name('delete_all_cert');
 Route::get('/create_invoice_ind/{order_id}', [App\Http\Controllers\PaymentController::class, 'create_invoice_ind'])->name('create_invoice_ind');
 Route::get('/create_invoice/{order_id}', [App\Http\Controllers\PaymentController::class, 'create_invoice'])->name('create_invoice');
 Route::get('/create_cert_ind/{order_id}', [App\Http\Controllers\PaymentController::class, 'create_cert_ind'])->name('create_cert_ind');

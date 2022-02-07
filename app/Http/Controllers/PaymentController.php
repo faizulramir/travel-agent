@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Dompdf\Dompdf;
 use PDF;
+use iio\libmergepdf\Merger;
 
 class PaymentController extends Controller
 {
@@ -474,5 +475,76 @@ class PaymentController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
         return $pdf->stream();
+    }
+
+    public function ecert_all ($id) {
+        $order = Order::where('file_id', $id)->get();
+        foreach ($order as $key => $orders) {
+            $plan = Plan::where('name', $orders->plan_type)->first();
+            $url_bg = Storage::path('template/template_cert.png');
+
+            $cert_number = $orders->ecert;
+
+
+            //fix birth date
+            //dd($orders->ecert, $orders->dob, $orders->dep_date);
+            $dob = new Carbon($orders->dob);
+            $dobyear = 0 + $dob->format('Y');
+            $nowyear = Carbon::now()->year;
+            $correctyear = $dobyear;
+            $newbirth = $dob;
+            if ($dobyear > $nowyear) {
+                $correctyear = $dobyear - 100;
+                $newbirth = Carbon::create($correctyear, 0 + $dob->format('m'), 0 + $dob->format('d'));
+            }
+            //dd($orders->dob,  $dobyear, $nowyear, $correctyear, $newbirth->format('Y-m-d'));
+            $newbirth = $newbirth->format('d-m-Y');
+
+
+            //fix plan duration date
+            $total_days = $plan->total_days;
+            $addDays = (0 + $total_days) - 1;
+            $depdate = new Carbon($orders->dep_date);
+            $rtndate = new Carbon($orders->dep_date);
+            $rtndate->addDays($addDays);
+            $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
+            $content = $pdf->download()->getOriginalContent();
+
+            Storage::put(Auth::id().'/ecert/'.$id.'/'.$orders->ecert.'.pdf',$content);
+        }
+        
+        $pdf_id = Order::where('file_id', $id)->get();
+        $tmpArr = array();
+        foreach ($pdf_id as $key => $pdf) {
+            array_push($tmpArr, Storage::path(Auth::id().'/ecert/'.$id.'/'.$pdf->ecert.'.pdf'));
+        }
+        // dd($tmpArr);
+        $merger = new Merger;
+        $merger->addIterator($tmpArr);
+        
+        $createdPdf = $merger->merge();
+        Storage::put(Auth::id().'/ecert/'.$id.'/merged.pdf',$createdPdf);
+        
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => 'Successfully Merged!'
+        ], 200); // Status code here
+        // return $pdf->stream();
+    }
+
+    public function download_all_cert ($id) {
+        // Storage::deleteDirectory(Auth::id().'/ecert/'.$id);
+        return Storage::download('/'.Auth::id().'/ecert/'.$id.'/merged.pdf');
+    }
+
+    public function delete_all_cert ($id) {
+        Storage::deleteDirectory(Auth::id().'/ecert/'.$id);
+
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => 'Successfully Cleaned!',
+        ], 200);
     }
 }
