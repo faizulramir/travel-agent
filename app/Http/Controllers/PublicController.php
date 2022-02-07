@@ -34,7 +34,26 @@ class PublicController extends Controller
 
     public function post_cert_public(Request $request)
     {
-        $order = Order::where([['passport_no', '=', $request->passport], ['dep_date', '=', $request->depart_date]])->first();
+        $months = array( 'Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+        $depdate = explode('-', $request->depart_date);
+
+        $tmpy = $depdate[0];
+        $tmpy = substr($tmpy,2);
+        $tmpm = $depdate[1];
+        if ($tmpm[0]=='0') $tmpm = $tmpm[1];
+        $tmpd = $depdate[2];
+        if ($tmpd[0]=='0') $tmpd = $tmpd[1];
+
+        $curm = 0 + $tmpm;
+        $mon = $months[$curm - 1];
+        $tmpdate = $tmpd .'-'. $mon .'-'. $tmpy;
+        
+        //dd($request->passport, $request->depart_date, $depdate, $tmpy, $tmpm, $tmpd, $curm, $mon, $tmpdate);
+
+        //$order = Order::where([['passport_no', '=', $request->passport], ['dep_date', '=', $request->depart_date]])->first();
+        $order = Order::where([['passport_no', '=', $request->passport], ['dep_date', '=', $request->depart_date]])
+                        ->orWhere([['passport_no', '=', $request->passport], ['dep_date', '=', $tmpdate]])
+                        ->first();
 
         if ($order == null) {
             return redirect()->back()->with(['error' => 'Jemaah not found']);
