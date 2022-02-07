@@ -52,7 +52,7 @@ class PublicController extends Controller
 
         //$order = Order::where([['passport_no', '=', $request->passport], ['dep_date', '=', $request->depart_date]])->first();
         $order = Order::where([['passport_no', '=', $request->passport], ['dep_date', '=', $request->depart_date]])
-                        ->orWhere([['passport_no', '=', $request->passport], ['dep_date', '=', $tmpdate]])
+                        ->orWhere([['passport_no', '=', $request->passport], ['dep_date', '=', $tmpdate], ['plan_type', '!=', 'NO']])
                         ->first();
 
         if ($order == null) {

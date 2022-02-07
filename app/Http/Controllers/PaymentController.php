@@ -488,13 +488,13 @@ class PaymentController extends Controller
     }
 
     public function ecert_all ($id) {
-        $order = Order::where('file_id', $id)->get();
+        $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
+
         foreach ($order as $key => $orders) {
             $plan = Plan::where('name', $orders->plan_type)->first();
             $url_bg = Storage::path('template/template_cert.png');
 
             $cert_number = $orders->ecert;
-
 
             //fix birth date
             //dd($orders->ecert, $orders->dob, $orders->dep_date);
@@ -525,7 +525,7 @@ class PaymentController extends Controller
             Storage::put(Auth::id().'/ecert/'.$id.'/'.$orders->passport_no.'.pdf',$content);
         }
         
-        $pdf_id = Order::where('file_id', $id)->get();
+        $pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
         $tmpArr = array();
         foreach ($pdf_id as $key => $pdf) {
             array_push($tmpArr, Storage::path(Auth::id().'/ecert/'.$id.'/'.$pdf->passport_no.'.pdf'));
