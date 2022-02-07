@@ -48,8 +48,8 @@
         <br>
         <br>
         <div class="row">
-            <div class="column" style="width: 85.5% !important; text-align:right; padding-top: 3px;">
-                <p style="color:red;"><b>{{ $cert_number }}</b></p>
+            <div class="column" style="width: 85.5% !important; text-align:right; padding-top: 0px;">
+                <h3 style="color:red;"><b>{{ $cert_number }}</b></h3>
             </div>
         </div>
         <br>
