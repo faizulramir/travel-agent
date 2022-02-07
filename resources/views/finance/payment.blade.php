@@ -24,7 +24,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Invoice No: </label>
+                                <label for="plan">Invoice No: {{ $invoice_num }}</label>
                                 <br>
                                 <label for="plan">Total Record: {{ $tot_rec }}</label>
                             </div>
@@ -41,28 +41,28 @@
                                 </p>
                                 --}}
 
-                                <label for="plan">Plan: E-CARE</label>
+                                <label for="plan">&raquo; Plan E-CARE</label>
                                 <p>
                                     @foreach ($invoice_arr as $inv)
-                                        {{ $inv['COUNT'] }} x {{ $inv['PLAN'] }} = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
                                     @endforeach
                                 </p>
-                                <label for="plan">Plan: PCR</label>
+                                <label for="plan">&raquo; Plan PCR</label>
                                 <p>
                                     {{-- @foreach ($invoice_arr as $inv) --}}
-                                    {{ $pcr_detail->cnt }} x {{ $pcr_detail->name }} = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
+                                    {{ $pcr_detail->cnt }} x <b>{{ $pcr_detail->name }}</b> = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
                                     {{-- @endforeach --}}
                                 </p>
-                                <label for="plan">Plan: TPA</label>
+                                <label for="plan">&raquo; Plan TPA</label>
                                 <p>
                                     @foreach ($tpa_total_arr as $inv)
-                                        {{ $inv['COUNT'] }} x {{ $inv['PLAN'] }} = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
                                     @endforeach
                                 </p>
                             </div>
 
                             <div class="col-md-3">
-                                <label for="plan">Total Payment (RM)</label>
+                                <label for="plan">Payment Total</label>
                                 <input class="form-control" type="text" name="pay_total" value="RM {{ number_format((float)$tot_inv, 2, '.', ',') }}" required readonly="readonly">
                                 <br>
 
@@ -75,12 +75,15 @@
                                 </select>
                                 <br>
 
-                                <label for="plan">Payment Receipt</label>
                                 @if(isset($pay))
+                                    <label for="plan">Payment Receipt</label>
                                     @if ($pay->pay_file == null)
                                         <p>File not found</p>
                                     @else
                                         <p>
+                                            <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
+                                                Download Invoice
+                                        </a>
                                             <a href="{{ route('download_payment', [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary waves-effect waves-light">
                                                 Download Receipt
                                             </a>
@@ -97,7 +100,7 @@
                                 <div class="col-lg-12" style="display: {{ $uploads->status == '5' || $uploads->status == '2.1' ? 'none' : 'block' }}">
                                     <input class="form-check-input" type="checkbox" id="agreement">
                                     <label class="form-check-label" for="agreement" style="color:red;">
-                                        &nbsp;&nbsp;Bayaran telah disemak dan amaun bayaran adalah betul 
+                                        &nbsp;&nbsp;Payment telah disemak dan amaun adalah betul 
                                     </label>
                                     <br>
 
@@ -111,14 +114,14 @@
                                 <div class="col-lg-12" style="display: {{ $uploads->status == '2.1' ? 'block' : 'none' }}">
                                     <input class="form-check-input" type="checkbox" id="agreement">
                                     <label class="form-check-label" for="agreement" style="color:red;">
-                                        &nbsp;&nbsp;Invoice telah disemak dan amaun bayaran adalah betul 
+                                        &nbsp;&nbsp;Invois telah disemak dan amaun adalah betul 
                                     </label>
                                     <br>
 
                                     <br>
                                     {{-- <input type="hidden" value="{{ $id }}" name="id"> --}}
-                                    <button class="btn btn-primary waves-effect waves-light" type="submit">Confirm Payment Invoice</button>
-                                    <a href="#" class="btn btn-primary waves-effect waves-light">Cancel</a>
+                                    <button class="btn btn-primary waves-effect waves-light" type="submit">Confirm Invoice Endorsement</button>
+                                    <a href="{{ route('excel_list_finance') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
 
                                 </div>
                             </div>

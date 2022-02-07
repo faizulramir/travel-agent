@@ -98,7 +98,7 @@
 
                             <div class="col-md-3">
 
-                                <label for="plan">Select Payment Method</label>
+                                <label for="plan">Payment Method</label>
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required readonly="readonly">
                                     <option value="">Please Select</option>
                                     <option value="fpx" {{ $pay !== null ? $pay->pay_by == 'fpx' ? 'selected' : '' : '' }}>FPX - Online Banking</option>

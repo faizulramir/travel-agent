@@ -148,7 +148,6 @@ class FinanceController extends Controller
         //print_r($pcr_arr);
         //die();
         
-        
         $plan_arr = array_count_values($plan_arr);  //count plan grouping
         $tpa_arr = array_count_values($tpa_arr);  //count tpa grouping
         $pcr_arr = array_count_values($pcr_arr);  //count pcr grouping
@@ -199,8 +198,14 @@ class FinanceController extends Controller
         }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
 
+        $invoice_num = null;
+        if ($orders && $orders[0]) {
+            $invoice_num = $orders[0]->invoice;
+        }
 
-        return view('finance.payment', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail'));
+        //dd($orders[0]);
+
+        return view('finance.payment', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail', 'invoice_num'));
     }
 
     public function endorse_payment($id)

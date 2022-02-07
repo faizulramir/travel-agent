@@ -175,7 +175,12 @@ class PaymentController extends Controller
         }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
 
-        return view('payment.payment', compact('plan_arr',  'plans', 'id', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'pcr_detail'));
+        $invoice_num = null;
+        if ($orders && $orders[0]) {
+            $invoice_num = $orders[0]->invoice;
+        }
+
+        return view('payment.payment', compact('plan_arr',  'plans', 'id', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'pcr_detail', 'invoice_num'));
     }
 
     public function submit_payment(Request $request)
@@ -256,7 +261,7 @@ class PaymentController extends Controller
         if ($pcr) {
             array_push($tables, $pcr_val);
         }
-        
+
         $amount = ($plan->price*1) + ($tpa ? $tpa->price*1 : 0) + ($pcr ? $pcr->price*1 : 0);
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.invoice', compact('user', 'date_today', 'tables', 'amount'));
@@ -417,11 +422,16 @@ class PaymentController extends Controller
         $dt = Carbon::now();
         $date_today = $dt->toDateString();
 
+        $invoice_num = null;
+        if ($orders && $orders[0]) {
+            $invoice_num = $orders[0]->invoice;
+        }
+
         $files = FileUpload::where('id', $order_id)->first();
         array_push($invoice_arr, $pcrArr);
         // dd($invoice_arr);
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('payment.invoice-all', compact('files', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today'));
+        $pdf->loadView('payment.invoice-all', compact('files', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
         return $pdf->stream();
     }
 

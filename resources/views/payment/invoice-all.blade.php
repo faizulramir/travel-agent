@@ -64,7 +64,7 @@
             <div class="column-second">
             </div>
             <div class="column-third" >
-                <p><b>Invoice #</b></p>
+                <p><b>Invoice #{{ $invoice_num }}</b></p>
                 <p><b>Invoice Date</b> {{ date('d-m-Y', strtotime($date_today)) }}</p>
             </div>
         </div>
@@ -101,9 +101,10 @@
             <div class="column">
             </div>
             <div class="column-second">
+                <p><b>Total</b></p>
             </div>
             <div class="column-third">
-                <p><b>Total</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RM {{ $tot_inv }}</p>
+                <p>RM {{ $tot_inv }}</p>
             </div>
         </div>
         <br>
