@@ -28,7 +28,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="plan">Invoice No: </label>
+                                <label for="plan">Invoice No: {{ $invoice_num }}</label>
                                 <br>
                                 <label for="plan">Total Record: {{ $tot_rec }}</label>
                             </div>
@@ -36,37 +36,29 @@
                         <br>
                         <div class="row">
                             <div class="col-md-4">
-                                {{--
-                                <label for="plan">Plan: E-CARE</label>
-                                <p>
-                                    @foreach ($plan_arr as $i => $plan_a)
-                                        {{ $plan_a }} x {{ $i }}<br>
-                                    @endforeach
-                                </p>
-                                --}}
 
-                                <label for="plan">Plan: E-CARE</label>
+                                <label for="plan">&raquo;Plan E-CARE</label>
                                 <p>
                                     @foreach ($invoice_arr as $inv)
-                                        {{ $inv['COUNT'] }} x {{ $inv['PLAN'] }} = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
                                     @endforeach
                                 </p>
-                                <label for="plan">Plan: PCR</label>
+                                <label for="plan">&raquo;Plan PCR</label>
                                 <p>
                                     {{-- @foreach ($invoice_arr as $inv) --}}
-                                        {{ $pcr_detail->cnt }} x {{ $pcr_detail->name }} = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
+                                        {{ $pcr_detail->cnt }} x <b>{{ $pcr_detail->name }}</b> = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
                                     {{-- @endforeach --}}
                                 </p>
-                                <label for="plan">Plan: TPA</label>
+                                <label for="plan">&raquo;Plan TPA</label>
                                 <p>
                                     @foreach ($tpa_total_arr as $inv)
-                                        {{ $inv['COUNT'] }} x {{ $inv['PLAN'] }} = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
                                     @endforeach
                                 </p>
 
                             </div>
                             <div class="col-md-3">
-                                <label for="plan">Payment Total (RM)</label>
+                                <label for="plan">Payment Total</label>
                                 {{--
                                 @foreach ($plan_arr as $i => $plan_a)
                                     @foreach ($plans as $x => $plan)
@@ -91,7 +83,7 @@
 
                             <div class="col-md-3">
 
-                                <label for="plan">Select Payment Method</label>
+                                <label for="plan">Payment Method</label>
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required>
                                     <option value="">Please Select</option>
                                     <option value="other">Others</option>
@@ -106,7 +98,7 @@
 
                                 <input type="hidden" value="{{ $id }}" name="id">
                                 <button class="btn btn-primary waves-effect waves-light" type="submit">Make Payment</button>
-                                <a href="#" class="btn btn-primary waves-effect waves-light">Cancel</a>
+                                <a href="{{ route('excel_list') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
 
                             </div>
                         </div>

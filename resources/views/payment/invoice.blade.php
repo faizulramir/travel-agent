@@ -97,9 +97,10 @@
             <div class="column">
             </div>
             <div class="column-second">
+                <p><b>Total</b></p>
             </div>
             <div class="column-third">
-                <p><b>Total</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RM {{ $amount }}</p>
+                <p>RM {{ $amount }}</p>
             </div>
         </div>
         <br>

@@ -34,7 +34,7 @@
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
                         </div>
                         <div class="col-md-6" style="text-align: right; display: {{ count($check) != 0 ? 'block' : 'none' }}">
-                            <button type="submit" class="btn btn-primary w-md" id="download_cert">Download All Cert</button>
+                            <button type="submit" class="btn btn-primary w-md" id="download_cert">Download All ECert</button>
                         </div>
                     </div>
                     <br>
