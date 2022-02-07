@@ -38,11 +38,11 @@ class TravelAgentController extends Controller
     {
         $uploads = FileUpload::where('id', $id)->first();
 
-        Storage::deleteDirectory(Auth::id().'/excel/'.$uploads->id);
-        Storage::deleteDirectory(Auth::id().'/ecert/'.$uploads->id);
-        Storage::deleteDirectory(Auth::id().'/supp_doc/'.$uploads->id);
-        Storage::deleteDirectory(Auth::id().'/payment/'.$uploads->id);
-        Storage::deleteDirectory(Auth::id().'/pcr_result/'.$uploads->id);
+        Storage::deleteDirectory($uploads->user_id.'/excel/'.$uploads->id);
+        Storage::deleteDirectory($uploads->user_id.'/ecert/'.$uploads->id);
+        Storage::deleteDirectory($uploads->user_id.'/supp_doc/'.$uploads->id);
+        Storage::deleteDirectory($uploads->user_id.'/payment/'.$uploads->id);
+        Storage::deleteDirectory($uploads->user_id.'/pcr_result/'.$uploads->id);
         $uploads->delete();
 
         return redirect()->back();
