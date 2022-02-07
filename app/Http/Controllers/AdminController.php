@@ -273,7 +273,7 @@ class AdminController extends Controller
             $order->save();
 
             $orders = Order::where('id', '=' ,$order->id)->first();
-            $orders->ecert = 'A'.$year.$orders->file_id.$orders->id;
+            $orders->ecert = 'A'.$year.$orders->id;
             //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;  
             $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
             $orders->save();
@@ -336,7 +336,8 @@ class AdminController extends Controller
                 $order->save();
 
                 $orders = Order::where('id', '=' ,$order->id)->first();
-                $orders->ecert = 'A'.$year.$orders->file_id.$orders->id;
+                $orders->ecert = 'A'.$year.$orders->id;
+                
                 //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
                 $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
 
