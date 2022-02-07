@@ -41,12 +41,12 @@
                                     @csrf
                                     <div class="form-group">
                                         <label for="passport">Passport No</label>
-                                        <input class="form-control input-md" type="text" name="passport" id="passport" placeholder="Enter Passport Number" value="{{ old('passport') }}"/>
+                                        <input class="form-control input-md" type="text" name="passport" id="passport" placeholder="Enter Passport Number" value="{{ old('passport') }}" required/>
                                     </div>
                                     <br>
                                     <div class="form-group">
                                         <label for="depart_date">Departure Date</label>
-                                        <input class="form-control input-md" type="date" name="depart_date" id="depart_date" placeholder="Enter Departure Date (dd/mm/yyyy)" value="{{ old('depart_date') }}"/>
+                                        <input class="form-control input-md" type="date" name="depart_date" id="depart_date" placeholder="Enter Departure Date (dd/mm/yyyy)" value="{{ old('depart_date') }}" required/>
                                     </div>
                                     <br>
                                     @if(session()->has('error'))
