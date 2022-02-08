@@ -85,6 +85,7 @@ Route::post('/change_ecert_background', [App\Http\Controllers\AdminController::c
 Route::post('/change_excel_template', [App\Http\Controllers\AdminController::class, 'change_excel_template'])->name('change_excel_template');
 Route::post('/post_plan_edit/{id}', [App\Http\Controllers\AdminController::class, 'post_plan_edit'])->name('post_plan_edit');
 Route::get('/plan_edit/{id}', [App\Http\Controllers\AdminController::class, 'plan_edit'])->name('plan_edit');
+Route::get('/ssm_cert_download/{id}', [App\Http\Controllers\AdminController::class, 'ssm_cert_download'])->name('ssm_cert_download');
 
 //individu
 Route::get('/application', [App\Http\Controllers\IndividuController::class, 'application'])->name('application');

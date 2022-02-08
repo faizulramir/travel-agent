@@ -516,7 +516,7 @@ class AdminController extends Controller
     }
 
     public function user_add_post (Request $request) {
-        // dd($request->all());
+        // dd($request->ssm_cert);
 
         $input = $request->all();
         $rules = [
@@ -535,13 +535,21 @@ class AdminController extends Controller
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator->messages());
         } else {
+            $filename = $request->file('ssm_cert')->getClientOriginalName();
+    
             $user = new DashboardUser;
             $user->email = $request->email;
             $user->name = $request->name;
             $user->password = Hash::make($request->password);
             $user->dob =  date('Y-m-d', strtotime($request->dob));
+            $user->ssm_cert = $filename;
+            $user->ssm_no =  $request->ssm_no;
             
             $user->save();
+
+            $path = $request->file('ssm_cert')->storeAs(
+                $user->id.'/ssm/', $filename
+            );
 
             $role = Role::where('id', $request->role)->first();
             $user->assignRole($role);
@@ -564,6 +572,7 @@ class AdminController extends Controller
         $user->email = $request->email;
         $user->name = $request->name;
         $user->dob =  date('Y-m-d', strtotime($request->dob));
+        $user->ssm_no = $request->ssm_no;
         
         $user->save();
 
@@ -582,5 +591,11 @@ class AdminController extends Controller
         $user->delete();
 
         return redirect()->route('user_list');
+    }
+
+    public function ssm_cert_download ($id) {
+        $user = DashboardUser::where('id', $id)->first();
+
+        return Storage::download('/'.$id.'/ssm/'.$user->ssm_cert);
     }
 }

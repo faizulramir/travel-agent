@@ -24,7 +24,7 @@
                         </a>
                     </div>
                     <br>
-                    <form action="{{ route('user_add_post') }}" method="POST">
+                    <form action="{{ route('user_add_post') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <h4 class="card-title">User Information</h4>
                         <br>
@@ -41,6 +41,12 @@
                                     <input class="form-control" type="text" name="name" value="" placeholder="Enter Username" required>
                                 </div>
                             </div>
+                            <div class="col-lg-4" id="ssm_no" style="display: none;">
+                                <div>
+                                    <label for="plan">SSM Number</label>
+                                    <input class="form-control" type="text" name="ssm_no" value="" placeholder="Enter SSM Number" required>
+                                </div>
+                            </div>
                         </div>
                         
                         <br>
@@ -55,6 +61,12 @@
                                 <div>
                                     <label for="plan">Confirm Password</label>
                                     <input class="form-control" type="password" name="password_confirmation" value="" placeholder="Confirm Password" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" id="ssm_cert" style="display: none;">
+                                <div>
+                                    <label for="plan">SSM Cert.</label>
+                                    <input type="file" class="form-control" name="ssm_cert" required>
                                 </div>
                             </div>
                         </div>
@@ -104,6 +116,18 @@
 
 @endsection
 @section('script')
+
+    <script>
+        $('#role').change(function() {
+            if ($('#role').val() == 4 || $('#role').val() == '4' ) {
+                $('#ssm_no').show();
+                $('#ssm_cert').show();
+            } else {
+                $('#ssm_no').hide();
+                $('#ssm_cert').hide();
+            }
+        });
+    </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
