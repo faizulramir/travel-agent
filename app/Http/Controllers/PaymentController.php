@@ -213,6 +213,9 @@ class PaymentController extends Controller
         $upload->status = '4';
         $upload->save();
 
+        $user = DashboardUser::where('id', $file->user_id)->first();
+        app('App\Http\Controllers\EmailController')->send_mail('Invoice', $user->name, $user->email, 'PAID, waiting for AKC endorsement', 'Payment');
+
         if (auth()->user()->hasAnyRole('tra')) {
             return redirect()->route('excel_list');
         } else if (auth()->user()->hasAnyRole('akc')) {

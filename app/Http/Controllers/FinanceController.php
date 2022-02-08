@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\DashboardUser;
 
 class FinanceController extends Controller
 {
@@ -211,10 +212,13 @@ class FinanceController extends Controller
     public function endorse_payment($id)
     {
         $uploads = FileUpload::where('id', $id)->first();
+        $user = DashboardUser::where('id', $uploads->user_id)->first();
         if ($uploads->status == '2.1') {
             $uploads->status = '3';
+            app('App\Http\Controllers\EmailController')->send_mail('Invoice', $user->name, $user->email, 'Invoice Created', 'Payment');
         } else {
             $uploads->status = '5';
+            app('App\Http\Controllers\EmailController')->send_mail('Invoice', $user->name, $user->email, 'PAID, Endorsed', 'Payment');
         }
         
         $uploads->save();

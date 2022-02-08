@@ -345,6 +345,16 @@ class AdminController extends Controller
             }
         }
 
+        if ($status == '99') {
+            $body = 'Rejected';
+        } else {
+            $body = 'Approved';
+        }
+        $user = DashboardUser::where('id', $uploads->user_id)->first();
+        // dd($user);
+        app('App\Http\Controllers\EmailController')->send_mail('Excel Update', $user->name, $user->email, 'Your request has been '.$body, 'Excel Submission');
+
+
         return redirect()->back();
     }
 
@@ -553,6 +563,8 @@ class AdminController extends Controller
 
             $role = Role::where('id', $request->role)->first();
             $user->assignRole($role);
+
+            app('App\Http\Controllers\EmailController')->send_mail('New User', $user->name, $user->email, 'Welcome to Al Khairi Care', 'New User');
 
             return redirect()->route('user_list');
         }

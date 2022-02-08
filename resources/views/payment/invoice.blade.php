@@ -61,7 +61,7 @@
             </div>
             <div class="column-third" >
                 <p><b>Invoice #</b>{{ $user->invoice }}</p>
-                <p><b>Invoice Date</b> {{ date('d-m-Y', strtotime($date_today)) }}</p>
+                <p><b>Invoice Date</b> {{ date('d-m-Y', strtotime($user->upload->upload_date)) }}</p>
             </div>
         </div>
         <br>

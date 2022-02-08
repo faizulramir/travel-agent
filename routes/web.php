@@ -130,5 +130,9 @@ Route::get('/excel_detail_pcr/{id}', [App\Http\Controllers\PcrController::class,
 Route::get('/post_return_date/{val}/{id}', [App\Http\Controllers\PcrController::class, 'post_return_date'])->name('post_return_date');
 Route::post('/post_pcr_doc', [App\Http\Controllers\PcrController::class, 'post_pcr_doc'])->name('post_pcr_doc');
 
+//email
+Route::post('/send_mail/{subject_to_send}/{to_name}/{to_email}/{body}/{title}', [App\Http\Controllers\EmailController::class, 'send_mail'])->name('send_mail');
+
+
 
 
