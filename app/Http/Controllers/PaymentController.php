@@ -490,6 +490,8 @@ class PaymentController extends Controller
     public function ecert_all ($id) {
         $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
 
+        if ($orders) ini_set('max_execution_time', '500');
+
         foreach ($order as $key => $orders) {
             $plan = Plan::where('name', $orders->plan_type)->first();
             $url_bg = Storage::path('template/template_cert.png');

@@ -148,6 +148,7 @@
             $.ajax({
                 url: '/ecert_all/' + id,
                 type: 'GET',
+                timeout: 500000, // sets timeout to 500 seconds
                 success: function (data) {
                     $('#modalTitle').text('Finished');
                     $('#btnBefore').hide();
