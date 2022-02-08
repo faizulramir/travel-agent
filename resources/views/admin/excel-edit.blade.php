@@ -1,0 +1,155 @@
+@extends('layouts.master')
+
+@section('title') JEMAAH @endsection
+
+@section('css')
+    <!-- Responsive Table css -->
+    <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection
+
+@section('content')
+
+    @component('components.breadcrumb')
+        @slot('li_1') ADMIN @endslot
+        @slot('title') JEMAAH @endslot
+    @endcomponent
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-md-6" style="text-align: left;">
+                        <a href="{{ route('excel_detail_admin', $jemaah->file_id) }}" class="btn btn-primary w-md">
+                            <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
+                        </a>
+                    </div>
+
+                    <br>
+                    <form action="{{ route('jemaah_edit', $jemaah->id) }}" method="POST">
+                        @csrf
+                        <h4 class="card-title">Jemaah Information</h4>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div>
+                                    <label class="form-label">Name</label>
+                                    <input class="form-control" type="text" name="name" placeholder="Enter Name" value="{{ $jemaah->name }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Passport No</label>
+                                    <input class="form-control" type="text" name="passport_no" value="{{ $jemaah->passport_no }}" placeholder="Enter Passport No">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">IC No</label>
+                                    <input class="form-control" type="number" name="ic_no" value="{{ $jemaah->ic_no }}" placeholder="Enter Passport No">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Date Of Birth</label>
+                                    <input class="form-control" type="date" name="dob" value="{{ $jemaah->dob }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Ex Illness</label>
+                                    <select id="ex_illness" name="ex_illness" class="form-control select2-search-disable"required>
+                                        <option value="NONE" {{ $jemaah->ex_illness == 'NONE' ? 'selected' : '' }}>NONE</option>
+                                        <option value="YES" {{ $jemaah->ex_illness == 'YES' ? 'selected' : '' }}>YES</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">HP No</label>
+                                    <input class="form-control" type="number" name="hp_no" value="{{ $jemaah->hp_no }}" placeholder="Enter HP No">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Email</label>
+                                    <input class="form-control" type="email" name="email" value="{{ $jemaah->email }}" placeholder="Enter Email">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Departure Date</label>
+                                    <input class="form-control" type="date" name="dep_date" value="{{ $jemaah->dep_date }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Return Date</label>
+                                    <input class="form-control" type="date" name="return_date" value="{{ $jemaah->return_date }}">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Plan Type</label>
+                                    <select id="plan_type" name="plan_type" class="form-control select2-search-disable"required>
+                                        @foreach ($plans as $plan)
+                                            <option value="{{ $plan->name }}" {{ $jemaah->plan_type == $plan->name ? 'selected' : '' }}>{{ $plan->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">TPA</label>
+                                    <select id="tpa" name="tpa" class="form-control select2-search-disable"required>
+                                        @foreach ($tpas as $tpa)
+                                            <option value="{{ $tpa->name }}" {{ $jemaah->tpa == $tpa->name ? 'selected' : '' }}>{{ $tpa->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">PCR</label>
+                                    <select id="pcr" name="pcr" class="form-control select2-search-disable"required>
+                                            <option value="NONE" {{ $jemaah->pcr == 'NONE' ? 'selected' : '' }}>NONE</option>
+                                            <option value="PCR" {{ $jemaah->pcr == 'PCR' ? 'selected' : '' }}>PCR</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-lg-12 text-center">
+                            <br>
+                            <button class="btn btn-primary waves-effect waves-light" type="submit">Submit Plan</button>
+                        </div>
+                        @if(session()->has('success'))
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <br>
+                                    <label style="color: green">{{ session()->get('success') }}</label>
+                                </div>
+                            </div>
+                        @endif
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+@section('script')
+    <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
+    <!-- Datatable init js -->
+    <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+@endsection

@@ -10,7 +10,7 @@
 @section('content')
 
     @component('components.breadcrumb')
-        @slot('li_1') INDIVIDU @endslot
+        @slot('li_1') ADMIN @endslot
         @slot('title') PLAN @endslot
     @endcomponent
 

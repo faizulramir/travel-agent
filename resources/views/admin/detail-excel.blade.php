@@ -54,8 +54,8 @@
                             <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : '' :  '' }}</h4>
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '' }}</h4>
                         </div>
-                        <div class="col-md-4" style="text-align: right; display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'block' : 'none' :  'none' }};">
-                            <a href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
+                        <div class="col-md-4">
+                            <a style="text-align: right; display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'block' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
                         </div>
 
                         <div class="col-md-4" style="text-align: right; display: block">
@@ -105,11 +105,11 @@
                                         <td>
                                             @if ($order->status == '0')
                                                 <a href="#" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-dislike font-size-24" title="Traveller: Cancelled"></i>
+                                                    <i class="bx bx-dislike font-size-20" title="Traveller: Cancelled"></i>
                                                 </a>
                                             @else
                                                 <a href="#" class="waves-effect" style="color: blue;">
-                                                    <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
+                                                    <i class="bx bx-like font-size-20" title="Traveller: OK"></i>
                                                 </a>
                                             @endif
                                             @if ($payment && $order->upload->status == '5')
@@ -118,10 +118,14 @@
                                                 </a>--}}
                                                 @if ($order->plan_type != 'NO')
                                                     <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
+                                                        <i class="bx bx-food-menu font-size-20" title="Print ECert"></i>
                                                     </a>
                                                 @endif                                                
                                             @endif
+
+                                            <a href="{{ route('jemaah_show', $order->id) }}" class="waves-effect" style="color: black;">
+                                                <i class="bx bx-book-open font-size-20" title="Edit Jemaah"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

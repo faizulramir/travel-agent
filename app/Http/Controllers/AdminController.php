@@ -610,4 +610,33 @@ class AdminController extends Controller
 
         return Storage::download('/'.$id.'/ssm/'.$user->ssm_cert);
     }
+
+    public function jemaah_show ($id) {
+        $plans = Plan::whereIn('id', [1, 5, 6, 7])->get();
+        $tpas = Plan::whereNotIn('id', [1, 5, 6, 7, 8])->get();
+        $jemaah = Order::where('id', $id)->first();
+        return view('admin.excel-edit', compact('plans', 'tpas', 'jemaah'));
+    }
+
+    public function jemaah_edit (Request $request, $id) {
+        // dd($request->all());
+        $jemaah = Order::where('id', $id)->first();
+        $jemaah->name = $request->name;
+        $jemaah->passport_no = $request->passport_no;
+        $jemaah->ic_no = $request->ic_no;
+        $jemaah->dob = $request->dob;
+        $jemaah->ex_illness = $request->ex_illness;
+        $jemaah->hp_no = $request->hp_no;
+        $jemaah->email = $request->email;
+        $jemaah->dep_date = $request->dep_date;
+        $jemaah->return_date = $request->return_date;
+        $jemaah->plan_type = $request->plan_type;
+        $jemaah->tpa = $request->tpa;
+        $jemaah->pcr = $request->pcr;
+
+        $jemaah->save();
+        Session::flash('success', 'Jemaah Updated');
+        return redirect()->back();
+        // return view('admin.excel-edit');
+    }
 }
