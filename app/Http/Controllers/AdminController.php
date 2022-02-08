@@ -588,8 +588,8 @@ class AdminController extends Controller
 
     public function user_delete ($id) {
         $user = DashboardUser::where('id', $id)->first();
+        Storage::deleteDirectory('/'.$user->id.'/ssm/');
         $user->delete();
-
         return redirect()->route('user_list');
     }
 
