@@ -43,6 +43,9 @@ class HomeController extends Controller
 
         foreach ($uploads as $i => $upload) {
             $user = DashboardUser::where('id', $upload->user_id)->first();
+
+            
+
             if ($user->getRoleNames()[0] == 'tra') {
                 $tra_uploads = $tra_uploads + 1;
             } else if ($user->getRoleNames()[0] == 'ag') {
@@ -63,20 +66,39 @@ class HomeController extends Controller
         $uploads = FileUpload::all();
         $total_uploads = $uploads;
         $tra_uploads = 0;
+        $tra_docs = 0;
+        $tra_pays = 0;
+
+
+
+
         $agent_uploads = 0;
         $diy_uploads = 0;
 
         foreach ($uploads as $i => $upload) {
             $user = DashboardUser::where('id', $upload->user_id)->first();
+            //dd($user);
             if ($user->getRoleNames()[0] == 'tra') {
                 $tra_uploads = $tra_uploads + 1;
+                if ($user->id == $upload->user_id) {
+                    if ($upload->status == '3') {
+                        $tra_pays = $tra_pays + 1;
+                    }
+                    if ($upload->supp_doc == null) {
+                        $tra_docs = $tra_docs + 1;
+                    }
+                }
+
+
+
+
             } else if ($user->getRoleNames()[0] == 'ag') {
                 $agent_uploads = $agent_uploads + 1;
             } else if ($user->getRoleNames()[0] == 'ind') {
                 $diy_uploads = $diy_uploads + 1;
             } 
         }
-        return view('index', compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads'));
+        return view('index', compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs'));
     }
 
     /*Language Translation*/

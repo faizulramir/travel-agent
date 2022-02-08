@@ -29,7 +29,7 @@ class UploadDetailController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['role:akc|tra|ag|ind']);
+        $this->middleware(['role:akc|fin|tra|ag|ind']);
     }
 
     public function upload_detail($id)

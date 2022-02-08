@@ -55,12 +55,12 @@
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
                         </div>
                         <div class="col-md-6" style="text-align: right; display: {{ count($check) != 0 ? 'block' : 'none' }}">
-                            <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$id}})">Download All Cert</button>
+                            <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$id}})" title="Download all ECert">Download All ECert</button>
                         </div>
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -87,7 +87,13 @@
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : ''}}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>
                                         @if ($uploads->status === '5')
-                                            <td>{{ $order->ecert }}</td>
+                                            <td>
+                                                @if ($order->plan_type != 'NO')
+                                                    {{ $order->ecert }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                             <td>{{ $order->pcr }}</td>
                                             <td>{{ $order->tpa }}</td>
                                         @endif
@@ -95,21 +101,23 @@
                                             @if (!$payment)
                                                 @if ($order->status == '1')
                                                     <a href="{{ route('update_detail_ta', [$order->id, '0'])}}" onclick="return confirm('Confirm to DISABLE Traveller?');" class="waves-effect" style="color: red;">
-                                                        <i class="bx bx-trash-alt font-size-20" title="Disable Traveller"></i>
+                                                        <i class="bx bx-trash-alt font-size-24" title="Disable Traveller"></i>
                                                     </a>
                                                 @else
                                                     <a href="{{ route('update_detail_ta', [$order->id, '1'])}}" onclick="return confirm('Confirm to ENABLE Traveller?');" class="waves-effect" style="color: green;">
-                                                        <i class="bx bx-paper-plane font-size-20" title="Enable Traveller"></i>
+                                                        <i class="bx bx-paper-plane font-size-24" title="Enable Traveller"></i>
                                                     </a>
                                                 @endif
                                             @endif
                                             @if ($order->status == '1' && $payment && $order->upload->status == '5')
-                                                <a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: blue;" target="_blank">
-                                                    <i class="bx bxs-printer font-size-20" title="Print Invoice"></i>
-                                                </a>
-                                                <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                    <i class="bx bx-food-menu font-size-20" title="Print E-Cert"></i>
-                                                </a>
+                                                {{-- <a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                </a> --}}
+                                                @if ($order->plan_type != 'NO')
+                                                    <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
+                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
+                                                    </a>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>

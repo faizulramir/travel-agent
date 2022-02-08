@@ -45,9 +45,10 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th data-priority="1">Requestor</th>
                                     <th data-priority="1">Filename</th>
-                                    <th data-priority="3">Upload Date</th>
-                                    <th data-priority="1">Submission Date</th>
+                                    {{--<th data-priority="3">Upload Date</th>--}}
+                                    <th data-priority="3">Submission Date</th>
                                     <th data-priority="1">Status</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
@@ -56,18 +57,19 @@
                                 @foreach($temp_file as $i => $file)
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
+                                        <td>{{ strtoupper($file->user->name) }}</td>
                                         <td>{{ $file->file_name }}</td>
-                                        <td>{{ $file->upload_date ? date('d-m-Y', strtotime($file->upload_date)) : '' }}</td>
+                                        {{--<td>{{ $file->upload_date ? date('d-m-Y', strtotime($file->upload_date)) : '' }}</td>--}}
                                         <td>{{ $file->submit_date ? date('d-m-Y', strtotime($file->submit_date)) : '' }}</td>
                                         <td>
-                                            @if ($file->status == '0')
-                                                Pending Submission
-                                            @elseif ($file->status == '2')
-                                                <p>Pending AKC Approval</p>
+                                            @if ($file->status == '0' || $file->status == '2')
+                                                Pending AKC Approval
+                                            @elseif ($file->status == '2.1')
+                                                <p>Pending AKC (Invoice) </p>
                                             @elseif ($file->status == '3')
                                                 Pending Payment
                                             @elseif ($file->status == '4')
-                                                <p>Pending AKC (Payment) Endorsement</p>
+                                                Pending AKC (Payment) Endorsement
                                             @elseif ($file->status == '5')
                                                 COMPLETED
                                             @elseif ($file->status == '99')

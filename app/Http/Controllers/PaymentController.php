@@ -227,6 +227,7 @@ class PaymentController extends Controller
     public function create_invoice_ind($order_id) {
         $user = Order::where([['id', '=' ,$order_id],['status', '1']])->first();
         // $users = DashboardUser::where('id', $user->user_id)->first();
+
         $dt = Carbon::now();
         $date_today = $dt->toDateString();
         $plan = Plan::where('name', $user->plan_type)->first();
@@ -265,7 +266,7 @@ class PaymentController extends Controller
         $amount = ($plan->price*1) + ($tpa ? $tpa->price*1 : 0) + ($pcr ? $pcr->price*1 : 0);
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.invoice', compact('user', 'date_today', 'tables', 'amount'));
-        return $pdf->stream();
+        return $pdf->stream($user->invoice);
     }
 
     public function create_invoice($order_id) {
@@ -490,7 +491,7 @@ class PaymentController extends Controller
     public function ecert_all ($id) {
         $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
 
-        if ($orders) ini_set('max_execution_time', '500');
+        if ($order) ini_set('max_execution_time', '500');
 
         foreach ($order as $key => $orders) {
             $plan = Plan::where('name', $orders->plan_type)->first();

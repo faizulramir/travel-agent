@@ -66,6 +66,7 @@
                                 <input class="form-control" type="text" name="pay_total" value="RM {{ number_format((float)$tot_inv, 2, '.', ',') }}" required readonly="readonly">
                                 <br>
 
+                                @if(isset($pay))
                                 <label for="plan">Payment Method</label>
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required readonly="readonly" disabled>
                                     <option value="">Please Select</option>
@@ -74,6 +75,13 @@
                                     <option value="other" {{ isset($pay) ? $pay->pay_by == 'other' ? 'selected' : '' : '' }}>Others</option>
                                 </select>
                                 <br>
+                                @endif
+
+                                <p>
+                                    <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
+                                        Download Invoice
+                                    </a>
+                                </p>
 
                                 @if(isset($pay))
                                     <label for="plan">Payment Receipt</label>
@@ -81,12 +89,13 @@
                                         <p>File not found</p>
                                     @else
                                         <p>
-                                            <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
+                                            {{--<a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
                                                 Download Invoice
-                                        </a>
+                                            </a>--}}
                                             <a href="{{ route('download_payment', [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary waves-effect waves-light">
                                                 Download Receipt
                                             </a>
+                                            <a href="{{ route('excel_list_finance') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
                                         </p>
                                     @endif
                                 @endif

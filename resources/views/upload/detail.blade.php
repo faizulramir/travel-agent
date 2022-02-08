@@ -58,9 +58,9 @@
                                     <th data-priority="3">Passport No</th>
                                     <th data-priority="1">IC No</th>
                                     <th data-priority="1">Birth Date (YMD)</th>
-                                    <th data-priority="1">E-Care</th>
                                     <th data-priority="1">DEP Date (DMY)</th>
                                     <th data-priority="3">RTN Date (DMY)</th>
+                                    <th data-priority="1">E-Care</th>
                                     <th data-priority="1">PCR</th>
                                     <th data-priority="1">TPA</th>
                                     {{-- <th data-priority="3">Action</th> --}}
@@ -74,9 +74,9 @@
                                         <td>{{ $order[2] }}</td>
                                         <td>{{ $order[3] }}</td>
                                         <td>{{ $order[4] }}</td>
-                                        <td>{{ $order[7] }}</td>
                                         <td>{{ $order[9] ? date('d-m-Y', strtotime($order[9])) : ''}}</td>
                                         <td>{{ $order[10] ? date('d-m-Y', strtotime($order[10])) : '' }}</td>
+                                        <td>{{ $order[7] }}</td>
                                         <td>{{ $order[11] }}</td>
                                         <td>{{ $order[12] }}</td>
                                         {{-- <td>
