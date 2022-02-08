@@ -174,10 +174,7 @@ class HomeController extends Controller
             } else if ($search_by == 'passport') {
                 $data = Order::where('passport_no', 'like', "%$search_val%")->get();
             } else if ($search_by == 'agent_name') {
-                $files = FileUpload::where('ta_name', 'like', "%$search_val%")->get();
-                foreach ($files as $i => $file) {
-                    $data = Order::where('file_id', $file->id)->get();
-                }
+                $data = FileUpload::where('ta_name', 'like', "%$search_val%")->get();
             } else if ($search_by == 'invoice') {
                 $data = Order::where('invoice', 'like', "%$search_val%")->get();
             } else if ($search_by == 'ic') {

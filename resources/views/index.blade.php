@@ -237,20 +237,38 @@
                             </div>
                             -->
                             <br>
-                            <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
-                                <thead>
-                                    <tr>
-                                        <th data-priority="0">#</th>
-                                        <th data-priority="1">Name</th>
-                                        <th data-priority="1">Passport No</th>
-                                        <th data-priority="1">IC No</th>
-                                        <th data-priority="3">DEP Date</th>
-                                        <th data-priority="3">RTN Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            <div id="table1">
+                                <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th data-priority="0">#</th>
+                                            <th data-priority="1">Name</th>
+                                            <th data-priority="1">Passport No</th>
+                                            <th data-priority="1">IC No</th>
+                                            <th data-priority="3">DEP Date</th>
+                                            <th data-priority="3">RTN Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="table2" style="display: none;">
+                                <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th data-priority="1">Filename</th>
+                                            <th data-priority="3">Upload Date</th>
+                                            <th data-priority="1">Submission Date</th>
+                                            <th data-priority="1">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -297,23 +315,63 @@
                     contentType: false,
                     processData: false,
                     success: function (data) {
-                        var table = $('#datatable').DataTable();
-                        table.clear().draw();
-                        data.Data.forEach(function callback(e, index) {
-                            var format_dep = e.dep_date.split("-");
-                            var format_return = e.return_date.split("-");
-                            dep_date = format_dep[2] + '-' + format_dep[1] + '-' + format_dep[0]
-                            return_date = format_return[2] + '-' + format_return[1] + '-' + format_return[0]
+                        if (search_by == 'agent_name') {
+                            $('#table1').hide();
+                            $('#table2').show();
+                            var table = $('#datatable2').DataTable();
+                            table.clear().draw();
+                            data.Data.forEach(function callback(e, index) {
+                                var format_upload = e.upload_date.split("-");
+                                var format_submit = e.submit_date.split("-");
+                                upload_date = format_upload[2] + '-' + format_upload[1] + '-' + format_upload[0]
+                                submit_date = format_submit[2] + '-' + format_submit[1] + '-' + format_submit[0]
 
-                            table.row.add( [
-                                index + 1,
-                                e.name,
-                                e.passport_no,
-                                e.ic_no,
-                                dep_date,
-                                return_date
-                            ]).draw();
-                        });
+                                var status
+                                if (e.status == '0'){
+                                    status = 'Pending Submission'
+                                } else if (e.status == '2') {
+                                    status = 'Pending AKC Approval'
+                                } else if (e.status == '2.1') {
+                                    status = 'Pending AKC Invoice'
+                                } else if (e.status == '3') {
+                                    status = 'Pending Payment'
+                                } else if (e.status == '4') {
+                                    status = 'Pending AKC (Payment) Endorsement'
+                                } else if (e.status == '5') {
+                                    status = 'COMPLETED'
+                                } else if (e.status == '99') {
+                                    status = 'REJECTED'
+                                }
+
+                                table.row.add( [
+                                    index + 1,
+                                    e.file_name,
+                                    upload_date,
+                                    submit_date,
+                                    status
+                                ]).draw();
+                            });
+                        } else {
+                            $('#table2').hide();
+                            $('#table1').show();
+                            var table = $('#datatable').DataTable();
+                            table.clear().draw();
+                            data.Data.forEach(function callback(e, index) {
+                                var format_dep = e.dep_date.split("-");
+                                var format_return = e.return_date.split("-");
+                                dep_date = format_dep[2] + '-' + format_dep[1] + '-' + format_dep[0]
+                                return_date = format_return[2] + '-' + format_return[1] + '-' + format_return[0]
+
+                                table.row.add( [
+                                    index + 1,
+                                    e.name,
+                                    e.passport_no,
+                                    e.ic_no,
+                                    dep_date,
+                                    return_date
+                                ]).draw();
+                            });
+                        }
                     }
                 });
             });
