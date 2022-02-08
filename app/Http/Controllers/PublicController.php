@@ -55,8 +55,10 @@ class PublicController extends Controller
                         ->orWhere([['passport_no', '=', $request->passport], ['dep_date', '=', $tmpdate], ['plan_type', '!=', 'NO']])
                         ->first();
 
+        if ($order && $order->plan_type == 'NO') $order = null;
+
         if ($order == null) {
-            return redirect()->back()->with(['error' => 'Jemaah not found']);
+            return redirect()->back()->with(['error' => 'Jemaah not found / no ECARE plan application']);
         } else {
             Session::flash('success', 'Jemaah Found');
             Session::flash('order_id', $order->id);
