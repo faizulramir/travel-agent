@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 04, 2022 at 01:01 PM
+-- Generation Time: Feb 08, 2022 at 08:45 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.3.29
 
@@ -93,6 +93,7 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (2, 'App\\Models\\DashboardUser', 3),
 (3, 'App\\Models\\DashboardUser', 1),
 (4, 'App\\Models\\DashboardUser', 2),
+(4, 'App\\Models\\DashboardUser', 8),
 (5, 'App\\Models\\DashboardUser', 4);
 
 -- --------------------------------------------------------
@@ -180,15 +181,15 @@ CREATE TABLE `plan` (
 --
 
 INSERT INTO `plan` (`id`, `name`, `price`, `description`, `price_per_day`, `total_days`, `created_at`, `updated_at`) VALUES
-(1, 'premium', '450', 'PREMIUM', '10', '21', '2022-01-20 14:35:49', NULL),
-(5, 'standard', '280', 'STANDARD', '5', '14', '2022-01-24 21:20:52', '2022-01-24 21:20:52'),
-(6, 'basic', '120', 'basic', '5', '14', '2022-01-24 21:22:42', '2022-01-24 21:22:42'),
-(7, 'lite', '70', 'Lite', '5', '14', '2022-01-24 21:23:06', '2022-01-24 21:23:06'),
-(8, 'pcr', '169', 'pcr', '0', '0', '2022-01-24 21:23:56', '2022-01-24 21:23:56'),
-(9, 'tpa basic 14 ind', '46', 'tpa basic 14 ind', '0', '0', '2022-01-24 21:24:56', '2022-01-24 21:24:56'),
-(10, 'tpa basic 14 fam', '79', 'tpa basic 14 fam', '0', '0', '2022-01-24 21:25:21', '2022-01-24 21:25:21'),
-(11, 'tpa basic 22 ind', '76', 'tpa basic 22 ind', '0', '0', '2022-01-24 21:25:58', '2022-01-24 21:25:58'),
-(12, 'tpa basic 22 fam', '131', 'tpa basic 22 fam', '0', '0', '2022-01-24 21:26:36', '2022-01-24 21:26:36');
+(1, 'PREMIUM', '450', 'ECARE PREMIUM', '10', '21', '2022-01-20 14:35:49', NULL),
+(5, 'STANDARD', '280', 'ECARE STANDARD', '5', '14', '2022-01-24 21:20:52', '2022-01-24 21:20:52'),
+(6, 'BASIC', '120', 'ECARE BASIC', '5', '14', '2022-01-24 21:22:42', '2022-01-24 21:22:42'),
+(7, 'LITE', '70', 'ECARE LITE', '5', '14', '2022-01-24 21:23:06', '2022-01-24 21:23:06'),
+(8, 'PCR', '169', 'PCR TEST', '0', '0', '2022-01-24 21:23:56', '2022-01-24 21:23:56'),
+(9, 'TPA BASIC 14 IND', '46.50', 'TPA BASIC 14 IND', '0', '0', '2022-01-24 21:24:56', '2022-01-24 21:24:56'),
+(10, 'TPA BASIC 14 FAM', '78.50', 'TPA BASIC 14 FAM', '0', '0', '2022-01-24 21:25:21', '2022-01-24 21:25:21'),
+(11, 'TPA BASIC 22 IND', '76.50', 'TPA BASIC 22 IND', '0', '0', '2022-01-24 21:25:58', '2022-01-24 21:25:58'),
+(12, 'TPA BASIC 22 FAM', '131.50', 'TPA BASIC 22 FAM', '0', '0', '2022-01-24 21:26:36', '2022-01-24 21:26:36');
 
 -- --------------------------------------------------------
 
@@ -252,6 +253,8 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dob` date NOT NULL,
+  `ssm_cert` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ssm_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -261,12 +264,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `dob`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'AKC', 'akc@gmail.com', NULL, '$2y$10$Jf2CwjpTDMOfnr1Rsn7XsOV8WzRWq6cloVkWsr4IzceeM0LfjdA.e', '1998-02-12', NULL, '2022-01-17 23:46:26', '2022-01-17 23:46:26'),
-(2, 'travel agent1', 'ta1@gmail.com', NULL, '$2y$10$3rg8/gqq19PMzkgWZRG6uOWeUAIyGXBzx4dIMUPfqBFHI12H6bL6e', '1998-04-03', NULL, '2022-01-18 00:23:31', '2022-01-18 00:23:31'),
-(3, 'agent1@gmail.com', 'agent1@gmail.com', NULL, '$2y$10$KuGxCSESZIqeikD4H6VZIeVnVJxsAT.L5G0Xj2om6PCbfrFgHVDfi', '2022-01-06', NULL, '2022-01-20 08:11:46', '2022-01-20 08:11:46'),
-(4, 'finance', 'fin@gmail.com', NULL, '$2y$10$letstYWH0L0RpzwjdYXpjOErKl86c1r1EuOVxVrMqFyGu.j8eHE6m', '1998-04-03', NULL, '2022-01-23 21:51:49', '2022-01-23 21:51:49'),
-(5, 'individu', 'ind@gmail.com', NULL, '$2y$10$opd4SiXtONtKtP9bd6JRdeWPkQQ3s4vq2YxYOfaqcy266BDZyvZma', '1998-04-03', NULL, '2022-01-24 00:41:28', '2022-01-24 00:41:28');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `dob`, `ssm_cert`, `ssm_no`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'AKC', 'akc@gmail.com', NULL, '$2y$10$Jf2CwjpTDMOfnr1Rsn7XsOV8WzRWq6cloVkWsr4IzceeM0LfjdA.e', '1998-02-12', NULL, NULL, NULL, '2022-01-17 23:46:26', '2022-01-17 23:46:26'),
+(2, 'travel agent1', 'ta1@gmail.com', NULL, '$2y$10$3rg8/gqq19PMzkgWZRG6uOWeUAIyGXBzx4dIMUPfqBFHI12H6bL6e', '1998-04-03', NULL, NULL, NULL, '2022-01-18 00:23:31', '2022-01-18 00:23:31'),
+(3, 'agent1@gmail.com', 'agent1@gmail.com', NULL, '$2y$10$KuGxCSESZIqeikD4H6VZIeVnVJxsAT.L5G0Xj2om6PCbfrFgHVDfi', '2022-01-06', NULL, NULL, NULL, '2022-01-20 08:11:46', '2022-01-20 08:11:46'),
+(4, 'finance', 'fin@gmail.com', NULL, '$2y$10$letstYWH0L0RpzwjdYXpjOErKl86c1r1EuOVxVrMqFyGu.j8eHE6m', '1998-04-03', NULL, NULL, NULL, '2022-01-23 21:51:49', '2022-01-23 21:51:49'),
+(5, 'individu', 'ind@gmail.com', NULL, '$2y$10$opd4SiXtONtKtP9bd6JRdeWPkQQ3s4vq2YxYOfaqcy266BDZyvZma', '1998-04-03', NULL, NULL, NULL, '2022-01-24 00:41:28', '2022-01-24 00:41:28'),
+(8, 'ta2', 'ta2@gmail.com', NULL, '$2y$10$Aj9EHwnZ7cVbi.3kP1aBNeZq4kJ.z1NKz4F6Jr8rg.nGvDb8s6mxu', '2022-02-08', NULL, NULL, NULL, '2022-02-07 23:29:41', '2022-02-07 23:40:28');
 
 --
 -- Indexes for dumped tables
@@ -363,7 +367,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `file_upload`
 --
 ALTER TABLE `file_upload`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -375,13 +379,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2543;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2653;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -411,7 +415,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
