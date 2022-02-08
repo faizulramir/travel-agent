@@ -43,8 +43,10 @@
                                     <th data-priority="0">#</th>
                                     <th data-priority="1">Requester</th>
                                     <th data-priority="1">Filename</th>
-                                    <th data-priority="3">Upload Date</th>
+                                    {{--<th data-priority="3">Upload Date</th>--}}
                                     <th data-priority="3">Submission Date</th>
+                                    <th data-priority="3">Supporting Documents</th>
+                                    <th data-priority="1">Payment</th>
                                     <th data-priority="1">Status</th>
                                     <th data-priority="1">Action</th>
                                 </tr>
@@ -55,8 +57,27 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ strtoupper($upload->user->name) }}</td>
                                         <td>{{ $upload->file_name }}</td>
-                                        <td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>
+                                        {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
                                         <td>{{ $upload->submit_date ? date('d-m-Y', strtotime($upload->submit_date)) : '' }}</td>
+
+                                        <td>
+                                            @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
+                                                <p>-</p>
+                                            @else 
+                                                @if ($upload->supp_doc == null)
+                                                    <p>Not Uploaded</p>
+                                                @endif
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($upload->status == '3')
+                                                <p>INVOICE READY</p>
+                                            @elseif($upload->status == '5')
+                                                <p>PAID</p>
+                                            @else 
+                                                <p>-</p>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($upload->status == '0' || $upload->status == '2')
                                                 Pending AKC Approval
@@ -90,7 +111,7 @@
                                                 </a>
                                             @elseif ($upload->status == '5')
                                                 {{-- <a href="#" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-check-double font-size-24" title="Finished"></i>
+                                                    <i class="bx bx-check-double font-size-24" title="Completed"></i>
                                                 </a> --}}
                                                 <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
                                                     <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
@@ -98,15 +119,6 @@
                                             @elseif ($upload->status == '99')
                                                 <a href="#" class="waves-effect" style="color: red;">
                                                     <i class="bx bx-no-entry font-size-24" title="Rejected"></i>
-                                                </a>
-                                            @endif
-                                            @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
-                                                <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: purple;">
-                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                                </a>
-                                            @else
-                                                <a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: purple;">
-                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
                                                 </a>
                                             @endif
 
@@ -119,6 +131,16 @@
                                             <a href="{{ route('download_excel', $upload->id) }}" class="waves-effect" style="color: blue;">
                                                 <i class="bx bxs-cloud-download font-size-24" title="Download Excel"></i>
                                             </a>
+
+                                            @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
+                                                <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                                </a>
+                                            @endif                                            
                                         </td>
                                     </tr>
                                 @endforeach
@@ -128,6 +150,8 @@
                                     <th data-priority="0"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
+                                    {{--<th data-priority="3"></th>--}}
+                                    <th data-priority="3"></th>
                                     <th data-priority="3"></th>
                                     <th data-priority="3"></th>
                                     <th data-priority="1"></th>
@@ -492,7 +516,7 @@
                 initComplete: function () {
                     this.api().columns().every( function () {
                         var column = this;
-                        if (column[0]==1 || column[0]==2 || column[0]==3 || column[0]==5) {
+                        if (column[0]==1 || column[0]==2 || column[0]==3 || column[0]==6) {
                             var select = $('<select><option value=""></option></select>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on('change', function () {

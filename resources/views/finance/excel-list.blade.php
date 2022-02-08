@@ -34,14 +34,14 @@
                         <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th data-priority="0">#</th>
                                     <th data-priority="1">Requester</th>
                                     <th data-priority="1">Filename</th>
-                                    <th data-priority="3">Upload Date</th>
+                                    {{--<th data-priority="3">Upload Date</th>--}}
                                     <th data-priority="1">Submission Date</th>
                                     <th data-priority="1">Payment</th>
                                     <th data-priority="1">Status</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="1">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,7 +50,7 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ strtoupper($upload->user->name) }}</td>
                                         <td>{{ $upload->file_name }}</td>
-                                        <td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>
+                                        {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
                                         <td>{{ $upload->submit_date ? date('d-m-Y', strtotime($upload->submit_date)) : '' }}</td>
                                         <td>{{ $upload->status == '5' || $upload->status == '4' ? 'PAID' : 'UNPAID' }}</td>
                                         <td>
@@ -63,11 +63,9 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{-- <a href="#" class="waves-effect" style="color: pink;">
+
+                                            <a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
                                                 <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                            </a> --}}
-                                            <a href="{{ route('payment_detail', $upload->id) }}" class="waves-effect" style="color: purple;">
-                                                <i class="bx bxs-collection font-size-24" title="Payment Detail"></i>
                                             </a>
 
                                             @if ($upload->status == '5')
@@ -75,6 +73,10 @@
                                                     <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
                                                 </a>
                                             @endif
+
+                                            <a href="{{ route('payment_detail', $upload->id) }}" class="waves-effect" style="color: navy;">
+                                                <i class="bx bxs-collection font-size-24" title="Payment Detail"></i>
+                                            </a>
 
                                             {{-- @if ($upload->payment)
                                                 <a href="{{ route('download_payment', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: green;">
@@ -85,6 +87,18 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th data-priority="0"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    {{--<th data-priority="3">Upload Date</th>--}}
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -120,6 +134,32 @@
                 e.preventDefault();
             }
         }
+
+        //enabling datatable filters
+        $(document).ready(function() {
+            $('#datatable').DataTable( {
+                initComplete: function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        if (column[0]==1 || column[0]==2 || column[0]==3 || column[0]==5) {
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    column
+                                        .search( val ? '^'+val+'$' : '', true, false )
+                                        .draw();
+                                } );
+                            column.data().unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'">'+d+'</option>' )
+                            } );
+                        }
+                    } );
+                }
+            } );
+        } );
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

@@ -56,6 +56,8 @@
                                     <th data-priority="1">Filename</th>
                                     <th data-priority="3">Upload Date</th>
                                     <th data-priority="1">Submission Date</th>
+                                    <th data-priority="1">Supporting Documents</th>
+                                    <th data-priority="1">Payment</th>
                                     <th data-priority="1">Status</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
@@ -67,6 +69,24 @@
                                         <td>{{ $upload->file_name }}</td>
                                         <td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>
                                         <td>{{ $upload->submit_date ? date('d-m-Y', strtotime($upload->submit_date)) : '' }}</td>
+                                        <td>
+                                            @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
+                                                <p>-</p>
+                                            @else 
+                                                @if ($upload->supp_doc == null)
+                                                    <p>Not Uploaded</p>
+                                                @endif
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($upload->status == '3')
+                                                <p>INVOICE READY</p>
+                                            @elseif($upload->status == '5')
+                                                <p>PAID</p>
+                                            @else 
+                                                <p>-</p>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($upload->status == '0')
                                                 Pending Submission
@@ -119,6 +139,12 @@
                                                     <i class="bx bx-no-entry font-size-24" title="Rejected"></i>
                                                 </a>
                                             @endif
+
+                                            @if($upload->status == '0' || $upload->status == '1' || $upload->status == '2' || $upload->status == '2.1' || $upload->status == '3')
+                                                <a href="{{ route('delete_excel_ta', $upload->id)}}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
+                                                    <i class="bx bx-trash-alt font-size-24" title="Delete Excel"></i>
+                                                </a>
+                                            @endif
                                             
                                             @if ($upload->supp_doc == null)
                                                 <a href="#" class="waves-effect" style="color: blue;">
@@ -137,12 +163,6 @@
                                                 </a>
                                             @endif
                                             
-                                            @if($upload->status == '0' || $upload->status == '1' || $upload->status == '3')
-                                                <a href="{{ route('delete_excel_ta', $upload->id)}}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-trash-alt font-size-24" title="Delete Excel"></i>
-                                                </a>
-                                            @endif
-
 
                                             {{-- @if ($upload->status == '4')
                                                 <a href="#" class="waves-effect" style="color:#ed2994;">

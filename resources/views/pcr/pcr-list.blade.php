@@ -35,7 +35,9 @@
                                     <th>#</th>
                                     <th data-priority="1">Name</th>
                                     <th data-priority="3">Passport No</th>
-                                    <th data-priority="1">Ecert Number</th>
+                                    <th data-priority="3">DEP Date</th>
+                                    <th data-priority="3">RTN Date</th>
+                                    <th data-priority="3">ECare (ECert)</th>
                                     <th data-priority="3">PCR Date</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
@@ -46,22 +48,24 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $order->name }}</td>
                                         <td>{{ $order->passport_no }}</td>
-                                        <td>{{ $order->ecert }}</td>
+                                        <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : '' }}</td>
+                                        <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>
+                                        <td>{{ $order->plan_type }} ({{ $order->ecert }})</td>
                                         <td>
                                             <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{ $order->pcr_date }}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
                                         </td>
                                         <td>
                                             <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                <i class="bx bx-food-menu font-size-20" title="Print E-Cert"></i>
+                                                <i class="bx bx-food-menu font-size-24" title="Print E-Cert"></i>
                                             </a>
                                             @if ($order->pcr_result == null) 
                                                 <a href="#" class="waves-effect" style="color: blue;">
                                                     <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">
-                                                    <i onclick="openDetail({{$order->id}})" id="uploadPCR{{$order->id}}" class="bx bxs-cloud-upload font-size-24" title="Upload PCR"></i>
+                                                    <i onclick="openDetail({{$order->id}})" id="uploadPCR{{$order->id}}" class="bx bxs-cloud-upload font-size-24" title="Upload PCR Result"></i>
                                                 </a>
                                             @else
                                                 <a href="{{ route('downloadPCR', [$order->user_id, $order->id, $order->pcr_file_name]) }}" class="waves-effect" style="color: green;">
-                                                    <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="Download PCR"></i>
+                                                    <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="Download PCR Result"></i>
                                                 </a>
                                             @endif
                                         </td>

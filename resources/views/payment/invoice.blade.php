@@ -49,11 +49,20 @@
                 <h4 class="card-title" style="color: {{ $user->upload->status == '5' ? 'green' : 'red'}}">{{ $user->upload->status == '5' ? 'PAID' : 'UNPAID'}}</h4>
             </div>
         </div>
-        <p>From</p>
-        <p>AL KHAIRI CARE SDN. BHD. (1415158-U) <br>B-28-1 Star Avenue Commercial Centre, Jalan Zuhal U5/179, Section U5, <br> 40150 Shah Alam, Selangor. <br>  https://alkhairicare.com/ <br> alkhairiecare@gmail.com</p>
-        <br>
+
         <div class="row">
-            <div class="column">
+            <div class="column" style="padding: 0; margin: 0;">
+                <p><b>From</b></p>
+                <p>AL KHAIRI CARE SDN. BHD. (1415158-U) <br>B-28-1 Star Avenue Commercial Centre, <br>Jalan Zuhal U5/179, Section U5, <br>40150 Shah Alam, Selangor. <br>  https://alkhairicare.com/ <br> alkhairiecare@gmail.com</p>
+            </div>
+            <div class="column" style="padding: 0; margin: 0; text-align: center;">
+                <br><br>
+                <img src="assets/images/akc-logo.png" alt="" height="40">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="column" style="padding: 0; margin: 0;">
                 <p><b>Bill To</b></p>
                 <p>{{ strtoupper($user->name) }}</p>
             </div>
@@ -64,10 +73,9 @@
                 <p><b>Invoice Date</b> {{ date('d-m-Y', strtotime($user->upload->upload_date)) }}</p>
             </div>
         </div>
-        <br>
-        <br>
+
+        {{--
         <hr style="border: none; height: 1px; color: #333; background-color: #333;">
-        <br>
         <div class="row">
             <table>
                 <thead>
@@ -83,8 +91,8 @@
                         <tr>
                             <td>{{ $table->quantity }}</td>
                             <td>{{ strtoupper($table->description) }}</td>
-                            <td>RM {{ $table->unit_price }}</td>
-                            <td>RM {{ $table->amount }}</td>
+                            <td style="text-align: right !important;">RM {{ $table->unit_price }}</td>
+                            <td style="text-align: right !important;">RM {{ $table->amount }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -114,6 +122,48 @@
         <p><b>Terms & Conditions</b></p>
         <p>Transfer are to be made payable to</p>
         <p>Company Name : Al Khairi Care Sdn Bhd <br> Account No : 1225 8001 3002 150 <br> Bank : Alliance Islamic Bank Berhad <br> Swift Code : ALSRMYKL</p>
+        --}}
+
+        <hr style="border: none; height: 1px; color: #333; background-color: #333;">
+        <div class="row">
+            <table border="0">
+                <thead>
+                    <tr>
+                        <th width="15%" style="text-align: left !important;">Quantity</th>
+                        <th width="45%" style="text-align: left !important;">Description</th>
+                        <th width="15%" style="text-align: right !important;">Unit Price</th>
+                        <th width="25%" style="text-align: right !important;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($tables as $table)
+                        <tr>
+                            <td>{{ $table->quantity }}</td>
+                            <td>{{ strtoupper($table->description) }}</td>
+                            <td style="text-align: right !important;">{{ number_format((float)$table->unit_price, 2, '.', ',') }}</td>
+                            <td style="text-align: right !important;">{{ number_format((float)$table->amount, 2, '.', ',') }}</td>
+                        </tr>
+                    @endforeach
+
+                    <tr>
+                        <td colspan="4" style="padding:0;">
+                            <hr style="border: none; height: 1px; color: #333; background-color: #333;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right !important;"><b>Total</b></td>
+                        <td style="text-align: right !important;">RM {{ number_format((float)$amount, 2, '.', ',') }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <p><b>Terms & Conditions</b></p>
+        <p>Transfer are to be made payable to</p>
+        <p>Company Name : Al Khairi Care Sdn Bhd <br> Account No : 1225 8001 3002 150 <br> Bank : Alliance Islamic Bank Berhad <br> Swift Code : ALSRMYKL</p>
+
     </body>
 </html>
 

@@ -58,9 +58,8 @@
                             <a href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
                         </div>
 
-
                         <div class="col-md-4" style="text-align: right; display: block">
-                            <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})">Download All Cert</button>
+                            <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
                         </div>
 
                     </div>
@@ -93,7 +92,13 @@
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : ''}}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>
                                         @if ($uploads->status === '5')
-                                            <td>{{ $order->ecert }}</td>
+                                            <td>
+                                                @if ($order->plan_type != 'NO')
+                                                    {{ $order->ecert }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>                                            
                                             <td>{{ $order->pcr }}</td>
                                             <td>{{ $order->tpa }}</td>
                                         @endif
@@ -107,13 +112,15 @@
                                                     <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
                                                 </a>
                                             @endif
-                                            @if ($order->status == '1' && $payment && $order->upload->status == '5')
-                                                <a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                            @if ($payment && $order->upload->status == '5')
+                                                {{--<a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: black;" target="_blank">
                                                     <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
-                                                </a>
-                                                <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                    <i class="bx bx-food-menu font-size-24" title="Print E-Cert"></i>
-                                                </a>
+                                                </a>--}}
+                                                @if ($order->plan_type != 'NO')
+                                                    <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
+                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
+                                                    </a>
+                                                @endif                                                
                                             @endif
                                         </td>
                                     </tr>

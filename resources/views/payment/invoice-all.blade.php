@@ -84,10 +84,10 @@
             <table border="0">
                 <thead>
                     <tr>
-                        <th width="15%">Quantity</th>
-                        <th width="45%">Description</th>
-                        <th width="15%"style="text-align: right !important;">Unit Price</th>
-                        <th width="25%"style="text-align: right !important;">Amount</th>
+                        <th width="15%" style="text-align: left !important;">Quantity</th>
+                        <th width="45%" style="text-align: left !important;">Description</th>
+                        <th width="15%" style="text-align: right !important;">Unit Price</th>
+                        <th width="25%" style="text-align: right !important;">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,7 +101,7 @@
                     @endforeach
 
                     <tr>
-                        <td colspan="4">
+                        <td colspan="4" style="padding:0;">
                             <hr style="border: none; height: 1px; color: #333; background-color: #333;">
                         </td>
                     </tr>
@@ -118,6 +118,7 @@
         <p><b>Terms & Conditions</b></p>
         <p>Transfer are to be made payable to</p>
         <p>Company Name : Al Khairi Care Sdn Bhd <br> Account No : 1225 8001 3002 150 <br> Bank : Alliance Islamic Bank Berhad <br> Swift Code : ALSRMYKL</p>
+
     </body>
 </html>
 

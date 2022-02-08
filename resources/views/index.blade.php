@@ -17,117 +17,114 @@
 
 
     @if (auth()->user()->hasAnyRole('tra', 'ag', 'ind'))
-    <a href="{{ route('excel_list_admin') }}">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="row">
-                    {{-- <h4 class="card-title mb-4"></h4> --}}
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">Total Submission</p>
-                                        <h4 class="mb-0">{{ $tra_uploads }}</h4>
-                                    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="row">
+                {{-- <h4 class="card-title mb-4"></h4> --}}
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">Total Excel Submission</p>
+                                    <h4 class="mb-0">{{ $tra_uploads }}</h4>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">Pending Supporting Documents</p>
-                                        <h4 class="mb-0">{{ $agent_uploads }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">Pending Payment</p>
-                                        <h4 class="mb-0">{{ $diy_uploads }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">All Request</p>
-                                        <h4 class="mb-0">{{count($total_uploads)}}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">Pending Supporting Documents</p>
+                                    <h4 class="mb-0">{{ $tra_docs }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">Pending Payment</p>
+                                    <h4 class="mb-0">{{ $tra_pays }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{--
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">All Request</p>
+                                    <h4 class="mb-0">{{count($total_uploads)}}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                --}}
             </div>
         </div>
-    </a>
+    </div>
     @endif    
 
-
     @if (auth()->user()->hasAnyRole('akc', 'fin'))
-    <a href="{{ route('excel_list_admin') }}">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="row">
-                    {{-- <h4 class="card-title mb-4"></h4> --}}
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">Travel Agent Request</p>
-                                        <h4 class="mb-0">{{ $tra_uploads }}</h4>
-                                    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="row">
+                {{-- <h4 class="card-title mb-4"></h4> --}}
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">Travel Agent Request</p>
+                                    <h4 class="mb-0">{{ $tra_uploads }}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">DIY Agent Request</p>
-                                        <h4 class="mb-0">{{ $agent_uploads }}</h4>
-                                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">DIY Agent Request</p>
+                                    <h4 class="mb-0">{{ $agent_uploads }}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">DIY Individu Request</p>
-                                        <h4 class="mb-0">{{ $diy_uploads }}</h4>
-                                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">DIY Individu Request</p>
+                                    <h4 class="mb-0">{{ $diy_uploads }}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">All Request</p>
-                                        <h4 class="mb-0">{{count($total_uploads)}}</h4>
-                                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">All Request</p>
+                                    <h4 class="mb-0">{{count($total_uploads)}}</h4>
                                 </div>
                             </div>
                         </div>
@@ -135,67 +132,65 @@
                 </div>
             </div>
         </div>
-    </a>
+    </div>
 
-    <a href="{{ route('excel_list_admin') }}">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="row">
-                    {{-- <h4 class="card-title mb-4"></h4> --}}
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">Total Invoice</p>
-                                        <h4 class="mb-0">{{ $tra_uploads }}</h4>
-                                    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="row">
+                {{-- <h4 class="card-title mb-4"></h4> --}}
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">Total Invoice</p>
+                                    <h4 class="mb-0">{{ $tra_uploads }}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">Total Payment</p>
-                                        <h4 class="mb-0">{{ $agent_uploads }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{--
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">DIY Individu Request</p>
-                                        <h4 class="mb-0">{{ $diy_uploads }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">All Request</p>
-                                        <h4 class="mb-0">{{count($total_uploads)}}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    --}}
                 </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">Total Payment</p>
+                                    <h4 class="mb-0">{{ $agent_uploads }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{--
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">DIY Individu Request</p>
+                                    <h4 class="mb-0">{{ $diy_uploads }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">All Request</p>
+                                    <h4 class="mb-0">{{count($total_uploads)}}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                --}}
             </div>
         </div>
-    </a>    
+    </div>
     @endif
 
     @if (auth()->user()->hasAnyRole('akc', 'fin'))
