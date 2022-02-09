@@ -72,6 +72,7 @@
                                     <th data-priority="1">Name</th>
                                     <th data-priority="3">Passport No</th>
                                     <th data-priority="1">IC No</th>
+                                    <th data-priority="1">Plan</th>
                                     <th data-priority="1">DEP Date (DMY)</th>
                                     <th data-priority="5">RTN Date (DMY)</th>
                                     @if ($uploads->status === '5')
@@ -89,6 +90,7 @@
                                         <td>{{ $order->name }}</td>
                                         <td>{{ $order->passport_no  }}</td>
                                         <td>{{ $order->ic_no }}</td>
+                                        <td>{{ $order->plan_type }}</td>
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : ''}}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>
                                         @if ($uploads->status === '5')
