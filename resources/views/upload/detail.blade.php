@@ -60,7 +60,7 @@
                                     <th data-priority="1">Birth Date (YMD)</th>
                                     <th data-priority="1">DEP Date (DMY)</th>
                                     <th data-priority="3">RTN Date (DMY)</th>
-                                    <th data-priority="1">E-Care</th>
+                                    <th data-priority="1">Plan</th>
                                     <th data-priority="1">PCR</th>
                                     <th data-priority="1">TPA</th>
                                     {{-- <th data-priority="3">Action</th> --}}

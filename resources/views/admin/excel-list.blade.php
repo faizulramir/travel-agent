@@ -96,10 +96,10 @@
                                         <td>
                                             @if ($upload->status == '2')
                                                 <a href="{{ route('update_excel_status_admin', [$upload->id, '2.1']) }}" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-paper-plane font-size-24" title="Approve" onclick="return confirm('Do you really want to Approve?');"></i>
+                                                    <i class="bx bx-paper-plane font-size-24" title="Approve" onclick="return confirm('Do you really want to APPROVE?');"></i>
                                                 </a>
                                                 <a href="{{ route('update_excel_status_admin', [$upload->id, '99']) }}" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-no-entry font-size-24" title="Reject" onclick="return confirm('Do you really want to Reject?');"></i>
+                                                    <i class="bx bx-no-entry font-size-24" title="Reject" onclick="return confirm('Do you really want to REJECT?');"></i>
                                                 </a>
                                             @elseif ($upload->status == '3')
                                                <a href="{{ route('admin_payment_detail', $upload->id) }}" class="waves-effect" style="color: green;">

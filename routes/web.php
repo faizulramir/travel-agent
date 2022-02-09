@@ -28,6 +28,8 @@ Route::get('/excel_list_finance', [App\Http\Controllers\FinanceController::class
 Route::get('/payment_detail/{id}', [App\Http\Controllers\FinanceController::class, 'payment_detail'])->name('payment_detail');
 Route::post('/endorse_payment/{id}', [App\Http\Controllers\FinanceController::class, 'endorse_payment'])->name('endorse_payment');
 Route::get('/download_payment/{user_id}/{file_id}', [App\Http\Controllers\FinanceController::class, 'download_payment'])->name('download_payment');
+Route::get('/excel_detail_finance/{id}', [App\Http\Controllers\FinanceController::class, 'excel_detail_finance'])->name('excel_detail_finance');
+
 
 //payment
 Route::get('/payment/{id}', [App\Http\Controllers\PaymentController::class, 'payment'])->name('payment');

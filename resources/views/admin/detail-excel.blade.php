@@ -51,14 +51,15 @@
                     <br>
                     <div class="row">
                         <div class="col-md-4 text-right">
-                            <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : '' :  '' }}</h4>
-                            <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '' }}</h4>
+                            <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : 'Not Uploaded' :  'Not Uploaded' }}</h4>
+                            <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
                         </div>
+                        @if ($uploads->status === '5')
                         <div class="col-md-8" style="text-align: right;">
                             <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
                             <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
                         </div>
-
+                        @endif
                     </div>
                     <br>
                     <div>
@@ -69,13 +70,13 @@
                                     <th data-priority="1">Name</th>
                                     <th data-priority="3">Passport No</th>
                                     <th data-priority="1">IC No</th>
-                                    <th data-priority="1">Plan</th>
                                     <th data-priority="1">DEP Date (DMY)</th>
                                     <th data-priority="5">RTN Date (DMY)</th>
+                                    <th data-priority="1">Plan</th>
+                                    <th data-priority="3">PCR</th>
+                                    <th data-priority="3">TPA</th>
                                     @if ($uploads->status === '5')
                                         <th data-priority="1">ECert</th>
-                                        <th data-priority="3">PCR</th>
-                                        <th data-priority="3">TPA</th>
                                     @endif                                          
                                     <th data-priority="3">Status</th>
                                 </tr>
@@ -87,9 +88,11 @@
                                         <td>{{ $order->name }}</td>
                                         <td>{{ $order->passport_no  }}</td>
                                         <td>{{ $order->ic_no }}</td>
-                                        <td>{{ $order->plan_type }}</td>
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : ''}}</td>
-                                        <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>
+                                        <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>                                        
+                                        <td>{{ $order->plan_type }} {{ $additional_arr[$i]['DIFDAY'] }}</td>
+                                        <td>{{ $order->pcr }}</td>
+                                        <td>{{ $order->tpa }}</td>
                                         @if ($uploads->status === '5')
                                             <td>
                                                 @if ($order->plan_type != 'NO')
@@ -98,8 +101,6 @@
                                                     -
                                                 @endif
                                             </td>                                            
-                                            <td>{{ $order->pcr }}</td>
-                                            <td>{{ $order->tpa }}</td>
                                         @endif
                                         <td>
                                             @if ($order->status == '0')
@@ -122,9 +123,11 @@
                                                 @endif                                                
                                             @endif
 
+                                            @if ($order->upload->status != '4' && $order->upload->status != '5')
                                             <a href="{{ route('jemaah_show', $order->id) }}" class="waves-effect" style="color: black;">
-                                                <i class="bx bx-edit-alt font-size-24" title="Edit Record"></i>
+                                                <i class="bx bx-edit-alt font-size-24" title="Edit Record XX"></i>
                                             </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -155,14 +158,14 @@
                 keyboard: false
             })
             $('#pleaseWaitDialog').modal('show');
-            $('#modalTitle').text('Merging');
+            $('#modalTitle').text('Generating/Merging all ECert ... Please Wait');
             
             $.ajax({
                 url: '/ecert_all/' + id,
                 type: 'GET',
                 timeout: 500000, // sets timeout to 500 seconds
                 success: function (data) {
-                    $('#modalTitle').text('Finished');
+                    $('#modalTitle').text('Completed');
                     $('#btnBefore').hide();
                     $('#btnAfter').show();
                     $('#btnClose').show();

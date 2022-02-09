@@ -54,4 +54,5 @@ class UploadDetailController extends Controller
 
         return view('upload.detail', compact('orders'));
     }
+
 }

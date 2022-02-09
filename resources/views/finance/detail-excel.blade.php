@@ -12,7 +12,7 @@
 @section('content')
 
     @component('components.breadcrumb')
-        @slot('li_1') TRAVEL AGENT @endslot
+        @slot('li_1') FINANCE @endslot
         @slot('title') EXCEL DETAIL @endslot
     @endcomponent
 
@@ -21,7 +21,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitle">Center modal</h5>
-                    <button type="button" id="btnClose" onclick="deleteAll({{$id}})" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" id="btnClose" onclick="deleteAll({{$uploads->id}})" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <button class="btn btn-primary" id="btnBefore" type="button" disabled>
@@ -29,7 +29,7 @@
                         Loading...
                     </button>
 
-                    <a id="btnAfter" href="{{ route('download_all_cert', $id) }}" class="btn btn-primary">
+                    <a id="btnAfter" href="{{ route('download_all_cert', $uploads->id) }}" class="btn btn-primary">
                         Download
                     </a>
                 </div>
@@ -43,41 +43,36 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6" style="text-align: left;">
-                            <a href="{{ route('excel_list') }}" class="btn btn-primary w-md">
-                                <i class="bx bx-chevrons-left font-size-20" title="Back"></i>
+                            <a href="{{ route('excel_list_finance') }}" class="btn btn-primary w-md">
+                                <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
                             </a>
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-md-6 text-right">
+                        <div class="col-md-4 text-right">
                             <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : 'Not Uploaded' :  'Not Uploaded' }}</h4>
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
                         </div>
-                        @if ($uploads->status === '5')
-                        <div class="col-md-6" style="text-align: right; display: {{ count($check) != 0 ? 'block' : 'none' }}">
-                            <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$id}})" title="Download all ECert">Download All ECert</button>
-                        </div>
-                        @endif
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th data-priority="1">Name</th>
-                                    <th data-priority="1">Passport No</th>
+                                    <th data-priority="3">Passport No</th>
                                     <th data-priority="1">IC No</th>
                                     <th data-priority="1">DEP Date (DMY)</th>
-                                    <th data-priority="5">RTN Date (DMY)</th>                                    
+                                    <th data-priority="5">RTN Date (DMY)</th>
                                     <th data-priority="1">Plan</th>
                                     <th data-priority="3">PCR</th>
                                     <th data-priority="3">TPA</th>
                                     @if ($uploads->status === '5')
                                         <th data-priority="1">ECert</th>
-                                    @endif                                    
-                                    <th data-priority="3">Action</th>
+                                    @endif                                          
+                                    <th data-priority="3">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,7 +84,7 @@
                                         <td>{{ $order->ic_no }}</td>
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : ''}}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>                                        
-                                        <td>{{ $order->plan_type }}</td>
+                                        <td>{{ $order->plan_type }} {{ $additional_arr[$i]['DIFDAY'] }}</td>
                                         <td>{{ $order->pcr }}</td>
                                         <td>{{ $order->tpa }}</td>
                                         @if ($uploads->status === '5')
@@ -99,30 +94,26 @@
                                                 @else
                                                     -
                                                 @endif
-                                            </td>
+                                            </td>                                            
                                         @endif
                                         <td>
-                                            @if (!$payment)
-                                                @if ($order->status == '1')
-                                                    <a href="{{ route('update_detail_ta', [$order->id, '0'])}}" onclick="return confirm('Confirm to DISABLE Traveller?');" class="waves-effect" style="color: red;">
-                                                        <i class="bx bx-trash-alt font-size-24" title="Disable Traveller"></i>
-                                                    </a>
-                                                @else
-                                                    <a href="{{ route('update_detail_ta', [$order->id, '1'])}}" onclick="return confirm('Confirm to ENABLE Traveller?');" class="waves-effect" style="color: green;">
-                                                        <i class="bx bx-paper-plane font-size-24" title="Enable Traveller"></i>
-                                                    </a>
-                                                @endif
+                                            @if ($order->status == '0')
+                                                <a href="#" class="waves-effect" style="color: red;">
+                                                    <i class="bx bx-dislike font-size-24" title="Traveller: Cancelled"></i>
+                                                </a>
+                                            @else
+                                                <a href="#" class="waves-effect" style="color: blue;">
+                                                    <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
+                                                </a>
                                             @endif
-                                            @if ($order->status == '1' && $payment && $order->upload->status == '5')
-                                                {{-- <a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: black;" target="_blank">
-                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
-                                                </a> --}}
+                                            @if ($payment && $order->upload->status == '5')
                                                 @if ($order->plan_type != 'NO')
                                                     <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
                                                         <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
                                                     </a>
-                                                @endif
+                                                @endif                                                
                                             @endif
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -144,44 +135,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-        
-
-        function downloadAll (id) {
-            $('#btnAfter').hide();
-            $('#btnClose').hide();
-            $('#pleaseWaitDialog').modal({
-                backdrop: 'static',
-                keyboard: false
-            })
-            $('#pleaseWaitDialog').modal('show');
-            $('#modalTitle').text('Generating/Merging all ECert ... Please Wait ');
-            
-            $.ajax({
-                url: '/ecert_all/' + id,
-                type: 'GET',
-                timeout: 500000, // sets timeout to 500 seconds
-                success: function (data) {
-                    $('#modalTitle').text('Completed');
-                    $('#btnBefore').hide();
-                    $('#btnAfter').show();
-                    $('#btnClose').show();
-                    // $('#pleaseWaitDialog').modal('hide');
-                }
-            }); 
-        }
-
-        function deleteAll (id) {
-            $.ajax({
-                url: '/delete_all_cert/' + id,
-                type: 'GET',
-                success: function (data) {
-                    // $('#pleaseWaitDialog').modal('hide');
-                }
-            }); 
-        }
-
-       
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

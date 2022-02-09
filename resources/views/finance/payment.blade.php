@@ -116,7 +116,7 @@
                                     <br>
                                     {{-- <input type="hidden" value="{{ $id }}" name="id"> --}}
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">Confirm Payment Endorsement</button>
-                                    <a href="#" class="btn btn-primary waves-effect waves-light">Cancel</a>
+                                    <a href="{{ route('excel_list_finance') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
 
                                 </div>
 

@@ -199,7 +199,50 @@ class AdminController extends Controller
         $uploads = FileUpload::where('id', $id)->first();
         $payment = Payment::where('file_id', $id)->first();
 
-        return view('admin.detail-excel', compact('orders', 'uploads', 'payment'));
+        //--
+        $additional_arr = array();
+        foreach ($orders as $order) {
+
+            if ($order->plan_type!=null && $order->plan_type!='' && $order->plan_type != 'NO') {
+                $date1 = date_create($order->dep_date);
+                $date2 = date_create($order->return_date);
+                $diff = date_diff($date1, $date2);
+
+                $days = $diff->days;
+                $maxday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('total_days')->first();
+
+                $difday = 0;
+                if ($days && $maxday && ($days > $maxday)) {
+                    $difday = ($maxday - $days);
+                    $difday = ($difday>0?$difday:($difday*-1));
+                }
+
+                //prepare costing array
+                $tmpArr = array (
+                    //'PLAN' => $order->plan_type,
+                    //'PRICE' => $price,
+                    //'DEP' => $date1,
+                    //'RTN' => $date2,
+                    //'DAYS' => $days,
+                    //'MAXDAY' => $maxday,
+                    'DIFDAY' => ($difday == 0? "(0)" : "(+".$difday.")"),
+                    //'PERDAY' => $perday,
+                    //'COST' => $cost,
+                    //'ADDT' => $addt,
+                );
+            }
+            else {
+                //prepare costing array
+                $tmpArr =  array (
+                    'DIFDAY' => "",
+                );
+            }
+            array_push($additional_arr, $tmpArr);   //grouping the selected plans
+        }
+        //--
+        //dd($additional_arr);
+
+        return view('admin.detail-excel', compact('orders', 'uploads', 'payment', 'additional_arr'));
     }
 
     public function excel_post_admin(Request $request)
