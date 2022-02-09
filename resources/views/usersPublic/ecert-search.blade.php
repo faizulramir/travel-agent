@@ -67,7 +67,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="ecert_no" style="font-size:1.05rem;">Traveller: {{ session()->get('name') }}</label><br>
-                                                <label for="ecert_no" style="font-size:1.05rem;">ECert No: <a href="{{ route('download_cert_public', session()->get('order_id')) }}" title="Download ECert">{{ session()->get('ecert') }} <i class="bx bx-cloud-download font-size-24"></i></a></label>
+                                                <label for="ecert_no" style="font-size:1.05rem;">ECert No: <a href="{{ route('download_cert_public', session()->get('order_id')) }}" target="_blank" title="Download ECert">{{ session()->get('ecert') }} <i class="bx bx-cloud-download font-size-24"></i></a></label>
                                             </div>
                                         </div>
                                     @endif

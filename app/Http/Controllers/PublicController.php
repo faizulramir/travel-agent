@@ -94,6 +94,6 @@ class PublicController extends Controller
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
-        return $pdf->download($orders->passport_no.'-ecert.pdf');
+        return $pdf->stream();
     }
 }
