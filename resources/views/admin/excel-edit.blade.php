@@ -11,7 +11,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') ADMIN @endslot
-        @slot('title') JEMAAH @endslot
+        @slot('title') EDIT RECORD @endslot
     @endcomponent
 
     <div class="row">
@@ -27,7 +27,7 @@
                     <br>
                     <form action="{{ route('jemaah_edit', $jemaah->id) }}" method="POST">
                         @csrf
-                        <h4 class="card-title">Jemaah Information</h4>
+                        <h4 class="card-title">Traveller Information</h4>
                         <br>
                         <div class="row">
                             <div class="col-lg-4">
@@ -60,7 +60,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Ex Illness</label>
-                                    <select id="ex_illness" name="ex_illness" class="form-control select2-search-disable"required>
+                                    <select id="ex_illness" name="ex_illness" class="form-control select2-search-disable" required>
                                         <option value="NONE" {{ $jemaah->ex_illness == 'NONE' ? 'selected' : '' }}>NONE</option>
                                         <option value="YES" {{ $jemaah->ex_illness == 'YES' ? 'selected' : '' }}>YES</option>
                                     </select>
@@ -98,8 +98,9 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">Plan Type</label>
-                                    <select id="plan_type" name="plan_type" class="form-control select2-search-disable"required>
+                                    <label for="plan">Plan Type (ECare)</label>
+                                    <select id="plan_type" name="plan_type" class="form-control select2-search-disable" required>
+                                        <option value="NO" {{ $jemaah->plan_type == 'NO' ? 'selected' : '' }}>NO</option>
                                         @foreach ($plans as $plan)
                                             <option value="{{ $plan->name }}" {{ $jemaah->plan_type == $plan->name ? 'selected' : '' }}>{{ $plan->name }}</option>
                                         @endforeach
@@ -109,7 +110,8 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">TPA</label>
-                                    <select id="tpa" name="tpa" class="form-control select2-search-disable"required>
+                                    <select id="tpa" name="tpa" class="form-control select2-search-disable" required>
+                                        <option value="NO" {{ $jemaah->tpa == 'NO' ? 'selected' : '' }}>NO</option>
                                         @foreach ($tpas as $tpa)
                                             <option value="{{ $tpa->name }}" {{ $jemaah->tpa == $tpa->name ? 'selected' : '' }}>{{ $tpa->name }}</option>
                                         @endforeach
@@ -119,9 +121,9 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">PCR</label>
-                                    <select id="pcr" name="pcr" class="form-control select2-search-disable"required>
-                                            <option value="NONE" {{ $jemaah->pcr == 'NONE' ? 'selected' : '' }}>NONE</option>
-                                            <option value="PCR" {{ $jemaah->pcr == 'PCR' ? 'selected' : '' }}>PCR</option>
+                                    <select id="pcr" name="pcr" class="form-control select2-search-disable" required>
+                                        <option value="NO" {{ $jemaah->pcr == 'NO' ? 'selected' : '' }}>NO</option>
+                                        <option value="PCR" {{ $jemaah->pcr == 'PCR' ? 'selected' : '' }}>PCR</option>
                                     </select>
                                 </div>
                             </div>
@@ -129,7 +131,7 @@
                         <br>
                         <div class="col-lg-12 text-center">
                             <br>
-                            <button class="btn btn-primary waves-effect waves-light" type="submit">Submit Plan</button>
+                            <button class="btn btn-primary waves-effect waves-light" type="submit">Save Changes</button>
                         </div>
                         @if(session()->has('success'))
                             <div class="row text-center">

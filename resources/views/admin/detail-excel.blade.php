@@ -105,11 +105,11 @@
                                         <td>
                                             @if ($order->status == '0')
                                                 <a href="#" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-dislike font-size-20" title="Traveller: Cancelled"></i>
+                                                    <i class="bx bx-dislike font-size-24" title="Traveller: Cancelled"></i>
                                                 </a>
                                             @else
                                                 <a href="#" class="waves-effect" style="color: blue;">
-                                                    <i class="bx bx-like font-size-20" title="Traveller: OK"></i>
+                                                    <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
                                                 </a>
                                             @endif
                                             @if ($payment && $order->upload->status == '5')
@@ -118,13 +118,13 @@
                                                 </a>--}}
                                                 @if ($order->plan_type != 'NO')
                                                     <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                        <i class="bx bx-food-menu font-size-20" title="Print ECert"></i>
+                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
                                                     </a>
                                                 @endif                                                
                                             @endif
 
                                             <a href="{{ route('jemaah_show', $order->id) }}" class="waves-effect" style="color: black;">
-                                                <i class="bx bx-book-open font-size-20" title="Edit Jemaah"></i>
+                                                <i class="bx bx-edit-alt font-size-24" title="Edit Record"></i>
                                             </a>
                                         </td>
                                     </tr>
