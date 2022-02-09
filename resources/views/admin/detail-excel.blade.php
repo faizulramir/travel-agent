@@ -54,11 +54,8 @@
                             <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : '' :  '' }}</h4>
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '' }}</h4>
                         </div>
-                        <div class="col-md-4">
-                            <a style="text-align: right; display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'block' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
-                        </div>
-
-                        <div class="col-md-4" style="text-align: right; display: block">
+                        <div class="col-md-8" style="text-align: right;">
+                            <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
                             <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
                         </div>
 
