@@ -78,8 +78,8 @@
                                                 </a>
                                             @endif
 
-                                            <a href="{{ route('payment_detail', $upload->id) }}" class="waves-effect" style="color: navy;">
-                                                <i class="bx bxs-collection font-size-24" title="Payment Detail"></i>
+                                            <a href="{{ route('payment_detail', $upload->id) }}" class="waves-effect" style="color: green;">
+                                                <i class="bx bx-money font-size-24" title="Payment Detail"></i>
                                             </a>
 
                                             {{-- @if ($upload->payment)

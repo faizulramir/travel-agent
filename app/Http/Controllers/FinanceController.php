@@ -102,6 +102,27 @@ class FinanceController extends Controller
 
                 //echo "<br>".($order->pcr);
 
+                //prepare costing array
+                $tmpArr =  array (
+                    'PLAN' => $order->plan_type,
+                    'PRICE' => $price,
+                    //'DEP' => $date1,
+                    //'RTN' => $date2,
+                    'DAYS' => $days,
+                    'MAXDAY' => $maxday,
+                    'DIFDAY' => $difday,
+                    'PERDAY' => $perday,
+                    'COST' => $cost,
+                    'ADDT' => $addt,
+                    'PCR' => null,
+                    'TPA' => null,
+                    'TPANAME' => null,
+                );
+                array_push($costing_arr, $tmpArr); //prepare costing for each record
+                array_push($plan_arr, $order->plan_type);   //grouping the selected plans
+            } 
+            
+            if ($order->pcr != null && $order->pcr != '' && $order->pcr == 'PCR') {
                 //calculate for PCR
                 $pcr = 0.00;   //pcr price
                 $pcr_name = 'PCR';
@@ -110,7 +131,9 @@ class FinanceController extends Controller
                     $pcr_cnt = $pcr_cnt + 1;
                     array_push($pcr_arr, $pcr_name);
                 }
+            }
 
+            if ($order->tpa != null && $order->tpa !='' && $order->tpa != 'NO') {
                 //calculate for TPA
                 $tpa_name = null;
                 $tpa_price = 0.00;
@@ -124,25 +147,23 @@ class FinanceController extends Controller
                     array_push($tpa_arr, $tpa_name);   //grouping the selected plans
                 }
 
-
                 //prepare costing array
                 $tmpArr =  array (
-                    'PLAN' => $order->plan_type,
-                    'PRICE' => $price,
+                    'PLAN' => null,
+                    'PRICE' => null,
                     //'DEP' => $date1,
                     //'RTN' => $date2,
-                    'DAYS' => $days,
-                    'MAXDAY' => $maxday,
-                    'DIFDAY' => $difday,
-                    'PERDAY' => $perday,
-                    'COST' => $cost,
-                    'ADDT' => $addt,
-                    'PCR' => $pcr,
+                    'DAYS' => null,
+                    'MAXDAY' => null,
+                    'DIFDAY' => null,
+                    'PERDAY' => null,
+                    'COST' => null,
+                    'ADDT' => null,
+                    'PCR' => null,
                     'TPA' => $tpa_price,
                     'TPANAME' => $order->tpa,
                 );
                 array_push($costing_arr, $tmpArr); //prepare costing for each record
-                array_push($plan_arr, $order->plan_type);   //grouping the selected plans
             }
         }
 
