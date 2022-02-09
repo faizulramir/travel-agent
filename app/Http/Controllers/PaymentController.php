@@ -379,7 +379,7 @@ class PaymentController extends Controller
             'PLAN' => 'PCR',
             'COUNT' => (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0),
             'PRICE' => Plan::where([['name', '=' ,'pcr']])->pluck('price')->first(),
-            'COST' => (Plan::where([['name', '=' ,'pcr']])->pluck('price')->first()) * ($pcr_arr['PCR']),
+            'COST' => (Plan::where([['name', '=' ,'pcr']])->pluck('price')->first()) * (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0),
         );
 
         $invoice_arr = array();
@@ -432,7 +432,12 @@ class PaymentController extends Controller
         }
 
         $files = FileUpload::where('id', $order_id)->first();
-        array_push($invoice_arr, $pcrArr);
+        if ($pcrArr['COST'] == 0 || $pcrArr['COST'] == '0') {
+            
+        } else {
+            array_push($invoice_arr, $pcrArr);
+        }
+        
         // dd($invoice_arr);
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.invoice-all', compact('files', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
