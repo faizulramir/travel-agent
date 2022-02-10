@@ -30,7 +30,7 @@
                             <div class="col-md-4">
                                 <label for="plan">Invoice No: {{ $invoice_num }}</label>
                                 <br>
-                                <label for="plan">Total Record: {{ $tot_rec }}</label>
+                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
                             </div>
                         </div>
                         <br>
@@ -87,8 +87,8 @@
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required>
                                     <option value="">Please Select</option>
                                     <option value="other">Others</option>
-                                    <option value="fpx">FPX - Online Banking (Coming Soon)</option>
-                                    <option value="cc">Credit Card / Debit Card (Coming Soon)</option>
+                                    <!-- <option value="fpx">FPX - Online Banking (Coming Soon)</option>
+                                    <option value="cc">Credit Card / Debit Card (Coming Soon)</option> -->
                                 </select>
                                 <br>
 

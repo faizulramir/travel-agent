@@ -50,6 +50,7 @@
                                     {{--<th data-priority="3">Upload Date</th>--}}
                                     <th data-priority="3">Submission Date</th>
                                     <th data-priority="1">Status</th>
+                                    <th data-priority="1">Positive</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
@@ -76,6 +77,7 @@
                                                 REJECTED
                                             @endif
                                         </td>
+                                        <td></td>
                                         <td>
                                             <a href="{{ route('excel_detail_pcr', $file->id) }}" class="waves-effect" style="color:#ed2994;">
                                                 <i class="bx bxs-collection font-size-24" title="Show Detail"></i>

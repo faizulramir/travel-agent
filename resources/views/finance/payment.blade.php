@@ -26,7 +26,7 @@
                             <div class="col-md-3">
                                 <label for="plan">Invoice No: {{ $invoice_num }}</label>
                                 <br>
-                                <label for="plan">Total Record: {{ $tot_rec }}</label>
+                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
                             </div>
                         </div>
                         <br>

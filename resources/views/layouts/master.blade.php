@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>AKC</title>
+    <title>Al Khairi Care</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="AKC" name="description" />
     <meta content="AKC" name="author" />

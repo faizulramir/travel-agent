@@ -44,20 +44,24 @@
                             </thead>
                             <tbody>
                                 @foreach ($orders as $i => $order)
+
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $order->name }}</td>
                                         <td>{{ $order->passport_no }}</td>
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : '' }}</td>
-                                        <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>
-                                        <td>{{ $order->plan_type }} ({{ $order->ecert }})</td>
+                                        <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)): '' }}</td>
+                                        <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO'? '('.$order->ecert.')' : '') }}</td>
                                         <td>
-                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{ $order->pcr_date }}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
+                                            @php
+                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->return_date)));
+                                            @endphp
+                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
                                         </td>
                                         <td>
-                                            <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
+                                            <!-- <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
                                                 <i class="bx bx-food-menu font-size-24" title="Print E-Cert"></i>
-                                            </a>
+                                            </a> -->
                                             @if ($order->pcr_result == null) 
                                                 <a href="#" class="waves-effect" style="color: blue;">
                                                     <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">

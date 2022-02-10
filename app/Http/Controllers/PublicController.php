@@ -44,9 +44,14 @@ class PublicController extends Controller
         $tmpd = $depdate[2];
         if ($tmpd[0]=='0') $tmpd = $tmpd[1];
 
+        $testyy = 0 + $tmpy;
+        if ($testyy < 1000) $tmpy = 2000 + $tmpy;
+
         $curm = 0 + $tmpm;
         $mon = $months[$curm - 1];
         $tmpdate = $tmpd .'-'. $mon .'-'. $tmpy;
+
+        //dd($request->all(), $depdate, $tmpdate, $tmpy);
         
         //dd($request->passport, $request->depart_date, $depdate, $tmpy, $tmpm, $tmpd, $curm, $mon, $tmpdate);
 

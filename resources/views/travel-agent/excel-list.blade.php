@@ -199,7 +199,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Filename: <s style="text-decoration: none" id="filename"></s></h5>
-                                    <h5 class="card-title">Total Record: <s style="text-decoration: none" id="total_records"></s></h5>
+                                    <h5 class="card-title">Total Jemaah: <s style="text-decoration: none" id="total_records"></s></h5>
                                     <div style="max-height:420px;overflow-y:scroll;overflow-h:hidden;">
                                         <div class="table-rep-plugin">
                                             <div class="table-responsive mb-0" data-pattern="priority-columns">
