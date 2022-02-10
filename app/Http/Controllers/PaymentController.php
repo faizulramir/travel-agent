@@ -529,11 +529,11 @@ class PaymentController extends Controller
 
 
         //fix plan duration date
-        $total_days = $plan->total_days;
-        $addDays = (0 + $total_days) - 1;
+        // $total_days = $plan->total_days;
+        // $addDays = (0 + $total_days) - 1;
         $depdate = new Carbon($orders->dep_date);
-        $rtndate = new Carbon($orders->dep_date);
-        $rtndate->addDays($addDays);
+        $rtndate = new Carbon($orders->return_date);
+        // $rtndate->addDays($addDays);
         $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
 
         //dd($plan->name, $total_days, $orders->dep_date, $addDays, $depdate, $duration);
@@ -584,11 +584,11 @@ class PaymentController extends Controller
 
 
             //fix plan duration date
-            $total_days = $plan->total_days;
-            $addDays = (0 + $total_days) - 1;
+            //$total_days = $plan->total_days;
+            //$addDays = (0 + $total_days) - 1;
             $depdate = new Carbon($orders->dep_date);
-            $rtndate = new Carbon($orders->dep_date);
-            $rtndate->addDays($addDays);
+            $rtndate = new Carbon($orders->return_date);
+            //$rtndate->addDays($addDays);
             $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));

@@ -53,9 +53,9 @@
         </div>
         <br>
         <div class="row">
-            <div class="column-second">
+            <div class="column-second" style="width: 60%;">
                 <p style="padding-top: 10px;font-size: 22px;"><b>{{ strtoupper($orders->upload->ta_name) }}</b></p>
-                <p style="padding-top: {{ strlen($orders->name) > 27 ? '25px' : '21px' }}; font-size: {{ strlen($orders->name) > 27 ? '18px' : '22px' }};"><b>{{ strtoupper($orders->name) }}</b></p>
+                <p style="padding-top: 21px; font-size: 22px;"><b>{{ strtoupper($orders->name) }}</b></p>
                 <p style="padding-top: 21px; font-size: 22px;"><b>{{ strtoupper($orders->passport_no) }}</b></p>
                 {{--<p style="padding-top: 28px"><b>{{ $orders->dob ? date('d-m-Y', strtotime($orders->dob)) : '' }}</b></p>--}}
                 <p style="padding-top: 21px; font-size: 22px;"><b>{{ $newbirth }}</b></p>
