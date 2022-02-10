@@ -46,6 +46,9 @@ class HomeController extends Controller
         $tra_docs = 0;
         $tra_pays = 0;
 
+        $fin_inv = 0;
+        $fin_pay = 0;
+
         $agent_uploads = 0;
         $diy_uploads = 0;
 
@@ -69,13 +72,36 @@ class HomeController extends Controller
                     $agent_uploads = $agent_uploads + 1;
                 } else if ($user->getRoleNames()[0] == 'ind') {
                     $diy_uploads = $diy_uploads + 1;
+
                 } 
+                
             }
 
         }
 
+        $user = DashboardUser::where('id', $curUser)->first();
+        if ($user->getRoleNames()[0] == 'fin') {
+
+            $uploads = FileUpload::all();
+            if ($uploads) {
+                foreach ($uploads as $i => $upload) {
+    
+                    //echo $upload->status;
+                    if ($upload->status == '2.1') {
+                        $fin_inv = $fin_inv + 1;
+                    }
+                    if ($upload->status == '4') {
+                        $fin_pay = $fin_pay + 1;
+                    }               
+                }
+    
+            }
+        }
+
+        //dd($fin_inv, $fin_pay);
+
         if (view()->exists($request->path())) {
-            return view($request->path(), compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs'));
+            return view($request->path(), compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay'));
         }
         return abort(404);
     }
@@ -93,6 +119,10 @@ class HomeController extends Controller
         $tra_docs = 0;
         $tra_pays = 0;
 
+        $fin_inv = 0;
+        $fin_pay = 0;
+        
+
         $agent_uploads = 0;
         $diy_uploads = 0;
 
@@ -116,13 +146,32 @@ class HomeController extends Controller
                     $agent_uploads = $agent_uploads + 1;
                 } else if ($user->getRoleNames()[0] == 'ind') {
                     $diy_uploads = $diy_uploads + 1;
-                } 
+                }             
             }
-
         }
 
+        $user = DashboardUser::where('id', $curUser)->first();
+        if ($user->getRoleNames()[0] == 'fin') {
 
-        return view('index', compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs'));
+            $uploads = FileUpload::all();
+            if ($uploads) {
+                foreach ($uploads as $i => $upload) {
+    
+                    //echo $upload->status;
+                    if ($upload->status == '2.1') {
+                        $fin_inv = $fin_inv + 1;
+                    }
+                    if ($upload->status == '4') {
+                        $fin_pay = $fin_pay + 1;
+                    }               
+                }
+    
+            }
+        }
+
+        //dd($fin_inv, $fin_pay);
+
+        return view('index', compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay'));
     }
 
     /*Language Translation*/

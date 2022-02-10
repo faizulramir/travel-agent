@@ -48,19 +48,19 @@
                                 <label for="plan">Plan: E-CARE</label>
                                 <p>
                                     @foreach ($invoice_arr as $inv)
-                                        {{ $inv['COUNT'] }} x {{ $inv['PLAN'] }} = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
                                     @endforeach
                                 </p>
                                 <label for="plan">Plan: PCR</label>
                                 <p>
                                     {{-- @foreach ($invoice_arr as $inv) --}}
-                                    {{ $pcr_detail->cnt }} x {{ $pcr_detail->name }} = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
+                                    {{ $pcr_detail->cnt }} x <b>{{ $pcr_detail->name }}</b> = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
                                     {{-- @endforeach --}}
                                 </p>
                                 <label for="plan">Plan: TPA</label>
                                 <p>
                                     @foreach ($tpa_total_arr as $inv)
-                                        {{ $inv['COUNT'] }} x {{ $inv['PLAN'] }} = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
                                     @endforeach
                                 </p>
 

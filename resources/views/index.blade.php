@@ -143,8 +143,8 @@
                         <div class="card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <p class="text-muted fw-medium">Total Invoice</p>
-                                    <h4 class="mb-0">{{ $tra_uploads }}</h4>
+                                    <p class="text-muted fw-medium">Pending Invoice Endorsement</p>
+                                    <h4 class="mb-0">{{ $fin_inv }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -155,8 +155,8 @@
                         <div class="card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <p class="text-muted fw-medium">Total Payment</p>
-                                    <h4 class="mb-0">{{ $agent_uploads }}</h4>
+                                    <p class="text-muted fw-medium">Pending Payment Endorsement</p>
+                                    <h4 class="mb-0">{{ $fin_pay }}</h4>
                                 </div>
                             </div>
                         </div>
