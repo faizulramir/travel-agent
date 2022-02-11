@@ -54,7 +54,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Date Of Birth</label>
-                                    <input class="form-control" type="date" name="dob" value="{{ $jemaah->dob }}">
+                                    <input class="form-control" type="text" name="dob" value="{{ $jemaah->dob }}">
                                 </div>
                             </div>
                             <div class="col-lg-4">

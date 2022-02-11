@@ -515,17 +515,23 @@ class PaymentController extends Controller
 
         //fix birth date
         //dd($orders->ecert, $orders->dob, $orders->dep_date);
-        $dob = new Carbon($orders->dob);
-        $dobyear = 0 + $dob->format('Y');
-        $nowyear = Carbon::now()->year;
-        $correctyear = $dobyear;
-        $newbirth = $dob;
-        if ($dobyear > $nowyear) {
-            $correctyear = $dobyear - 100;
-            $newbirth = Carbon::create($correctyear, 0 + $dob->format('m'), 0 + $dob->format('d'));
-        }
+        // if (str_contains($orders->dob, '/')) {
+        //     $dob_data = str_replace("/","-", $orders->dob);
+        // } else {
+        //     $dob_data = date("m-d-Y", strtotime($orders->dob));
+        // }
+        
+        // $dob = new Carbon($orders->dob);
+        // $dobyear = 0 + $dob->format('Y');
+        // $nowyear = Carbon::now()->year;
+        // $correctyear = $dobyear;
+        // $newbirth = $dob;
+        // if ($dobyear > $nowyear) {
+        //     $correctyear = $dobyear - 100;
+        //     $newbirth = Carbon::create($correctyear, 0 + $dob->format('m'), 0 + $dob->format('d'));
+        // }
         //dd($orders->dob,  $dobyear, $nowyear, $correctyear, $newbirth->format('Y-m-d'));
-        $newbirth = $newbirth->format('d-m-Y');
+        $newbirth = $orders->dob;
 
 
         //fix plan duration date
@@ -570,17 +576,17 @@ class PaymentController extends Controller
 
             //fix birth date
             //dd($orders->ecert, $orders->dob, $orders->dep_date);
-            $dob = new Carbon($orders->dob);
-            $dobyear = 0 + $dob->format('Y');
-            $nowyear = Carbon::now()->year;
-            $correctyear = $dobyear;
-            $newbirth = $dob;
-            if ($dobyear > $nowyear) {
-                $correctyear = $dobyear - 100;
-                $newbirth = Carbon::create($correctyear, 0 + $dob->format('m'), 0 + $dob->format('d'));
-            }
+            // $dob = new Carbon($orders->dob);
+            // $dobyear = 0 + $dob->format('Y');
+            // $nowyear = Carbon::now()->year;
+            // $correctyear = $dobyear;
+            // $newbirth = $dob;
+            // if ($dobyear > $nowyear) {
+            //     $correctyear = $dobyear - 100;
+            //     $newbirth = Carbon::create($correctyear, 0 + $dob->format('m'), 0 + $dob->format('d'));
+            // }
             //dd($orders->dob,  $dobyear, $nowyear, $correctyear, $newbirth->format('Y-m-d'));
-            $newbirth = $newbirth->format('d-m-Y');
+            $newbirth = $orders->dob;
 
 
             //fix plan duration date
