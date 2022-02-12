@@ -148,7 +148,7 @@
                                                 @endif                                                
                                             @endif
 
-                                            @if ($order->upload->status != '4' && $order->upload->status != '5')
+                                            @if ($order->upload->status != '0')
                                             <a href="{{ route('jemaah_show', $order->id) }}" class="waves-effect" style="color: black;">
                                                 <i class="bx bx-edit-alt font-size-24" title="Edit Record XX"></i>
                                             </a>

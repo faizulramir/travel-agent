@@ -696,9 +696,6 @@ class AdminController extends Controller
         $jemaah->tpa = $request->tpa;
         $jemaah->pcr = $request->pcr;
 
-
-
-
         $jemaah->save();
         Session::flash('success', 'Jemaah Updated');
         return redirect()->back();

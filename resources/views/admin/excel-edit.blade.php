@@ -84,13 +84,13 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Departure Date</label>
-                                    <input class="form-control" type="date" name="dep_date" value="{{ $jemaah->dep_date }}">
+                                    <input class="form-control" type="date" name="dep_date" value="{{ $jemaah->dep_date }}" {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Return Date</label>
-                                    <input class="form-control" type="date" name="return_date" value="{{ $jemaah->return_date }}">
+                                    <input class="form-control" type="date" name="return_date" value="{{ $jemaah->return_date }}" {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Plan Type (ECare)</label>
-                                    <select id="plan_type" name="plan_type" class="form-control select2-search-disable" required>
+                                    <select id="plan_type" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="plan_type" class="form-control select2-search-disable" required {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
                                         <option value="NO" {{ $jemaah->plan_type == 'NO' ? 'selected' : '' }}>NO</option>
                                         @foreach ($plans as $plan)
                                             <option value="{{ $plan->name }}" {{ $jemaah->plan_type == $plan->name ? 'selected' : '' }}>{{ $plan->name }}</option>
@@ -110,7 +110,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">TPA</label>
-                                    <select id="tpa" name="tpa" class="form-control select2-search-disable" required>
+                                    <select id="tpa" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="tpa" class="form-control select2-search-disable" required {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
                                         <option value="NO" {{ $jemaah->tpa == 'NO' ? 'selected' : '' }}>NO</option>
                                         @foreach ($tpas as $tpa)
                                             <option value="{{ $tpa->name }}" {{ $jemaah->tpa == $tpa->name ? 'selected' : '' }}>{{ $tpa->name }}</option>
@@ -121,7 +121,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">PCR</label>
-                                    <select id="pcr" name="pcr" class="form-control select2-search-disable" required>
+                                    <select id="pcr" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="pcr" class="form-control select2-search-disable" required {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
                                         <option value="NO" {{ $jemaah->pcr == 'NO' ? 'selected' : '' }}>NO</option>
                                         <option value="PCR" {{ $jemaah->pcr == 'PCR' ? 'selected' : '' }}>PCR</option>
                                     </select>
