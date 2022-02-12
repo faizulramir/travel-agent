@@ -258,10 +258,23 @@ class AdminController extends Controller
             }
             array_push($additional_arr, $tmpArr);   //grouping the selected plans
         }
+        $allFiles =  FileUpload::where('status', '5')->get();
+        $allOrders = array ();
+        foreach ($allFiles as $i => $file) {
+            $ordersArr = Order::where([['file_id', '=', $file->id]])->get()->toArray();
+            foreach ($ordersArr as $o => $arr) {
+                array_push($allOrders, $arr);
+            }
+        }
         //--
-        //dd($additional_arr);
+        $last_order = end($allOrders);
+        // $ecert_no = ;
+        $year = Carbon::now()->year;
+        $str1 = explode('A'.$year, $last_order['ecert']);
+        $ecert_no = $str1[1];
+        // dd($ecert_no);
 
-        return view('admin.detail-excel', compact('orders', 'uploads', 'payment', 'additional_arr'));
+        return view('admin.detail-excel', compact('orders', 'uploads', 'payment', 'additional_arr',  'ecert_no'));
     }
 
     public function excel_post_admin(Request $request)
@@ -708,6 +721,26 @@ class AdminController extends Controller
         $uploads->save();
 
         Session::flash('success', 'Travel Agent Name Updated');
+        return redirect()->back();
+    }
+
+    public function post_edit_cert_no (Request $request) {
+        $orders = Order::where('file_id', $request->id)->get();
+        $year = Carbon::now()->year;
+        // dd($dt);
+        // $str1 = explode('A'.$year, $request->cert_no);
+        $startNum = $request->cert_no - 1;
+        // dd($str1[1]);
+        foreach ($orders as $i => $order) {
+            $str2 = explode('A'.$year, $order->ecert);
+            $ecert = $startNum + ($i + 1);
+            $order->ecert = 'A'.$year.$ecert;
+            $order->save();
+        }
+        // $uploads->ta_name = $request->ta_name;
+        // $uploads->save();
+
+        Session::flash('success', 'Ecert Number Updated');
         return redirect()->back();
     }
 }

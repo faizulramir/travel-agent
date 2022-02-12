@@ -91,6 +91,7 @@ Route::get('/ssm_cert_download/{id}', [App\Http\Controllers\AdminController::cla
 Route::get('/jemaah/{id}', [App\Http\Controllers\AdminController::class, 'jemaah_show'])->name('jemaah_show');
 Route::post('/jemaah/edit/{id}', [App\Http\Controllers\AdminController::class, 'jemaah_edit'])->name('jemaah_edit');
 Route::post('/post_edit_ta_name', [App\Http\Controllers\AdminController::class, 'post_edit_ta_name'])->name('post_edit_ta_name');
+Route::post('/post_edit_cert_no', [App\Http\Controllers\AdminController::class, 'post_edit_cert_no'])->name('post_edit_cert_no');
 
 //individu
 Route::get('/application', [App\Http\Controllers\IndividuController::class, 'application'])->name('application');
@@ -137,7 +138,3 @@ Route::post('/post_pcr_doc', [App\Http\Controllers\PcrController::class, 'post_p
 
 //email
 Route::post('/send_mail/{subject_to_send}/{to_name}/{to_email}/{body}/{title}', [App\Http\Controllers\EmailController::class, 'send_mail'])->name('send_mail');
-
-
-
-

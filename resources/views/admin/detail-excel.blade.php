@@ -56,6 +56,33 @@
         </div>
     </div>
 
+    <div class="modal fade bs-example-modal-center" id="editEcertNumberDialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Edit Ecert Number</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('post_edit_cert_no') }}" id="form_edit_cert_no" method="POST">
+                        @csrf
+                        <div>
+                            <label for="cert_no">First Ecert Number</label>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-primary" type="button" style="pointer-events: none;">A{{ \Carbon\Carbon::now()->year; }}</button>
+                                <input type="text" class="form-control" id="cert_no" name="cert_no" value="{{ $ecert_no }}">
+                            </div>
+                        </div>
+                        <input type="hidden" class="form-control" id="id" name="id">
+                        <br>
+                        <div class="text-center">
+                            <button class="btn btn-primary" name="submit" type="submit" id="edit_cert_no_submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -80,6 +107,7 @@
                         </div>
                         
                         <div class="col-md-8" style="text-align: right;">
+                            <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_cert_no" onclick="editEcertNumber({{$uploads->id}})">Edit Ecert Number</a>
                             <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_ta_name" onclick="editTaName({{$uploads->id}}, '{{$uploads->ta_name}}')">Edit Travel Agent Name</a>
                             @if ($uploads->status === '5')
                                 <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
@@ -181,6 +209,11 @@
             $('#editTaDialog').modal('show');
             $('#ta_name').val(name);
             $('#ta_id').val(id);
+        }
+
+        function editEcertNumber (id) {
+            $('#editEcertNumberDialog').modal('show');
+            $('#id').val(id);
         }
 
         function downloadAll (id) {
