@@ -78,13 +78,15 @@
                             <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : 'Not Uploaded' :  'Not Uploaded' }}</h4>
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
                         </div>
-                        @if ($uploads->status === '5')
+                        
                         <div class="col-md-8" style="text-align: right;">
                             <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_ta_name" onclick="editTaName({{$uploads->id}}, '{{$uploads->ta_name}}')">Edit Travel Agent Name</a>
-                            <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
-                            <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
+                            @if ($uploads->status === '5')
+                                <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
+                                <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
+                            @endif
                         </div>
-                        @endif
+                        
                     </div>
                     <br>
                     <div>
