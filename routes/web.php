@@ -90,6 +90,7 @@ Route::get('/plan_edit/{id}', [App\Http\Controllers\AdminController::class, 'pla
 Route::get('/ssm_cert_download/{id}', [App\Http\Controllers\AdminController::class, 'ssm_cert_download'])->name('ssm_cert_download');
 Route::get('/jemaah/{id}', [App\Http\Controllers\AdminController::class, 'jemaah_show'])->name('jemaah_show');
 Route::post('/jemaah/edit/{id}', [App\Http\Controllers\AdminController::class, 'jemaah_edit'])->name('jemaah_edit');
+Route::post('/post_edit_ta_name', [App\Http\Controllers\AdminController::class, 'post_edit_ta_name'])->name('post_edit_ta_name');
 
 //individu
 Route::get('/application', [App\Http\Controllers\IndividuController::class, 'application'])->name('application');

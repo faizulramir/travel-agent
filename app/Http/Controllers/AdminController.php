@@ -704,4 +704,13 @@ class AdminController extends Controller
         return redirect()->back();
         // return view('admin.excel-edit');
     }
+
+    public function post_edit_ta_name (Request $request) {
+        $uploads = FileUpload::where('id', $request->ta_id)->first();
+        $uploads->ta_name = $request->ta_name;
+        $uploads->save();
+
+        Session::flash('success', 'Travel Agent Name Updated');
+        return redirect()->back();
+    }
 }
