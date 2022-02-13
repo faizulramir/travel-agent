@@ -258,10 +258,11 @@ class AdminController extends Controller
             }
             array_push($additional_arr, $tmpArr);   //grouping the selected plans
         }
+
         $allFiles =  FileUpload::where('status', '5')->get();
         $allOrders = array ();
         foreach ($allFiles as $i => $file) {
-            $ordersArr = Order::where([['file_id', '=', $file->id]])->get()->toArray();
+            $ordersArr = Order::where([['file_id', '=', $file->id], ['plan_type', '!=', 'NO']])->get()->toArray();
             foreach ($ordersArr as $o => $arr) {
                 array_push($allOrders, $arr);
             }
@@ -733,7 +734,7 @@ class AdminController extends Controller
     }
 
     public function post_edit_cert_no (Request $request) {
-        $orders = Order::where('file_id', $request->id)->get();
+        $orders = Order::where([['file_id', $request->id], ['plan_type', '!=', 'NO']])->get();
         $year = Carbon::now()->year;
         // dd($dt);
         // $str1 = explode('A'.$year, $request->cert_no);
