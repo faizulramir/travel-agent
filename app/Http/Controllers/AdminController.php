@@ -269,9 +269,14 @@ class AdminController extends Controller
         //--
         $last_order = end($allOrders);
         // $ecert_no = ;
-        $year = Carbon::now()->year;
-        $str1 = explode('A'.$year, $last_order['ecert']);
-        $ecert_no = $str1[1];
+        if ($last_order) {
+            $year = Carbon::now()->year;
+            $str1 = explode('A'.$year, $last_order['ecert']);
+            $ecert_no = $str1[1];
+        } else {
+            $ecert_no = '0';
+        }
+        
         // dd($ecert_no);
 
         return view('admin.detail-excel', compact('orders', 'uploads', 'payment', 'additional_arr',  'ecert_no'));
@@ -323,37 +328,37 @@ class AdminController extends Controller
         $month = $orderdate[1];
 
         // dd($data_array);
-        foreach ($data_array as $i => $json) {
-            $order = new Order;
-            $order->name = $json[1];
-            $order->passport_no = $json[2];
-            $order->ic_no = $json[3];
-            $order->dob = $json[4];
-            $order->ex_illness = $json[5];
-            $order->hp_no = $json[6];
-            $order->plan_type = $json[7];
-            $order->email = $json[8];
-            $order->dep_date = $json[9];
-            $order->return_date = $json[10];
-            $order->pcr = $json[11] == 'PCR' ? 'YES' : 'NO';
-            $order->tpa = $json[12];
-            $order->user_id = $uploads->user_id;;
-            $order->file_id = $uploads->id;
-            $order->ecert = $uploads->id;
-            $order->invoice = $uploads->id;
-            $order->pcr_date = $json[10];
-            $order->pcr_result = null;
-            $order->pcr = $json[11];
-            $order->tpa = $json[12];
+        // foreach ($data_array as $i => $json) {
+        //     $order = new Order;
+        //     $order->name = $json[1];
+        //     $order->passport_no = $json[2];
+        //     $order->ic_no = $json[3];
+        //     $order->dob = $json[4];
+        //     $order->ex_illness = $json[5];
+        //     $order->hp_no = $json[6];
+        //     $order->plan_type = $json[7];
+        //     $order->email = $json[8];
+        //     $order->dep_date = $json[9];
+        //     $order->return_date = $json[10];
+        //     $order->pcr = $json[11] == 'PCR' ? 'YES' : 'NO';
+        //     $order->tpa = $json[12];
+        //     $order->user_id = $uploads->user_id;;
+        //     $order->file_id = $uploads->id;
+        //     $order->ecert = $uploads->id;
+        //     $order->invoice = $uploads->id;
+        //     $order->pcr_date = $json[10];
+        //     $order->pcr_result = null;
+        //     $order->pcr = $json[11];
+        //     $order->tpa = $json[12];
 
-            $order->save();
+        //     $order->save();
 
-            $orders = Order::where('id', '=' ,$order->id)->first();
-            $orders->ecert = 'A'.$year.$orders->id;
-            //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;  
-            $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
-            $orders->save();
-        }
+        //     $orders = Order::where('id', '=' ,$order->id)->first();
+        //     $orders->ecert = 'A'.$year.$orders->id;
+        //     //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;  
+        //     $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
+        //     $orders->save();
+        // }
         return response()->json([
             'isSuccess' => true,
             'Data' => 'Successfully Uploaded!'
