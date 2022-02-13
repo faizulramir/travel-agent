@@ -748,7 +748,7 @@ class AdminController extends Controller
         foreach ($orders as $i => $order) {
             $str2 = explode('A'.$year, $order->ecert);
             $ecert = $startNum + ($i + 1);
-            $ecert = $startNum + ($loop);
+            // $ecert = $startNum + ($loop);
             //echo "<br>Loop = ".$ecert;
             $order->save();
         }
