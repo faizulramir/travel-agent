@@ -26,6 +26,7 @@
                         @csrf
                         <h4 class="card-title">Invoice Summary</h4>
                         <br>
+                        {{--
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="plan">Invoice No: {{ $invoice_num }}</label>
@@ -33,9 +34,24 @@
                                 <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
                             </div>
                         </div>
+                        --}}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="plan">Invoice No: {{ $invoice_num }}</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
+                            </div>   
+                            <div class="col-md-3">
+                                <label for="plan">Requester Name:</label>                                
+                            </div>  
+                        </div>
+
+
+
                         <br>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
 
                                 <label for="plan">&raquo;Plan E-CARE</label>
                                 <p>
@@ -92,7 +108,7 @@
                                 </select>
                                 <br>
 
-                                <label for="plan">Upload Payment PaySlip / Receipt</label>
+                                <label for="plan">Upload Payment Payslip / Receipt</label>
                                 <input class="form-control" type="file" name="pay_file" required>
                                 <br>
 

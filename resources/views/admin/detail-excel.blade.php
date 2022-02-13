@@ -104,10 +104,13 @@
                         <div class="col-md-4 text-right">
                             <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : 'Not Uploaded' :  'Not Uploaded' }}</h4>
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
+                            <h4 class="card-title">Travel Agent Name: {{ $uploads->ta_name? strtoupper($uploads->ta_name) : $uploads->ta_name }}</h4>
                         </div>
                         
                         <div class="col-md-8" style="text-align: right;">
-                            <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_cert_no" onclick="editEcertNumber({{$uploads->id}})">Edit Ecert Number</a>
+                            @if ($uploads->status === '5')
+                                <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_cert_no" onclick="editEcertNumber({{$uploads->id}})">Edit Ecert Number</a>
+                            @endif
                             <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_ta_name" onclick="editTaName({{$uploads->id}}, '{{$uploads->ta_name}}')">Edit Travel Agent Name</a>
                             @if ($uploads->status === '5')
                                 <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
@@ -180,7 +183,7 @@
 
                                             @if ($order->upload->status != '0')
                                             <a href="{{ route('jemaah_show', $order->id) }}" class="waves-effect" style="color: black;">
-                                                <i class="bx bx-edit-alt font-size-24" title="Edit Record XX"></i>
+                                                <i class="bx bx-edit-alt font-size-24" title="Edit Record"></i>
                                             </a>
                                             @endif
                                         </td>

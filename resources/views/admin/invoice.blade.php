@@ -24,6 +24,8 @@
                 <div class="card-body">
                     <form action="#" method="POST" enctype="multipart/form-data">
                         @csrf
+
+                        {{--
                         <h4 class="card-title">Invoice Summary</h4>
                         <br>
                         <div class="row">
@@ -34,6 +36,23 @@
                             </div>
                         </div>
                         <br>
+                        --}}
+
+                        <h4 class="card-title">Invoice Summary</h4>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="plan">Invoice No:</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
+                            </div>   
+                            <div class="col-md-3">
+                                <label for="plan">Travel Agent Name: {{ $uploads->ta_name }}</label>                                
+                            </div>  
+                        </div>
+                        <br><br>
+                        
                         <div class="row">
                             <div class="col-md-3">
                                 {{--

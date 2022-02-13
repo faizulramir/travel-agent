@@ -286,7 +286,8 @@ class AdminController extends Controller
         $uploads = new FileUpload;
         $uploads->file_name = request()->post('file_name');
         $uploads->upload_date = $dt->toDateString();
-        $uploads->status = '2.1';
+        //$uploads->status = '2.1';
+        $uploads->status = '2';
         $uploads->ta_name = request()->post('travel_agent');
         $uploads->user_id = request()->post('user');
         $uploads->submit_date = $dt->toDateString();
@@ -690,6 +691,8 @@ class AdminController extends Controller
         $plans = Plan::whereIn('id', [1, 5, 6, 7])->get();
         $tpas = Plan::whereNotIn('id', [1, 5, 6, 7, 8])->get();
         $jemaah = Order::where('id', $id)->first();
+
+        //dd($jemaah);
         return view('admin.excel-edit', compact('plans', 'tpas', 'jemaah'));
     }
 
