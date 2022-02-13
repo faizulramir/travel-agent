@@ -27,7 +27,7 @@
                     <br>
                     <form action="{{ route('jemaah_edit', $jemaah->id) }}" method="POST">
                         @csrf
-                        <h4 class="card-title">Traveller Information XXX</h4>
+                        <h4 class="card-title">Traveller Information</h4>
                         <br>
                         <div class="row">
                             <div class="col-lg-4">

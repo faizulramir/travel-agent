@@ -737,12 +737,18 @@ class AdminController extends Controller
         $year = Carbon::now()->year;
         // dd($dt);
         // $str1 = explode('A'.$year, $request->cert_no);
+
         $startNum = $request->cert_no - 1;
+        //$startNum = 0 + $request->cert_no;
         // dd($str1[1]);
+        //dd($startNum);
+        //echo "<br>Start: ".$startNum;
+
         foreach ($orders as $i => $order) {
             $str2 = explode('A'.$year, $order->ecert);
             $ecert = $startNum + ($i + 1);
-            $order->ecert = 'A'.$year.$ecert;
+            $ecert = $startNum + ($loop);
+            //echo "<br>Loop = ".$ecert;
             $order->save();
         }
         // $uploads->ta_name = $request->ta_name;

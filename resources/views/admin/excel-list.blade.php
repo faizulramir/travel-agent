@@ -139,7 +139,7 @@
                                             @else
                                                 <a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
                                                     <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                                </a>
+                                                </a> 
                                                 {{-- <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
                                                     <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
                                                 </a> --}}
