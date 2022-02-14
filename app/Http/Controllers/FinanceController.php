@@ -219,6 +219,7 @@ class FinanceController extends Controller
             $tot_tpa = $tot_tpa + $tpa_cost;
         }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
+        $tot_inv = $tot_ecert - $uploads->discount;
 
         $invoice_num = null;
         if ($orders && $orders[0]) {
@@ -230,12 +231,13 @@ class FinanceController extends Controller
         return view('finance.payment', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail', 'invoice_num'));
     }
 
-    public function endorse_payment($id)
+    public function endorse_payment(Request $request, $id)
     {
         $uploads = FileUpload::where('id', $id)->first();
         $user = DashboardUser::where('id', $uploads->user_id)->first();
         if ($uploads->status == '2.1') {
             $uploads->status = '3';
+            $uploads->discount = $request->discount;
             app('App\Http\Controllers\EmailController')->send_mail('Invoice', $user->name, $user->email, 'Invoice Created', 'Payment');
         } else {
             $uploads->status = '5';

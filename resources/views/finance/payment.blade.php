@@ -67,21 +67,24 @@
                             </div>
 
                             <div class="col-md-3">
+                                <label for="disc">Discount</label>
+                                <input class="form-control" type="text" name="discount" value="{{ number_format((float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
+                                <br>
+
                                 <label for="plan">Payment Total</label>
                                 <input class="form-control" type="text" name="pay_total" value="RM {{ number_format((float)$tot_inv, 2, '.', ',') }}" required readonly="readonly">
                                 <br>
 
                                 @if(isset($pay))
-                                <label for="plan">Payment Method</label>
-                                <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required readonly="readonly" disabled>
-                                    <option value="">Please Select</option>
-                                    <option value="fpx" {{ isset($pay) ? $pay->pay_by == 'fpx' ? 'selected' : '' : '' }}>FPX - Online Banking</option>
-                                    <option value="cc" {{ isset($pay) ? $pay->pay_by == 'cc' ? 'selected' : '' : ''}}>Credit Card / Debit Card</option>
-                                    <option value="other" {{ isset($pay) ? $pay->pay_by == 'other' ? 'selected' : '' : '' }}>Others</option>
-                                </select>
-                                <br>
+                                    <label for="plan">Payment Method</label>
+                                    <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required readonly="readonly" disabled>
+                                        <option value="">Please Select</option>
+                                        <option value="fpx" {{ isset($pay) ? $pay->pay_by == 'fpx' ? 'selected' : '' : '' }}>FPX - Online Banking</option>
+                                        <option value="cc" {{ isset($pay) ? $pay->pay_by == 'cc' ? 'selected' : '' : ''}}>Credit Card / Debit Card</option>
+                                        <option value="other" {{ isset($pay) ? $pay->pay_by == 'other' ? 'selected' : '' : '' }}>Others</option>
+                                    </select>
+                                    <br>
                                 @endif
-
                                 <p>
                                     <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
                                         Download Invoice

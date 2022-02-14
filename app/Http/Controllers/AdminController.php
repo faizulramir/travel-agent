@@ -200,6 +200,7 @@ class AdminController extends Controller
             $tot_tpa = $tot_tpa + $tpa_cost;
         }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
+        $tot_inv = $tot_inv - $uploads->discount;
 
         return view('admin.invoice', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail'));
     }

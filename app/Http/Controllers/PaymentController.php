@@ -34,6 +34,7 @@ class PaymentController extends Controller
     public function payment($id)
     {
         $tot_rec = 0;
+        $uploads = FileUpload::where('id', $id)->first();
         $orders = Order::where([['file_id', '=' ,$id],['status', '1']])->get();
         $tot_rec = count($orders);
 
@@ -216,13 +217,13 @@ class PaymentController extends Controller
             $tot_tpa = $tot_tpa + $tpa_cost;
         }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
-
+        $tot_inv = $tot_inv - $uploads->discount;
         $invoice_num = null;
         if ($orders && $orders[0]) {
             $invoice_num = $orders[0]->invoice;
         }
 
-        return view('payment.payment', compact('plan_arr',  'plans', 'id', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'pcr_detail', 'invoice_num'));
+        return view('payment.payment', compact('uploads', 'plan_arr',  'plans', 'id', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'pcr_detail', 'invoice_num'));
     }
 
     public function submit_payment(Request $request)
@@ -493,10 +494,23 @@ class PaymentController extends Controller
         }
 
         $files = FileUpload::where('id', $order_id)->first();
+        $tot_inv = $tot_ecert - $files->discount;
+
         if ($pcrArr['COST'] == 0 || $pcrArr['COST'] == '0') {
             
         } else {
             array_push($invoice_arr, $pcrArr);
+        }
+
+        if ($files->discount !== '0') {
+            $tmpArr =  array (
+                'PLAN' => 'DISCOUNT',
+                'PRICE' => $files->discount,
+                'COUNT' => '1',
+                'COST' => $files->discount,
+            );
+
+            array_push($invoice_arr, $tmpArr);
         }
         
         // dd($invoice_arr);

@@ -99,6 +99,10 @@
                                 <input class="form-control" type="text" name="pay_total" value="RM {{ $pay !== null ? $pay->pay_total : $sub_total }}" required readonly="readonly">
                                 --}}
 
+                                <label for="disc">Discount</label>
+                                <input class="form-control" type="text" name="discount" value="{{ number_format((float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
+                                <br>
+
                                 <label for="plan">Total (RM)</label>
                                 <input class="form-control" type="text" name="pay_total" value="RM {{ number_format((float)$tot_inv, 2, '.', ',') }}" required readonly="readonly">
                                 <br>
