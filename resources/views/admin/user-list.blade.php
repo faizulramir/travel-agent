@@ -89,6 +89,12 @@
 @section('script')
     <script>
 
+        $(document).ready(function() {
+            $('#datatable').dataTable({
+                stateSave: true,
+            });
+        } )
+
         function clicked(e, id)
         {
             // if(!confirm('Are you sure to submit?')) {

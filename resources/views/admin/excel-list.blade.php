@@ -276,6 +276,12 @@
             }
         });
 
+        $(document).ready(function() {
+            $('#datatable').dataTable({
+                stateSave: true,
+            });
+        } )
+
         $('#refreshBtn').click(function() {
             location.reload();
         });
@@ -349,7 +355,7 @@
         }
 
         function ExportToTable() {
-            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
+            var regex = /^([a-zA-Z0-9\s_\\.\-:()])+(.xlsx|.xls)$/;
             /*Checks whether the file is a valid excel file*/
             if (regex.test($("#add_excel").val().toLowerCase())) {
                 var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/
@@ -400,7 +406,7 @@
                 }
             }
             else {
-                alert("Please upload a valid Excel file!");
+                alert("Please upload a valid Excel file!\nEg: AKC-TEMPLATE.xlsx\nNot: AKC-TEMPLATE(1).xlsx");
             }
         }
 

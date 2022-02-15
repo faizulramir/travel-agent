@@ -123,7 +123,7 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="dtTable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -209,6 +209,12 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $(document).ready(function() {
+            $('#dtTable').dataTable({
+                stateSave: true,
+            });
+        } )
 
         function editTaName (id, name) {
             $('#editTaDialog').modal('show');
