@@ -310,6 +310,7 @@ class PaymentController extends Controller
         }
 
         $amount = ($plan->price*1) + ($tpa ? $tpa->price*1 : 0) + ($pcr ? $pcr->price*1 : 0);
+
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.invoice', compact('user', 'date_today', 'tables', 'amount'));
         return $pdf->stream($user->invoice);
@@ -485,6 +486,7 @@ class PaymentController extends Controller
             $tot_tpa = $tot_tpa + $tpa_cost;
         }
         $tot_inv = $tot_ecert + $pcrArr['COST'] + $tot_tpa;
+
         $dt = Carbon::now();
         $date_today = $dt->toDateString();
 
@@ -494,7 +496,11 @@ class PaymentController extends Controller
         }
 
         $files = FileUpload::where('id', $order_id)->first();
-        $tot_inv = $tot_ecert - $files->discount;
+
+        $tot_inv2 = $tot_inv;
+        if ($files->discount && $files->discount !== '0') {
+            $tot_inv2 = $tot_inv - $files->discount;
+        }
 
         if ($pcrArr['COST'] == 0 || $pcrArr['COST'] == '0') {
             
@@ -502,20 +508,31 @@ class PaymentController extends Controller
             array_push($invoice_arr, $pcrArr);
         }
 
-        if ($files->discount !== '0') {
-            $tmpArr =  array (
-                'PLAN' => 'DISCOUNT',
-                'PRICE' => $files->discount,
-                'COUNT' => '1',
-                'COST' => $files->discount,
-            );
+        // if ($files->discount !== '0') {
+        //     $tmpArr =  array (
+        //         'PLAN' => 'DISCOUNT',
+        //         'PRICE' => "-".$files->discount,
+        //         'COUNT' => '1',
+        //         'COST' => "-".$files->discount,
+        //     );
+        //     array_push($invoice_arr, $tmpArr);
+        // }
 
-            array_push($invoice_arr, $tmpArr);
+        $disArr = null;
+        if ($files->discount && $files->discount !== '0') {
+            $disArr = array(
+                'PLAN' => 'DISCOUNT',
+                'PRICE' => "-".$files->discount,
+                'COUNT' => '1',
+                'COST' => "-".$files->discount,
+            );
         }
+
+        //dd($tot_inv, $tot_inv2, $disArr);
         
         // dd($invoice_arr);
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('payment.invoice-all', compact('files', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
+        $pdf->loadView('payment.invoice-all', compact('files', 'invoice_arr', 'tot_inv', 'tot_inv2', 'disArr', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
         return $pdf->stream();
     }
 

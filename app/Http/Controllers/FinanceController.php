@@ -219,7 +219,7 @@ class FinanceController extends Controller
             $tot_tpa = $tot_tpa + $tpa_cost;
         }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
-        $tot_inv = $tot_ecert - $uploads->discount;
+        $tot_inv = $tot_inv - $uploads->discount;
 
         $invoice_num = null;
         if ($orders && $orders[0]) {

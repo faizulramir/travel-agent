@@ -86,8 +86,8 @@
                     <tr>
                         <th width="15%" style="text-align: left !important;">Quantity</th>
                         <th width="45%" style="text-align: left !important;">Description</th>
-                        <th width="15%" style="text-align: right !important;">Unit Price</th>
-                        <th width="25%" style="text-align: right !important;">Amount</th>
+                        <th width="18%" style="text-align: right !important;">Unit Price</th>
+                        <th width="22%" style="text-align: right !important;">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,6 +100,7 @@
                         </tr>
                     @endforeach
 
+                    @if ($disArr)
                     <tr>
                         <td colspan="4" style="padding:0;">
                             <hr style="border: none; height: 1px; color: #333; background-color: #333;">
@@ -109,12 +110,31 @@
                         <td></td>
                         <td></td>
                         <td style="text-align: right !important;"><b>Total</b></td>
-                        <td style="text-align: right !important;">RM {{ number_format((float)$tot_inv, 2, '.', ',') }}</td>
+                        <td style="text-align: right !important;">{{ number_format((float)$tot_inv, 2, '.', ',') }}</td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td>DISCOUNT</td>
+                        <td style="text-align: right !important;"></td>
+                        <td style="text-align: right !important;">{{ number_format((float)$disArr['COST'], 2, '.', ',') }}</td>
+                    </tr> 
+                    @endif   
+                                   
+                    <tr>
+                        <td colspan="4" style="padding:0;">
+                            <hr style="border: none; height: 1px; color: #333; background-color: #333;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right !important;"><b>Grand Total</b></td>
+                        <td style="text-align: right !important;">RM {{ number_format((float)$tot_inv2, 2, '.', ',') }}</td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
-        <br>
         <p><b>Terms & Conditions</b></p>
         <p>Transfer are to be made payable to</p>
         <p>Company Name : Al Khairi Care Sdn Bhd <br> Account No : 1225 8001 3002 150 <br> Bank : Alliance Islamic Bank Berhad <br> Swift Code : ALSRMYKL</p>

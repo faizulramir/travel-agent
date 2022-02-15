@@ -74,6 +74,11 @@
 
                             </div>
                             <div class="col-md-3">
+
+                                <label for="disc">Total</label>
+                                <input class="form-control" type="text" name="tempTotal" value="{{ number_format((float)$tot_inv + (float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
+                                <br>
+
                                 <label for="disc">Discount</label>
                                 <input class="form-control" type="text" name="discount" value="{{ number_format((float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
                                 <br>

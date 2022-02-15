@@ -64,8 +64,10 @@
                                             @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
                                                 <p>-</p>
                                             @else 
-                                                @if ($upload->supp_doc == null)
-                                                    <p>Not Uploaded</p>
+                                                @if ($upload->supp_doc && $upload->supp_doc == '1')
+                                                    <p>UPLOADED</p>
+                                                @else
+                                                    <p>-</p>
                                                 @endif
                                             @endif
                                         </td>
@@ -131,6 +133,12 @@
                                             <a href="{{ route('download_excel', $upload->id) }}" class="waves-effect" style="color: blue;">
                                                 <i class="bx bxs-cloud-download font-size-24" title="Download Excel"></i>
                                             </a>
+
+                                            @if($upload->supp_doc && $upload->supp_doc == '1')
+                                            <a href="{{ route('download_supp_doc', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: blue;">
+                                                <i class="bx bxs-cloud-download font-size-24" title="Download Supporting Documents"></i>
+                                            </a>
+                                            @endif
 
                                             @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
                                                 <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
