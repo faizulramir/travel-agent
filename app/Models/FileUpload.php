@@ -12,6 +12,7 @@ class FileUpload extends Model
      * @var string
      */
     use SaveToUpper;
+    protected $no_upper = ['json_inv'];
     protected $table = 'file_upload';
 
     public function user()
