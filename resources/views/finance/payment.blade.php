@@ -79,7 +79,7 @@
                                             <option value="0" {{ ($uploads->percent == '0' || $uploads->percent == 0) ? 'selected' : '' }}>0%</option>
                                             <option value="10" {{ ($uploads->percent == '10' || $uploads->percent == 10) ?'selected' : '' }}>10%</option>
                                             <option value="15" {{ ($uploads->percent == '15' || $uploads->percent == 15) ?'selected' : '' }}>15%</option>
-                                            <option value="30" {{ ($uploads->percent == '30' || $uploads->percent == 30) ?'selected' : '' }}>30%</option>
+                                            <option value="20" {{ ($uploads->percent == '20' || $uploads->percent == 20) ?'selected' : '' }}>20%</option>
                                         </select>
                                     </div>
                                     <div class="col-md-8">
