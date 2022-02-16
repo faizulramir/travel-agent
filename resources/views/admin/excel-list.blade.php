@@ -66,15 +66,10 @@
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
 
                                         <td>
-                                            @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
-                                                <p>-</p>
-                                            @else 
-                                                @if ($upload->supp_doc && $upload->supp_doc == '1')
-                                                    <p>UPLOADED</p>
-                                                @else
-                                                    <p>-</p>
-                                                @endif
-                                            @endif
+                                            <a href="#" class="waves-effect" style="color: black;">
+                                                <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
+                                                <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
+                                            </a>
                                         </td>
                                         <td>
                                             @if($upload->status == '3')
@@ -271,7 +266,35 @@
         </div>
     </div>
 
+    <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Upload Supporting Documents</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary" type="submit" id="eticket">E-Ticket</button>
+                            <button class="btn btn-primary" type="submit" id="visa">Visa</button>
+                            <button class="btn btn-primary" type="submit" id="passport">Passport</button>
+                            <button class="btn btn-primary" type="submit" id="payreceipt">Pay Receipt</button>
+                        </div>
+                    </div>
+                    {{-- <form action="{{ route('post_edit_ta_name') }}" id="form_edit_ta" method="POST">
+                        @csrf
+                        <input type="text" class="form-control" id="ta_name" name="ta_name">
+                        <input type="hidden" class="form-control" id="ta_id" name="ta_id">
+                        <br>
+                        <button class="btn btn-primary" name="submit" type="submit" id="edit_ta_submit">Submit</button>
+                    </form> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
+
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.min.js" integrity="sha512-BMIFH0QGwPdinbGu7AraCzG9T4hKEkcsbbr+Uqv8IY3G5+JTzs7ycfGbz7Xh85ONQsnHYrxZSXgS1Pdo9r7B6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.6/xls.min.js" integrity="sha512-Nqu6bagCq6Jp2ZhezdTFaomiZBZYVhzafGww9teXy1xsvhfpw1ZW3FlVqMazRfLKPVWucbeBXNY5MgO925fpoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -316,32 +339,31 @@
         }
 
         function openDetail (id) {
-            $(document).ready(function() {
-                var supp_id = id;
-                $("#add_supp_doc" + id).val(null);
-                $("#add_supp_doc" + id).trigger("click");
+            $('#showSuppDoc').modal('show');
+            // $(document).ready(function() {
+            //     var supp_id = id;
+            //     $("#add_supp_doc" + id).val(null);
+            //     $("#add_supp_doc" + id).trigger("click");
 
-                $("#add_supp_doc" + supp_id).change(function () {
-                    var form_data = new FormData();
-                    form_data.append("file", $("#add_supp_doc" + supp_id)[0].files[0]);
-                    form_data.append("id", supp_id);
-                    $.ajax({
-                        url: '/supp_doc_post_admin',
-                        type: 'POST',
-                        data: form_data,
-                        dataType: 'JSON',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function (data) {
-                            alert(data.Data)
-                            location.reload()
-                        }
-                    });
-                });
-            });
-
-            return supp_id;
+            //     $("#add_supp_doc" + supp_id).change(function () {
+            //         var form_data = new FormData();
+            //         form_data.append("file", $("#add_supp_doc" + supp_id)[0].files[0]);
+            //         form_data.append("id", supp_id);
+            //         $.ajax({
+            //             url: '/supp_doc_post_admin',
+            //             type: 'POST',
+            //             data: form_data,
+            //             dataType: 'JSON',
+            //             cache: false,
+            //             contentType: false,
+            //             processData: false,
+            //             success: function (data) {
+            //                 alert(data.Data)
+            //                 location.reload()
+            //             }
+            //         });
+            //     });
+            // });
         }
 
         $("#add_button").click(function () {
