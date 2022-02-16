@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Traits\SaveToUpper;
 use Illuminate\Database\Eloquent\Model;
 
 class FileUpload extends Model
@@ -11,10 +11,13 @@ class FileUpload extends Model
      *
      * @var string
      */
+    use SaveToUpper;
     protected $table = 'file_upload';
 
     public function user()
     {
         return $this->belongsTo(DashboardUser::class, 'user_id');
     }
+
+    
 }

@@ -43,7 +43,7 @@
                                 <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
                             </div>   
                             <div class="col-md-3">
-                                <label for="plan">Requester Name:</label>                                
+                                <label for="plan">Requester Name: {{ $uploads->ta_name }}</label>                                
                             </div>  
                         </div>
 
@@ -111,14 +111,14 @@
                                 <label for="plan">Payment Method</label>
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required>
                                     <option value="">Please Select</option>
-                                    <option value="other">Others</option>
+                                    <option value="OTHER">Others</option>
                                     <!-- <option value="fpx">FPX - Online Banking (Coming Soon)</option>
                                     <option value="cc">Credit Card / Debit Card (Coming Soon)</option> -->
                                 </select>
                                 <br>
 
                                 <label for="plan">Upload Payment Payslip / Receipt</label>
-                                <input class="form-control" type="file" name="pay_file" required>
+                                <input class="form-control" type="file" name="pay_file">
                                 <br>
 
                                 <input type="hidden" value="{{ $id }}" name="id">

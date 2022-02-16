@@ -129,9 +129,9 @@
                                 <label for="plan">Payment Method</label>
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required disabled>
                                     <option value="">Please Select</option>
-                                    <option value="fpx" {{ $pay !== null ? $pay->pay_by == 'fpx' ? 'selected' : '' : '' }}>FPX - Online Banking</option>
-                                    <option value="cc" {{ $pay !== null ? $pay->pay_by == 'cc' ? 'selected' : '' : '' }}>Credit Card / Debit Card</option>
-                                    <option value="other" {{ $pay !== null ? $pay->pay_by == 'other' ? 'selected' : '' : '' }}>Others</option>
+                                    <option value="FPX" {{ $pay !== null ? $pay->pay_by == 'FPX' ? 'selected' : '' : '' }}>FPX - Online Banking</option>
+                                    <option value="CC" {{ $pay !== null ? $pay->pay_by == 'CC' ? 'selected' : '' : '' }}>Credit Card / Debit Card</option>
+                                    <option value="OTHER" {{ $pay !== null ? $pay->pay_by == 'OTHER' ? 'selected' : '' : '' }}>Others</option>
                                 </select>
                                 <br>
 

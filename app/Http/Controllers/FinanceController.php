@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\FileUpload;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\EcertCnt;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class FinanceController extends Controller
     
     public function excel_list_finance()
     {
-        $uploads = FileUpload::whereIn('status', ['4', '5', '2.1'])->get();
+        $uploads = FileUpload::whereIn('status', ['4', '5', '2.1'])->orderBy('submit_date', 'DESC')->orderBy('status', 'DESC')->get();
         return view('finance.excel-list', compact('uploads'));
     }
 
@@ -235,9 +236,24 @@ class FinanceController extends Controller
     {
         $uploads = FileUpload::where('id', $id)->first();
         $user = DashboardUser::where('id', $uploads->user_id)->first();
+        $orders = Order::where('file_id', $uploads->id)->get();
+        $ecertCnt = EcertCnt::where('id', 1)->first();
+        $dt = Carbon::now();
+        $orderdate = $dt->toDateString();
+        $orderdate = explode('-', $orderdate);
+        $year  = $orderdate[0];
+        $month = $orderdate[1];
+        foreach ($orders as $i => $order) {
+            $order->ecert = 'A'.$year.($ecertCnt->value + 1);
+            $order->save();
+            $ecertCnt->value = $ecertCnt->value + 1;
+            $ecertCnt->save();
+        }
         if ($uploads->status == '2.1') {
             $uploads->status = '3';
             $uploads->discount = $request->discount;
+            $uploads->percent = $request->percent_disc;
+            
             app('App\Http\Controllers\EmailController')->send_mail('Invoice', $user->name, $user->email, 'Invoice Created', 'Payment');
         } else {
             $uploads->status = '5';

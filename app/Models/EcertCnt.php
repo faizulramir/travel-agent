@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Models;
-use App\Traits\SaveToUpper;
+// use App\Traits\SaveToUpper;
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class EcertCnt extends Model
 {
-    use SaveToUpper;
-
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'payment';
+    // use SaveToUpper;
+    protected $table = 'ecert_count';
+    
 }

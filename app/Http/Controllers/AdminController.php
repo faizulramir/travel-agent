@@ -207,7 +207,9 @@ class AdminController extends Controller
 
     public function excel_list_admin()
     {
-        $uploads = FileUpload::where('status','!=','0')->get();
+        //$uploads = FileUpload::all();
+        $uploads = FileUpload::where('status','!=','0')->orderBy('submit_date', 'DESC')->orderBy('status', 'DESC')->get();
+        // dd($uploads);
         $users = DashboardUser::all();
 
         //include number of records count
@@ -311,15 +313,15 @@ class AdminController extends Controller
         $arr_json = request()->post('json_post');
 
         $dt = Carbon::now();
-
+        
         $uploads = new FileUpload;
-        $uploads->file_name = request()->post('file_name');
+        $uploads->file_name = preg_replace('/\s+/', '', request()->post('file_name'));
         $uploads->upload_date = $dt->toDateString();
         //$uploads->status = '2.1';
         $uploads->status = '2';
         $uploads->ta_name = request()->post('travel_agent');
         $uploads->user_id = request()->post('user');
-        $uploads->submit_date = $dt->toDateString();
+        $uploads->submit_date = $dt->toDateTimeString();
         $uploads->save();
 
         $collection = collect($request->all());
@@ -328,7 +330,7 @@ class AdminController extends Controller
         $filename = $file->getClientOriginalName();
 
         $path = $collection['file']->storeAs(
-            request()->post('user').'/excel/'.$uploads->id, $filename
+            request()->post('user').'/excel/'.$uploads->id, preg_replace('/\s+/', '', request()->post('file_name'))
         );
 
         $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
@@ -431,7 +433,7 @@ class AdminController extends Controller
                 $order->return_date = $json[10];
                 $order->user_id = $uploads->user_id;
                 $order->file_id = $uploads->id;
-                $order->ecert = $uploads->id;
+                // $order->ecert = $uploads->id;
                 $order->invoice = $uploads->id;
                 $order->pcr_date = $json[10];
                 $order->pcr_result = null;
@@ -441,7 +443,7 @@ class AdminController extends Controller
                 $order->save();
 
                 $orders = Order::where('id', '=' ,$order->id)->first();
-                $orders->ecert = 'A'.$year.$orders->id;
+                // $orders->ecert = 'A'.$year.$orders->id;
                 
                 //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
                 $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID

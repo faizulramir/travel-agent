@@ -56,18 +56,9 @@
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ strtoupper($upload->user->name) }}</td>
-                                        <td>{{ strtoupper($upload->file_name) }}</td>
-
-                                        <td>
-                                            {{--
-                                        @if(rec_count_arr)
-                                            @if(rec_count_arr['ID']==$upload->id)
-                                                {{ rec_count_arr['COUNT'] }}
-                                            @endif
-                                        @endif--}}
-                                        </td>
-
-                                        <td>{{ $upload->submit_date ? date('d-m-Y', strtotime($upload->submit_date)) : '' }}</td>
+                                        <td>{{ $upload->file_name }}</td>
+                                        {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
+                                        <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
 
                                         <td>
                                             @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
@@ -364,7 +355,7 @@
         }
 
         function ExportToTable() {
-            var regex = /^([a-zA-Z0-9\s_\\.\-:()])+(.xlsx|.xls)$/; //
+            var regex = /^([a-zA-Z0-9\s_\\.\-:()&])+(.xlsx|.xls)$/; //
             /*Checks whether the file is a valid excel file*/
             if (regex.test($("#add_excel").val().toLowerCase())) {
                 var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/

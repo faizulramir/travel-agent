@@ -282,7 +282,7 @@
 @endsection
 
 @section('script')
-    <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js" type="text/javascript"></script>
     <script>
         $.ajaxSetup({
             headers: {

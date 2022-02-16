@@ -108,17 +108,30 @@
                     </tr>
                     <tr>
                         <td></td>
+                        <td>DISCOUNT</td>
+                        <td style="text-align: right !important;"></td>
+                        <td style="text-align: right !important;">- {{ number_format((float)$disArr['COST'], 2, '.', ',') }}</td>
+                    </tr> 
+                    <tr>
+                        <td></td>
                         <td></td>
                         <td style="text-align: right !important;"><b>Total</b></td>
                         <td style="text-align: right !important;">{{ number_format((float)$tot_inv, 2, '.', ',') }}</td>
                     </tr>
+                    @endif
                     <tr>
-                        <td></td>
-                        <td>DISCOUNT</td>
-                        <td style="text-align: right !important;"></td>
-                        <td style="text-align: right !important;">{{ number_format((float)$disArr['COST'], 2, '.', ',') }}</td>
-                    </tr> 
-                    @endif   
+                        <td colspan="4" style="padding:0;">
+                            <hr style="border: none; height: 1px; color: #333; background-color: #333;">
+                        </td>
+                    </tr>
+                    @foreach ($tpa_pcr_arr as $table)
+                        <tr>
+                            <td>{{ $table['COUNT'] }}</td>
+                            <td>{{ strtoupper($table['PLAN']) }}</td>
+                            <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
+                            <td style="text-align: right !important;">{{ number_format((float)$table['COST'], 2, '.', ',') }}</td>
+                        </tr>
+                    @endforeach
                                    
                     <tr>
                         <td colspan="4" style="padding:0;">
