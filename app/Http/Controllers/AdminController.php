@@ -207,10 +207,32 @@ class AdminController extends Controller
 
     public function excel_list_admin()
     {
-        //$uploads = FileUpload::all();
         $uploads = FileUpload::where('status','!=','0')->get();
         $users = DashboardUser::all();
-        return view('admin.excel-list', compact('uploads', 'users'));
+
+        //include number of records count
+        $rec_count_arr = array();
+        // if ($uploads) {
+        //     foreach ($uploads as $upload) {
+        //         //echo "<span style='color:black'>file=".$upload->id."</span><br>";
+        //         $orders = Order::where([['file_id', '=' ,$upload->id]])->get();
+        //         if ($orders) {
+        //             //echo count($orders)."<br>";
+        //             $count = count($orders);
+        //             if ($count>0) {
+        //                 $tmpArr =  array (
+        //                     'ID' => $upload->id,
+        //                     'COUNT' => $count,
+        //                 );
+        //                 array_push($rec_count_arr, $tmpArr); //prepare costing for each record
+        //             }
+        //         }
+        //     }
+        // }
+        //dd($rec_count_arr);
+        //die();
+
+        return view('admin.excel-list', compact('uploads', 'users', 'rec_count_arr'));
     }
 
     public function excel_detail_admin($id)

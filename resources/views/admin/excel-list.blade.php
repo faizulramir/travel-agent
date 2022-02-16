@@ -43,7 +43,7 @@
                                     <th data-priority="0">#</th>
                                     <th data-priority="1">Requester</th>
                                     <th data-priority="1">Filename</th>
-                                    {{--<th data-priority="3">Upload Date</th>--}}
+                                    <th data-priority="1">Jemaah</th>
                                     <th data-priority="3">Submission Date</th>
                                     <th data-priority="3">Supporting Documents</th>
                                     <th data-priority="1">Payment</th>
@@ -56,8 +56,17 @@
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ strtoupper($upload->user->name) }}</td>
-                                        <td>{{ $upload->file_name }}</td>
-                                        {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
+                                        <td>{{ strtoupper($upload->file_name) }}</td>
+
+                                        <td>
+                                            {{--
+                                        @if(rec_count_arr)
+                                            @if(rec_count_arr['ID']==$upload->id)
+                                                {{ rec_count_arr['COUNT'] }}
+                                            @endif
+                                        @endif--}}
+                                        </td>
+
                                         <td>{{ $upload->submit_date ? date('d-m-Y', strtotime($upload->submit_date)) : '' }}</td>
 
                                         <td>
