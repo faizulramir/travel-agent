@@ -208,7 +208,8 @@ class AdminController extends Controller
     public function excel_list_admin()
     {
         //$uploads = FileUpload::all();
-        $uploads = FileUpload::where('status','!=','0')->get();
+        $uploads = FileUpload::where('status','!=','0')->orderBy('submit_date', 'DESC')->orderBy('status', 'DESC')->get();
+        // dd($uploads);
         $users = DashboardUser::all();
         return view('admin.excel-list', compact('uploads', 'users'));
     }
@@ -289,15 +290,15 @@ class AdminController extends Controller
         $arr_json = request()->post('json_post');
 
         $dt = Carbon::now();
-
+        
         $uploads = new FileUpload;
-        $uploads->file_name = request()->post('file_name');
+        $uploads->file_name = preg_replace('/\s+/', '', request()->post('file_name'));
         $uploads->upload_date = $dt->toDateString();
         //$uploads->status = '2.1';
         $uploads->status = '2';
         $uploads->ta_name = request()->post('travel_agent');
         $uploads->user_id = request()->post('user');
-        $uploads->submit_date = $dt->toDateString();
+        $uploads->submit_date = $dt->toDateTimeString();
         $uploads->save();
 
         $collection = collect($request->all());
@@ -306,7 +307,7 @@ class AdminController extends Controller
         $filename = $file->getClientOriginalName();
 
         $path = $collection['file']->storeAs(
-            request()->post('user').'/excel/'.$uploads->id, $filename
+            request()->post('user').'/excel/'.$uploads->id, preg_replace('/\s+/', '', request()->post('file_name'))
         );
 
         $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);

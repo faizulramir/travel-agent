@@ -238,6 +238,8 @@ class FinanceController extends Controller
         if ($uploads->status == '2.1') {
             $uploads->status = '3';
             $uploads->discount = $request->discount;
+            $uploads->percent = $request->percent_disc;
+            
             app('App\Http\Controllers\EmailController')->send_mail('Invoice', $user->name, $user->email, 'Invoice Created', 'Payment');
         } else {
             $uploads->status = '5';

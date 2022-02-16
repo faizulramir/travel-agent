@@ -237,7 +237,11 @@ class PaymentController extends Controller
         $dt = Carbon::now();
 
         $file = $request->pay_file;
-        $filename = $file->getClientOriginalName();
+        if ($file){
+            $filename = $file->getClientOriginalName();
+        } else {
+            $filename = null;
+        }
 
         $payment =  new Payment;
         $payment->pay_date = $dt->toDateString();
@@ -248,9 +252,11 @@ class PaymentController extends Controller
         $payment->save();
 
         $file = FileUpload::where('id', request()->post('id'))->first();
-        $request->pay_file->storeAs(
-            $file->user_id.'/payment/'.request()->post('id'), $filename
-        );
+        if ($filename){
+            $request->pay_file->storeAs(
+                $file->user_id.'/payment/'.request()->post('id'), $filename
+            );
+        }
 
         $upload = FileUpload::where('id', request()->post('id'))->first();
         $upload->status = '4';
@@ -446,6 +452,7 @@ class PaymentController extends Controller
         );
 
         $invoice_arr = array();
+        $tpa_pcr_arr = array();
         foreach ($plan_arr as $plan => $tot_count) {
             $tot_cost = 0.00;
             foreach ($costing_arr as $cost) {
@@ -482,10 +489,10 @@ class PaymentController extends Controller
                 'COUNT' => $tot_count,
                 'COST' => $tpa_cost,
             );
-            array_push($invoice_arr, $tmpArr); //prepare costing for each record
+            array_push($tpa_pcr_arr, $tmpArr); //prepare costing for each record
             $tot_tpa = $tot_tpa + $tpa_cost;
         }
-        $tot_inv = $tot_ecert + $pcrArr['COST'] + $tot_tpa;
+        // $tot_inv = $tot_ecert + $pcrArr['COST'] + $tot_tpa;
 
         $dt = Carbon::now();
         $date_today = $dt->toDateString();
@@ -495,17 +502,10 @@ class PaymentController extends Controller
             $invoice_num = $orders[0]->invoice;
         }
 
-        $files = FileUpload::where('id', $order_id)->first();
-
-        $tot_inv2 = $tot_inv;
-        if ($files->discount && $files->discount !== '0') {
-            $tot_inv2 = $tot_inv - $files->discount;
-        }
-
         if ($pcrArr['COST'] == 0 || $pcrArr['COST'] == '0') {
             
         } else {
-            array_push($invoice_arr, $pcrArr);
+            array_push($tpa_pcr_arr, $pcrArr);
         }
 
         // if ($files->discount !== '0') {
@@ -518,21 +518,27 @@ class PaymentController extends Controller
         //     array_push($invoice_arr, $tmpArr);
         // }
 
+        $files = FileUpload::where('id', $order_id)->first();
+
         $disArr = null;
         if ($files->discount && $files->discount !== '0') {
             $disArr = array(
                 'PLAN' => 'DISCOUNT',
-                'PRICE' => "-".$files->discount,
+                'PRICE' => $files->discount,
                 'COUNT' => '1',
-                'COST' => "-".$files->discount,
+                'COST' => $files->discount,
             );
         }
+
+        $tot_inv = $tot_ecert - $disArr['COST'];
+
+        $tot_inv2 = $tot_inv + $pcrArr['COST'] + $tot_tpa;
 
         //dd($tot_inv, $tot_inv2, $disArr);
         
         // dd($invoice_arr);
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('payment.invoice-all', compact('files', 'invoice_arr', 'tot_inv', 'tot_inv2', 'disArr', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
+        $pdf->loadView('payment.invoice-all', compact('tpa_pcr_arr','files', 'invoice_arr', 'tot_inv', 'tot_inv2', 'disArr', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
         return $pdf->stream();
     }
 

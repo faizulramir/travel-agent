@@ -69,11 +69,23 @@
                             <div class="col-md-3">
 
                                 <label for="disc">Total</label>
-                                <input class="form-control" type="text" name="tempTotal" value="{{ number_format((float)$tot_inv + (float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
+                                <input class="form-control" type="text" name="tempTotal" id="tempTotal" value="{{ number_format((float)$tot_inv + (float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
                                 <br>
 
                                 <label for="disc">Discount</label>
-                                <input class="form-control" type="text" name="discount" value="{{ number_format((float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <select style="pointer-events: {{ isset($pay) ? 'none' : '' }}" id="percent_disc" name="percent_disc" class="form-control select2-search-disable" required {{ isset($pay) ? 'readonly' : '' }}>
+                                            <option value="0" {{ ($uploads->percent == '0' || $uploads->percent == 0) ? 'selected' : '' }}>0%</option>
+                                            <option value="10" {{ ($uploads->percent == '10' || $uploads->percent == 10) ?'selected' : '' }}>10%</option>
+                                            <option value="15" {{ ($uploads->percent == '15' || $uploads->percent == 15) ?'selected' : '' }}>15%</option>
+                                            <option value="30" {{ ($uploads->percent == '30' || $uploads->percent == 30) ?'selected' : '' }}>30%</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="text" name="discount" id="discount" value="{{ number_format((float)$uploads->discount, 2, '.', ',') }}" readonly>
+                                    </div>
+                                </div>
                                 <br>
 
                                 <label for="plan">Payment Total</label>
@@ -86,7 +98,7 @@
                                         <option value="">Please Select</option>
                                         <option value="fpx" {{ isset($pay) ? $pay->pay_by == 'fpx' ? 'selected' : '' : '' }}>FPX - Online Banking</option>
                                         <option value="cc" {{ isset($pay) ? $pay->pay_by == 'cc' ? 'selected' : '' : ''}}>Credit Card / Debit Card</option>
-                                        <option value="other" {{ isset($pay) ? $pay->pay_by == 'other' ? 'selected' : '' : '' }}>Others</option>
+                                        <option value="OTHER" {{ isset($pay) ? $pay->pay_by == 'OTHER' ? 'selected' : '' : '' }}>Others</option>
                                     </select>
                                     <br>
                                 @endif
@@ -157,6 +169,15 @@
 
 @endsection
 @section('script')
+    <script>
+        $("#percent_disc").change(function() {
+            var percent = $("#percent_disc").val();
+            var subtotal = $("#tempTotal").val().replace(",", "");;
+            var total = percent / 100 * subtotal;
+            console.log(total)
+            $("#discount").val(total);
+        });
+    </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
