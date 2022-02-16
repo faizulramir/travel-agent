@@ -410,7 +410,7 @@ class AdminController extends Controller
                 $order->return_date = $json[10];
                 $order->user_id = $uploads->user_id;
                 $order->file_id = $uploads->id;
-                $order->ecert = $uploads->id;
+                // $order->ecert = $uploads->id;
                 $order->invoice = $uploads->id;
                 $order->pcr_date = $json[10];
                 $order->pcr_result = null;
@@ -420,7 +420,7 @@ class AdminController extends Controller
                 $order->save();
 
                 $orders = Order::where('id', '=' ,$order->id)->first();
-                $orders->ecert = 'A'.$year.$orders->id;
+                // $orders->ecert = 'A'.$year.$orders->id;
                 
                 //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
                 $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
