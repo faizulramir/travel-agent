@@ -166,6 +166,7 @@
                                     <th data-priority="0"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
                                     {{--<th data-priority="3"></th>--}}
                                     <th data-priority="3"></th>
                                     <th data-priority="3"></th>
@@ -539,7 +540,7 @@
                 initComplete: function () {
                     this.api().columns().every( function () {
                         var column = this;
-                        if (column[0]==1 || column[0]==2 || column[0]==3 || column[0]==6) {
+                        if (column[0]==1 || column[0]==2 || column[0]==4 || column[0]==7) {
                             var select = $('<select><option value=""></option></select>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on('change', function () {
