@@ -67,8 +67,11 @@
 
                                         <td>
                                             <a href="#" class="waves-effect" style="color: black;">
-                                                <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
                                                 <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
+                                            </a>
+
+                                            <a href="#" class="waves-effect" style="color: blue;">
+                                                <i onclick="downloadDetail({{$upload->id}})" class="bx bxs-cloud-download font-size-24" title="Download Supporting Documents"></i>
                                             </a>
                                         </td>
                                         <td>
@@ -275,10 +278,15 @@
                 <div class="modal-body text-center">
                     <div class="row text-center">
                         <div class="col-md-12">
-                            <button class="btn btn-primary" type="submit" id="eticket">E-Ticket</button>
-                            <button class="btn btn-primary" type="submit" id="visa">Visa</button>
-                            <button class="btn btn-primary" type="submit" id="passport">Passport</button>
-                            <button class="btn btn-primary" type="submit" id="payreceipt">Pay Receipt</button>
+                            <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
+                            <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
+                            <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
+                            <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
+                            <input type="hidden" id="suppId" name="suppId">
+                            <button class="btn btn-primary" onclick="chooseSubDoc('eticket')" type="submit" id="eticket">E-Ticket</button>
+                            <button class="btn btn-primary" onclick="chooseSubDoc('visa')" type="submit" id="visa">Visa</button>
+                            <button class="btn btn-primary" onclick="chooseSubDoc('passport')" type="submit" id="passport">Passport</button>
+                            <button class="btn btn-primary" onclick="chooseSubDoc('payreceipt')" type="submit" id="payreceipt">Pay Receipt</button>
                         </div>
                     </div>
                     {{-- <form action="{{ route('post_edit_ta_name') }}" id="form_edit_ta" method="POST">
@@ -303,6 +311,98 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+        
+        function chooseSubDoc (type) {
+            if (type == 'eticket') {
+                $("#eticket_file").trigger("click");
+            } else if (type == 'visa') {
+                $("#visa_file").trigger("click");
+            } else if (type == 'passport') {
+                $("#passport_file").trigger("click");
+            } else if (type == 'payreceipt') {
+                $("#payreceipt_file").trigger("click");
+            }
+        }
+
+        $("#eticket_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#eticket_file")[0].files[0]);
+            form_data.append("type", 'eticket');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert(data.Data)
+                    location.reload()
+                }
+            });
+        });
+
+        $("#visa_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#visa_file")[0].files[0]);
+            form_data.append("type", 'visa');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert(data.Data)
+                    location.reload()
+                }
+            });
+        });
+
+        $("#passport_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#passport_file")[0].files[0]);
+            form_data.append("type", 'passport');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert(data.Data)
+                    location.reload()
+                }
+            });
+        });
+
+        $("#payreceipt_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#payreceipt_file")[0].files[0]);
+            form_data.append("type", 'payreceipt');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert(data.Data)
+                    location.reload()
+                }
+            });
         });
 
         // $(document).ready(function() {
@@ -340,6 +440,7 @@
 
         function openDetail (id) {
             $('#showSuppDoc').modal('show');
+            $("#suppId").val(id);
             // $(document).ready(function() {
             //     var supp_id = id;
             //     $("#add_supp_doc" + id).val(null);

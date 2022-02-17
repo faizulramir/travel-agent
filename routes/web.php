@@ -92,6 +92,7 @@ Route::get('/jemaah/{id}', [App\Http\Controllers\AdminController::class, 'jemaah
 Route::post('/jemaah/edit/{id}', [App\Http\Controllers\AdminController::class, 'jemaah_edit'])->name('jemaah_edit');
 Route::post('/post_edit_ta_name', [App\Http\Controllers\AdminController::class, 'post_edit_ta_name'])->name('post_edit_ta_name');
 Route::post('/post_edit_cert_no', [App\Http\Controllers\AdminController::class, 'post_edit_cert_no'])->name('post_edit_cert_no');
+Route::post('/supp_doc_post_admin', [App\Http\Controllers\AdminController::class, 'supp_doc_post_admin'])->name('supp_doc_post_admin');
 
 //individu
 Route::get('/application', [App\Http\Controllers\IndividuController::class, 'application'])->name('application');
