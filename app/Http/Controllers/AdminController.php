@@ -794,4 +794,17 @@ class AdminController extends Controller
             'Data' => 'Successfully Uploaded!'
         ], 200); // Status code here
     }
+
+    public function supp_doc_download_admin($id, $type)
+    {
+        $uploads = FileUpload::where('id', $id)->first();
+        $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$type;
+        $files = Storage::allFiles($directory);
+        // dd($files[0]);
+        if (empty($files)) {
+            
+        } else {
+            return Storage::download($files[0]);
+        }
+    }
 }
