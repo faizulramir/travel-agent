@@ -234,8 +234,8 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <input class="form-check-input" type="checkbox" id="agreement">
-                                                <label class="form-check-label" for="agreement">
-                                                    Rekod telah disemak dan disahkan kesemua maklumat adalah betul dan lengkap
+                                                <label class="form-check-label" for="agreement" style="color:red;">
+                                                    &nbsp;&nbsp;<b>Rekod telah disemak dan disahkan kesemua maklumat adalah betul dan lengkap</b>
                                                 </label>
                                             </div>
                                         </div>

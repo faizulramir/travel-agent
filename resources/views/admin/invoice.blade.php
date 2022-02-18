@@ -116,9 +116,11 @@
                                 <input class="form-control" type="text"  name="status" value="{{ $uploads->status == '5' || $uploads->status == '4' ? 'PAID' : 'UNPAID' }}" readonly>
                                 <br>
 
+                                @if ($uploads->json_inv && $uploads->json_inv!=null && $uploads->json_inv!='')
                                 <div class="col-md-12">
                                     <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">Download Invoice</a>
                                 </div>
+                                @endif
 
                             </div>
 
@@ -139,6 +141,10 @@
                                 @if ($pay !== null)
                                     @if ($pay->pay_file == null)
                                         <p>File not found</p>
+                                        <a href="#" class="btn btn-primary waves-effect waves-light">
+                                            Upload Payment Receipt
+                                        </a>
+                                        <br>
                                     @else
                                         <p>
                                             <br><br><br>

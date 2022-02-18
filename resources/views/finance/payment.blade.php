@@ -20,7 +20,7 @@
                 <div class="card-body">
                     <form action="{{ route('endorse_payment', $uploads->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <h4 class="card-title">Invoice Summary</h4>
+                        <h4 class="card-title">Invoice Summary FIN</h4>
                         <br>
                         <div class="row">
                             <div class="col-md-3">
@@ -72,7 +72,7 @@
                                 <input class="form-control" type="text" name="tempTotal" id="tempTotal" value="{{ number_format((float)$tot_inv + (float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
                                 <br>
 
-                                <label for="disc">Discount</label>
+                                <label for="disc">ECare Discount</label>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <select style="pointer-events: {{ isset($pay) ? 'none' : '' }}" id="percent_disc" name="percent_disc" class="form-control select2-search-disable" required {{ isset($pay) ? 'readonly' : '' }}>
@@ -102,16 +102,23 @@
                                     </select>
                                     <br>
                                 @endif
+
+                                @if($uploads->json_inv && $uploads->json_inv!=null && $uploads->json_inv!='')
                                 <p>
                                     <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
                                         Download Invoice
                                     </a>
                                 </p>
+                                @endif
 
                                 @if(isset($pay))
                                     <label for="plan">Payment Receipt</label>
                                     @if ($pay->pay_file == null)
                                         <p>File not found</p>
+                                        <a href="#" class="btn btn-primary waves-effect waves-light">
+                                            Upload Payment Receipt
+                                        </a>
+                                        <br>
                                     @else
                                         <p>
                                             {{--<a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
@@ -174,8 +181,14 @@
             var percent = $("#percent_disc").val();
             var subtotal = $("#tempTotal").val().replace(",", "");;
             var total = percent / 100 * subtotal;
-            console.log(total)
+            //console.log(total)
             $("#discount").val(total);
+
+            var formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+            let currency = formatter.format(total).replace("$", "").replace(" ", "");
+            //console.log("Formatter: " + currency);
+            $("#discount").val(currency);
+
         });
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

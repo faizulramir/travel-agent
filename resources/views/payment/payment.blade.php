@@ -117,12 +117,19 @@
                                 </select>
                                 <br>
 
-                                <label for="plan">Upload Payment Payslip / Receipt</label>
-                                <input class="form-control" type="file" name="pay_file">
+                                <label for="plan">Upload Payment Receipt</label>
+                                @if (auth()->user()->hasAnyRole('akc') || auth()->user()->hasAnyRole('fin'))
+                                    <input class="form-control" type="file" name="pay_file">
+                                @else 
+                                    <input class="form-control" type="file" name="pay_file" required>
+                                @endif
                                 <br>
 
                                 <input type="hidden" value="{{ $id }}" name="id">
-                                <button class="btn btn-primary waves-effect waves-light" type="submit">Make Payment</button>
+                                @if($uploads->status != '4' && $uploads->status != '5')
+                                    <button class="btn btn-primary waves-effect waves-light" type="submit">Make Payment</button>
+                                @endif
+
                                 <a href="{{ route('excel_list') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
 
                             </div>

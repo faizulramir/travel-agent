@@ -327,19 +327,27 @@ class PaymentController extends Controller
 
         if ($files->json_inv) {
             $data_decode = json_decode($files->json_inv, true);
+
             $tpa_pcr_arr = $data_decode['tpa_pcr_arr'];
             // $files = (object)$data_decode['files'];
             // dd($files->id);
             $invoice_arr = collect($data_decode['invoice_arr']);
             $tot_inv = $data_decode['tot_inv'];
             $tot_inv2 = $data_decode['tot_inv2'];
-            $disArr = collect($data_decode['disArr']);
+
+            //$disArr = collect($data_decode['disArr']);
+            $disArr = ($data_decode['disArr'] && $data_decode['disArr']!=null? collect($data_decode['disArr']) : null);
+
             $tot_rec = collect($data_decode['tot_rec']);
             $tpa_arr = collect($data_decode['tpa_arr']);
             $tpa_total_arr = collect($data_decode['tpa_total_arr']);
             $date_today = $data_decode['date_today'];
             $invoice_num = $data_decode['invoice_num'];
             $tpa_pcr_arr = collect($data_decode['tpa_pcr_arr']);
+
+            //dd($files->json_inv, $data_decode, $data_decode['disArr']);
+
+
         } else {
             $tot_rec = 0;
             $orders = Order::where([['file_id', '=' ,$order_id],['status', '1']])->get();

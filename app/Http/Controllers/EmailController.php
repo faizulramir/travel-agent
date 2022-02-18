@@ -21,10 +21,14 @@ class EmailController extends Controller
 {
     public function send_mail ($subject_to_send, $to_name, $to_email, $body, $title)
     {
-        $data = array('name' => $to_name, "body" => $body);
-        Mail::send('email.mail', $data, function($message) use ($to_name, $to_email, $subject_to_send, $title) {
-            $message->to($to_email, $to_name)->subject($subject_to_send);
-            $message->from('a.khairicare@gmail.com', $title);
-        });
+        try {
+            $data = array('name' => $to_name, "body" => $body);
+            Mail::send('email.mail', $data, function($message) use ($to_name, $to_email, $subject_to_send, $title) {
+                $message->to($to_email, $to_name)->subject($subject_to_send);
+                $message->from('a.khairicare@gmail.com', $title);
+            });
+        } catch (\Exception $ex) {
+            //dd($ex);
+        } 
     }
 }

@@ -50,7 +50,7 @@
                                     {{--<th data-priority="3">Upload Date</th>--}}
                                     <th data-priority="3">Submission Date</th>
                                     <th data-priority="1">Status</th>
-                                    <th data-priority="1">Positive</th>
+                                    <th data-priority="1">Quarantine</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
@@ -61,7 +61,7 @@
                                         <td>{{ strtoupper($file->user->name) }}</td>
                                         <td>{{ $file->file_name }}</td>
                                         {{--<td>{{ $file->upload_date ? date('d-m-Y', strtotime($file->upload_date)) : '' }}</td>--}}
-                                        <td>{{ $file->submit_date ? date('d-m-Y', strtotime($file->submit_date)) : '' }}</td>
+                                        <td>{{ $file->submit_date ? date('d-m-Y H:i:s', strtotime($file->submit_date)) : '' }}</td>
                                         <td>
                                             @if ($file->status == '0' || $file->status == '2')
                                                 Pending AKC Approval
@@ -104,6 +104,12 @@
 
         $('#refreshBtn').click(function() {
             location.reload();
+        });
+
+        $(document).ready(function() {
+            $('#datatable').dataTable({
+                stateSave: true,
+            });
         });
 
     </script>

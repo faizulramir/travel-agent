@@ -208,7 +208,7 @@ class AdminController extends Controller
     public function excel_list_admin()
     {
         //$uploads = FileUpload::all();
-        $uploads = FileUpload::where('status','!=','0')->orderBy('submit_date', 'DESC')->orderBy('status', 'DESC')->get();
+        $uploads = FileUpload::where('status','!=','0')->orderBy('submit_date', 'DESC')->orderBy('status', 'ASC')->get();
         //dd($uploads);
         $users = DashboardUser::all();
 
@@ -452,9 +452,9 @@ class AdminController extends Controller
         }
         $user = DashboardUser::where('id', $uploads->user_id)->first();
         // dd($user);
+
         app('App\Http\Controllers\EmailController')->send_mail('Excel Update', $user->name, $user->email, 'Your request has been '.$body, 'Excel Submission');
-
-
+        
         return redirect()->back();
     }
 

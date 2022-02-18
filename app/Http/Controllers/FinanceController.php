@@ -34,7 +34,23 @@ class FinanceController extends Controller
     public function excel_list_finance()
     {
         $uploads = FileUpload::whereIn('status', ['4', '5', '2.1'])->orderBy('submit_date', 'DESC')->orderBy('status', 'DESC')->get();
-        return view('finance.excel-list', compact('uploads'));
+
+        //include number of records count
+        $rec_count_arr = array();
+        if ($uploads) {
+            foreach ($uploads as $upload) {
+                //echo "<span style='color:black'>file=".$upload->id."</span><br>";
+                $count = 0;
+                $orders = Order::where([['file_id', '=' ,$upload->id]])->get();
+                if ($orders) {
+                    $count = count($orders);
+                }
+                array_push($rec_count_arr, $count); //prepare costing for each record
+            }
+        }
+        //dd($rec_count_arr);
+
+        return view('finance.excel-list', compact('uploads', 'rec_count_arr'));
     }
 
     public function payment_detail($id)
@@ -234,6 +250,8 @@ class FinanceController extends Controller
 
     public function endorse_payment(Request $request, $id)
     {
+        //dd($request);
+
         $tot_rec = 0;
         $orders = Order::where([['file_id', '=' ,$id],['status', '1']])->get();
         $tot_rec = count($orders);
@@ -254,8 +272,8 @@ class FinanceController extends Controller
         $pcr_cnt = 0;
         $tpa_cnt = 0;
         $price_pcr = Plan::where([['name', '=' , 'pcr']])->pluck('price')->first();
-        foreach ($orders as $order) {
 
+        foreach ($orders as $order) {
             if ($order->plan_type!=null && $order->plan_type!='' && $order->plan_type != 'NO') {
                 $date1 = date_create($order->dep_date);
                 $date2 = date_create($order->return_date);
@@ -283,7 +301,7 @@ class FinanceController extends Controller
                 }
 
                 //prepare costing array
-                $tmpArr =  array (
+                $tmpArr =  array(
                     'PLAN' => $order->plan_type,
                     'PRICE' => $price,
                     //'DEP' => $date1,
@@ -326,7 +344,7 @@ class FinanceController extends Controller
                 array_push($tpa_arr, $tpa_name);   //grouping the selected plans
 
                 //prepare costing array
-                $tmpArr =  array (
+                $tmpArr =  array(
                     'PLAN' => null,
                     'PRICE' => null,
                     //'DEP' => $date1,
@@ -355,7 +373,7 @@ class FinanceController extends Controller
         // $pcr_detail->price = $tot_pcr;
         // $pcr_detail->cnt = ;
 
-        $pcrArr =  array (
+        $pcrArr =  array(
             'PLAN' => 'PCR',
             'COUNT' => (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0),
             'PRICE' => Plan::where([['name', '=' ,'pcr']])->pluck('price')->first(),
@@ -372,7 +390,7 @@ class FinanceController extends Controller
                 }
             }
 
-            $tmpArr =  array (
+            $tmpArr =  array(
                 'PLAN' => $plan,
                 'PRICE' => Plan::where([['name', '=' ,$plan]])->pluck('price')->first(),
                 'PCR_COUNT' => $pcr_cnt,
@@ -394,7 +412,7 @@ class FinanceController extends Controller
                 }
             }
 
-            $tmpArr =  array (
+            $tmpArr =  array(
                 'PLAN' => $tpa,
                 'PRICE' => Plan::where([['name', '=' ,$tpa]])->pluck('price')->first(),
                 'COUNT' => $tot_count,
@@ -414,7 +432,6 @@ class FinanceController extends Controller
         }
 
         if ($pcrArr['COST'] == 0 || $pcrArr['COST'] == '0') {
-            
         } else {
             array_push($tpa_pcr_arr, $pcrArr);
         }
@@ -429,21 +446,36 @@ class FinanceController extends Controller
         //     array_push($invoice_arr, $tmpArr);
         // }
 
+        //dd($request);
+
         $files = FileUpload::where('id', $id)->first();
 
         $disArr = null;
-        if ($files->discount && $files->discount !== '0') {
+        if ($files->status == '2.1') {
             $disArr = array(
                 'PLAN' => 'DISCOUNT',
-                'PRICE' => $files->discount,
+                'PRICE' => $request->discount,
                 'COUNT' => '1',
-                'COST' => $files->discount,
+                'COST' => $request->discount,
             );
         }
+        else {
+            if ($files->discount && $files->discount !== '0') {
+                $disArr = array(
+                    'PLAN' => 'DISCOUNT',
+                    'PRICE' => $files->discount,
+                    'COUNT' => '1',
+                    'COST' => $files->discount,
+                );
+            }
+        }
 
-        $tot_inv = $tot_ecert - $disArr['COST'];
+        $tot_inv = $tot_ecert;
+        if ($disArr && $disArr['COST']) {
+            $tot_inv = $tot_ecert - $disArr['COST'];
+        }
 
-        $tot_inv2 = $tot_inv + $pcrArr['COST'] + $tot_tpa;
+        $tot_inv2 = $tot_inv + ($pcrArr && $pcrArr['COST']? $pcrArr['COST'] : 0) + $tot_tpa;
         
         $arr_data = array(
             'tpa_pcr_arr' => $tpa_pcr_arr,
@@ -459,37 +491,47 @@ class FinanceController extends Controller
             'invoice_num' => $invoice_num,
         );
         // dd(json_encode($arr_data));
-        $files->json_inv = json_encode($arr_data);
 
+        $files->json_inv = json_encode($arr_data);
         $files->save();
+        
         //------------------------------------------
         $uploads = FileUpload::where('id', $id)->first();
         $user = DashboardUser::where('id', $uploads->user_id)->first();
         $orders = Order::where('file_id', $uploads->id)->get();
         $ecertCnt = EcertCnt::where('id', 1)->first();
+
         $dt = Carbon::now();
         $orderdate = $dt->toDateString();
         $orderdate = explode('-', $orderdate);
         $year  = $orderdate[0];
         $month = $orderdate[1];
-        foreach ($orders as $i => $order) {
-            $order->ecert = 'A'.$year.($ecertCnt->value + 1);
-            $order->save();
-            $ecertCnt->value = $ecertCnt->value + 1;
-            $ecertCnt->save();
+
+        //dd($uploads->status, $ecertCnt, $orders);
+
+        //only generate ECERT number when PAYMENT CONFIRMED
+        if ($uploads->status == '4') {
+            foreach ($orders as $i => $order) {
+                $order->ecert = 'A'.$year.($ecertCnt->value + 1);
+                $order->save();
+                $ecertCnt->value = $ecertCnt->value + 1;
+                $ecertCnt->save();
+            }
         }
+
         if ($uploads->status == '2.1') {
             $uploads->status = '3';
             $uploads->discount = $request->discount;
             $uploads->percent = $request->percent_disc;
+            $uploads->save();
             
             app('App\Http\Controllers\EmailController')->send_mail('Invoice', $user->name, $user->email, 'Invoice Created', 'Payment');
         } else {
             $uploads->status = '5';
+            $uploads->save();
+
             app('App\Http\Controllers\EmailController')->send_mail('Invoice', $user->name, $user->email, 'PAID, Endorsed', 'Payment');
         }
-        
-        $uploads->save();
         
         return redirect()->route('excel_list_finance');
     }

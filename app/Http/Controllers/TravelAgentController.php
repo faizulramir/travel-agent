@@ -30,7 +30,9 @@ class TravelAgentController extends Controller
     
     public function excel_list()
     {
-        $uploads = FileUpload::where('user_id', Auth::id())->get();
+        //$uploads = FileUpload::where('user_id', Auth::id())->get();
+        $uploads = FileUpload::where('user_id', Auth::id())->orderBy('upload_date', 'DESC')->orderBy('status', 'ASC')->get();
+
         return view('travel-agent.excel-list', compact('uploads'));
     }
 
@@ -150,7 +152,8 @@ class TravelAgentController extends Controller
 
         $uploads = FileUpload::where('id', request()->post('id'))->first();
         $uploads->status = '2';
-        $uploads->submit_date = $dt->toDateString();
+        //$uploads->submit_date = $dt->toDateString();
+        $uploads->submit_date = $dt->toDateTimeString();
         $uploads->save();
         
         return response()->json([

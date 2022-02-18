@@ -37,7 +37,7 @@
                                     <th data-priority="0">#</th>
                                     <th data-priority="1">Requester</th>
                                     <th data-priority="1">Filename</th>
-                                    {{--<th data-priority="3">Upload Date</th>--}}
+                                    <th data-priority="1">Jemaah</th>
                                     <th data-priority="1">Submission Date</th>
                                     <th data-priority="1">Payment</th>
                                     <th data-priority="1">Status</th>
@@ -49,8 +49,14 @@
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ strtoupper($upload->user->name) }}</td>
-                                        <td>{{ $upload->file_name }}</td>
-                                        {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
+                                        <td>{{ strtoupper($upload->file_name) }}</td>
+
+                                        <td>
+                                            @if($rec_count_arr && $rec_count_arr[$i] && $rec_count_arr[$i] > 0)
+                                                {{ $rec_count_arr[$i] }}
+                                            @endif
+                                        </td>
+
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
                                         <td>{{ $upload->status == '5' || $upload->status == '4' ? 'PAID' : 'UNPAID' }}</td>
                                         <td>
@@ -68,10 +74,6 @@
                                                 <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
                                             </a>--}}
 
-                                            <a href="{{ route('excel_detail_finance', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
-                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                            </a>
-
                                             @if ($upload->status == '5')
                                                 <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
                                                     <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
@@ -87,6 +89,11 @@
                                                     <i class="bx bx-food-menu font-size-24" title="Show Payslip/Receipt"></i>
                                                 </a>
                                             @endif --}}
+
+                                            <a href="{{ route('excel_detail_finance', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                            </a>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -96,7 +103,7 @@
                                     <th data-priority="0"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
-                                    {{--<th data-priority="3">Upload Date</th>--}}
+                                    <th data-priority="1"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
@@ -142,10 +149,11 @@
         //enabling datatable filters
         $(document).ready(function() {
             $('#datatable').DataTable( {
+                saveState: true,
                 initComplete: function () {
                     this.api().columns().every( function () {
                         var column = this;
-                        if (column[0]==1 || column[0]==2 || column[0]==3 || column[0]==5) {
+                        if (column[0]==1 || column[0]==2 || column[0]==4 || column[0]==6) {
                             var select = $('<select><option value=""></option></select>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on('change', function () {

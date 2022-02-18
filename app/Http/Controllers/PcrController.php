@@ -24,7 +24,9 @@ class PcrController extends Controller
 
     public function pcr_excel_list()
     {
-        $files = FileUpload::all();
+        //$files = FileUpload::all();
+        $files = FileUpload::where('status','=','5')->orderBy('submit_date', 'DESC')->orderBy('status', 'ASC')->get();
+
         $temp_file = array();
 
         foreach ($files as $i => $file) {

@@ -91,48 +91,55 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($invoice_arr as $table)
-                        <tr>
-                            <td>{{ $table['COUNT'] }}</td>
-                            <td>{{ strtoupper($table['PLAN']) }}</td>
-                            <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
-                            <td style="text-align: right !important;">{{ number_format((float)$table['COST'], 2, '.', ',') }}</td>
-                        </tr>
-                    @endforeach
+                    @if ($invoice_arr)
+                        @foreach ($invoice_arr as $table)
+                            <tr>
+                                <td>{{ $table['COUNT'] }}</td>
+                                <td>{{ strtoupper($table['PLAN']) }}</td>
+                                <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
+                                <td style="text-align: right !important;">{{ number_format((float)$table['COST'], 2, '.', ',') }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
 
                     @if ($disArr)
-                    <tr>
-                        <td colspan="4" style="padding:0;">
-                            <hr style="border: none; height: 1px; color: #333; background-color: #333;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>DISCOUNT</td>
-                        <td style="text-align: right !important;"></td>
-                        <td style="text-align: right !important;">- {{ number_format((float)$disArr['COST'], 2, '.', ',') }}</td>
-                    </tr> 
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td style="text-align: right !important;"><b>Total</b></td>
-                        <td style="text-align: right !important;">{{ number_format((float)$tot_inv, 2, '.', ',') }}</td>
-                    </tr>
-                    @endif
-                    <tr>
-                        <td colspan="4" style="padding:0;">
-                            <hr style="border: none; height: 1px; color: #333; background-color: #333;">
-                        </td>
-                    </tr>
-                    @foreach ($tpa_pcr_arr as $table)
+                        {{-- <tr>
+                            <td colspan="4" style="padding:0;">
+                                <hr style="border: none; height: 1px; color: #333; background-color: #333;">
+                            </td>
+                        </tr> --}}
+                        @if ($disArr['COST']>0)
                         <tr>
-                            <td>{{ $table['COUNT'] }}</td>
-                            <td>{{ strtoupper($table['PLAN']) }}</td>
-                            <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
-                            <td style="text-align: right !important;">{{ number_format((float)$table['COST'], 2, '.', ',') }}</td>
+                            <td></td>
+                            <td>(DISCOUNT)</td>
+                            <td style="text-align: right !important;"></td>
+                            <td style="text-align: right !important;">- {{ number_format((float)$disArr['COST'], 2, '.', ',') }}</td>
+                        </tr> 
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right !important;"><b>Total</b></td>
+                            <td style="text-align: right !important;">{{ number_format((float)$tot_inv, 2, '.', ',') }}</td>
                         </tr>
-                    @endforeach
-                                   
+                        <tr>
+                            <td colspan="4" style="padding:0;">
+                                <hr style="border: none; height: 1px; color: #333; background-color: #333;">
+                            </td>
+                        </tr>
+                        @endif
+                    @endif
+
+                    @if ($tpa_pcr_arr)
+                        @foreach ($tpa_pcr_arr as $table)
+                            <tr>
+                                <td>{{ $table['COUNT'] }}</td>
+                                <td>{{ strtoupper($table['PLAN']) }}</td>
+                                <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
+                                <td style="text-align: right !important;">{{ number_format((float)$table['COST'], 2, '.', ',') }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
+
                     <tr>
                         <td colspan="4" style="padding:0;">
                             <hr style="border: none; height: 1px; color: #333; background-color: #333;">
@@ -148,6 +155,7 @@
                 </tbody>
             </table>
         </div>
+        
         <p><b>Terms & Conditions</b></p>
         <p>Transfer are to be made payable to</p>
         <p>Company Name : Al Khairi Care Sdn Bhd <br> Account No : 1225 8001 3002 150 <br> Bank : Alliance Islamic Bank Berhad <br> Swift Code : ALSRMYKL</p>

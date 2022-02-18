@@ -56,7 +56,7 @@
                                     <th data-priority="1">Filename</th>
                                     <th data-priority="3">Upload Date</th>
                                     <th data-priority="1">Submission Date</th>
-                                    <th data-priority="1">Supporting Documents</th>
+                                    <th data-priority="1">Supp. Docs</th>
                                     <th data-priority="1">Payment</th>
                                     <th data-priority="1">Status</th>
                                     <th data-priority="3">Action</th>
@@ -68,20 +68,27 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $upload->file_name }}</td>
                                         <td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>
-                                        <td>{{ $upload->submit_date ? date('d-m-Y', strtotime($upload->submit_date)) : '' }}</td>
+                                        <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
                                         <td>
                                             @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
-                                                <p>-</p>
+                                                <span>-</span>
                                             @else 
                                                 @if ($upload->supp_doc == null)
-                                                    <p>Not Uploaded</p>
+                                                    <span>Not Uploaded</span>
+                                                @else
+                                                    <span>UPLOADED</span>
                                                 @endif
+                                                &nbsp;&nbsp;
+                                                <a href="#" class="waves-effect" style="color: black;">
+                                                    <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
+                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
+                                                </a>
                                             @endif
                                         </td>
                                         <td>
                                             @if($upload->status == '3')
                                                 <p>INVOICE READY</p>
-                                            @elseif($upload->status == '5')
+                                            @elseif($upload->status == '4' || $upload->status == '5')
                                                 <p>PAID</p>
                                             @else 
                                                 <p>-</p>
@@ -146,12 +153,14 @@
                                                 </a>
                                             @endif
                                             
+                                            {{--
                                             @if ($upload->supp_doc == null)
-                                                <a href="#" class="waves-effect" style="color: blue;">
+                                                <a href="#" class="waves-effect" style="color: black;">
                                                     <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
                                                     <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
                                                 </a>
                                             @endif
+                                            --}}
                                             
                                             @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
                                                 <a href="{{ route('excel_detail_ta', $upload->id) }}" class="waves-effect" style="color:#ed2994;">
@@ -277,6 +286,12 @@
 
         $('#refreshBtn').click(function() {
             location.reload();
+        });
+
+        $(document).ready(function() {
+            $('#datatable').DataTable( {
+                stateSave: true,
+            });
         });
 
         function clicked(e, id)

@@ -51,9 +51,14 @@
                     <br>
                     <div class="row">
                         <div class="col-md-4 text-right">
+                            <h4 class="card-title">Travel Agent Name: {{ $uploads->ta_name? strtoupper($uploads->ta_name) : $uploads->ta_name }}</h4>
+                            <h4 class="card-title">Filename: {{ $uploads->file_name? strtoupper($uploads->file_name) : $uploads->file_name }}</h4>
                             <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : 'Not Uploaded' :  'Not Uploaded' }}</h4>
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
                         </div>
+                        <div class="col-md-8" style="text-align: right;">
+                            <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_ta_name" onclick="openUploadDoc({{$uploads->id}})">Supporting Documents</a>
+                        </div>                        
                     </div>
                     <br>
                     <div>
@@ -125,6 +130,66 @@
         </div>
     </div>
 
+    <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Supporting Documents</h5>
+                </div>
+                <div class="modal-body text-left">
+                    <div class="row text-left">
+                        <div class="col-md-12">
+                            {{--
+                            <button class="btn btn-primary" type="submit" id="eticket">E-Ticket</button>
+                            <button class="btn btn-primary" type="submit" id="visa">Visa</button>   
+                            <button class="btn btn-primary" type="submit" id="passport">Passport</button>
+                            <button class="btn btn-primary" type="submit" id="payreceipt">Pay Receipt</button>
+                            --}}
+                            <table>
+                                <tbody width="100%">
+                                    <tr>
+                                        <td width="50%">Document Passport</td>
+                                        <td width="10%"></td>
+                                        <td width="20%"><button class="btn btn-primary" type="submit" id="passport">Upload</button></td>
+                                        <td width="20%"><button class="btn btn-primary" type="submit" id="passport">Download</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Document E-Ticket</td>
+                                        <td></td>
+                                        <td><button class="btn btn-primary" type="submit" id="passport">Upload</button></td>
+                                        <td><button class="btn btn-primary" type="submit" id="passport">Download</button></td>
+                                    </tr>    
+                                    <tr>
+                                        <td>Document E-Visa</td>
+                                        <td></td>
+                                        <td><button class="btn btn-primary" type="submit" id="passport">Upload</button></td>
+                                        <td><button class="btn btn-primary" type="submit" id="passport">Download</button></td>
+                                    </tr>  
+                                    <tr>
+                                        <td>Document Payment Receipt</td>
+                                        <td></td>
+                                        <td><button class="btn btn-primary" type="submit" id="passport">Upload</button></td>
+                                        <td><button class="btn btn-primary" type="submit" id="passport">Download</button></td>
+                                    </tr> 
+                                    <tr>
+                                        <td colspan="4">&nbsp;</td>
+                                    </tr>                                                                                                       
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{-- <form action="{{ route('post_edit_ta_name') }}" id="form_edit_ta" method="POST">
+                        @csrf
+                        <input type="text" class="form-control" id="ta_name" name="ta_name">
+                        <input type="hidden" class="form-control" id="ta_id" name="ta_id">
+                        <br>
+                        <button class="btn btn-primary" name="submit" type="submit" id="edit_ta_submit">Submit</button>
+                    </form> --}}
+                </div>
+            </div>
+        </div>
+    </div>    
+
 @endsection
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.min.js" integrity="sha512-BMIFH0QGwPdinbGu7AraCzG9T4hKEkcsbbr+Uqv8IY3G5+JTzs7ycfGbz7Xh85ONQsnHYrxZSXgS1Pdo9r7B6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -135,6 +200,10 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        function openUploadDoc(id) {
+            $('#showSuppDoc').modal('show');
+        }
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
