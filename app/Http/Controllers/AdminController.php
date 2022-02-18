@@ -770,4 +770,41 @@ class AdminController extends Controller
         Session::flash('success', 'Ecert Number Updated');
         return redirect()->back();
     }
+
+    public function supp_doc_post_admin(Request $request)
+    {
+        $uploads = FileUpload::where('id', request()->post('id'))->first();
+
+        $collection = collect($request->all());
+
+        $file = $collection['file'];
+        $filename = $file->getClientOriginalName();
+
+        Storage::deleteDirectory($uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$collection['type']);
+        $path = $collection['file']->storeAs(
+            $uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$collection['type'], $filename
+        );
+
+        // $uploads->status = '1';
+        $uploads->supp_doc = '1';
+        $uploads->save();
+
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => 'Successfully Uploaded!'
+        ], 200); // Status code here
+    }
+
+    public function supp_doc_download_admin($id, $type)
+    {
+        $uploads = FileUpload::where('id', $id)->first();
+        $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$type;
+        $files = Storage::allFiles($directory);
+        // dd($files[0]);
+        if (empty($files)) {
+            
+        } else {
+            return Storage::download($files[0]);
+        }
+    }
 }
