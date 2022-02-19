@@ -274,7 +274,7 @@
     @else
         <div class="row">
             <div class="col-md-12 text-center">
-                <h1>PLEASE CONTACT ADMIN</h1>
+                <h1>PLEASE CONTACT AL KHAIRI ADMIN</h1>
             </div>
         </div>
     --}}

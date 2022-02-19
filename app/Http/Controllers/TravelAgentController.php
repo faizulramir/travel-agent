@@ -126,19 +126,39 @@ class TravelAgentController extends Controller
     public function supp_doc_post_ta(Request $request)
     {
         $uploads = FileUpload::where('id', request()->post('id'))->first();
-
         $collection = collect($request->all());
 
         $file = $collection['file'];
         $filename = $file->getClientOriginalName();
 
         $path = $collection['file']->storeAs(
-            Auth::id().'/supp_doc/'.$uploads->id, $filename
+            //Auth::id().'/supp_doc/'.$uploads->id, $filename
+            Auth::id().'/supp_doc/'.$uploads->id.'/'.$collection['type'], $filename
         );
 
-        // $uploads->status = '1';
-        $uploads->supp_doc = '1';
-        $uploads->save();
+        //$uploads->status = '1';
+        //$uploads->supp_doc = '1';
+        //$uploads->save();
+
+        $supp_doc = ''.($uploads->supp_doc && $uploads->supp_doc!=null? $uploads->supp_doc : '');
+        $file_type = ''.($collection['type'] && $collection['type']!=null? strtoupper($collection['type']) : '');
+
+        if ($file_type=='ETICKET') {
+            $supp_doc = str_replace("T", "", $supp_doc)."T";
+        }
+        if ($file_type=='VISA') {
+            $supp_doc = str_replace("V", "", $supp_doc)."V";
+        }
+        if ($file_type=='PASSPORT') {
+            $supp_doc = str_replace("P", "", $supp_doc)."P";
+        }
+        if ($file_type=='PAYRECEIPT') {
+            $supp_doc = str_replace("R", "", $supp_doc)."R";
+        }
+
+        //dd($request->type, $request->id, $uploads->supp_doc, $supp_doc, $file_type);
+        $uploads->supp_doc = $supp_doc;
+        $uploads->save();        
 
         return response()->json([
             'isSuccess' => true,
