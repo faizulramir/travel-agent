@@ -32,7 +32,7 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['role:akc']);
+        $this->middleware(['role:akc|fin']);
     }
 
     public function admin_payment_detail($id)
@@ -735,6 +735,7 @@ class AdminController extends Controller
         $jemaah->plan_type = $request->plan_type;
         $jemaah->tpa = $request->tpa;
         $jemaah->pcr = $request->pcr;
+        $jemaah->status = $request->jemaah_status;
 
         $jemaah->save();
         Session::flash('success', 'Jemaah Updated');
@@ -847,5 +848,9 @@ class AdminController extends Controller
                         //});
             return Storage::download($files[0]);
         }
+    }
+    
+    public function jemaah_set ($id, $status) {
+
     }
 }

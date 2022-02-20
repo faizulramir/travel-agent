@@ -290,7 +290,7 @@
                                                 &nbsp;&nbsp;
                                                 <a href="#" class="waves-effect" style="color: black;">
                                                     <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
-                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
+                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
                                                 </a>
                                             @endif
                                         </td>
@@ -357,11 +357,11 @@
                                                 <i class="bx bxs-cloud-download font-size-24" title="Download Excel"></i>
                                             </a>
 
-                                            @if($upload->supp_doc && $upload->supp_doc == '1')
+                                            {{-- @if($upload->supp_doc && $upload->supp_doc == '1')
                                             <a href="{{ route('download_supp_doc', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: blue;">
                                                 <i class="bx bxs-cloud-download font-size-24" title="Download Supporting Documents"></i>
                                             </a>
-                                            @endif
+                                            @endif --}}
 
                                             @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
                                                 <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
@@ -524,14 +524,14 @@
                             <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Pay Receipt</button>
                             --}}
 
-                            <table border="0" width="100%">
+                            <table border="0" width="100%" id="tableUploadDownload">
                                 <tr>
                                     <td width="50%">Document Passport</td>
                                     <td width="25%">
                                         <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Upload</button>
                                     </td>    
-                                    <td width="25%">
+                                    <td width="25%" id="passportdownload">
                                         {{--
                                         @if($uploads->supp_doc)
                                             @if(str_contains("P", $uploads->supp_doc))
@@ -547,7 +547,7 @@
                                         <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Upload</button>
                                     </td>    
-                                    <td>
+                                    <td id="eticketdownload">
                                         {{--
                                             @if($uploads->supp_doc)
                                                 @if(str_contains("T", $uploads->supp_doc))
@@ -563,7 +563,7 @@
                                         <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Upload</button>
                                     </td>    
-                                    <td>
+                                    <td id="visadownload">
                                         {{--
                                             @if($uploads->supp_doc)
                                                 @if(str_contains("V", $uploads->supp_doc))
@@ -579,7 +579,7 @@
                                         <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Upload</button>
                                     </td>    
-                                    <td>
+                                    <td id="payreceiptdownload">
                                         {{--
                                             @if($uploads->supp_doc)
                                                 @if(str_contains("R", $uploads->supp_doc))
@@ -687,7 +687,7 @@
                 processData: false,
                 success: function (data) {
                     alert("E-Ticket Docs - " + data.Data)
-                    //location.reload()
+                    location.reload()
                 }
             });
         });
@@ -707,7 +707,7 @@
                 processData: false,
                 success: function (data) {
                     alert("E-Visa Docs - " + data.Data)
-                    //location.reload()
+                    location.reload()
                 }
             });
         });
@@ -727,7 +727,7 @@
                 processData: false,
                 success: function (data) {
                     alert("Passport Docs - " + data.Data)
-                    //location.reload()
+                    location.reload()
                 }
             });
         });
@@ -747,14 +747,14 @@
                 processData: false,
                 success: function (data) {
                     alert("Payment Receipt - " + data.Data);
-                    //location.reload()
+                    location.reload()
                 }
             });
         });
 
-        function downloadDetail (id) {
-            $("#eticketDown").attr("href", "/supp_doc_download_admin/" + id + "/eticket")
-            $('#downloadSuppDoc').modal('show');
+        function downloadDetail (type, id) {
+            $("#eticketDown").attr("href", "/supp_doc_download_admin/" + id + "/" + type)
+            // $('#downloadSuppDoc').modal('show');
             $("#idDownload").val(id);
         }
 
@@ -771,12 +771,36 @@
         }
 
         function openDetail (id, docs) {
-            $('#showSuppDoc').modal('show');
             $("#suppId").val(id);
             $("#suppdocs").val(docs);
-            console.log("docs id=", $("#suppId").val());
-            console.log("supp_doc=", $("#suppdocs").val());
+            
+            if (docs.includes('P')) {
+                $('#passportdownload').html('<a href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#passportdownload').html('');
+            }
 
+            if (docs.includes('T')) {
+                $('#eticketdownload').html('<a href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#eticketdownload').html('');
+            }
+
+            if (docs.includes('V')) {
+                $('#visadownload').html('<a href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#visadownload').html('');
+            }
+
+            if (docs.includes('R')) {
+                $('#payreceiptdownload').html('<a href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#payreceiptdownload').html('');
+            }
+
+            $('#showSuppDoc').modal('show');
+
+            
             // $(document).ready(function() {
             //     var supp_id = id;
             //     $("#add_supp_doc" + id).val(null);

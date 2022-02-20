@@ -57,7 +57,7 @@
                             <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
                         </div>
                         <div class="col-md-8" style="text-align: right;">
-                            <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_ta_name" onclick="openUploadDoc({{$uploads->id}})">Supporting Documents</a>
+                            <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" onclick="openDetail({{$uploads->id}},'{{$uploads->supp_doc}}')">Supporting Documents</a>
                         </div>                        
                     </div>
                     <br>
@@ -134,57 +134,99 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Supporting Documents</h5>
+                    <h5 class="modal-title" id="modalTitle">Supporting Documents AKC ADM</h5>
+                    <button type="button" id="btnClose" onclick="closeDetail()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-left">
                     <div class="row text-left">
                         <div class="col-md-12">
+                            <input type="hidden" id="suppId" name="suppId">
+                            <input type="hidden" id="idDownload" name="idDownload">
+                            <input type="hidden" id="suppdocs" name="suppdocs">
+
                             {{--
-                            <button class="btn btn-primary" type="submit" id="eticket">E-Ticket</button>
-                            <button class="btn btn-primary" type="submit" id="visa">Visa</button>   
-                            <button class="btn btn-primary" type="submit" id="passport">Passport</button>
-                            <button class="btn btn-primary" type="submit" id="payreceipt">Pay Receipt</button>
+                            <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
+                            <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
+                            <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
+                            <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
+                            <input type="hidden" id="suppId" name="suppId">
+                            <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">E-Ticket</button>
+                            <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Visa</button>
+                            <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Passport</button>
+                            <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Pay Receipt</button>
                             --}}
-                            <table>
-                                <tbody width="100%">
-                                    <tr>
-                                        <td width="50%">Document Passport</td>
-                                        <td width="10%"></td>
-                                        <td width="20%"><button class="btn btn-primary" type="submit" id="passport">Upload</button></td>
-                                        <td width="20%"><button class="btn btn-primary" type="submit" id="passport">Download</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Document E-Ticket</td>
-                                        <td></td>
-                                        <td><button class="btn btn-primary" type="submit" id="passport">Upload</button></td>
-                                        <td><button class="btn btn-primary" type="submit" id="passport">Download</button></td>
-                                    </tr>    
-                                    <tr>
-                                        <td>Document E-Visa</td>
-                                        <td></td>
-                                        <td><button class="btn btn-primary" type="submit" id="passport">Upload</button></td>
-                                        <td><button class="btn btn-primary" type="submit" id="passport">Download</button></td>
-                                    </tr>  
-                                    <tr>
-                                        <td>Document Payment Receipt</td>
-                                        <td></td>
-                                        <td><button class="btn btn-primary" type="submit" id="passport">Upload</button></td>
-                                        <td><button class="btn btn-primary" type="submit" id="passport">Download</button></td>
-                                    </tr> 
-                                    <tr>
-                                        <td colspan="4">&nbsp;</td>
-                                    </tr>                                                                                                       
-                                </tbody>
+
+                            <table border="0" width="100%" id="tableUploadDownload">
+                                <tr>
+                                    <td width="50%">Document Passport</td>
+                                    <td width="25%">
+                                        <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Upload</button>
+                                    </td>    
+                                    <td width="25%" id="passportdownload">
+                                        {{--
+                                        @if($uploads->supp_doc)
+                                            @if(str_contains("P", $uploads->supp_doc))
+                                                <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'passport' ]) }}" class="btn btn-success" id="passportDown">Download</a>
+                                            @endif
+                                        @endif
+                                        --}}
+                                    </td> 
+                                </tr>  
+                                <tr>
+                                    <td>Document E-Ticket</td>
+                                    <td>
+                                        <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Upload</button>
+                                    </td>    
+                                    <td id="eticketdownload">
+                                        {{--
+                                            @if($uploads->supp_doc)
+                                                @if(str_contains("T", $uploads->supp_doc))
+                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'eticket' ]) }}" class="btn btn-success" id="eticketDown">Download</a>
+                                                @endif
+                                            @endif
+                                        --}}
+                                    </td> 
+                                </tr>       
+                                <tr>
+                                    <td>Document E-Visa</td>
+                                    <td>
+                                        <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Upload</button>
+                                    </td>    
+                                    <td id="visadownload">
+                                        {{--
+                                            @if($uploads->supp_doc)
+                                                @if(str_contains("V", $uploads->supp_doc))
+                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'visa' ]) }}" class="btn btn-success" id="visaDown">Download</a>
+                                                @endif
+                                            @endif
+                                        --}}
+                                    </td> 
+                                </tr>       
+                                <tr>
+                                    <td>Payment Receipt</td>
+                                    <td>
+                                        <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Upload</button>
+                                    </td>    
+                                    <td id="payreceiptdownload">
+                                        {{--
+                                            @if($uploads->supp_doc)
+                                                @if(str_contains("R", $uploads->supp_doc))
+                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'visa' ]) }}" class="btn btn-success" id="payreceiptDown">Download</a>
+                                                @endif
+                                            @endif
+                                        --}}
+                                    </td> 
+                                </tr>                                                                                         
+                                <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                </tr>                                                                  
                             </table>
                         </div>
                     </div>
-                    {{-- <form action="{{ route('post_edit_ta_name') }}" id="form_edit_ta" method="POST">
-                        @csrf
-                        <input type="text" class="form-control" id="ta_name" name="ta_name">
-                        <input type="hidden" class="form-control" id="ta_id" name="ta_id">
-                        <br>
-                        <button class="btn btn-primary" name="submit" type="submit" id="edit_ta_submit">Submit</button>
-                    </form> --}}
                 </div>
             </div>
         </div>
@@ -204,6 +246,134 @@
         function openUploadDoc(id) {
             $('#showSuppDoc').modal('show');
         }
+
+        function closeDetail() {
+            //alert("close");
+            location.reload();
+        }
+
+        function openDetail (id, docs) {
+            $("#suppId").val(id);
+            $("#suppdocs").val(docs);
+            
+            if (docs.includes('P')) {
+                $('#passportdownload').html('<a href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#passportdownload').html('');
+            }
+
+            if (docs.includes('T')) {
+                $('#eticketdownload').html('<a href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#eticketdownload').html('');
+            }
+
+            if (docs.includes('V')) {
+                $('#visadownload').html('<a href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#visadownload').html('');
+            }
+
+            if (docs.includes('R')) {
+                $('#payreceiptdownload').html('<a href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#payreceiptdownload').html('');
+            }
+
+            $('#showSuppDoc').modal('show');
+        }
+
+        function chooseSupDoc (type) {
+            if (type == 'eticket') {
+                $("#eticket_file").trigger("click");
+            } else if (type == 'visa') {
+                $("#visa_file").trigger("click");
+            } else if (type == 'passport') {
+                $("#passport_file").trigger("click");
+            } else if (type == 'payreceipt') {
+                $("#payreceipt_file").trigger("click");
+            }
+        }
+
+        $("#eticket_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#eticket_file")[0].files[0]);
+            form_data.append("type", 'eticket');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("E-Ticket Docs - " + data.Data)
+                    //location.reload()
+                }
+            });
+        });
+
+        $("#visa_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#visa_file")[0].files[0]);
+            form_data.append("type", 'visa');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("E-Visa Docs - " + data.Data)
+                    //location.reload()
+                }
+            });
+        });
+
+        $("#passport_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#passport_file")[0].files[0]);
+            form_data.append("type", 'passport');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("Passport Docs - " + data.Data)
+                    //location.reload()
+                }
+            });
+        });
+
+        $("#payreceipt_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#payreceipt_file")[0].files[0]);
+            form_data.append("type", 'payreceipt');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("Payment Receipt - " + data.Data);
+                    //location.reload()
+                }
+            });
+        });
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

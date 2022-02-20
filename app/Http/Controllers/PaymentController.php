@@ -626,7 +626,7 @@ class PaymentController extends Controller
     }
 
     public function ecert_all ($id) {
-        $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
+        $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->get();
 
         if ($order) ini_set('max_execution_time', '500');
 
