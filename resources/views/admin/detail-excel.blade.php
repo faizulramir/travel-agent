@@ -216,6 +216,7 @@
                         <div class="col-md-12">
                             <input type="hidden" id="suppId" name="suppId">
                             <input type="hidden" id="idDownload" name="idDownload">
+                            
                             {{--
                             <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
                             <input type="file" name="visa_file_name" id="visa_file" style="display: none;">

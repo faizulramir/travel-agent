@@ -137,8 +137,7 @@
     <div class="row">
         <div class="col-xl-12">
             <div class="row">
-                {{-- <h4 class="card-title mb-4"></h4> --}}
-                <div class="col-md-3">
+            <div class="col-md-3">
                     <div class="card mini-stats-wid">
                         <div class="card-body">
                             <div class="media">
@@ -161,15 +160,24 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                {{--
+                </div>                
                 <div class="col-md-3">
                     <div class="card mini-stats-wid">
                         <div class="card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <p class="text-muted fw-medium">DIY Individu Request</p>
-                                    <h4 class="mb-0">{{ $diy_uploads }}</h4>
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="40%">
+                                            <p class="text-muted fw-medium">ECARE LITE</p>
+                                            <h4 class="mb-0">{{ $tot_lite }}</h4>
+                                            </td>
+                                            <td width="40%">
+                                            <p class="text-muted fw-medium">ECARE BASIC</p>
+                                            <h4 class="mb-0">{{ $tot_basic }}</h4>
+                                            </td>                                                                                      
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -180,17 +188,97 @@
                         <div class="card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <p class="text-muted fw-medium">All Request</p>
-                                    <h4 class="mb-0">{{count($total_uploads)}}</h4>
+                                <table width="100%">
+                                        <tr>
+                                            <td width="40%">
+                                            <p class="text-muted fw-medium">PCR</p>
+                                            <h4 class="mb-0">{{ $tot_pcr }}</h4>
+                                            </td>
+                                            <td width="40%">
+                                            <p class="text-muted fw-medium">TPA</p>
+                                            <h4 class="mb-0">{{ $tot_tpa }}</h4>
+                                            </td>                                                                                    
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                --}}
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">Amount Invoiced</p>
+                                    <h4 class="mb-0">RM {{ number_format((float)$amt_inv, 2, '.', ',') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">Amount Paid</p>
+                                    <h4 class="mb-0">RM {{ number_format((float)$amt_pay, 2, '.', ',') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="40%">
+                                            <p class="text-muted fw-medium">ECARE STANDARD</p>
+                                            <h4 class="mb-0">{{ $tot_standard }}</h4>
+                                            </td>
+                                            <td width="40%">
+                                            <p class="text-muted fw-medium">ECARE PREMIUM</p>
+                                            <h4 class="mb-0">{{ $tot_premium }}</h4>
+                                            </td>                                                                                        
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                <table width="100%">
+                                        <tr>
+                                            <td width="100%">
+                                            <p class="text-muted fw-medium">TOTAL JEMAAH</p>
+                                            <h4 class="mb-0">{{ $tot_jemaah }}</h4>
+                                            </td>                                                                                     
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                              
+            </div>
+        </div>
+    </div>    
     @endif
 
     @if (auth()->user()->hasAnyRole('akc', 'fin'))

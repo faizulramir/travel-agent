@@ -81,7 +81,7 @@
                                             &nbsp;&nbsp;  
                                             @if($upload->status != '0' && $upload->status != '2')
                                                 <a href="#" class="waves-effect" style="color: black;">
-                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
+                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
                                                 </a>
                                             @endif
                                             {{--<a href="#" class="waves-effect" style="color: blue;">
@@ -493,6 +493,11 @@
         </div>
     </div>
 
+    @php
+        $select_doc = 0;
+        $select_supp = null;
+    @endphp
+
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -505,6 +510,7 @@
                         <div class="col-md-12">
                             <input type="hidden" id="suppId" name="suppId">
                             <input type="hidden" id="idDownload" name="idDownload">
+                            <input type="hidden" id="suppdocs" name="suppdocs">
 
                             {{--
                             <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
@@ -587,8 +593,6 @@
                                     <td colspan="3">&nbsp;</td>
                                 </tr>                                                                  
                             </table>
-                            
-
                         </div>
                     </div>
                 </div>
@@ -766,9 +770,13 @@
             //location.reload();
         }
 
-        function openDetail (id) {
+        function openDetail (id, docs) {
             $('#showSuppDoc').modal('show');
             $("#suppId").val(id);
+            $("#suppdocs").val(docs);
+            console.log("docs id=", $("#suppId").val());
+            console.log("supp_doc=", $("#suppdocs").val());
+
             // $(document).ready(function() {
             //     var supp_id = id;
             //     $("#add_supp_doc" + id).val(null);
