@@ -821,23 +821,30 @@ class AdminController extends Controller
 
     public function supp_doc_download_admin($id, $type)
     {
+        //dd($id, $type);
         $uploads = FileUpload::where('id', $id)->first();
+        //dd($uploads);
+
         $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$type;
+        //dd($directory);
+
         $files = Storage::allFiles($directory);
-        // dd($files[0]);
+        //dd($files[0]);
+
+
         if (empty($files)) {
             
         } else {
-            $files = collect(Storage::allFiles($directory))
+            $files = collect(Storage::allFiles($directory));
                         //->filter(function ($file) {
                         //    return in_array($file->getExtension(), ['png', 'gif', 'jpg']);
                         //})
-                        ->sortByDesc(function ($file) {
-                            return $file->getCTime();
+                        // ->sortByDesc(function ($file) {
+                        //     return $file->getCTime();
                         //})
                         //->map(function ($file) {
                         //    return $file->getBaseName();
-                        });
+                        //});
             return Storage::download($files[0]);
         }
     }

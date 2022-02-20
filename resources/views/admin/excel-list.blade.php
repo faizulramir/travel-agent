@@ -78,10 +78,12 @@
                                             @else
                                                 <span>UPLOADED</span>
                                             @endif
-                                            &nbsp;&nbsp;                                            
-                                            <a href="#" class="waves-effect" style="color: black;">
-                                                <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
-                                            </a>
+                                            &nbsp;&nbsp;  
+                                            @if($upload->status != '0' && $upload->status != '2')
+                                                <a href="#" class="waves-effect" style="color: black;">
+                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
+                                                </a>
+                                            @endif
                                             {{--<a href="#" class="waves-effect" style="color: blue;">
                                                 <i onclick="downloadDetail({{$upload->id}})" class="bx bxs-cloud-download font-size-24" title="Download Supporting Documents"></i>
                                             </a>--}}
@@ -502,6 +504,8 @@
                     <div class="row text-left">
                         <div class="col-md-12">
                             <input type="hidden" id="suppId" name="suppId">
+                            <input type="hidden" id="idDownload" name="idDownload">
+
                             {{--
                             <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
                             <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
@@ -523,8 +527,11 @@
                                     </td>    
                                     <td width="25%">
                                         {{--
-                                        <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
-                                        <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Download</button>
+                                        @if($uploads->supp_doc)
+                                            @if(str_contains("P", $uploads->supp_doc))
+                                                <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'passport' ]) }}" class="btn btn-success" id="passportDown">Download</a>
+                                            @endif
+                                        @endif
                                         --}}
                                     </td> 
                                 </tr>  
@@ -536,8 +543,11 @@
                                     </td>    
                                     <td>
                                         {{--
-                                        <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
-                                        <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Download</button>
+                                            @if($uploads->supp_doc)
+                                                @if(str_contains("T", $uploads->supp_doc))
+                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'eticket' ]) }}" class="btn btn-success" id="eticketDown">Download</a>
+                                                @endif
+                                            @endif
                                         --}}
                                     </td> 
                                 </tr>       
@@ -549,8 +559,11 @@
                                     </td>    
                                     <td>
                                         {{--
-                                        <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
-                                        <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Download</button>
+                                            @if($uploads->supp_doc)
+                                                @if(str_contains("V", $uploads->supp_doc))
+                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'visa' ]) }}" class="btn btn-success" id="visaDown">Download</a>
+                                                @endif
+                                            @endif
                                         --}}
                                     </td> 
                                 </tr>       
@@ -562,8 +575,11 @@
                                     </td>    
                                     <td>
                                         {{--
-                                        <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
-                                        <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Download</button>
+                                            @if($uploads->supp_doc)
+                                                @if(str_contains("R", $uploads->supp_doc))
+                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'visa' ]) }}" class="btn btn-success" id="payreceiptDown">Download</a>
+                                                @endif
+                                            @endif
                                         --}}
                                     </td> 
                                 </tr>                                                                                         
