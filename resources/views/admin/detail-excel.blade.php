@@ -93,22 +93,19 @@
                         </div>
                     @endif
                     <div class="row">
-                        <div class="col-md-6" style="text-align: left;">
+                        <div class="col-md-3" style="text-align: left;">
                             <a href="{{ route('excel_list_admin') }}" class="btn btn-primary w-md">
                                 <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
                             </a>
                         </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-4 text-right">
-                            <h4 class="card-title">Travel Agent Name: {{ $uploads->ta_name? strtoupper($uploads->ta_name) : $uploads->ta_name }}</h4>
-                            <h4 class="card-title">Filename: {{ $uploads->file_name? strtoupper($uploads->file_name) : $uploads->file_name }}</h4>
-                            <h4 class="card-title">Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : 'Not Uploaded' :  'Not Uploaded' }}</h4>
-                            <h4 class="card-title">Payment: {{ $payment ? 'PAID' : '-' }}</h4>
-                        </div>
-                        
-                        <div class="col-md-8" style="text-align: right;">
+                        <div class="col-md-3 text-right">
+                            <h6>Travel Agent Name: {{ $uploads->ta_name? strtoupper($uploads->ta_name) : $uploads->ta_name }}</h6>
+                            <h6>Filename: {{ $uploads->file_name? strtoupper($uploads->file_name) : $uploads->file_name }}</h6>
+                            <h6>Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : 'Not Uploaded' :  'Not Uploaded' }}</h6>
+                            <h6>Payment: {{ $payment ? 'PAID' : '-' }}</h6>
+                        </div>   
+                        <div class="col-md-6" style="text-align: right;">
+                            <br>
                             {{--
                             @if ($uploads->status === '5')
                                 <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_cert_no" onclick="editEcertNumber({{$uploads->id}})">Edit Ecert Number</a>
@@ -122,8 +119,12 @@
                                 <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
                                 <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
                             @endif
-                        </div>
+                        </div>                        
                         
+                    </div>
+                    <br>
+                    <div class="row">
+
                     </div>
                     <br>
                     <div>

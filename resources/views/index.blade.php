@@ -169,11 +169,11 @@
                                     <table width="100%">
                                         <tr>
                                             <td width="40%">
-                                            <p class="text-muted fw-medium">ECARE LITE</p>
+                                            <p class="text-muted fw-medium">LITE</p>
                                             <h4 class="mb-0">{{ $tot_lite }}</h4>
                                             </td>
                                             <td width="40%">
-                                            <p class="text-muted fw-medium">ECARE BASIC</p>
+                                            <p class="text-muted fw-medium">BASIC</p>
                                             <h4 class="mb-0">{{ $tot_basic }}</h4>
                                             </td>                                                                                      
                                         </tr>
@@ -244,11 +244,11 @@
                                     <table width="100%">
                                         <tr>
                                             <td width="40%">
-                                            <p class="text-muted fw-medium">ECARE STANDARD</p>
+                                            <p class="text-muted fw-medium">STANDARD</p>
                                             <h4 class="mb-0">{{ $tot_standard }}</h4>
                                             </td>
                                             <td width="40%">
-                                            <p class="text-muted fw-medium">ECARE PREMIUM</p>
+                                            <p class="text-muted fw-medium">PREMIUM</p>
                                             <h4 class="mb-0">{{ $tot_premium }}</h4>
                                             </td>                                                                                        
                                         </tr>

@@ -40,15 +40,15 @@
                         <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th data-priority="0">#</th>
-                                    <th data-priority="1">Requester</th>
-                                    <th data-priority="1">Filename</th>
-                                    <th data-priority="1">Jemaah</th>
-                                    <th data-priority="1">Submission Date</th>
-                                    <th data-priority="3">Supp. Docs</th>
-                                    <th data-priority="1">Payment</th>
-                                    <th data-priority="1">Status</th>
-                                    <th data-priority="1">Action</th>
+                                <th data-priority="0" width="5%">#</th>
+                                <th data-priority="3" width="10%">Requester</th>
+                                <th data-priority="1" width="10%">Filename</th>
+                                <th data-priority="3" width="5%">Jemaah</th>
+                                <th data-priority="1" width="10%">Submission</th>
+                                <th data-priority="3" width="10%">Supp. Docs</th>
+                                <th data-priority="1" width="10%">Payment</th>
+                                <th data-priority="1">Status</th>
+                                <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,15 +78,6 @@
                                             @else
                                                 <span>UPLOADED</span>
                                             @endif
-                                            &nbsp;&nbsp;  
-                                            @if($upload->status != '0' && $upload->status != '2')
-                                                <a href="#" class="waves-effect" style="color: black;">
-                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
-                                                </a>
-                                            @endif
-                                            {{--<a href="#" class="waves-effect" style="color: blue;">
-                                                <i onclick="downloadDetail({{$upload->id}})" class="bx bxs-cloud-download font-size-24" title="Download Supporting Documents"></i>
-                                            </a>--}}
                                         </td>
                                         <td>
                                             @if($upload->status == '3')
@@ -148,14 +139,14 @@
                                             @endif
 
                                             <a href="{{ route('download_excel', $upload->id) }}" class="waves-effect" style="color: blue;">
-                                                <i class="bx bxs-cloud-download font-size-24" title="Download Excel"></i>
+                                                <i class="bx bxs-cloud-download font-size-24" title="Download Original Excel"></i>
                                             </a>
 
-                                            {{-- @if($upload->supp_doc && $upload->supp_doc == '1')
-                                            <a href="{{ route('download_supp_doc', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: blue;">
-                                                <i class="bx bxs-cloud-download font-size-24" title="Download Supporting Documents"></i>
-                                            </a>
-                                            @endif --}}
+                                            @if($upload->status != '0' && $upload->status != '2')
+                                                <a href="#" class="waves-effect" style="color: black;">
+                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
+                                                </a>
+                                            @endif
 
                                             @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
                                                 <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
@@ -176,16 +167,15 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th data-priority="0"></th>
-                                    <th data-priority="1"></th>
-                                    <th data-priority="1"></th>
-                                    <th data-priority="1"></th>
-                                    {{--<th data-priority="3"></th>--}}
-                                    <th data-priority="3"></th>
-                                    <th data-priority="3"></th>
-                                    <th data-priority="3"></th>
-                                    <th data-priority="1"></th>
-                                    <th data-priority="1"></th>
+                                <th data-priority="0"></th>
+                                <th data-priority="3"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="3"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="3"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="3"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -246,16 +236,16 @@
                                 <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100">
                                     <thead>
                                         <tr>
-                                        <th data-priority="0">#</th>
-                                        <th data-priority="1">Requester</th>
-                                        <th data-priority="1">Filename</th>
-                                        <th data-priority="1">Jemaah</th>
-                                        <th data-priority="1">Submission Date</th>
-                                        <th data-priority="3">Supp. Docs</th>
-                                        <th data-priority="1">Payment</th>
+                                        <th data-priority="0" width="5%">#</th>
+                                        <th data-priority="3" width="10%">Requester</th>
+                                        <th data-priority="1" width="10%">Filename</th>
+                                        <th data-priority="3" width="5%">Jemaah</th>
+                                        <th data-priority="1" width="10%">Submission</th>
+                                        <th data-priority="3" width="10%">Supp. Docs</th>
+                                        <th data-priority="1" width="10%">Payment</th>
                                         <th data-priority="1">Status</th>
-                                        <th data-priority="1">Action</th>
-                                    </tr>
+                                        <th data-priority="3">Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                 @php
@@ -282,16 +272,11 @@
                                              @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
                                                 <span>-</span>
                                             @else 
-                                            @if ($upload->supp_doc == null)
+                                                @if ($upload->supp_doc == null)
                                                     <span>Not Uploaded</span>
                                                 @else
                                                     <span>UPLOADED</span>
                                                 @endif
-                                                &nbsp;&nbsp;
-                                                <a href="#" class="waves-effect" style="color: black;">
-                                                    <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
-                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
-                                                </a>
                                             @endif
                                         </td>
                                         <td>
@@ -356,6 +341,10 @@
                                             <a href="{{ route('download_excel', $upload->id) }}" class="waves-effect" style="color: blue;">
                                                 <i class="bx bxs-cloud-download font-size-24" title="Download Excel"></i>
                                             </a>
+                                            <a href="#" class="waves-effect" style="color: black;">
+                                                <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
+                                                <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
+                                            </a>
 
                                             {{-- @if($upload->supp_doc && $upload->supp_doc == '1')
                                             <a href="{{ route('download_supp_doc', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: blue;">
@@ -382,18 +371,18 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th data-priority="0"></th>
-                                    <th data-priority="1"></th>
-                                    <th data-priority="1"></th>
-                                    <th data-priority="1"></th>
-                                    <th data-priority="3"></th>
-                                    <th data-priority="3"></th>
-                                    <th data-priority="3"></th>
-                                    <th data-priority="1"></th>
-                                    <th data-priority="1"></th>
+                                <th data-priority="0"></th>
+                                <th data-priority="3"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="3"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="3"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="3"></th>
                                 </tr>
                             </tfoot>
-                                </table>
+                        </table>
                             </div>
 
                         </div>
@@ -499,10 +488,10 @@
     @endphp
 
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Supporting Documents AKC ADM</h5>
+                    <h5 class="modal-title" id="modalTitle">Supporting Documents</h5>
                     <button type="button" id="btnClose" onclick="closeDetail()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-left">
@@ -526,12 +515,12 @@
 
                             <table border="0" width="100%" id="tableUploadDownload">
                                 <tr>
-                                    <td width="50%">Document Passport</td>
-                                    <td width="25%">
+                                    <td width="30%">Document Passport</td>
+                                    <td width="20%">
                                         <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Upload</button>
                                     </td>    
-                                    <td width="25%" id="passportdownload">
+                                    <td width="45%" id="passportdownload">
                                         {{--
                                         @if($uploads->supp_doc)
                                             @if(str_contains("P", $uploads->supp_doc))
@@ -539,6 +528,11 @@
                                             @endif
                                         @endif
                                         --}}
+
+                                        @if($suppdoc_arr[0])
+                                            <a target="_blank" href="{{ '/supp_doc_download_admin/'.$suppdoc_arr[0]['id'].'/passport' }}" class="btnX btn-successX">{{ $suppdoc_arr[0]['fname'] }}</a>
+                                            &nbsp;&nbsp;
+                                        @endif
                                     </td> 
                                 </tr>  
                                 <tr>
@@ -555,6 +549,11 @@
                                                 @endif
                                             @endif
                                         --}}
+
+                                        @if($suppdoc_arr[1])
+                                            <a target="_blank" href="{{ '/supp_doc_download_admin/'.$suppdoc_arr[1]['id'].'/passport' }}" class="btnX btn-successX" type="submit">{{ $suppdoc_arr[1]['fname'] }}</a>
+                                            &nbsp;&nbsp;
+                                        @endif                                      
                                     </td> 
                                 </tr>       
                                 <tr>
@@ -571,6 +570,11 @@
                                                 @endif
                                             @endif
                                         --}}
+                                        
+                                        @if($suppdoc_arr[2])
+                                            <a target="_blank" href="{{ '/supp_doc_download_admin/'.$suppdoc_arr[2]['id'].'/passport' }}" class="btnX btn-successX" type="submit">{{ $suppdoc_arr[2]['fname'] }}</a>
+                                            &nbsp;&nbsp;
+                                        @endif
                                     </td> 
                                 </tr>       
                                 <tr>
@@ -587,6 +591,11 @@
                                                 @endif
                                             @endif
                                         --}}
+                                        
+                                        @if($suppdoc_arr[3])
+                                            <a target="_blank" href="{{ '/supp_doc_download_admin/'.$suppdoc_arr[3]['id'].'/passport' }}" class="btnX btn-successX" type="submit">{{ $suppdoc_arr[3]['fname'] }}</a>
+                                            &nbsp;&nbsp;
+                                        @endif
                                     </td> 
                                 </tr>                                                                                         
                                 <tr>
@@ -775,27 +784,27 @@
             $("#suppdocs").val(docs);
             
             if (docs.includes('P')) {
-                $('#passportdownload').html('<a href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">Download</a>');
+                //$('#passportdownload').html('<a target="_blank" href="{{ asset("storage/1/supp_doc/134/passport/merged.pdf") }}" class="btn btn-success" type="submit">Download</a>');
             } else {
-                $('#passportdownload').html('');
+                //$('#passportdownload').html('');
             }
 
             if (docs.includes('T')) {
-                $('#eticketdownload').html('<a href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">Download</a>');
+                //$('#eticketdownload').html('<a href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">Download</a>');
             } else {
-                $('#eticketdownload').html('');
+                //$('#eticketdownload').html('');
             }
 
             if (docs.includes('V')) {
-                $('#visadownload').html('<a href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">Download</a>');
+                //$('#visadownload').html('<a href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">Download</a>');
             } else {
-                $('#visadownload').html('');
+                //$('#visadownload').html('');
             }
 
             if (docs.includes('R')) {
-                $('#payreceiptdownload').html('<a href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">Download</a>');
+                //$('#payreceiptdownload').html('<a href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">Download</a>');
             } else {
-                $('#payreceiptdownload').html('');
+                //$('#payreceiptdownload').html('');
             }
 
             $('#showSuppDoc').modal('show');

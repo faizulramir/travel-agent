@@ -40,20 +40,20 @@
                         <h4 class="card-title">Invoice Summary</h4>
                         <br>
                         <div class="row">
-                            <div class="col-md-12">
-                                <label for="plan">File Name: {{ $uploads->file_name }}</label>
-                            </div>
+                            <div class="col-md-3">
+                                <label for="plan">Travel Agent Name: {{ $uploads->ta_name }}</label> 
+                            </div>  
+                            <div class="col-md-4">
+                                <label for="plan">Filename: {{ $uploads->file_name }}</label>        
+                            </div>                              
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Invoice No:</label>
+                                <label for="plan">Invoice No: </label>
                             </div>
                             <div class="col-md-4">
                                 <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
-                            </div>   
-                            <div class="col-md-3">
-                                <label for="plan">Travel Agent Name: {{ $uploads->ta_name }}</label>                                
-                            </div>  
+                            </div>    
                         </div>
                         <br><br>
                         

@@ -214,6 +214,8 @@ class AdminController extends Controller
 
         //include number of records count
         $rec_count_arr = array();
+        $suppdoc_arr = array();
+
         if ($uploads) {
             foreach ($uploads as $upload) {
                 //echo "<span style='color:black'>file=".$upload->id."</span><br>";
@@ -223,11 +225,105 @@ class AdminController extends Controller
                     $count = count($orders);
                 }
                 array_push($rec_count_arr, $count); //prepare costing for each record
+                
+                //fuad: get the supp_doc data
+                if ($upload->supp_doc) {
+                    $flink = null;
+                    $fname = null;
+                    //dd($uploads, $upload, $upload->supp_doc, stripos($upload->supp_doc, 'P'));
+                    if (stripos($upload->supp_doc, 'P') >=0 ) {
+
+                        $directory = '/'.$upload->user_id.'/supp_doc/'.$upload->id.'/passport';
+                        $files = Storage::allFiles($directory);
+                        $url = Storage::url($files[0]);
+                        //dd($files, $url);
+
+                        if (empty($files)) { 
+                            array_push($suppdoc_arr, null);
+                        } 
+                        else {
+                            $files = collect(Storage::allFiles($directory));
+                            $flink = $files[0];
+                            $fname = str_ireplace($upload->user_id.'/supp_doc/'.$upload->id.'/passport'.'/', '', $flink);
+                            $tmpArr = array (
+                                'id' => $upload->id,
+                                'fname' => $fname,
+                                'flink' => $flink,
+                            );
+                            array_push($suppdoc_arr, $tmpArr);
+                        }
+                    }
+                    //dd($directory, $flink, $fname, $suppdoc_arr);
+
+                    $flink = null;
+                    $fname = null;
+                    if (stripos($upload->supp_doc, 'T') >=0 ) {
+                        $directory = '/'.$upload->user_id.'/supp_doc/'.$upload->id.'/eticket';
+                        $files = Storage::allFiles($directory);
+                        if (empty($files)) { 
+                            array_push($suppdoc_arr, null);
+                        } 
+                        else {
+                            $files = collect(Storage::allFiles($directory));
+                            $flink = $files[0];
+                            $fname = str_ireplace($upload->user_id.'/supp_doc/'.$upload->id.'/eticket'.'/', '', $flink);
+                            $tmpArr = array (
+                                'id' => $upload->id,
+                                'fname' => $fname,
+                                'flink' => $flink,
+                            );
+                            array_push($suppdoc_arr, $tmpArr);
+                        }
+                    }
+
+                    $flink = null;
+                    $fname = null;
+                    if (stripos($upload->supp_doc, 'V') >=0 ) {
+                        $directory = '/'.$upload->user_id.'/supp_doc/'.$upload->id.'/visa';
+                        $files = Storage::allFiles($directory);
+                        if (empty($files)) { 
+                            array_push($suppdoc_arr, null);
+                        } 
+                        else {
+                            $files = collect(Storage::allFiles($directory));
+                            $flink = $files[0];
+                            $fname = str_ireplace($upload->user_id.'/supp_doc/'.$upload->id.'/visa'.'/', '', $flink);
+                            $tmpArr = array (
+                                'id' => $upload->id,
+                                'fname' => $fname,
+                                'flink' => $flink,
+                            );
+                            array_push($suppdoc_arr, $tmpArr);
+                        }
+                    }
+
+                    $flink = null;
+                    $fname = null;
+                    if (stripos($upload->supp_doc, 'R') >=0 ) {
+                        $directory = '/'.$upload->user_id.'/supp_doc/'.$upload->id.'/payreceipt';
+                        $files = Storage::allFiles($directory);
+                        if (empty($files)) { 
+                            array_push($suppdoc_arr, null);
+                        } 
+                        else {
+                            $files = collect(Storage::allFiles($directory));
+                            $flink = $files[0];
+                            $fname = str_ireplace($upload->user_id.'/supp_doc/'.$upload->id.'/payreceipt'.'/', '', $flink);
+                            $tmpArr = array (
+                                'id' => $upload->id,
+                                'fname' => $fname,
+                                'flink' => $flink,
+                            );
+                            array_push($suppdoc_arr, $tmpArr);
+                        }
+                    }
+                }
             }
         }
         //dd($rec_count_arr);
+        //dd($suppdoc_arr);
 
-        return view('admin.excel-list', compact('uploads', 'users', 'rec_count_arr'));
+        return view('admin.excel-list', compact('uploads', 'users', 'rec_count_arr', 'suppdoc_arr'));
     }
 
     public function excel_detail_admin($id)
@@ -846,8 +942,24 @@ class AdminController extends Controller
                         //->map(function ($file) {
                         //    return $file->getBaseName();
                         //});
-            return Storage::download($files[0]);
+            //return Storage::download($files[0]);
+            //dd($files[0]);
+
+            return Response::make($files[0], 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'."XXX".'"'
+                ]);
         }
+
+
+        // $filename = 'test.pdf';
+        // $path = storage_path($filename);
+        
+        // return Response::make(file_get_contents($path), 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        // ]);
+
     }
     
     public function jemaah_set ($id, $status) {

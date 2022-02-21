@@ -65,12 +65,6 @@
                                             @else
                                                 <span>UPLOADED</span>
                                             @endif
-                                            &nbsp;&nbsp;  
-                                            @if($upload->status != '0' && $upload->status != '2')
-                                                <a href="#" class="waves-effect" style="color: black;">
-                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
-                                                </a>
-                                            @endif
                                         </td>
                                         <td>{{ $upload->status == '5' || $upload->status == '4' ? 'PAID' : 'UNPAID' }}</td>
                                         <td>
@@ -80,6 +74,8 @@
                                                 ENDORSED
                                             @elseif ($upload->status == '2.1')
                                                 Pending (Invoice) Endorsement
+                                            @else 
+                                                -
                                             @endif
                                         </td>
                                         <td>
@@ -103,6 +99,12 @@
                                                     <i class="bx bx-food-menu font-size-24" title="Show Payslip/Receipt"></i>
                                                 </a>
                                             @endif --}}
+
+                                            @if($upload->status != '0' && $upload->status != '2')
+                                                <a href="#" class="waves-effect" style="color: black;">
+                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
+                                                </a>
+                                            @endif
 
                                             <a href="{{ route('excel_detail_finance', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
                                                     <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
