@@ -782,49 +782,54 @@
         function openDetail (id, docs) {
             $("#suppId").val(id);
             $("#suppdocs").val(docs);
+            if (docs) {
+                $.ajax({
+                    url: '/supp_doc_check/' + id + '/' + docs,
+                    type: 'GET',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var objp = data.Data.find(o => o['passport']);
+                        var obje = data.Data.find(o => o['eticket']);
+                        var objv = data.Data.find(o => o['visa']);
+                        var objr = data.Data.find(o => o['payreceipt']);
+                        console.log(objv);
+                        if (docs.includes('P')) {
+                            $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">'+ objp.passport +'</a>');
+                        } else {
+                            $('#passportdownload').html('');
+                        }
 
-            console.log(docs);
+                        if (docs.includes('T')) {
+                            $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">'+ obje.eticket +'</a>');
+                        } else {
+                            $('#eticketdownload').html('');
+                        }
+
+                        if (docs.includes('V')) {
+                            $('#visadownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">'+ objv.visa +'</a>');
+                        } else {
+                            $('#visadownload').html('');
+                        }
+
+                        if (docs.includes('R')) {
+                            $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">'+ objr.payreceipt +'</a>');
+                        } else {
+                            $('#payreceiptdownload').html('');
+                        }
+
+                        $('#showSuppDoc').modal('show');
+                    }
+                });
+            } else {
+                $('#passportdownload').html('');
+                $('#eticketdownload').html('');
+                $('#visadownload').html('');
+                $('#payreceiptdownload').html('');
+                $('#showSuppDoc').modal('show');
+            }
             
-            $.ajax({
-                url: '/supp_doc_check/' + id + '/' + docs,
-                type: 'GET',
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    console.log(data.Data)
-                    var objp = data.Data.find(o => o['passport']);
-                    var obje = data.Data.find(o => o['eticket']);
-                    var objv = data.Data.find(o => o['visa']);
-                    var objr = data.Data.find(o => o['payreceipt']);
-                    console.log(objv);
-                    if (docs.includes('P')) {
-                        $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">'+ objp.passport +'</a>');
-                    } else {
-                        $('#passportdownload').html('');
-                    }
-
-                    if (docs.includes('T')) {
-                        $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">'+ obje.eticket +'</a>');
-                    } else {
-                        $('#eticketdownload').html('');
-                    }
-
-                    if (docs.includes('V')) {
-                        $('#visadownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">'+ objv.visa +'</a>');
-                    } else {
-                        $('#visadownload').html('');
-                    }
-
-                    if (docs.includes('R')) {
-                        $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">'+ objr.payreceipt +'</a>');
-                    } else {
-                        $('#payreceiptdownload').html('');
-                    }
-
-                    $('#showSuppDoc').modal('show');
-                }
-            });
         }
 
         $("#add_button").click(function () {
