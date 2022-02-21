@@ -944,11 +944,12 @@ class AdminController extends Controller
                         //});
             //return Storage::download($files[0]);
             //dd($files[0]);
+            $ext = pathinfo($files[0], PATHINFO_EXTENSION);
+            if ($ext = 'pdf') {
+                return response()->file(Storage::path($files[0]));
+            }
 
-            return Response::make($files[0], 200, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="'."XXX".'"'
-                ]);
+            return Storage::download($files[0]);
         }
 
 
@@ -962,7 +963,49 @@ class AdminController extends Controller
 
     }
     
-    public function jemaah_set ($id, $status) {
+    public function supp_doc_check ($id, $type) {
+        $uploads = FileUpload::where('id', $id)->first();
+        
+        if ($uploads->supp_doc !== null) {
+            $fileArr = array();
+            $typeArr = array();
+            if (str_contains($type, 'P')) {
+                $folderType = 'passport';
+                array_push($typeArr, $folderType);
+            }
+            
+            if (str_contains($type, 'T')) {
+                $folderType = 'eticket';
+                array_push($typeArr, $folderType);
+            } 
+            
+            if (str_contains($type, 'V')) {
+                $folderType = 'visa';
+                array_push($typeArr, $folderType);
+            } 
+            
+            if (str_contains($type, 'R')) {
+                $folderType = 'payreceipt';
+                array_push($typeArr, $folderType);
+            }
 
+            foreach ($typeArr as $key => $arr) {
+                $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$arr;
+                $files = Storage::allFiles($directory);
+                if (!empty($files)) {
+                    $tempArr = array(
+                        $arr => basename($files[0])
+                    );
+                    array_push($fileArr, $tempArr);
+                }
+            }
+            
+            return response()->json([
+                'isSuccess' => true,
+                'Data' => $fileArr
+            ], 200); // Status code here
+        }
+        
+        
     }
 }
