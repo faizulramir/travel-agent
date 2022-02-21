@@ -69,7 +69,8 @@
                             <div class="col-md-3">
 
                                 <label for="disc">Total</label>
-                                <input class="form-control" type="text" name="tempTotal" id="tempTotal" value="{{ number_format((float)$tot_inv + (float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
+                                <input class="form-control" type="text" name="tempTotal2" id="tempTotal2" value="{{ number_format((float)$tot_inv + (float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
+                                <input class="form-control" type="hidden" name="tempTotal" id="tempTotal" value="{{ number_format((float)$tot_ecert + (float)$uploads->discount, 2, '.', ',') }}">
                                 <br>
 
                                 <label for="disc">ECare Discount</label>

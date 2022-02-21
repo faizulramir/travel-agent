@@ -141,7 +141,7 @@
                                                 </a>
                                             @endif
 
-                                            @if($upload->status == '2' || $upload->status == '2.1')
+                                            @if($upload->status == '2' || $upload->status == '2.1' || $upload->status == '3')
                                                 <a href="{{ route('delete_excel_ta', $upload->id)}}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
                                                     <i class="bx bx-trash-alt font-size-24" title="Delete Excel"></i>
                                                 </a>
@@ -902,6 +902,7 @@
         function BindTable(jsondata, tableid) {/*Function used to convert the JSON array to Html Table*/
             var rowCount = 0;
             var columns = BindTableHeader(jsondata, tableid); /*Gets all the column headings of Excel*/
+            console.log(jsondata)
             for (var i = 0; i < jsondata.length; i++) {
                 var row$ = $('<tr/>');
                 /*

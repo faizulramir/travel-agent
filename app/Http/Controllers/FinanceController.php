@@ -237,7 +237,7 @@ class FinanceController extends Controller
         }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
         $tot_inv = $tot_inv - $uploads->discount;
-
+        
         $invoice_num = null;
         if ($orders && $orders[0]) {
             $invoice_num = $orders[0]->invoice;
@@ -245,7 +245,7 @@ class FinanceController extends Controller
 
         //dd($orders[0]);
 
-        return view('finance.payment', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail', 'invoice_num'));
+        return view('finance.payment', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail', 'invoice_num', 'tot_ecert'));
     }
 
     public function endorse_payment(Request $request, $id)
