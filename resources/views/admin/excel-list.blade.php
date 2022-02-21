@@ -782,6 +782,9 @@
         function openDetail (id, docs) {
             $("#suppId").val(id);
             $("#suppdocs").val(docs);
+
+            console.log(docs);
+            
             $.ajax({
                 url: '/supp_doc_check/' + id + '/' + docs,
                 type: 'GET',

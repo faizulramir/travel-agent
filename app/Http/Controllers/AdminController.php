@@ -973,6 +973,8 @@ class AdminController extends Controller
     
     public function supp_doc_check ($id, $type) {
         $uploads = FileUpload::where('id', $id)->first();
+
+        //dd($id, $type);
         
         if ($uploads->supp_doc !== null) {
             $fileArr = array();
