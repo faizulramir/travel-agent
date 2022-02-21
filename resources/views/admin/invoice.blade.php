@@ -37,13 +37,13 @@
                         </div>
                         <br>
                         --}}
+                        <h4 class="card-title">Invoice Summary</h4>
+                        <br>
                         <div class="row">
                             <div class="col-md-12">
                                 <label for="plan">File Name: {{ $uploads->file_name }}</label>
                             </div>
                         </div>
-                        <h4 class="card-title">Invoice Summary</h4>
-                        <br>
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="plan">Invoice No:</label>
