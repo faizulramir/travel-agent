@@ -924,7 +924,7 @@ class AdminController extends Controller
         ], 200); // Status code here
     }
 
-    public function supp_doc_download_admin($id, $type)
+    public function supp_doc_download_admin(Request $req, $id, $type)
     {
         //dd($id, $type);
         $uploads = FileUpload::where('id', $id)->first();
@@ -934,14 +934,16 @@ class AdminController extends Controller
         //dd($directory);
 
         $files = Storage::allFiles($directory);
-        //dd($files[0]);
-
+        //dd($files[0], basename($files[0]));
 
         if (!empty($files)) {
             $files = collect(Storage::allFiles($directory));
             $ext = pathinfo($files[0], PATHINFO_EXTENSION);
-            if ($ext == 'pdf') {
-                return response()->file(Storage::path($files[0]));
+            //dd($ext);
+            if ($ext == 'pdf' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
+                //header('Content-disposition','attachment; filename="test"');
+                return response()->file(Storage::path($files[0]), [ 'Content-Disposition' => 'filename="'.basename($files[0]).'"' ]);
+    
             }
             return Storage::download($files[0]);
         }
@@ -950,7 +952,6 @@ class AdminController extends Controller
     
     public function supp_doc_check ($id, $type) {
         $uploads = FileUpload::where('id', $id)->first();
-
         //dd($id, $type);
         
         if ($uploads->supp_doc !== null) {

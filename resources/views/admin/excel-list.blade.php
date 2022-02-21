@@ -799,25 +799,25 @@
                         var objr = data.Data.find(o => o['payreceipt']);
                         console.log(objv);
                         if (docs.includes('P')) {
-                            $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">'+ objp.passport +'</a>');
+                            $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/passport" type="submit">'+ objp.passport +'</a>');
                         } else {
                             $('#passportdownload').html('');
                         }
 
                         if (docs.includes('T')) {
-                            $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">'+ obje.eticket +'</a>');
+                            $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/eticket" type="submit">'+ obje.eticket +'</a>');
                         } else {
                             $('#eticketdownload').html('');
                         }
 
                         if (docs.includes('V')) {
-                            $('#visadownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">'+ objv.visa +'</a>');
+                            $('#visadownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/visa" type="submit">'+ objv.visa +'</a>');
                         } else {
                             $('#visadownload').html('');
                         }
 
                         if (docs.includes('R')) {
-                            $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">'+ objr.payreceipt +'</a>');
+                            $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" type="submit">'+ objr.payreceipt +'</a>');
                         } else {
                             $('#payreceiptdownload').html('');
                         }
