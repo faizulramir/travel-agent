@@ -136,8 +136,8 @@
                             <div class="col-lg-4">
                                 <label for="jemaah_status">Status</label>
                                 <select id="jemaah_status" name="jemaah_status" class="form-control select2-search-disable" required>
-                                    <option value="0" {{ $jemaah->status == '0' ? 'selected' : ''}}>CANCELLED</option>
                                     <option value="1" {{ $jemaah->status == '1' ? 'selected' : ''}}>OK</option>
+                                    <option value="0" {{ $jemaah->status == '0' ? 'selected' : ''}}>CANCELLATION</option>
                                     <option value="2" {{ $jemaah->status == '2' ? 'selected' : ''}}>UNBOARDING</option>
                                     <option value="3" {{ $jemaah->status == '3' ? 'selected' : ''}}>RESCHEDULE</option>
                                 </select>
