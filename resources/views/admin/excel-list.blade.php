@@ -870,12 +870,13 @@
                         sheet_name_list.forEach(function (y) { /*Iterate through all sheets*/
                             /*Convert the cell value to Json*/
                             if (xlsxflag) {
-                                var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                                var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y],{defval:""});
                             }
                             else {
                                 var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);
                             }
                             if (exceljson.length > 0 && cnt == 0) {
+                                console.log(exceljson)
                                 BindTable(exceljson, '#exceltable');
                                 cnt++;
                             }
@@ -913,7 +914,7 @@
                     row$.append($('<td/>').html(cellValue));
                 }
                 */
-                if (jsondata[i][columns[0]] == null) {}
+                if (jsondata[i][columns[0]] == "") {}
                 else {
                     for (var colIndex = 0; colIndex < 13; colIndex++) {
                         if (colIndex!=4 && colIndex!=5 && colIndex!=6 && colIndex!=8) {
