@@ -865,6 +865,7 @@
                     var reader = new FileReader();
                     reader.onload = function (e) {
                         var data = e.target.result;
+                        //console.log("data= ", data);
                         /*Converts the excel data in to object*/
                         if (xlsxflag) {
                             var workbook = XLSX.read(data, { type: 'binary' });
@@ -931,6 +932,15 @@
                             if (cellValue == null) cellValue = "";
                             else {
                                 if (colIndex==9 || colIndex==10) {
+                                    // var datatype = typeof cellValue;
+                                    // if (datatype=='string') {
+                                    //     let tempdate = '' + cellValue;
+                                    //     tempdate = tempdate.replaceAll("/", "-");
+                                    //     console.log('tempdate= ', tempdate);
+                                    //     var ddate = Date.parse('2022-02-24');
+                                    //     console.log('ddate= ', ddate);
+                                    // }
+                                    // console.log("cellValue= ", cellValue, '  typeof=', typeof cellValue);
                                     //console.log(i, colIndex,jsondata[i][columns[colIndex]]);
                                     //console.log(new Date(Math.round((cellValue - 25569)*86400*1000)));
                                     cellValue = ExcelDateToJSDate(cellValue);

@@ -40,6 +40,9 @@ class AdminController extends Controller
         $uploads = FileUpload::where('id', $id)->first();
         $pay = Payment::where('file_id', $id)->first();
 
+        $invoice_num = '';
+        //dd($uploads);
+
         $tot_rec = 0;
         $orders = Order::where([['file_id', '=' ,$id],['status', '1']])->get();
         $tot_rec = count($orders);
@@ -61,6 +64,9 @@ class AdminController extends Controller
         $tpa_cnt = 0;
         $price_pcr = Plan::where([['name', '=' , 'pcr']])->pluck('price')->first();
         foreach ($orders as $order) {
+
+            $invoice_num = $order->invoice;
+            //dd($order);
 
             if ($order->plan_type!=null && $order->plan_type!='' && $order->plan_type != 'NO') {
                 $date1 = date_create($order->dep_date);
@@ -202,7 +208,9 @@ class AdminController extends Controller
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
         $tot_inv = $tot_inv - $uploads->discount;
 
-        return view('admin.invoice', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail'));
+        //dd($invoice_num);
+
+        return view('admin.invoice', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail', 'invoice_num'));
     }
 
     public function excel_list_admin()
