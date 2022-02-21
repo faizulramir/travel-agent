@@ -36,6 +36,11 @@
                         </div>
                         --}}
                         <div class="row">
+                            <div class="col-md-12">
+                                <label for="plan">File Name: {{ $uploads->file_name }}</label>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-3">
                                 <label for="plan">Invoice No: {{ $invoice_num }}</label>
                             </div>

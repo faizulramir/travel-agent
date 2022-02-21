@@ -23,6 +23,11 @@
                         <h4 class="card-title">Invoice Summary FIN</h4>
                         <br>
                         <div class="row">
+                            <div class="col-md-12">
+                                <label for="plan">File Name: {{ $uploads->file_name }}</label>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-3">
                                 <label for="plan">Invoice No: {{ $invoice_num }}</label>
                             </div>
@@ -90,7 +95,7 @@
                                 <br>
 
                                 <label for="plan">Payment Total</label>
-                                <input class="form-control" type="text" name="pay_total" value="RM {{ number_format((float)$tot_inv, 2, '.', ',') }}" required readonly="readonly">
+                                <input class="form-control" type="text" name="pay_total" id="pay_total" value="RM {{ number_format((float)$tot_inv, 2, '.', ',') }}" required readonly="readonly">
                                 <br>
 
                                 @if(isset($pay))
@@ -180,16 +185,24 @@
     <script>
         $("#percent_disc").change(function() {
             var percent = $("#percent_disc").val();
-            var subtotal = $("#tempTotal").val().replace(",", "");;
+            var subtotal = $("#tempTotal").val().replace(",", "");
             var total = percent / 100 * subtotal;
-            //console.log(total)
-            $("#discount").val(total);
 
-            var formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-            let currency = formatter.format(total).replace("$", "").replace(" ", "");
-            //console.log("Formatter: " + currency);
-            $("#discount").val(currency);
+            if (percent != '0') {
+                //console.log(total)
+                $("#discount").val(total);
 
+                var formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+                let currency = formatter.format(total).replace("$", "").replace(" ", "");
+                let currencySub = formatter.format($("#tempTotal2").val().replace(",", "") - total).replace("$", "").replace(" ", "");
+                //console.log("Formatter: " + currency);
+                $("#discount").val(currency);
+                $("#pay_total").val('RM ' + (currencySub));
+            } else {
+                $("#discount").val('0.00');
+                $("#pay_total").val('RM ' + $("#tempTotal2").val());
+            }
+            
         });
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
