@@ -122,6 +122,7 @@
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
                                 </tr>
                             </tfoot>
                         </table>
