@@ -937,9 +937,7 @@ class AdminController extends Controller
         //dd($files[0]);
 
 
-        if (empty($files)) {
-            
-        } else {
+        if (!empty($files)) {
             $files = collect(Storage::allFiles($directory));
                         //->filter(function ($file) {
                         //    return in_array($file->getExtension(), ['png', 'gif', 'jpg']);
@@ -953,7 +951,8 @@ class AdminController extends Controller
             //return Storage::download($files[0]);
             //dd($files[0]);
             $ext = pathinfo($files[0], PATHINFO_EXTENSION);
-            if ($ext = 'pdf') {
+            
+            if ($ext == 'pdf') {
                 return response()->file(Storage::path($files[0]));
             }
 
