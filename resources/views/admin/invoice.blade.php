@@ -123,9 +123,11 @@
                                 @if ($uploads->json_inv && $uploads->json_inv!=null && $uploads->json_inv!='')
                                 <div class="col-md-12">
                                     <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">Download Invoice</a>
+                                    @if ($uploads->status == '3')
+                                        <a href="#" id="cancel_invoice" class="btn btn-warning waves-effect waves-light">Cancel Invoice</a>
+                                    @endif
                                 </div>
                                 @endif
-
                             </div>
 
                             <div class="col-md-1"></div>
@@ -194,4 +196,18 @@
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
+        $('#cancel_invoice').click(function() {
+            alert("Confirm to Cancel this Invoice ?");
+        });
+
+    </script>
+    
 @endsection

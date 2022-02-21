@@ -55,7 +55,7 @@
                                     <th>#</th>
                                     <th data-priority="1">Filename</th>
                                     <th data-priority="3">Upload Date</th>
-                                    <th data-priority="1">Submission Date</th>
+                                    <th data-priority="1">Submission</th>
                                     <th data-priority="1">Supp. Docs</th>
                                     <th data-priority="1">Payment</th>
                                     <th data-priority="1">Status</th>
@@ -78,11 +78,6 @@
                                                 @else
                                                     <span>UPLOADED</span>
                                                 @endif
-                                                &nbsp;&nbsp;
-                                                <a href="#" class="waves-effect" style="color: black;">
-                                                    <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
-                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
-                                                </a>
                                             @endif
                                         </td>
                                         <td>
@@ -161,6 +156,11 @@
                                                 </a>
                                             @endif
                                             --}}
+
+                                            <a href="#" class="waves-effect" style="color: black;">
+                                                <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
+                                                <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
+                                            </a>
                                             
                                             @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
                                                 <a href="{{ route('excel_detail_ta', $upload->id) }}" class="waves-effect" style="color:#ed2994;">

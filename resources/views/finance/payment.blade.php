@@ -168,6 +168,9 @@
                                     <br>
                                     {{-- <input type="hidden" value="{{ $id }}" name="id"> --}}
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">Confirm Invoice Endorsement</button>
+                                    @if($uploads->status == '2.1')
+                                        <a href="#" id="reject_data" class="btn btn-warning waves-effect waves-light">Reject Invoice Endorsement</a>
+                                    @endif
                                     <a href="{{ route('excel_list_finance') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
 
                                 </div>
@@ -183,6 +186,13 @@
 @endsection
 @section('script')
     <script>
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $("#percent_disc").change(function() {
             var percent = $("#percent_disc").val();
             var subtotal = $("#tempTotal").val().replace(",", "");
@@ -202,8 +212,12 @@
                 $("#discount").val('0.00');
                 $("#pay_total").val('RM ' + $("#tempTotal2").val());
             }
-            
         });
+        
+        $('#reject_data').click(function() {
+            alert("Confirm to Reject Invoice Endorsement ?");
+        });
+
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
