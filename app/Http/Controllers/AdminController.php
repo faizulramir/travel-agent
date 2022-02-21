@@ -931,34 +931,12 @@ class AdminController extends Controller
 
         if (!empty($files)) {
             $files = collect(Storage::allFiles($directory));
-                        //->filter(function ($file) {
-                        //    return in_array($file->getExtension(), ['png', 'gif', 'jpg']);
-                        //})
-                        // ->sortByDesc(function ($file) {
-                        //     return $file->getCTime();
-                        //})
-                        //->map(function ($file) {
-                        //    return $file->getBaseName();
-                        //});
-            //return Storage::download($files[0]);
-            //dd($files[0]);
             $ext = pathinfo($files[0], PATHINFO_EXTENSION);
-            
             if ($ext == 'pdf') {
                 return response()->file(Storage::path($files[0]));
             }
-
             return Storage::download($files[0]);
         }
-
-
-        // $filename = 'test.pdf';
-        // $path = storage_path($filename);
-        
-        // return Response::make(file_get_contents($path), 200, [
-        //     'Content-Type' => 'application/pdf',
-        //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
-        // ]);
 
     }
     
