@@ -93,6 +93,10 @@
                                                 Pending AKC Approval
                                             @elseif ($upload->status == '2.1')
                                                 <p>Pending AKC (Invoice) </p>
+                                            @elseif ($upload->status == '2.2')
+                                                <p>Rejected Invoice</p>
+                                            @elseif ($upload->status == '2.3')
+                                                <p>Cancelled Invoice</p>
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
@@ -106,6 +110,20 @@
                                         <td>
                                             @if ($upload->status == '2')
                                                 <a href="{{ route('update_excel_status_admin', [$upload->id, '2.1']) }}" class="waves-effect" style="color: green;">
+                                                    <i class="bx bx-paper-plane font-size-24" title="Approve" onclick="return confirm('Do you really want to APPROVE?');"></i>
+                                                </a>
+                                                <a href="{{ route('update_excel_status_admin', [$upload->id, '99']) }}" class="waves-effect" style="color: red;">
+                                                    <i class="bx bx-no-entry font-size-24" title="Reject" onclick="return confirm('Do you really want to REJECT?');"></i>
+                                                </a>
+                                            @elseif ($upload->status == '2.2')
+                                                <a href="{{ route('update_excel_status_admin', [$upload->id, '2.2']) }}" class="waves-effect" style="color: green;">
+                                                    <i class="bx bx-paper-plane font-size-24" title="Approve" onclick="return confirm('Do you really want to APPROVE?');"></i>
+                                                </a>
+                                                <a href="{{ route('update_excel_status_admin', [$upload->id, '99']) }}" class="waves-effect" style="color: red;">
+                                                    <i class="bx bx-no-entry font-size-24" title="Reject" onclick="return confirm('Do you really want to REJECT?');"></i>
+                                                </a>
+                                            @elseif ($upload->status == '2.3')
+                                                <a href="{{ route('update_excel_status_admin', [$upload->id, '2.3']) }}" class="waves-effect" style="color: green;">
                                                     <i class="bx bx-paper-plane font-size-24" title="Approve" onclick="return confirm('Do you really want to APPROVE?');"></i>
                                                 </a>
                                                 <a href="{{ route('update_excel_status_admin', [$upload->id, '99']) }}" class="waves-effect" style="color: red;">

@@ -169,7 +169,7 @@
                                     {{-- <input type="hidden" value="{{ $id }}" name="id"> --}}
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">Confirm Invoice Endorsement</button>
                                     @if($uploads->status == '2.1')
-                                        <a href="#" id="reject_data" class="btn btn-warning waves-effect waves-light">Reject Invoice Endorsement</a>
+                                        <a href="{{ route('invoice_reject', $uploads->id) }}" id="reject_data" class="btn btn-warning waves-effect waves-light">Reject Invoice Endorsement</a>
                                     @endif
                                     <a href="{{ route('excel_list_finance') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
 

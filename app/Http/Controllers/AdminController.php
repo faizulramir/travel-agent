@@ -491,63 +491,69 @@ class AdminController extends Controller
     public function update_excel_status_admin($id, $status)
     {
         $uploads = FileUpload::where('id', $id)->first();
-        $uploads->status = $status;
-        $uploads->save();
+        if ($status == '2.2') {
+            $uploads->status = '2.1';
+        } else if ($status == '2.3') {
+            $uploads->status = '2.1';
+        } else {
+            $uploads->status = $status;
 
-        if ($uploads->file_name) {
-            $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
-            $inputFileName = $url;
-            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($url);
-            $spreadsheet = $spreadsheet->getActiveSheet();
-            $data_array =  $spreadsheet->toArray();
-            unset($data_array[0]);
-
-            //filter only available entry - checking row number availability
-            $data_array = \Arr::where($data_array, function ($value, $key) {
-                return $value[0]!=null && $value[0]!='';
-            });
-            //print_r($data_array);
-            //die();
-
-            $dt = Carbon::now();
-            $orderdate = $dt->toDateString();
-            $orderdate = explode('-', $orderdate);
-            $year  = $orderdate[0];
-            $month = $orderdate[1];
-
-            // dd($data_array);
-            foreach ($data_array as $i => $json) {
-                $order = new Order;
-                $order->name = $json[1];
-                $order->passport_no = $json[2];
-                $order->ic_no = $json[3];
-                $order->dob = $json[4];
-                $order->ex_illness = $json[5];
-                $order->hp_no = $json[6];
-                $order->plan_type = $json[7];
-                $order->email = $json[8];
-                $order->dep_date = $json[9];
-                $order->return_date = $json[10];
-                $order->user_id = $uploads->user_id;
-                $order->file_id = $uploads->id;
-                // $order->ecert = $uploads->id;
-                $order->invoice = $uploads->id;
-                $order->pcr_date = $json[10];
-                $order->pcr_result = null;
-                $order->pcr = $json[11];
-                $order->tpa = $json[12];
-
-                $order->save();
-
-                $orders = Order::where('id', '=' ,$order->id)->first();
-                // $orders->ecert = 'A'.$year.$orders->id;
-                
-                //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
-                $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
-
-                $orders->save();
+            if ($uploads->file_name) {
+                $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
+                $inputFileName = $url;
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($url);
+                $spreadsheet = $spreadsheet->getActiveSheet();
+                $data_array =  $spreadsheet->toArray();
+                unset($data_array[0]);
+    
+                //filter only available entry - checking row number availability
+                $data_array = \Arr::where($data_array, function ($value, $key) {
+                    return $value[0]!=null && $value[0]!='';
+                });
+                //print_r($data_array);
+                //die();
+    
+                $dt = Carbon::now();
+                $orderdate = $dt->toDateString();
+                $orderdate = explode('-', $orderdate);
+                $year  = $orderdate[0];
+                $month = $orderdate[1];
+    
+                // dd($data_array);
+                foreach ($data_array as $i => $json) {
+                    $order = new Order;
+                    $order->name = $json[1];
+                    $order->passport_no = $json[2];
+                    $order->ic_no = $json[3];
+                    $order->dob = $json[4];
+                    $order->ex_illness = $json[5];
+                    $order->hp_no = $json[6];
+                    $order->plan_type = $json[7];
+                    $order->email = $json[8];
+                    $order->dep_date = $json[9];
+                    $order->return_date = $json[10];
+                    $order->user_id = $uploads->user_id;
+                    $order->file_id = $uploads->id;
+                    // $order->ecert = $uploads->id;
+                    $order->invoice = $uploads->id;
+                    $order->pcr_date = $json[10];
+                    $order->pcr_result = null;
+                    $order->pcr = $json[11];
+                    $order->tpa = $json[12];
+    
+                    $order->save();
+    
+                    $orders = Order::where('id', '=' ,$order->id)->first();
+                    // $orders->ecert = 'A'.$year.$orders->id;
+                    
+                    //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
+                    $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
+    
+                    $orders->save();
+                }
             }
         }
+        $uploads->save();
 
         if ($status == '99') {
             $body = 'Rejected';
@@ -939,7 +945,7 @@ class AdminController extends Controller
         if (!empty($files)) {
             $files = collect(Storage::allFiles($directory));
             $ext = pathinfo($files[0], PATHINFO_EXTENSION);
-            //dd($ext);
+            $ext = strtolower($ext);
             if ($ext == 'pdf' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
                 //header('Content-disposition','attachment; filename="test"');
                 return response()->file(Storage::path($files[0]), [ 'Content-Disposition' => 'filename="'.basename($files[0]).'"' ]);
@@ -993,7 +999,13 @@ class AdminController extends Controller
                 'Data' => $fileArr
             ], 200); // Status code here
         }
-        
-        
+    }
+
+    public function cancel_invoice ($id) {
+        $uploads = FileUpload::where('id', $id)->first();
+        $uploads->status = '2.3';
+        $uploads->save();
+
+        return redirect()->route('excel_list_admin');
     }
 }

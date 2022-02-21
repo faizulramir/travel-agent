@@ -124,7 +124,7 @@
                                 <div class="col-md-12">
                                     <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">Download Invoice</a>
                                     @if ($uploads->status == '3')
-                                        <a href="#" id="cancel_invoice" class="btn btn-warning waves-effect waves-light">Cancel Invoice</a>
+                                        <a href="{{ route('cancel_invoice', $uploads->id) }}" id="cancel_invoice" class="btn btn-warning waves-effect waves-light">Cancel Invoice</a>
                                     @endif
                                 </div>
                                 @endif

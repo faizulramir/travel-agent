@@ -29,6 +29,7 @@ Route::get('/payment_detail/{id}', [App\Http\Controllers\FinanceController::clas
 Route::post('/endorse_payment/{id}', [App\Http\Controllers\FinanceController::class, 'endorse_payment'])->name('endorse_payment');
 Route::get('/download_payment/{user_id}/{file_id}', [App\Http\Controllers\FinanceController::class, 'download_payment'])->name('download_payment');
 Route::get('/excel_detail_finance/{id}', [App\Http\Controllers\FinanceController::class, 'excel_detail_finance'])->name('excel_detail_finance');
+Route::get('/invoice/reject/{id}', [App\Http\Controllers\FinanceController::class, 'invoice_reject'])->name('invoice_reject');
 
 
 //payment
@@ -95,6 +96,7 @@ Route::post('/post_edit_cert_no', [App\Http\Controllers\AdminController::class, 
 Route::post('/supp_doc_post_admin', [App\Http\Controllers\AdminController::class, 'supp_doc_post_admin'])->name('supp_doc_post_admin');
 Route::get('/supp_doc_download_admin/{id}/{type}', [App\Http\Controllers\AdminController::class, 'supp_doc_download_admin'])->name('supp_doc_download_admin');
 Route::get('/supp_doc_check/{id}/{type}', [App\Http\Controllers\AdminController::class, 'supp_doc_check'])->name('supp_doc_check');
+Route::get('/invoice/cancel/{id}', [App\Http\Controllers\AdminController::class, 'cancel_invoice'])->name('cancel_invoice');
 
 //individu
 Route::get('/application', [App\Http\Controllers\IndividuController::class, 'application'])->name('application');
