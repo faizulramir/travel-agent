@@ -529,10 +529,10 @@
                                         @endif
                                         --}}
 
-                                        @if($suppdoc_arr[0])
+                                        {{-- @if($suppdoc_arr[0])
                                             <a target="_blank" href="{{ '/supp_doc_download_admin/'.$suppdoc_arr[0]['id'].'/passport' }}" class="btnX btn-successX">{{ $suppdoc_arr[0]['fname'] }}</a>
                                             &nbsp;&nbsp;
-                                        @endif
+                                        @endif --}}
                                     </td> 
                                 </tr>  
                                 <tr>
@@ -550,10 +550,10 @@
                                             @endif
                                         --}}
 
-                                        @if($suppdoc_arr[1])
+                                        {{-- @if($suppdoc_arr[1])
                                             <a target="_blank" href="{{ '/supp_doc_download_admin/'.$suppdoc_arr[1]['id'].'/passport' }}" class="btnX btn-successX" type="submit">{{ $suppdoc_arr[1]['fname'] }}</a>
                                             &nbsp;&nbsp;
-                                        @endif                                      
+                                        @endif                                       --}}
                                     </td> 
                                 </tr>       
                                 <tr>
@@ -571,10 +571,10 @@
                                             @endif
                                         --}}
                                         
-                                        @if($suppdoc_arr[2])
+                                        {{-- @if($suppdoc_arr[2])
                                             <a target="_blank" href="{{ '/supp_doc_download_admin/'.$suppdoc_arr[2]['id'].'/passport' }}" class="btnX btn-successX" type="submit">{{ $suppdoc_arr[2]['fname'] }}</a>
                                             &nbsp;&nbsp;
-                                        @endif
+                                        @endif --}}
                                     </td> 
                                 </tr>       
                                 <tr>
@@ -592,10 +592,10 @@
                                             @endif
                                         --}}
                                         
-                                        @if($suppdoc_arr[3])
+                                        {{-- @if($suppdoc_arr[3])
                                             <a target="_blank" href="{{ '/supp_doc_download_admin/'.$suppdoc_arr[3]['id'].'/passport' }}" class="btnX btn-successX" type="submit">{{ $suppdoc_arr[3]['fname'] }}</a>
                                             &nbsp;&nbsp;
-                                        @endif
+                                        @endif --}}
                                     </td> 
                                 </tr>                                                                                         
                                 <tr>
@@ -782,58 +782,46 @@
         function openDetail (id, docs) {
             $("#suppId").val(id);
             $("#suppdocs").val(docs);
-            
-            if (docs.includes('P')) {
-                //$('#passportdownload').html('<a target="_blank" href="{{ asset("storage/1/supp_doc/134/passport/merged.pdf") }}" class="btn btn-success" type="submit">Download</a>');
-            } else {
-                //$('#passportdownload').html('');
-            }
+            $.ajax({
+                url: '/supp_doc_check/' + id + '/' + docs,
+                type: 'GET',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log(data.Data)
+                    var objp = data.Data.find(o => o['passport']);
+                    var obje = data.Data.find(o => o['eticket']);
+                    var objv = data.Data.find(o => o['visa']);
+                    var objr = data.Data.find(o => o['payreceipt']);
+                    console.log(objv);
+                    if (docs.includes('P')) {
+                        $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">'+ objp.passport +'</a>');
+                    } else {
+                        $('#passportdownload').html('');
+                    }
 
-            if (docs.includes('T')) {
-                //$('#eticketdownload').html('<a href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">Download</a>');
-            } else {
-                //$('#eticketdownload').html('');
-            }
+                    if (docs.includes('T')) {
+                        $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">'+ obje.eticket +'</a>');
+                    } else {
+                        $('#eticketdownload').html('');
+                    }
 
-            if (docs.includes('V')) {
-                //$('#visadownload').html('<a href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">Download</a>');
-            } else {
-                //$('#visadownload').html('');
-            }
+                    if (docs.includes('V')) {
+                        $('#visadownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">'+ objv.visa +'</a>');
+                    } else {
+                        $('#visadownload').html('');
+                    }
 
-            if (docs.includes('R')) {
-                //$('#payreceiptdownload').html('<a href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">Download</a>');
-            } else {
-                //$('#payreceiptdownload').html('');
-            }
+                    if (docs.includes('R')) {
+                        $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">'+ objr.payreceipt +'</a>');
+                    } else {
+                        $('#payreceiptdownload').html('');
+                    }
 
-            $('#showSuppDoc').modal('show');
-
-            
-            // $(document).ready(function() {
-            //     var supp_id = id;
-            //     $("#add_supp_doc" + id).val(null);
-            //     $("#add_supp_doc" + id).trigger("click");
-
-            //     $("#add_supp_doc" + supp_id).change(function () {
-            //         var form_data = new FormData();
-            //         form_data.append("file", $("#add_supp_doc" + supp_id)[0].files[0]);
-            //         form_data.append("id", supp_id);
-            //         $.ajax({
-            //             url: '/supp_doc_post_admin',
-            //             type: 'POST',
-            //             data: form_data,
-            //             dataType: 'JSON',
-            //             cache: false,
-            //             contentType: false,
-            //             processData: false,
-            //             success: function (data) {
-            //                 alert(data.Data)
-            //                 location.reload()
-            //             }
-            //         });
-            //     });
-            // });
+                    $('#showSuppDoc').modal('show');
+                }
+            });
         }
 
         $("#add_button").click(function () {
