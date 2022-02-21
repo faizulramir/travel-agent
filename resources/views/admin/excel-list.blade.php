@@ -633,6 +633,9 @@
 @endsection
 
 @section('script')
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.min.js" integrity="sha512-BMIFH0QGwPdinbGu7AraCzG9T4hKEkcsbbr+Uqv8IY3G5+JTzs7ycfGbz7Xh85ONQsnHYrxZSXgS1Pdo9r7B6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.6/xls.min.js" integrity="sha512-Nqu6bagCq6Jp2ZhezdTFaomiZBZYVhzafGww9teXy1xsvhfpw1ZW3FlVqMazRfLKPVWucbeBXNY5MgO925fpoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
@@ -939,6 +942,7 @@
                                     // console.log("cellValue= ", cellValue, '  typeof=', typeof cellValue);
                                     //console.log(i, colIndex,jsondata[i][columns[colIndex]]);
                                     //console.log(new Date(Math.round((cellValue - 25569)*86400*1000)));
+                                    console.log(moment("05/22/2012", 'MM/DD/YYYY',true).isValid());
                                     cellValue = ExcelDateToJSDate(cellValue);
                                 }
                             }
