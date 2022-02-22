@@ -339,15 +339,14 @@ class AdminController extends Controller
         $orders = Order::where('file_id', $id)->get();
         $uploads = FileUpload::where('id', $id)->first();
         $payment = Payment::where('file_id', $id)->first();
+
         //--
         $additional_arr = array();
         foreach ($orders as $order) {
 
             if ($order->plan_type!=null && $order->plan_type!='' && $order->plan_type != 'NO') {
-            	$date1 = Carbon::createFromFormat('d/m/Y', $order->dep_date)->format('d-m-Y');
-            	$date2 = Carbon::createFromFormat('d/m/Y', $order->return_date)->format('d-m-Y');
-                $date1 = date_create($date1);
-                $date2 = date_create($date2);
+                $date1 = date_create($order->dep_date);
+                $date2 = date_create($order->return_date);
                 $diff = date_diff($date1, $date2);
 
                 $days = $diff->days;
