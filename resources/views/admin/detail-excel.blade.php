@@ -106,42 +106,36 @@
                         </div>   
                         <div class="col-md-6" style="text-align: right;">
                             <br>
-                            {{--
-                            @if ($uploads->status === '5')
-                                <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_cert_no" onclick="editEcertNumber({{$uploads->id}})">Edit Ecert Number</a>
-                            @endif
-                            --}}
 
+                            @if ($uploads->status != '99')
                             <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" id="edit_ta_name" onclick="editTaName({{$uploads->id}}, '{{$uploads->ta_name}}')">Edit Travel Agent Name</a>
+                            @endif
+
                             <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" onclick="openDetail({{$uploads->id}},'{{$uploads->supp_doc}}')">Supporting Documents</a>
 
-                            @if ($uploads->status === '5')
+                            @if ($uploads->status === '5' && $uploads->status != '99')
                                 <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
                                 <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
                             @endif
                         </div>                        
-                        
                     </div>
                     <br>
-                    <div class="row">
 
-                    </div>
-                    <br>
                     <div>
                         <table id="dtTable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="3">Passport No</th>
-                                    <th data-priority="1">IC No</th>
-                                    <th data-priority="1">DEP Date (DMY)</th>
-                                    <th data-priority="5">RTN Date (DMY)</th>
-                                    <th data-priority="1">Plan</th>
-                                    <th data-priority="3">PCR</th>
-                                    <th data-priority="3">TPA</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="10%">Name</th>
+                                    <th data-priority="1" width="10%">Passport No</th>
+                                    <th data-priority="3" width="10%">IC No</th>
+                                    <th data-priority="1" width="10%">DEP Date (DMY)</th>
+                                    <th data-priority="1" width="10%">RTN Date (DMY)</th>
+                                    <th data-priority="1">ECare Plan</th>
+                                    <th data-priority="1">PCR</th>
+                                    <th data-priority="1">TPA</th>
                                     @if ($uploads->status === '5')
-                                        <th data-priority="1">ECert</th>
+                                        <th data-priority="3">ECert</th>
                                     @endif                                          
                                     <th data-priority="3">Status</th>
                                 </tr>
@@ -168,38 +162,40 @@
                                             </td>                                            
                                         @endif
                                         <td>
-                                            @if ($order->status == '0')
-                                                <a href="#" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-dislike font-size-24" title="Traveller: CANCELLED"></i>
-                                                </a>
-                                                @elseif ($order->status == '1')
-                                                <a href="#" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
-                                                </a>
-                                            @elseif ($order->status == '2')
-                                                <a href="#" class="waves-effect" style="color: black;">
-                                                    <i class="bx bxs-plane-alt font-size-24" title="Traveller: UNBOARDING"></i>
-                                                </a>
-                                            @elseif ($order->status == '3')
-                                                <a href="#" class="waves-effect" style="color: blue;">
-                                                    <i class="bx bx-time-five font-size-24" title="Traveller: RESCHEDULE"></i>
-                                                </a>
-                                            @endif
-                                            @if ($payment && $order->upload->status == '5')
-                                                {{--<a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: black;" target="_blank">
-                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
-                                                </a>--}}
-                                                @if ($order->plan_type != 'NO' &&  $order->status == '1')
-                                                    <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
+                                            @if($uploads->status != '99')
+                                                @if ($order->status == '0')
+                                                    <a href="#" class="waves-effect" style="color: red;">
+                                                        <i class="bx bx-dislike font-size-24" title="Traveller: CANCELLED"></i>
                                                     </a>
-                                                @endif                                                
-                                            @endif
+                                                    @elseif ($order->status == '1')
+                                                    <a href="#" class="waves-effect" style="color: green;">
+                                                        <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
+                                                    </a>
+                                                @elseif ($order->status == '2')
+                                                    <a href="#" class="waves-effect" style="color: black;">
+                                                        <i class="bx bxs-plane-alt font-size-24" title="Traveller: UNBOARDING"></i>
+                                                    </a>
+                                                @elseif ($order->status == '3')
+                                                    <a href="#" class="waves-effect" style="color: blue;">
+                                                        <i class="bx bx-time-five font-size-24" title="Traveller: RESCHEDULE"></i>
+                                                    </a>
+                                                @endif
+                                                @if ($payment && $order->upload->status == '5')
+                                                    {{--<a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                                        <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                    </a>--}}
+                                                    @if ($order->plan_type != 'NO' &&  $order->status == '1')
+                                                        <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
+                                                            <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
+                                                        </a>
+                                                    @endif                                                
+                                                @endif
 
-                                            @if ($order->upload->status != '0')
-                                            <a href="{{ route('jemaah_show', $order->id) }}" class="waves-effect" style="color: black;">
-                                                <i class="bx bx-edit-alt font-size-24" title="Edit Record"></i>
-                                            </a>
+                                                @if ($order->upload->status != '0')
+                                                <a href="{{ route('jemaah_show', $order->id) }}" class="waves-effect" style="color: black;">
+                                                    <i class="bx bx-edit-alt font-size-24" title="Edit Record"></i>
+                                                </a>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>
@@ -214,10 +210,10 @@
 
 
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Supporting Documents AKC ADM</h5>
+                    <h5 class="modal-title" id="modalTitle">Supporting Documents</h5>
                     <button type="button" id="btnClose" onclick="closeDetail()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-left">
@@ -227,34 +223,14 @@
                             <input type="hidden" id="idDownload" name="idDownload">
                             <input type="hidden" id="suppdocs" name="suppdocs">
 
-                            {{--
-                            <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
-                            <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
-                            <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
-                            <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
-                            <input type="hidden" id="suppId" name="suppId">
-                            <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">E-Ticket</button>
-                            <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Visa</button>
-                            <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Passport</button>
-                            <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Pay Receipt</button>
-                            --}}
-
                             <table border="0" width="100%" id="tableUploadDownload">
                                 <tr>
-                                    <td width="50%">Document Passport</td>
-                                    <td width="25%">
+                                    <td width="30%">Document Passport</td>
+                                    <td width="20%">
                                         <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Upload</button>
                                     </td>    
-                                    <td width="25%" id="passportdownload">
-                                        {{--
-                                        @if($uploads->supp_doc)
-                                            @if(str_contains("P", $uploads->supp_doc))
-                                                <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'passport' ]) }}" class="btn btn-success" id="passportDown">Download</a>
-                                            @endif
-                                        @endif
-                                        --}}
-                                    </td> 
+                                    <td width="45%" id="passportdownload"></td> 
                                 </tr>  
                                 <tr>
                                     <td>Document E-Ticket</td>
@@ -262,15 +238,7 @@
                                         <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Upload</button>
                                     </td>    
-                                    <td id="eticketdownload">
-                                        {{--
-                                            @if($uploads->supp_doc)
-                                                @if(str_contains("T", $uploads->supp_doc))
-                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'eticket' ]) }}" class="btn btn-success" id="eticketDown">Download</a>
-                                                @endif
-                                            @endif
-                                        --}}
-                                    </td> 
+                                    <td id="eticketdownload"></td> 
                                 </tr>       
                                 <tr>
                                     <td>Document E-Visa</td>
@@ -278,15 +246,7 @@
                                         <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Upload</button>
                                     </td>    
-                                    <td id="visadownload">
-                                        {{--
-                                            @if($uploads->supp_doc)
-                                                @if(str_contains("V", $uploads->supp_doc))
-                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'visa' ]) }}" class="btn btn-success" id="visaDown">Download</a>
-                                                @endif
-                                            @endif
-                                        --}}
-                                    </td> 
+                                    <td id="visadownload"></td> 
                                 </tr>       
                                 <tr>
                                     <td>Payment Receipt</td>
@@ -294,15 +254,7 @@
                                         <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
                                         <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Upload</button>
                                     </td>    
-                                    <td id="payreceiptdownload">
-                                        {{--
-                                            @if($uploads->supp_doc)
-                                                @if(str_contains("R", $uploads->supp_doc))
-                                                    <a  href="{{ route('supp_doc_download_admin', [ $uploads->id, 'visa' ]) }}" class="btn btn-success" id="payreceiptDown">Download</a>
-                                                @endif
-                                            @endif
-                                        --}}
-                                    </td> 
+                                    <td id="payreceiptdownload"></td> 
                                 </tr>                                                                                         
                                 <tr>
                                     <td colspan="3">&nbsp;</td>
@@ -388,45 +340,6 @@
                 }
             }); 
         }
-
-        // function deleteAll (id) {
-        //     $.ajax({
-        //         url: '/delete_all_cert/' + id,
-        //         type: 'GET',
-        //         success: function (data) {
-        //             // $('#pleaseWaitDialog').modal('hide');
-        //         }
-        //     }); 
-        // }
-
-        // function openUploadDoc(id) {
-        //     $('#showSuppDoc').modal('show');
-        //     // $(document).ready(function() {
-        //     //     var supp_id = id;
-        //     //     $("#add_supp_doc" + id).val(null);
-        //     //     $("#add_supp_doc" + id).trigger("click");
-
-        //     //     $("#add_supp_doc" + supp_id).change(function () {
-        //     //         var form_data = new FormData();
-        //     //         form_data.append("file", $("#add_supp_doc" + supp_id)[0].files[0]);
-        //     //         form_data.append("id", supp_id);
-        //     //         $.ajax({
-        //     //             url: '/supp_doc_post_admin',
-        //     //             type: 'POST',
-        //     //             data: form_data,
-        //     //             dataType: 'JSON',
-        //     //             cache: false,
-        //     //             contentType: false,
-        //     //             processData: false,
-        //     //             success: function (data) {
-        //     //                 alert(data.Data)
-        //     //                 location.reload()
-        //     //             }
-        //     //         });
-        //     //     });
-        //     // });
-        // }
-
 
         function chooseSupDoc (type) {
             if (type == 'eticket') {
@@ -541,32 +454,54 @@
         function openDetail (id, docs) {
             $("#suppId").val(id);
             $("#suppdocs").val(docs);
-            
-            if (docs.includes('P')) {
-                $('#passportdownload').html('<a href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">Download</a>');
+            if (docs) {
+                $.ajax({
+                    url: '/supp_doc_check/' + id + '/' + docs,
+                    type: 'GET',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var objp = data.Data.find(o => o['passport']);
+                        var obje = data.Data.find(o => o['eticket']);
+                        var objv = data.Data.find(o => o['visa']);
+                        var objr = data.Data.find(o => o['payreceipt']);
+                        //console.log(objv);
+                        if (docs.includes('P') && objp!=null && objp!=undefined) {
+                            $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/passport" type="submit">'+ objp.passport +'</a>');
+                        } else {
+                            $('#passportdownload').html('');
+                        }
+
+                        if (docs.includes('T') && obje!=null && obje!=undefined) {
+                            $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/eticket" type="submit">'+ obje.eticket +'</a>');
+                        } else {
+                            $('#eticketdownload').html('');
+                        }
+
+                        if (docs.includes('V') && objv!=null && objv!=undefined) {
+                            $('#visadownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/visa" type="submit">'+ objv.visa +'</a>');
+                        } else {
+                            $('#visadownload').html('');
+                        }
+
+                        if (docs.includes('R') && objr!=null && objr!=undefined) {
+                            $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" type="submit">'+ objr.payreceipt +'</a>');
+                        } else {
+                            $('#payreceiptdownload').html('');
+                        }
+
+                        $('#showSuppDoc').modal('show');
+                    }
+                });
             } else {
                 $('#passportdownload').html('');
-            }
-
-            if (docs.includes('T')) {
-                $('#eticketdownload').html('<a href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">Download</a>');
-            } else {
                 $('#eticketdownload').html('');
-            }
-
-            if (docs.includes('V')) {
-                $('#visadownload').html('<a href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">Download</a>');
-            } else {
                 $('#visadownload').html('');
-            }
-
-            if (docs.includes('R')) {
-                $('#payreceiptdownload').html('<a href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">Download</a>');
-            } else {
                 $('#payreceiptdownload').html('');
+                $('#showSuppDoc').modal('show');
             }
-
-            $('#showSuppDoc').modal('show');
+            
         }
 
     </script>

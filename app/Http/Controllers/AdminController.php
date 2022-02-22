@@ -887,6 +887,13 @@ class AdminController extends Controller
         $uploads = FileUpload::where('id', request()->post('id'))->first();
         $collection = collect($request->all());
 
+        if ($uploads && $uploads->status == '99') {
+            return response()->json([
+                'isSuccess' => false,
+                'Data' => 'Upload not Allowed! Excel File Already Rejected.'
+            ], 200); // Status code here
+        }
+
         $file = $collection['file'];
         $filename = $file->getClientOriginalName();
 
@@ -896,13 +903,10 @@ class AdminController extends Controller
         catch(\Exception $ex) {
             //
         }
+
         $path = $collection['file']->storeAs(
             $uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$collection['type'], $filename
         );
-
-        //$uploads->status = '1';
-        //$uploads->supp_doc = '1';
-        //$uploads->save();
 
         $supp_doc = ''.($uploads->supp_doc && $uploads->supp_doc!=null? $uploads->supp_doc : '');
         $file_type = ''.($collection['type'] && $collection['type']!=null? strtoupper($collection['type']) : '');
@@ -953,7 +957,6 @@ class AdminController extends Controller
             }
             return Storage::download($files[0]);
         }
-
     }
     
     public function supp_doc_check ($id, $type) {

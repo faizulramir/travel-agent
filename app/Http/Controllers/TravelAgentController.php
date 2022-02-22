@@ -63,10 +63,17 @@ class TravelAgentController extends Controller
     public function update_detail_ta($id, $status)
     {
         $orders = Order::where('id', $id)->first();
-        $orders->status = $status;
+        $uploads = FileUpload::where('id', $orders->file_id)->first();
+        //dd($orders, $uploads);
 
-        $orders->save();
-
+        if ($uploads->status =='3' || $uploads->status =='4' || $uploads->status =='5') {
+            Session::flash('error', 'Update Traveller/Jemaah Status Not Allowed. Please check Payment status');
+        }
+        else {
+            $orders->status = $status;
+            $orders->save();
+        }
+        
         return redirect()->back();
     }
 
@@ -128,17 +135,27 @@ class TravelAgentController extends Controller
         $uploads = FileUpload::where('id', request()->post('id'))->first();
         $collection = collect($request->all());
 
+        if ($uploads && $uploads->status == '99') {
+            return response()->json([
+                'isSuccess' => false,
+                'Data' => 'Upload not Allowed! Excel File Already Rejected.'
+            ], 200); // Status code here
+        }
+
         $file = $collection['file'];
         $filename = $file->getClientOriginalName();
+
+        try {
+            Storage::deleteDirectory($uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$collection['type']);
+        }
+        catch(\Exception $ex) {
+            //
+        }
 
         $path = $collection['file']->storeAs(
             //Auth::id().'/supp_doc/'.$uploads->id, $filename
             Auth::id().'/supp_doc/'.$uploads->id.'/'.$collection['type'], $filename
         );
-
-        //$uploads->status = '1';
-        //$uploads->supp_doc = '1';
-        //$uploads->save();
 
         $supp_doc = ''.($uploads->supp_doc && $uploads->supp_doc!=null? $uploads->supp_doc : '');
         $file_type = ''.($collection['type'] && $collection['type']!=null? strtoupper($collection['type']) : '');
@@ -196,4 +213,76 @@ class TravelAgentController extends Controller
     {
         return Storage::download('/invoice/invoice.pdf');
     }
+
+    public function supp_doc_check_ta ($id, $type) {
+        $uploads = FileUpload::where('id', $id)->first();
+        //dd($id, $type);
+        
+        if ($uploads->supp_doc !== null) {
+            $fileArr = array();
+            $typeArr = array();
+            if (str_contains($type, 'P')) {
+                $folderType = 'passport';
+                array_push($typeArr, $folderType);
+            }
+            
+            if (str_contains($type, 'T')) {
+                $folderType = 'eticket';
+                array_push($typeArr, $folderType);
+            } 
+            
+            if (str_contains($type, 'V')) {
+                $folderType = 'visa';
+                array_push($typeArr, $folderType);
+            } 
+            
+            if (str_contains($type, 'R')) {
+                $folderType = 'payreceipt';
+                array_push($typeArr, $folderType);
+            }
+
+            foreach ($typeArr as $key => $arr) {
+                $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$arr;
+                $files = Storage::allFiles($directory);
+                if (!empty($files)) {
+                    $tempArr = array(
+                        $arr => basename($files[0])
+                    );
+                    array_push($fileArr, $tempArr);
+                }
+            }
+            
+            return response()->json([
+                'isSuccess' => true,
+                'Data' => $fileArr
+            ], 200); // Status code here
+        }
+    }
+
+    
+    public function supp_doc_download_ta(Request $req, $id, $type)
+    {
+        //dd($id, $type);
+        $uploads = FileUpload::where('id', $id)->first();
+        //dd($uploads);
+
+        $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$type;
+        //dd($directory);
+
+        $files = Storage::allFiles($directory);
+        //dd($files[0], basename($files[0]));
+
+        if (!empty($files)) {
+            $files = collect(Storage::allFiles($directory));
+            $ext = pathinfo($files[0], PATHINFO_EXTENSION);
+            $ext = strtolower($ext);
+            if ($ext == 'pdf' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
+                //header('Content-disposition','attachment; filename="test"');
+                return response()->file(Storage::path($files[0]), [ 'Content-Disposition' => 'filename="'.basename($files[0]).'"' ]);
+    
+            }
+            return Storage::download($files[0]);
+        }
+    }
+
 }

@@ -36,7 +36,10 @@
                         </div>
                         --}}
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-3">
+                                <label for="plan">Travel Agent Name: {{ $uploads->ta_name }}</label>                                
+                            </div>                             
+                            <div class="col-md-4">
                                 <label for="plan">File Name: {{ $uploads->file_name }}</label>
                             </div>
                         </div>
@@ -46,13 +49,8 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
-                            </div>   
-                            <div class="col-md-3">
-                                <label for="plan">Requester Name: {{ $uploads->ta_name }}</label>                                
-                            </div>  
+                            </div>    
                         </div>
-
-
 
                         <br>
                         <div class="row">
@@ -135,7 +133,7 @@
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">Make Payment</button>
                                 @endif
 
-                                <a href="{{ route('excel_list') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
+                                {{-- <a href="{{ route('excel_list') }}" class="btn btn-primary waves-effect waves-light">Cancel</a> --}}
 
                             </div>
                         </div>

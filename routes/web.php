@@ -20,8 +20,8 @@ Route::post('/ecert/post', [App\Http\Controllers\PublicController::class, 'post_
 Route::get('/download_cert_public/{order_id}', [App\Http\Controllers\PublicController::class, 'download_cert_public'])->name('download_cert_public');
 
 
-
 Auth::routes();
+
 
 //finance
 Route::get('/excel_list_finance', [App\Http\Controllers\FinanceController::class, 'excel_list_finance'])->name('excel_list_finance');
@@ -42,6 +42,7 @@ Route::get('/create_invoice/{order_id}', [App\Http\Controllers\PaymentController
 Route::get('/create_cert_ind/{order_id}', [App\Http\Controllers\PaymentController::class, 'create_cert_ind'])->name('create_cert_ind');
 Route::post('/submit_payment', [App\Http\Controllers\PaymentController::class, 'submit_payment'])->name('submit_payment');
 
+
 //travel agent
 Route::get('/excel_list', [App\Http\Controllers\TravelAgentController::class, 'excel_list'])->name('excel_list');
 Route::get('/excel_detail/{id}', [App\Http\Controllers\TravelAgentController::class, 'excel_detail'])->name('excel_detail');
@@ -51,6 +52,9 @@ Route::post('/submit_post_ta', [App\Http\Controllers\TravelAgentController::clas
 Route::get('/delete_excel_ta/{id}', [App\Http\Controllers\TravelAgentController::class, 'delete_excel_ta'])->name('delete_excel_ta');
 Route::get('/excel_detail_ta/{id}', [App\Http\Controllers\TravelAgentController::class, 'excel_detail_ta'])->name('excel_detail_ta');
 Route::get('/update_detail_ta/{id}/{status}', [App\Http\Controllers\TravelAgentController::class, 'update_detail_ta'])->name('update_detail_ta');
+Route::get('/supp_doc_check_ta/{id}/{type}', [App\Http\Controllers\TravelAgentController::class, 'supp_doc_check_ta'])->name('supp_doc_check_ta');
+Route::get('/supp_doc_download_ta/{id}/{type}', [App\Http\Controllers\TravelAgentController::class, 'supp_doc_download_ta'])->name('supp_doc_download_ta');
+
 
 //agent
 Route::get('/excel_list_agent', [App\Http\Controllers\AgentController::class, 'excel_list_agent'])->name('excel_list_agent');
@@ -62,6 +66,7 @@ Route::get('/download_invoice_agent', [App\Http\Controllers\AgentController::cla
 Route::get('/delete_excel_agent/{id}', [App\Http\Controllers\AgentController::class, 'delete_excel_agent'])->name('delete_excel_agent');
 Route::get('/excel_detail_agent/{id}', [App\Http\Controllers\AgentController::class, 'excel_detail_agent'])->name('excel_detail_agent');
 Route::get('/update_detail_agent/{id}/{status}', [App\Http\Controllers\AgentController::class, 'update_detail_agent'])->name('update_detail_agent');
+
 
 //admin
 Route::get('/excel_list_admin', [App\Http\Controllers\AdminController::class, 'excel_list_admin'])->name('excel_list_admin');
@@ -98,6 +103,7 @@ Route::get('/supp_doc_download_admin/{id}/{type}', [App\Http\Controllers\AdminCo
 Route::get('/supp_doc_check/{id}/{type}', [App\Http\Controllers\AdminController::class, 'supp_doc_check'])->name('supp_doc_check');
 Route::get('/invoice/cancel/{id}', [App\Http\Controllers\AdminController::class, 'cancel_invoice'])->name('cancel_invoice');
 
+
 //individu
 Route::get('/application', [App\Http\Controllers\IndividuController::class, 'application'])->name('application');
 Route::get('/application_list', [App\Http\Controllers\IndividuController::class, 'application_list'])->name('application_list');
@@ -114,16 +120,20 @@ Route::get('/download_invoice', [App\Http\Controllers\TravelAgentController::cla
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 
+
 //detail
 Route::get('/upload_detail/{id}', [App\Http\Controllers\UploadDetailController::class, 'upload_detail'])->name('upload_detail');
+
 
 //stripe
 Route::get('/stripe/{pay_id}/{pay_total}/{pay_name}', [App\Http\Controllers\StripeController::class, 'stripe'])->name('stripe');
 Route::post('/stripePost', [App\Http\Controllers\StripeController::class, 'stripePost'])->name('stripePost');
 
+
 //dashboard
 Route::post('/search_dashboard', [App\Http\Controllers\HomeController::class, 'search_dashboard'])->name('search_dashboard');
 Route::get('/excel_detail_home/{id}', [App\Http\Controllers\HomeController::class, 'excel_detail_home'])->name('excel_detail_home');
+
 
 //Update User Details
 Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
@@ -131,8 +141,10 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 
 Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
+
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
+
 
 //pcr
 Route::get('/downloadPCR/{user_id}/{order_id}/{file_name}', [App\Http\Controllers\PcrController::class, 'downloadPCR'])->name('downloadPCR');
@@ -140,6 +152,7 @@ Route::get('/pcr_excel_list', [App\Http\Controllers\PcrController::class, 'pcr_e
 Route::get('/excel_detail_pcr/{id}', [App\Http\Controllers\PcrController::class, 'excel_detail_pcr'])->name('excel_detail_pcr');
 Route::get('/post_return_date/{val}/{id}', [App\Http\Controllers\PcrController::class, 'post_return_date'])->name('post_return_date');
 Route::post('/post_pcr_doc', [App\Http\Controllers\PcrController::class, 'post_pcr_doc'])->name('post_pcr_doc');
+
 
 //email
 Route::post('/send_mail/{subject_to_send}/{to_name}/{to_email}/{body}/{title}', [App\Http\Controllers\EmailController::class, 'send_mail'])->name('send_mail');

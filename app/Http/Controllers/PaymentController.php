@@ -256,10 +256,25 @@ class PaymentController extends Controller
             $request->pay_file->storeAs(
                 $file->user_id.'/payment/'.request()->post('id'), $filename
             );
+
+            try {
+                Storage::deleteDirectory($file->user_id.'/supp_doc/'.request()->post('id').'/payreceipt');
+            }
+            catch(\Exception $ex) {
+                //
+            }            
+
+            $request->pay_file->storeAs(
+                $file->user_id.'/supp_doc/'.request()->post('id').'/payreceipt', $filename
+            );
         }
 
         $upload = FileUpload::where('id', request()->post('id'))->first();
         $upload->status = '4';
+        $supp_doc = '';
+        if ($upload->supp_doc != null) $supp_doc = $upload->supp_doc;
+        $supp_doc = str_replace("R", "", $supp_doc)."R";
+        $upload->supp_doc = $supp_doc;
         $upload->save();
 
         $user = DashboardUser::where('id', $file->user_id)->first();
