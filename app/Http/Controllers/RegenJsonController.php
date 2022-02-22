@@ -18,7 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\DashboardUser;
 
-class RegenJson extends Controller
+class RegenJsonController extends Controller
 {
     /**
      * Create a new controller instance.
