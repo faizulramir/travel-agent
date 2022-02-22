@@ -595,4 +595,12 @@ class FinanceController extends Controller
 
         return view('finance.detail-excel', compact('orders', 'uploads', 'payment', 'additional_arr'));
     }
+
+    public function invoice_reject ($id) {
+        $uploads = FileUpload::where('id', $id)->first();
+        $uploads->status = '2.2';
+        $uploads->save();
+
+        return redirect()->route('excel_list_finance');
+    }
 }

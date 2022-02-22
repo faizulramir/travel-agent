@@ -52,12 +52,12 @@
                         <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Filename</th>
-                                    <th data-priority="3">Upload Date</th>
-                                    <th data-priority="1">Submission Date</th>
-                                    <th data-priority="1">Supp. Docs</th>
-                                    <th data-priority="1">Payment</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="10%">Filename</th>
+                                    <th data-priority="3" width="10%">Upload Date</th>
+                                    <th data-priority="1" width="10%">Submission</th>
+                                    <th data-priority="3" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Payment</th>
                                     <th data-priority="1">Status</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
@@ -78,11 +78,6 @@
                                                 @else
                                                     <span>UPLOADED</span>
                                                 @endif
-                                                &nbsp;&nbsp;
-                                                <a href="#" class="waves-effect" style="color: black;">
-                                                    <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
-                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
-                                                </a>
                                             @endif
                                         </td>
                                         <td>
@@ -99,7 +94,7 @@
                                                 Pending Submission
                                             @elseif ($upload->status == '2')
                                                 <p>Pending AKC Approval</p>
-                                            @elseif ($upload->status == '2.1')
+                                            @elseif ($upload->status == '2.1' || $upload->status == '2.2' || $upload->status == '2.3')
                                                 <p>Pending AKC Invoice</p>
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
@@ -108,24 +103,18 @@
                                             @elseif ($upload->status == '5')
                                                 COMPLETED
                                             @elseif ($upload->status == '99')
-                                                REJECTED
+                                                EXCEL REJECTED
                                             @endif
                                         </td>
                                         <td>
                                             {{-- <input type="hidden" name="id" value="{{ $upload->id }}" id="upload_id"> --}}
+
                                             @if ($upload->status == '0')
                                                 <a class="waves-effect">
                                                     <a href="#" class="waves-effect" style="color: green;">
                                                         <i class="bx bx-paper-plane font-size-24" title="Submit to AKC" onclick="clicked(event, {{$upload->id}})"></i>
                                                     </a>
                                                 </a>
-                                            {{-- @elseif ($upload->status == '1')
-                                                <a href="#" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-paper-plane font-size-24" title="Submit to AKC" onclick="clicked(event, {{$upload->id}})"></i>
-                                                </a> --}}
-                                                {{-- <a href="#" class="waves-effect" style="color: yellow;">
-                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                                </a> --}}
                                             @elseif ($upload->status == '2')
                                                 {{-- <p>Pending AKC Approval</p> --}}
                                             @elseif ($upload->status == '3')
@@ -142,25 +131,21 @@
                                                     <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
                                                 </a>
                                             @elseif ($upload->status == '99')
-                                                <a href="#" class="waves-effect" style="color: red;">
+                                                {{-- <a href="#" class="waves-effect" style="color: red;">
                                                     <i class="bx bx-no-entry font-size-24" title="Rejected"></i>
-                                                </a>
+                                                </a> --}}
                                             @endif
 
-                                            @if($upload->status == '0' || $upload->status == '1' || $upload->status == '2' || $upload->status == '2.1' || $upload->status == '3')
+                                            @if($upload->status == '0' || $upload->status == '1' || $upload->status == '2' || $upload->status == '2.1')
                                                 <a href="{{ route('delete_excel_ta', $upload->id)}}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
                                                     <i class="bx bx-trash-alt font-size-24" title="Delete Excel"></i>
                                                 </a>
                                             @endif
-                                            
-                                            {{--
-                                            @if ($upload->supp_doc == null)
-                                                <a href="#" class="waves-effect" style="color: black;">
-                                                    <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
-                                                    <i onclick="openDetail({{$upload->id}})" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
-                                                </a>
-                                            @endif
-                                            --}}
+
+                                            <a href="#" class="waves-effect" style="color: black;">
+                                                <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
+                                                <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
+                                            </a>
                                             
                                             @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
                                                 <a href="{{ route('excel_detail_ta', $upload->id) }}" class="waves-effect" style="color:#ed2994;">
@@ -171,7 +156,6 @@
                                                     <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
                                                 </a>
                                             @endif
-                                            
 
                                             {{-- @if ($upload->status == '4')
                                                 <a href="#" class="waves-effect" style="color:#ed2994;">
@@ -199,8 +183,7 @@
             <div class="modal-content ">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirm Excel Content</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -217,8 +200,8 @@
                                                         <tr>
                                                             <th>#</th>
                                                             <th data-priority="1">Name</th>
-                                                            <th data-priority="3">Passport No</th>
-                                                            <th data-priority="1">IC No</th>
+                                                            <th data-priority="1">Passport No</th>
+                                                            <th data-priority="3">IC No</th>
                                                             <th data-priority="1">E-Care</th>
                                                             <th data-priority="1">DEP Date</th>
                                                             <th data-priority="1">RTN Date</th>
@@ -273,7 +256,66 @@
     </div>
 
 
+    <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Supporting Documents</h5>
+                    <button type="button" id="btnClose" onclick="closeDetail()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-left">
+                    <div class="row text-left">
+                        <div class="col-md-12">
+                            <input type="hidden" id="suppId" name="suppId">
+                            <input type="hidden" id="idDownload" name="idDownload">
+                            <input type="hidden" id="suppdocs" name="suppdocs">
 
+                            <table border="0" width="100%" id="tableUploadDownload">
+                                <tr>
+                                    <td width="30%">Document Passport</td>
+                                    <td width="20%">
+                                        <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Upload</button>
+                                    </td>    
+                                    <td width="45%" id="passportdownload"></td> 
+                                </tr>  
+                                <tr>
+                                    <td>Document E-Ticket</td>
+                                    <td>
+                                        <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Upload</button>
+                                    </td>    
+                                    <td id="eticketdownload"></td> 
+                                </tr>       
+                                <tr>
+                                    <td>Document E-Visa</td>
+                                    <td>
+                                        <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Upload</button>
+                                    </td>    
+                                    <td id="visadownload"></td> 
+                                </tr>  
+                                <tr>
+                                    <td>Payment Receipt</td>
+                                    <td>
+                                        {{-- <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Upload</button> --}}
+                                    </td>    
+                                    <td id="payreceiptdownload"></td> 
+                                </tr>                                      
+                                <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                </tr>                                                                  
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{--
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -286,18 +328,6 @@
                         <div class="col-md-12">
                             <input type="hidden" id="suppId" name="suppId">
 
-                            {{--
-                            <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
-                            <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
-                            <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
-                            <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
-                            <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">E-Ticket</button>
-                            <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Visa</button>
-                            <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Passport</button>
-                            <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Pay Receipt</button>
-                            <br><br>
-                            --}}
-                            
                             <table border="0" width="100%">
                                 <tr>
                                     <td width="50%">Document Passport</td>
@@ -306,10 +336,6 @@
                                         <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Upload</button>
                                     </td>    
                                     <td width="25%">
-                                        {{--
-                                        <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
-                                        <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Download</button>
-                                        --}}
                                     </td> 
                                 </tr>  
                                 <tr>
@@ -319,10 +345,6 @@
                                         <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Upload</button>
                                     </td>    
                                     <td>
-                                        {{--
-                                        <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
-                                        <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Download</button>
-                                        --}}
                                     </td> 
                                 </tr>       
                                 <tr>
@@ -332,10 +354,6 @@
                                         <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Upload</button>
                                     </td>    
                                     <td>
-                                        {{--
-                                        <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
-                                        <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Download</button>
-                                        --}}
                                     </td> 
                                 </tr>                                                              
                                 <tr><td colspan="3">&nbsp;</td></tr>                                                                  
@@ -347,6 +365,7 @@
             </div>
         </div>
     </div>
+    --}}
 
     {{--
     <div class="modal fade bs-example-modal-center" id="downloadSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
@@ -463,7 +482,7 @@
         }
 
         function ExportToTable() {
-            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
+            var regex = /^([a-zA-Z0-9\s_\\.\-:()&])+(.xlsx|.xls)$/; //
             /*Checks whether the file is a valid excel file*/
             if (regex.test($("#add_excel").val().toLowerCase())) {
                 var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/
@@ -489,7 +508,7 @@
                         sheet_name_list.forEach(function (y) { /*Iterate through all sheets*/
                             /*Convert the cell value to Json*/
                             if (xlsxflag) {
-                                var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                                var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y],{defval:""});
                             }
                             else {
                                 var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);
@@ -531,7 +550,7 @@
                     row$.append($('<td/>').html(cellValue));
                 }
                 */
-                if (jsondata[i][columns[0]] == null) {}
+                if (jsondata[i][columns[0]] == "") {}
                 else {
                     for (var colIndex = 0; colIndex < 13; colIndex++) {
                         if (colIndex!=4 && colIndex!=5 && colIndex!=6 && colIndex!=8) {
@@ -630,9 +649,6 @@
             return ''+( date_info.getDate()>9?date_info.getDate():'0'+date_info.getDate())+'-'+((date_info.getMonth()+1)>9? (date_info.getMonth()+1):'0'+(date_info.getMonth()+1))+'-'+date_info.getFullYear();
         }
 
-
-
-
         //supporting documents ....
         function chooseSupDoc (type) {
             if (type == 'eticket') {
@@ -641,9 +657,7 @@
                 $("#visa_file").trigger("click");
             } else if (type == 'passport') {
                 $("#passport_file").trigger("click");
-            } else if (type == 'payreceipt') {
-                $("#payreceipt_file").trigger("click");
-            }
+            } 
         }
 
         $("#eticket_file").change(function () {
@@ -708,33 +722,6 @@
             });
         });
 
-        $("#payreceipt_file").change(function () {
-            var form_data = new FormData();
-            form_data.append("file", $("#payreceipt_file")[0].files[0]);
-            form_data.append("type", 'payreceipt');
-            form_data.append("id", $("#suppId").val());
-            $.ajax({
-                url: '/supp_doc_post_ta',
-                type: 'POST',
-                data: form_data,
-                dataType: 'JSON',
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    alert(data.Data)
-                    //location.reload()
-                }
-            });
-        });
-
-        {{--
-        function downloadDetail (id) {
-            $("#eticketDown").attr("href", "/supp_doc_download_admin/" + id + "/eticket")
-            $('#downloadSuppDoc').modal('show');
-            $("#idDownload").val(id);
-        }
-        --}}
 
         $(document).ready(function() {
             $("#showSuppDoc").modal({
@@ -745,14 +732,62 @@
 
         function closeDetail() {
             //alert("close");
-            //location.reload();
+            location.reload();
         }        
 
-        function openDetail(id) {
-            $('#showSuppDoc').modal('show');
+        function openDetail (id, docs) {
             $("#suppId").val(id);
-        }        
+            $("#suppdocs").val(docs);
+            if (docs) {
+                $.ajax({
+                    url: '/supp_doc_check_ta/' + id + '/' + docs,
+                    type: 'GET',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var objp = data.Data.find(o => o['passport']);
+                        var obje = data.Data.find(o => o['eticket']);
+                        var objv = data.Data.find(o => o['visa']);
+                        var objr = data.Data.find(o => o['payreceipt']);
+                        //console.log(objp, obje, objv);
 
+                        if (docs.includes('P') && objp!=null && objp!=undefined) {
+                            $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_ta/' + id + '/passport" type="submit">'+ objp.passport +'</a>');
+                        } else {
+                            $('#passportdownload').html('');
+                        }
+
+                        if (docs.includes('T') && obje!=null && obje!=undefined) {
+                            $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_ta/' + id + '/eticket" type="submit">'+ obje.eticket +'</a>');
+                        } else {
+                            $('#eticketdownload').html('');
+                        }
+
+                        if (docs.includes('V') && objv!=null && objv!=undefined) {
+                            $('#visadownload').html('<a target="_blank" href="/supp_doc_download_ta/' + id + '/visa" type="submit">'+ objv.visa +'</a>');
+                        } else {
+                            $('#visadownload').html('');
+                        }
+
+                        if (docs.includes('R') && objr!=null && objr!=undefined) {
+                            $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_ta/' + id + '/payreceipt" type="submit">'+ objr.payreceipt +'</a>');
+                        } else {
+                            $('#payreceiptdownload').html('');
+                        }
+
+                        $('#showSuppDoc').modal('show');
+                    }
+                });
+            } else {
+                $('#passportdownload').html('');
+                $('#eticketdownload').html('');
+                $('#visadownload').html('');
+                $('#payreceiptdownload').html('');
+                $('#showSuppDoc').modal('show');
+            }
+            
+        }
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

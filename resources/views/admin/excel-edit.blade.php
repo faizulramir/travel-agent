@@ -11,7 +11,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') ADMIN @endslot
-        @slot('title') EDIT RECORD @endslot
+        @slot('title') EDIT JEMAAH @endslot
     @endcomponent
 
     <div class="row">
@@ -27,9 +27,9 @@
                             <h4 class="card-title">Traveller/Jemaah Information</h4>
                         </div>
                         <div class="col-md-8" style="text-align: left;">
-                            <h6>Travel Agent Name:</h6>
-                            <h6>Filename:</h6>
-                            <h6>Payment Status:</h6>
+                            <h6>Travel Agent Name: {{ $jemaah->upload->ta_name }}</h6>
+                            <h6>Filename: {{ $jemaah->upload->file_name }}</h6>
+                            <h6>Payment Status: {{ $jemaah->upload->status == '4' || $jemaah->upload->status == '5' ? 'PAID' : 'UNPAID' }}</h6>
                         </div>
                     </div>
 
@@ -52,7 +52,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Plan Type (ECare)</label>
-                                    <select id="plan_type" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="plan_type" class="form-control select2-search-disable" required {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
+                                    <select id="plan_type" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="plan_type" class="form-control select2-search-disable" required >
                                         <option value="NO" {{ $jemaah->plan_type == 'NO' ? 'selected' : '' }}>NO</option>
                                         @foreach ($plans as $plan)
                                             <option value="{{ $plan->name }}" {{ $jemaah->plan_type == $plan->name ? 'selected' : '' }}>{{ $plan->name }}</option>
@@ -72,13 +72,13 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Departure Date</label>
-                                    <input class="form-control" type="date" name="dep_date" value="{{ $jemaah->dep_date ? date('Y-m-d', strtotime($jemaah->dep_date)): '' }}" {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
+                                    <input class="form-control" type="date" name="dep_date" value="{{ $jemaah->dep_date ? date('Y-m-d', strtotime($jemaah->dep_date)): '' }}" >
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">PCR</label>
-                                    <select id="pcr" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="pcr" class="form-control select2-search-disable" required {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
+                                    <select id="pcr" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="pcr" class="form-control select2-search-disable" required >
                                         <option value="NO" {{ $jemaah->pcr == 'NO' ? 'selected' : '' }}>NO</option>
                                         <option value="PCR" {{ $jemaah->pcr == 'PCR' ? 'selected' : '' }}>PCR</option>
                                     </select>
@@ -96,13 +96,13 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Return Date</label>
-                                    <input class="form-control" type="date" name="return_date" value="{{ $jemaah->return_date ? date('Y-m-d', strtotime($jemaah->return_date)): '' }}" {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
+                                    <input class="form-control" type="date" name="return_date" value="{{ $jemaah->return_date ? date('Y-m-d', strtotime($jemaah->return_date)): '' }}" >
                                 </div>
                             </div>                            
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">TPA</label>
-                                    <select id="tpa" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="tpa" class="form-control select2-search-disable" required {{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'readonly' }}>
+                                    <select id="tpa" style="{{ $jemaah->upload->status != '4' && $jemaah->upload->status != '5' ? '' : 'pointer-events: none;' }}" name="tpa" class="form-control select2-search-disable" required >
                                         <option value="NO" {{ $jemaah->tpa == 'NO' ? 'selected' : '' }}>NO</option>
                                         @foreach ($tpas as $tpa)
                                             <option value="{{ $tpa->name }}" {{ $jemaah->tpa == $tpa->name ? 'selected' : '' }}>{{ $tpa->name }}</option>
