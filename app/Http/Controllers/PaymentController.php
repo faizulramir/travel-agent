@@ -568,9 +568,9 @@ class PaymentController extends Controller
                 );
             }
 
-            $tot_inv = $tot_ecert - $disArr['COST'];
+            $tot_inv = $tot_ecert - ($disArr ? $disArr['COST'] : 0);
 
-            $tot_inv2 = $tot_inv + $pcrArr['COST'] + $tot_tpa;
+            $tot_inv2 = $tot_inv + ($disArr ? $disArr['COST'] : 0) + $tot_tpa;
         }
         
 
