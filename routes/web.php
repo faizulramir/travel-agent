@@ -104,7 +104,7 @@ Route::get('/supp_doc_check/{id}/{type}', [App\Http\Controllers\AdminController:
 Route::get('/invoice/cancel/{id}', [App\Http\Controllers\AdminController::class, 'cancel_invoice'])->name('cancel_invoice');
 
 //regen json
-Route::get('/regenerate/json', [App\Http\Controllers\RegenJson::class, 'regen'])->name('regen');
+Route::get('/regenerate/json', [App\Http\Controllers\RegenJsonController::class, 'regen'])->name('regen');
 
 
 //individu
