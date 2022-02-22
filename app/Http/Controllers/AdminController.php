@@ -584,7 +584,7 @@ class AdminController extends Controller
 
         $orders = array();
         foreach ($plans as $i => $plan) {
-            array_push($orders, count(Order::where('plan_type', $plan->name)->get()));
+            array_push($orders, count(Order::where('plan_type', $plan->name)->orWhere('pcr', 'PCR')->orWhere('tpa', $plan->name)->get()));
         }
         return view('admin.plan', compact('plans', 'orders'));
     }
