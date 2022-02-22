@@ -676,7 +676,7 @@
                 processData: false,
                 success: function (data) {
                     alert("E-Ticket Docs - " + data.Data)
-                    //location.reload()
+                    location.reload()
                 }
             });
         });
@@ -696,7 +696,7 @@
                 processData: false,
                 success: function (data) {
                     alert("E-Visa Docs - " + data.Data)
-                    //location.reload()
+                    location.reload()
                 }
             });
         });
@@ -717,7 +717,7 @@
                 processData: false,
                 success: function (data) {
                     alert("Passport Docs - " + data.Data)
-                    //location.reload()
+                    location.reload()
                 }
             });
         });
