@@ -584,8 +584,39 @@ class AdminController extends Controller
 
         $orders = array();
         foreach ($plans as $i => $plan) {
-            array_push($orders, count(Order::where('plan_type', $plan->name)->orWhere('pcr', 'PCR')->orWhere('tpa', $plan->name)->get()));
+            $planType = Order::where('plan_type', $plan->name)->get();
+
+            if ($planType->isNotEmpty()) {
+                $tempArr = array(
+                    $plan->name => count($planType)
+                );
+                array_push($orders, $tempArr);
+            }
         }
+
+        foreach ($plans as $i => $plan) {
+            $pcr = Order::where('pcr', $plan->name)->get();
+            if ($pcr->isNotEmpty()) {
+                $tempArr = array(
+                    $plan->name => count($pcr)
+                );
+                array_push($orders, $tempArr);
+            }
+        }
+
+        foreach ($plans as $i => $plan) {
+            $tpa = Order::where('tpa', $plan->name)->get();
+
+            if ($tpa->isNotEmpty()) {
+                $tempArr = array(
+                    $plan->name => count($tpa)
+                );
+                array_push($orders, $tempArr);
+            }
+        }
+
+
+        // dd($orders);
         return view('admin.plan', compact('plans', 'orders'));
     }
 

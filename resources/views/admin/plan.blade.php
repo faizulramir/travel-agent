@@ -49,7 +49,14 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $plan->name }}</td>
                                         <td>{{ $plan->price }}</td>
-                                        <td>{{ $orders[$i] }}</td>
+                                        {{-- <td>{{ !empty($orders[$i]) ? array_keys($orders[$i])[0] == $plan->name ? $orders[$i][$plan->name] : 0 : 0 }}</td> --}}
+                                        <td>
+                                            @foreach ($orders as $i => $order) 
+                                                @if (array_keys($order)[0] == $plan->name) 
+                                                    {{ $order[$plan->name] }}
+                                                @endif
+                                            @endforeach
+                                        </td>
                                         <td>{{ $plan->description }}</td>
                                         <td>
                                             <a href="{{ route('plan_delete', $plan->id) }}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
