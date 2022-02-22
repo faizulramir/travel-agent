@@ -68,7 +68,7 @@
                             <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" onclick="openDetail({{$uploads->id}},'{{$uploads->supp_doc}}')">Supporting Documents</a>
                             @endif
                             @if ($uploads->status === '5')
-                            <div class="col-md-6" style="text-align: right; display: {{ count($check) != 0 ? 'block' : 'none' }}">
+                            <div class="col-md-6" style="text-align: right; display: {{ count($check) != 0 ? 'inline' : 'none' }}">
                                 <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$id}})" title="Download all ECert">Download All ECert</button>
                             </div>
                             @endif

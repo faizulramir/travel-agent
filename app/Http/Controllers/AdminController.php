@@ -243,7 +243,7 @@ class AdminController extends Controller
 
                         $directory = '/'.$upload->user_id.'/supp_doc/'.$upload->id.'/passport';
                         $files = Storage::allFiles($directory);
-                        $url = Storage::url($files[0]);
+                        // $url = Storage::url($files[0]);
                         //dd($files, $url);
 
                         if (empty($files)) { 

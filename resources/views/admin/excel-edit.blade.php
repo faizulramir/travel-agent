@@ -11,7 +11,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') ADMIN @endslot
-        @slot('title') EDIT RECORD @endslot
+        @slot('title') EDIT JEMAAH @endslot
     @endcomponent
 
     <div class="row">

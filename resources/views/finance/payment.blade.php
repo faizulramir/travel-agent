@@ -18,7 +18,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('endorse_payment', $uploads->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('endorse_payment', $uploads->id) }}" method="POST" id="formSubmit" enctype="multipart/form-data">
                         @csrf
                         <h4 class="card-title">Invoice Summary FIN</h4>
                         <br>
@@ -143,10 +143,11 @@
 
                             <div class="col-md-1"></div>
 
+                            <input type="hidden" name="checkStatus" id="checkStatus" value="{{ $uploads->status }}">
                             <div class="col-md-4">
                                 <div class="col-lg-12" style="display: {{ $uploads->status == '5' || $uploads->status == '2.1' ? 'none' : 'block' }}">
-                                    <input class="form-check-input" type="checkbox" id="agreement">
-                                    <label class="form-check-label" for="agreement" style="color:red;">
+                                    <input class="form-check-input" type="checkbox" id="agreementPay">
+                                    <label class="form-check-label" for="agreementPay" style="color:red;">
                                         &nbsp;&nbsp;Payment telah disemak dan amaun adalah betul 
                                     </label>
                                     <br>
@@ -159,8 +160,8 @@
                                 </div>
 
                                 <div class="col-lg-12" style="display: {{ $uploads->status == '2.1' ? 'block' : 'none' }}">
-                                    <input class="form-check-input" type="checkbox" id="agreement">
-                                    <label class="form-check-label" for="agreement" style="color:red;">
+                                    <input class="form-check-input" type="checkbox" id="agreementInv">
+                                    <label class="form-check-label" for="agreementInv" style="color:red;">
                                         &nbsp;&nbsp;Invois telah disemak dan amaun adalah betul 
                                     </label>
                                     <br>
@@ -192,6 +193,22 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $('#formSubmit').submit(function(){ 
+            stat = $('#checkStatus').val();
+            if (stat !== '5' && stat !== '2.1') {
+                if (!$('#agreementPay')[0].checked){
+                    alert('Please tick the checkbox given!');
+                return false;
+                }
+            } else if (stat === '2.1') {
+                if (!$('#agreementInv')[0].checked){
+                    alert('Please tick the checkbox given!');
+                return false;
+                }
+            } 
+            
+        }); 
 
         $("#percent_disc").change(function() {
             var percent = $("#percent_disc").val();
