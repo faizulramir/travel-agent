@@ -521,18 +521,19 @@ class AdminController extends Controller
     
                 // dd($data_array);
                 unset($data_array[9]);
+                
                 foreach ($data_array as $i => $json) {
                     $order = new Order;
                     $order->name = $json[1];
                     $order->passport_no = $json[2];
                     $order->ic_no = $json[3];
-                    $order->dob = $json[4];
+                    $order->dob = $json[4] ? Carbon::createFromFormat('m/d/Y', $json[4])->format('d-m-Y') : '';
                     $order->ex_illness = $json[5];
                     $order->hp_no = $json[6];
                     $order->plan_type = $json[7];
                     $order->email = $json[8];
-                    $order->dep_date = $json[9];
-                    $order->return_date = $json[10];
+                    $order->dep_date = $json[9] ? Carbon::createFromFormat('m/d/Y', $json[9])->format('d-m-Y') : '';
+                    $order->return_date = $json[10] ? Carbon::createFromFormat('m/d/Y', $json[10])->format('d-m-Y') : '';
                     $order->user_id = $uploads->user_id;
                     $order->file_id = $uploads->id;
                     // $order->ecert = $uploads->id;
@@ -541,7 +542,7 @@ class AdminController extends Controller
                     $order->pcr_result = null;
                     $order->pcr = $json[11];
                     $order->tpa = $json[12];
-    
+
                     $order->save();
     
                     $orders = Order::where('id', '=' ,$order->id)->first();
