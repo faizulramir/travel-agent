@@ -540,7 +540,7 @@
         function BindTable(jsondata, tableid) {/*Function used to convert the JSON array to Html Table*/
             var rowCount = 0;
             var columns = BindTableHeader(jsondata, tableid); /*Gets all the column headings of Excel*/
-            for (var i = 0; i < jsondata.length; i++) {
+            for (var i = 1; i < jsondata.length; i++) {
                 var row$ = $('<tr/>');
                 /*
                 for (var colIndex = 0; colIndex < 4; colIndex++) {
