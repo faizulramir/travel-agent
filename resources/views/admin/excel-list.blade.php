@@ -932,7 +932,7 @@
                                     //console.log(i, colIndex,jsondata[i][columns[colIndex]]);
                                     //console.log(new Date(Math.round((cellValue - 25569)*86400*1000)));
                                     console.log(moment("05/22/2012", 'MM/DD/YYYY',true).isValid());
-                                    cellValue = ExcelDateToJSDate(cellValue);
+                                    // cellValue = ExcelDateToJSDate(cellValue);
                                 }
                             }
                             
