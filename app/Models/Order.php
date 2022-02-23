@@ -15,10 +15,6 @@ class Order extends Model
     protected $table = 'orders';
     protected $no_upper = ['dob'];
 
-    protected $casts = [
-        'dob' => 'date:d-m-Y',
-    ];
-
     public function upload()
     {
         return $this->belongsTo(FileUpload::class, 'file_id');
