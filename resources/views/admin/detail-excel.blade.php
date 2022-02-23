@@ -326,12 +326,14 @@
             })
             $('#pleaseWaitDialog').modal('show');
             $('#modalTitle').text('Generating/Merging all ECert ... Please Wait');
-            
+
             $.ajax({
                 url: '/ecert_all/' + id,
+                //url: '/ecert_getall/' + id,
                 type: 'GET',
                 timeout: 500000, // sets timeout to 500 seconds
                 success: function (data) {
+                    //console.log("getAll=", data);
                     $('#modalTitle').text('Completed');
                     $('#btnBefore').hide();
                     $('#btnAfter').show();

@@ -42,6 +42,9 @@ Route::get('/create_invoice/{order_id}', [App\Http\Controllers\PaymentController
 Route::get('/create_cert_ind/{order_id}', [App\Http\Controllers\PaymentController::class, 'create_cert_ind'])->name('create_cert_ind');
 Route::post('/submit_payment', [App\Http\Controllers\PaymentController::class, 'submit_payment'])->name('submit_payment');
 
+Route::get('/ecert_getall/{id}', [App\Http\Controllers\PaymentController::class, 'ecert_getall'])->name('ecert_getall');
+
+
 
 //travel agent
 Route::get('/excel_list', [App\Http\Controllers\TravelAgentController::class, 'excel_list'])->name('excel_list');

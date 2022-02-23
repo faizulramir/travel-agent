@@ -697,7 +697,95 @@ class PaymentController extends Controller
             'Data' => 'Successfully Merged!'
         ], 200); // Status code here
         // return $pdf->stream();
+    }    
+
+
+
+    public function ecert_getall ($id) {
+        $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->get();
+
+        $divide = 0;
+        $remain = 0;
+        $pages = 0;
+        if ($order) {
+            $divide = (int) (count($order) / 30);
+            $remain = (int) (count($order) % 30);
+            if ($remain>0) $pages = 1 + $divide;
+
+            $order1 = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset(0*30)->limit(30)->get();
+            $order2 = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset(1*30)->limit(30)->get();
+
+            dd(count($order), $divide, $remain, $pages, $order1, $order2);
+
+            return response()->json([
+                'isSuccess' => true,
+                'Data' => 'Successfully Merged!',
+                'pages' => $pages
+            ], 200);
+        }
+
+        //dd(count($order), $divide, $remain, $pages);
+
+        //if ($order) ini_set('max_execution_time', '500');
+
+        foreach ($order as $key => $orders) {
+            $plan = Plan::where('name', $orders->plan_type)->first();
+            $url_bg = Storage::path('template/template_cert.png');
+
+            $cert_number = $orders->ecert;
+
+            //fix birth date
+            //dd($orders->ecert, $orders->dob, $orders->dep_date);
+            // $dob = new Carbon($orders->dob);
+            // $dobyear = 0 + $dob->format('Y');
+            // $nowyear = Carbon::now()->year;
+            // $correctyear = $dobyear;
+            // $newbirth = $dob;
+            // if ($dobyear > $nowyear) {
+            //     $correctyear = $dobyear - 100;
+            //     $newbirth = Carbon::create($correctyear, 0 + $dob->format('m'), 0 + $dob->format('d'));
+            // }
+            //dd($orders->dob,  $dobyear, $nowyear, $correctyear, $newbirth->format('Y-m-d'));
+            $newbirth = $orders->dob;
+
+
+            //fix plan duration date
+            //$total_days = $plan->total_days;
+            //$addDays = (0 + $total_days) - 1;
+            $depdate = new Carbon($orders->dep_date);
+            $rtndate = new Carbon($orders->return_date);
+            //$rtndate->addDays($addDays);
+            $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
+            $content = $pdf->download()->getOriginalContent();
+
+            Storage::put(Auth::id().'/ecert/'.$id.'/'.$orders->passport_no.'.pdf',$content);
+        }
+        
+        $pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
+        $tmpArr = array();
+        foreach ($pdf_id as $key => $pdf) {
+            array_push($tmpArr, Storage::path(Auth::id().'/ecert/'.$id.'/'.$pdf->passport_no.'.pdf'));
+        }
+        // dd($tmpArr);
+        $merger = new Merger;
+        $merger->addIterator($tmpArr);
+        
+        $createdPdf = $merger->merge();
+        Storage::put(Auth::id().'/ecert/'.$id.'/merged.pdf',$createdPdf);
+        
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => 'Successfully Merged!'
+        ], 200); // Status code here
+        // return $pdf->stream();
     }
+
+
+
+
+
 
     public function download_all_cert ($id) {
         // Storage::deleteDirectory(Auth::id().'/ecert/'.$id);
