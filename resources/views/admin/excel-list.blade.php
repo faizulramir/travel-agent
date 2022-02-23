@@ -15,7 +15,23 @@
         @slot('li_1') ADMIN @endslot
         @slot('title') EXCEL LIST @endslot
     @endcomponent
-
+    
+    <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Loading Data</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <button class="btn btn-primary" id="btnBefore" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -37,7 +53,7 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
                                 <th data-priority="0" width="5%">#</th>
@@ -208,201 +224,195 @@
         <div class="col-md-12">
             <div class="card mini-stats-wid">
                 <div class="card-body">
-                    <div class="media">
-                        <div class="media-body">
-                            <p class="text-muted fw-medium">Database</p>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="search_by">Search By Year</label>
-                                    <select id="search_yy" name="search_yy" class="form-control select2-search-disable" required>
-                                        <option value="2022" selected>2022</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="search_by">Search By Month</label>
-                                    <select id="search_mm" name="search_mm" class="form-control select2-search-disable" required>
-                                        <option value="01" selected>JAN</option>
-                                        <option value="02" >FEB</option>
-                                        <option value="03" >MAR</option>
-                                        <option value="04" >APR</option>
-                                        <option value="05" >MAY</option>
-                                        <option value="06" >JUN</option>
-                                        <option value="07" >JUL</option>
-                                        <option value="08" >AUG</option>
-                                        <option value="09" >SEP</option>
-                                        <option value="10" >OCT</option>
-                                        <option value="11" >NOV</option>
-                                        <option value="12" >DEC</option>
-                                    </select>
-                                </div>                                
-
-                                {{-- <div class="col-md-4">
-                                    <label for="plan">Search Requester Name</label>
-                                    <input type="text" class="form-control col-md-2" id="search_val" name="search_val" placeholder="Enter search text">
-                                </div>--}}
-                                <div class="col-md-4">
-                                    <label for="plan">&nbsp;</label>
-                                    <br>
-                                    <button class="btn btn-primary waves-effect waves-light col-md-4" type="button" title="Search Record" id="searchDash">Search</button>
-                                </div>           
-                                <div class="col-md-4"></div>                     
+                    <div class="card-title">Database</div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="search_by">Search By Year</label>
+                                <select id="search_yy" name="search_yy" class="form-control select2-search-disable" required>
+                                    <option value="2022" selected>2022</option>
+                                </select>
                             </div>
-                            <br>
-                            <div id="table1">
-                                <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100">
-                                    <thead>
-                                        <tr>
-                                        <th data-priority="0" width="5%">#</th>
-                                        <th data-priority="3" width="10%">Requester</th>
-                                        <th data-priority="1" width="10%">Filename</th>
-                                        <th data-priority="3" width="5%">Jemaah</th>
-                                        <th data-priority="1" width="10%">Submission</th>
-                                        <th data-priority="3" width="10%">Supp. Docs</th>
-                                        <th data-priority="1" width="10%">Payment</th>
-                                        <th data-priority="1">Status</th>
-                                        <th data-priority="3">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                @php
-                                $bil2 = 0
-                                @endphp
-                                @foreach ($uploads as $x => $upload)
-                                    @if($upload->status == '5' && $upload->supp_doc != null)
-                                    @php 
-                                    $bil2 = $bil2 + 1
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $bil2 }}</td>
-                                        <td>{{ strtoupper($upload->user->name) }}</td>
-                                        <td>{{ $upload->file_name }}</td>
-                                        {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
-                                        <td>
-                                            @if($rec_count_arr && $rec_count_arr[$x] && $rec_count_arr[$x] > 0)
-                                                {{ $rec_count_arr[$x] }}
-                                            @endif
-                                        </td>
-                                        <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
+                            <div class="col-md-2">
+                                <label for="search_by">Search By Month</label>
+                                <select id="search_mm" name="search_mm" class="form-control select2-search-disable" required>
+                                    <option value="01" selected>JAN</option>
+                                    <option value="02" >FEB</option>
+                                    <option value="03" >MAR</option>
+                                    <option value="04" >APR</option>
+                                    <option value="05" >MAY</option>
+                                    <option value="06" >JUN</option>
+                                    <option value="07" >JUL</option>
+                                    <option value="08" >AUG</option>
+                                    <option value="09" >SEP</option>
+                                    <option value="10" >OCT</option>
+                                    <option value="11" >NOV</option>
+                                    <option value="12" >DEC</option>
+                                </select>
+                            </div>                                
 
-                                        <td>
-                                             @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
-                                                <span>-</span>
-                                            @else 
-                                                @if ($upload->supp_doc == null)
-                                                    <span>Not Uploaded</span>
-                                                @else
-                                                    <span>UPLOADED</span>
-                                                @endif
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($upload->status == '3')
-                                                <p>INVOICE READY</p>
-                                            @elseif($upload->status == '4' || $upload->status == '5')
-                                                <p>PAID</p>
-                                            @else 
-                                                <p>-</p>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($upload->status == '0' || $upload->status == '2')
-                                                Pending AKC Approval
-                                            @elseif ($upload->status == '2.1')
-                                                <p>Pending AKC (Invoice) </p>
-                                            @elseif ($upload->status == '3')
-                                                Pending Payment
-                                            @elseif ($upload->status == '4')
-                                                Pending AKC (Payment) Endorsement
-                                            @elseif ($upload->status == '5')
-                                                COMPLETED
-                                            @elseif ($upload->status == '99')
-                                                REJECTED
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($upload->status == '2')
-                                                <a href="{{ route('update_excel_status_admin', [$upload->id, '2.1']) }}" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-paper-plane font-size-24" title="Approve" onclick="return confirm('Do you really want to APPROVE?');"></i>
-                                                </a>
-                                                <a href="{{ route('update_excel_status_admin', [$upload->id, '99']) }}" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-no-entry font-size-24" title="Reject" onclick="return confirm('Do you really want to REJECT?');"></i>
-                                                </a>
-                                            @elseif ($upload->status == '3')
-                                               <a href="{{ route('admin_payment_detail', $upload->id) }}" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-money font-size-24" title="Show Invoice"></i>
-                                                </a>
-                                            @elseif ($upload->status == '4')
-                                                <a href="{{ route('admin_payment_detail', $upload->id) }}" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-money font-size-24" title="Show Invoice"></i>
-                                                </a>
-                                            @elseif ($upload->status == '5')
-                                                {{-- <a href="#" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-check-double font-size-24" title="Completed"></i>
-                                                </a> --}}
-                                                <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
-                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
-                                                </a>
-                                            @elseif ($upload->status == '99')
-                                                <a href="#" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-no-entry font-size-24" title="Rejected"></i>
-                                                </a>
-                                            @endif
-
-                                            @if($upload->status == '2' || $upload->status == '2.1')
-                                                <a href="{{ route('delete_excel_ta', $upload->id)}}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-trash-alt font-size-24" title="Delete Excel"></i>
-                                                </a>
-                                            @endif
-
-                                            <a href="{{ route('download_excel', $upload->id) }}" class="waves-effect" style="color: blue;">
-                                                <i class="bx bxs-cloud-download font-size-24" title="Download Excel"></i>
-                                            </a>
-                                            <a href="#" class="waves-effect" style="color: black;">
-                                                <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
-                                                <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
-                                            </a>
-
-                                            {{-- @if($upload->supp_doc && $upload->supp_doc == '1')
-                                            <a href="{{ route('download_supp_doc', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: blue;">
-                                                <i class="bx bxs-cloud-download font-size-24" title="Download Supporting Documents"></i>
-                                            </a>
-                                            @endif --}}
-
-                                            @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
-                                                <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
-                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                                </a>
-                                            @else
-                                                <a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
-                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                                </a> 
-                                                {{-- <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
-                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                                </a> --}}
-                                            @endif                                            
-                                        </td>
-                                    </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                <th data-priority="0"></th>
-                                <th data-priority="3"></th>
-                                <th data-priority="1"></th>
-                                <th data-priority="3"></th>
-                                <th data-priority="1"></th>
-                                <th data-priority="3"></th>
-                                <th data-priority="1"></th>
-                                <th data-priority="1"></th>
-                                <th data-priority="3"></th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                            </div>
-
+                            {{-- <div class="col-md-4">
+                                <label for="plan">Search Requester Name</label>
+                                <input type="text" class="form-control col-md-2" id="search_val" name="search_val" placeholder="Enter search text">
+                            </div>--}}
+                            <div class="col-md-4">
+                                <label for="plan">&nbsp;</label>
+                                <br>
+                                <button class="btn btn-primary waves-effect waves-light col-md-4" type="button" title="Search Record" id="searchDash">Search</button>
+                            </div>           
+                            <div class="col-md-4"></div>                     
                         </div>
-                    </div>
+                        <br>
+                        <div id="table1">
+                            <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100">
+                                <thead>
+                                    <tr>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="3" width="10%">Requester</th>
+                                    <th data-priority="1" width="10%">Filename</th>
+                                    <th data-priority="3" width="5%">Jemaah</th>
+                                    <th data-priority="1" width="10%">Submission</th>
+                                    <th data-priority="3" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Payment</th>
+                                    <th data-priority="1">Status</th>
+                                    <th data-priority="3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $bil2 = 0
+                                    @endphp
+                                    @foreach ($uploads as $x => $upload)
+                                        @if($upload->status == '5' && $upload->supp_doc != null)
+                                            @php 
+                                                $bil2 = $bil2 + 1
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $bil2 }}</td>
+                                                <td>{{ strtoupper($upload->user->name) }}</td>
+                                                <td>{{ $upload->file_name }}</td>
+                                                {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
+                                                <td>
+                                                    @if($rec_count_arr && $rec_count_arr[$x] && $rec_count_arr[$x] > 0)
+                                                        {{ $rec_count_arr[$x] }}
+                                                    @endif
+                                                </td>
+                                                <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
+
+                                                <td>
+                                                        @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
+                                                        <span>-</span>
+                                                    @else 
+                                                        @if ($upload->supp_doc == null)
+                                                            <span>Not Uploaded</span>
+                                                        @else
+                                                            <span>UPLOADED</span>
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($upload->status == '3')
+                                                        <p>INVOICE READY</p>
+                                                    @elseif($upload->status == '4' || $upload->status == '5')
+                                                        <p>PAID</p>
+                                                    @else 
+                                                        <p>-</p>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($upload->status == '0' || $upload->status == '2')
+                                                        Pending AKC Approval
+                                                    @elseif ($upload->status == '2.1')
+                                                        <p>Pending AKC (Invoice) </p>
+                                                    @elseif ($upload->status == '3')
+                                                        Pending Payment
+                                                    @elseif ($upload->status == '4')
+                                                        Pending AKC (Payment) Endorsement
+                                                    @elseif ($upload->status == '5')
+                                                        COMPLETED
+                                                    @elseif ($upload->status == '99')
+                                                        REJECTED
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($upload->status == '2')
+                                                        <a href="{{ route('update_excel_status_admin', [$upload->id, '2.1']) }}" class="waves-effect" style="color: green;">
+                                                            <i class="bx bx-paper-plane font-size-24" title="Approve" onclick="return confirm('Do you really want to APPROVE?');"></i>
+                                                        </a>
+                                                        <a href="{{ route('update_excel_status_admin', [$upload->id, '99']) }}" class="waves-effect" style="color: red;">
+                                                            <i class="bx bx-no-entry font-size-24" title="Reject" onclick="return confirm('Do you really want to REJECT?');"></i>
+                                                        </a>
+                                                    @elseif ($upload->status == '3')
+                                                        <a href="{{ route('admin_payment_detail', $upload->id) }}" class="waves-effect" style="color: green;">
+                                                            <i class="bx bx-money font-size-24" title="Show Invoice"></i>
+                                                        </a>
+                                                    @elseif ($upload->status == '4')
+                                                        <a href="{{ route('admin_payment_detail', $upload->id) }}" class="waves-effect" style="color: green;">
+                                                            <i class="bx bx-money font-size-24" title="Show Invoice"></i>
+                                                        </a>
+                                                    @elseif ($upload->status == '5')
+                                                        {{-- <a href="#" class="waves-effect" style="color: green;">
+                                                            <i class="bx bx-check-double font-size-24" title="Completed"></i>
+                                                        </a> --}}
+                                                        <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                                            <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                        </a>
+                                                    @elseif ($upload->status == '99')
+                                                        <a href="#" class="waves-effect" style="color: red;">
+                                                            <i class="bx bx-no-entry font-size-24" title="Rejected"></i>
+                                                        </a>
+                                                    @endif
+
+                                                    @if($upload->status == '2' || $upload->status == '2.1')
+                                                        <a href="{{ route('delete_excel_ta', $upload->id)}}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
+                                                            <i class="bx bx-trash-alt font-size-24" title="Delete Excel"></i>
+                                                        </a>
+                                                    @endif
+
+                                                    <a href="{{ route('download_excel', $upload->id) }}" class="waves-effect" style="color: blue;">
+                                                        <i class="bx bxs-cloud-download font-size-24" title="Download Excel"></i>
+                                                    </a>
+                                                    <a href="#" class="waves-effect" style="color: black;">
+                                                        <input type="file" name="add_supp_doc{{$upload->id}}" id="add_supp_doc{{$upload->id}}" style="display: none;" accept=".zip,.rar,.7zip">
+                                                        <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Upload Supporting Documents"></i>
+                                                    </a>
+
+                                                    {{-- @if($upload->supp_doc && $upload->supp_doc == '1')
+                                                    <a href="{{ route('download_supp_doc', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: blue;">
+                                                        <i class="bx bxs-cloud-download font-size-24" title="Download Supporting Documents"></i>
+                                                    </a>
+                                                    @endif --}}
+
+                                                    @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
+                                                        <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                            <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                            <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                                        </a> 
+                                                        {{-- <a href="{{ route('excel_detail_admin', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                            <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                                        </a> --}}
+                                                    @endif                                            
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                        <tfoot>
+                            <tr>
+                            <th data-priority="0"></th>
+                            <th data-priority="3"></th>
+                            <th data-priority="1"></th>
+                            <th data-priority="3"></th>
+                            <th data-priority="1"></th>
+                            <th data-priority="3"></th>
+                            <th data-priority="1"></th>
+                            <th data-priority="1"></th>
+                            <th data-priority="3"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
@@ -596,8 +606,26 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $(document).ready(function() {
+            $("#showSuppDoc").modal({
+                keyboard: false,
+                backdrop: 'static'
+            });
+
+            $('#pleaseWaitDialog').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+
+            $('#pleaseWaitDialog').modal('show');
+
+            createTimeOut("$('#pleaseWaitDialog').modal('hide')");
+            
+        });
         
         $('#refreshBtn').click(function() {
+            $('#datatable').DataTable().state.clear();
             location.reload();
         });
 
@@ -722,12 +750,9 @@
             $("#idDownload").val(id);
         }
 
-        $(document).ready(function() {
-            $("#showSuppDoc").modal({
-                keyboard: false,
-                backdrop: 'static'
-            });
-        });
+        function createTimeOut (data) {
+            setTimeout(data, 2500);
+        }
 
         function closeDetail() {
             //alert("close");
@@ -995,8 +1020,9 @@
                 stateSave: true,
                 initComplete: function () {
                     this.api().columns().every( function () {
+                        
                         var column = this;
-                        if (column[0]==1 || column[0]==2 || column[0]==4 || column[0]==7) {
+                        if (column[0]==1 || column[0]==4 || column[0]==7) {
                             var select = $('<select><option value=""></option></select>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on('change', function () {
@@ -1023,7 +1049,7 @@
                 initComplete: function () {
                     this.api().columns().every( function () {
                         var column = this;
-                        if (column[0]==1 || column[0]==2 || column[0]==4 || column[0]==7) {
+                        if (column[0]==1 || column[0]==4 || column[0]==7) {
                             var select = $('<select><option value=""></option></select>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on('change', function () {
