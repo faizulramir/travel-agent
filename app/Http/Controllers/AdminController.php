@@ -520,6 +520,7 @@ class AdminController extends Controller
                 $month = $orderdate[1];
     
                 // dd($data_array);
+                unset($data_array[9]);
                 foreach ($data_array as $i => $json) {
                     $order = new Order;
                     $order->name = $json[1];
