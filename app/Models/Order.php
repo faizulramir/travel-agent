@@ -13,6 +13,11 @@ class Order extends Model
      * @var string
      */
     protected $table = 'orders';
+    protected $no_upper = ['dob'];
+
+    protected $casts = [
+        'dob' => 'date:d-m-Y',
+    ];
 
     public function upload()
     {
