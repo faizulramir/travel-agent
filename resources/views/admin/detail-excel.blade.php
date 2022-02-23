@@ -300,6 +300,16 @@
             }
         });
 
+        function deleteAll (id) {
+            $.ajax({
+                url: '/delete_all_cert/' + id,
+                type: 'GET',
+                success: function (data) {
+                    // $('#pleaseWaitDialog').modal('hide');
+                }
+            }); 
+        }
+
         $(document).ready(function() {
             $('#dtTable').dataTable({
                 stateSave: true,
