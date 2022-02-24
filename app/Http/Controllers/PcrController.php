@@ -66,7 +66,11 @@ class PcrController extends Controller
         $filename = $file->getClientOriginalName();
 
         $order = Order::where('id', request()->post('id'))->first();
-        $order->pcr_result = '1';
+
+        if ($order->pcr_file_name) {
+            Storage::deleteDirectory('/'.$order->user_id.'/pcr_result/'.$order->id);
+        }
+        // $order->pcr_result = '1';
         $order->pcr_file_name = $filename;
         $order->save();
 
@@ -86,5 +90,18 @@ class PcrController extends Controller
     public function downloadPCR($user_id, $order_id, $file_name)
     {
         return Storage::download('/'.$user_id.'/pcr_result/'.$order_id.'/'.$file_name);
+    }
+
+    public function post_quarantine(Request $request)
+    {
+        // dd($request->all());
+        $order = Order::where('id', $request->id)->first();
+        $order->pcr_result = $request->pcr_result;
+        $order->save();
+
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => 'Successfully Updated'
+        ], 200);
     }
 }
