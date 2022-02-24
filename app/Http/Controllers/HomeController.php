@@ -36,148 +36,152 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         //dd($request);
-
         $curUser = Auth::id();
-        //dd($curUser);
-        //$uploads = FileUpload::all();
-        $uploads = FileUpload::where('user_id', $curUser)->get();
-        //dd($uploads);
+        $checkUserRole = DashboardUser::where('id', $curUser)->first();
+        if (!empty($checkUserRole->getRoleNames()[0])) {
+            //dd($curUser);
+            //$uploads = FileUpload::all();
+            $uploads = FileUpload::where('user_id', $curUser)->get();
+            //dd($uploads);
 
-        $total_uploads = $uploads;
-        $tra_uploads = 0;
-        $tra_docs = 0;
-        $tra_pays = 0;
+            $total_uploads = $uploads;
+            $tra_uploads = 0;
+            $tra_docs = 0;
+            $tra_pays = 0;
 
-        $fin_inv = 0;
-        $fin_pay = 0;
+            $fin_inv = 0;
+            $fin_pay = 0;
 
-        $agent_uploads = 0;
-        $diy_uploads = 0;
+            $agent_uploads = 0;
+            $diy_uploads = 0;
 
-        if ($uploads) {
-
-            foreach ($uploads as $i => $upload) {
-                $user = DashboardUser::where('id', $upload->user_id)->first();
-                //dd($user);
-                if ($user->getRoleNames()[0] == 'tra') {
-                    $tra_uploads = $tra_uploads + 1;
-                    if ($user->id == $upload->user_id) {
-                        if ($upload->status == '3') {
-                            $tra_pays = $tra_pays + 1;
-                        }
-                        if ($upload->supp_doc == null) {
-                            $tra_docs = $tra_docs + 1;
-                        }
-                    }
-    
-                } else if ($user->getRoleNames()[0] == 'ag') {
-                    $agent_uploads = $agent_uploads + 1;
-                } else if ($user->getRoleNames()[0] == 'ind') {
-                    $diy_uploads = $diy_uploads + 1;
-
-                } 
-                
-            }
-
-        }
-
-        $user = DashboardUser::where('id', $curUser)->first();
-        if ($user->getRoleNames()[0] == 'fin') {
-
-            $uploads = FileUpload::all();
             if ($uploads) {
                 foreach ($uploads as $i => $upload) {
-    
-                    //echo $upload->status;
-                    if ($upload->status == '2.1') {
-                        $fin_inv = $fin_inv + 1;
-                    }
-                    if ($upload->status == '4') {
-                        $fin_pay = $fin_pay + 1;
-                    }               
+                    $user = DashboardUser::where('id', $upload->user_id)->first();
+                    //dd($user);
+                    if ($user->getRoleNames()[0] == 'tra') {
+                        $tra_uploads = $tra_uploads + 1;
+                        if ($user->id == $upload->user_id) {
+                            if ($upload->status == '3') {
+                                $tra_pays = $tra_pays + 1;
+                            }
+                            if ($upload->supp_doc == null) {
+                                $tra_docs = $tra_docs + 1;
+                            }
+                        }
+        
+                    } else if ($user->getRoleNames()[0] == 'ag') {
+                        $agent_uploads = $agent_uploads + 1;
+                    } else if ($user->getRoleNames()[0] == 'ind') {
+                        $diy_uploads = $diy_uploads + 1;
+
+                    } 
+                    
                 }
-    
+
             }
-        }
 
-        //dd($fin_inv, $fin_pay);
+            $user = DashboardUser::where('id', $curUser)->first();
+            if ($user->getRoleNames()[0] == 'fin') {
 
-        //calculate number of Jemaah
-
-        $tot_jemaah = 0;
-        $tot_lite = 0;
-        $tot_basic = 0;
-        $tot_standard = 0;
-        $tot_premium = 0;
-        $tot_pcr = 0;
-        $tot_tpa = 0;
-
-        $alluploads = FileUpload::where('status', '5')->get();
-        //dd($alluploads);
-        if ($alluploads) {
-            foreach ($alluploads as $i => $allupload) {
-                $orders = Order::where('file_id', $allupload->id)->where('status', '1')->get();
-                //dd($orders, count($orders));
-                $tot_jemaah = $tot_jemaah + count($orders);
-
-                $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'LITE')->get();
-                $tot_lite = $tot_lite + count($orders);
-
-                $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'BASIC')->get();
-                $tot_basic = $tot_basic + count($orders);     
-                
-                $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'STANDARD')->get();
-                $tot_standard = $tot_standard + count($orders); 
-
-                $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'PREMIUM')->get();
-                $tot_premium = $tot_premium + count($orders); 
-
-                $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('pcr', 'PCR')->get();
-                $tot_pcr = $tot_pcr + count($orders);
-
-                $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('tpa', 'LIKE', 'TPA%')->get();
-                $tot_tpa = $tot_tpa + count($orders);                
+                $uploads = FileUpload::all();
+                if ($uploads) {
+                    foreach ($uploads as $i => $upload) {
+        
+                        //echo $upload->status;
+                        if ($upload->status == '2.1') {
+                            $fin_inv = $fin_inv + 1;
+                        }
+                        if ($upload->status == '4') {
+                            $fin_pay = $fin_pay + 1;
+                        }               
+                    }
+        
+                }
             }
-        }
+
+            //dd($fin_inv, $fin_pay);
+
+            //calculate number of Jemaah
+
+            $tot_jemaah = 0;
+            $tot_lite = 0;
+            $tot_basic = 0;
+            $tot_standard = 0;
+            $tot_premium = 0;
+            $tot_pcr = 0;
+            $tot_tpa = 0;
+
+            $alluploads = FileUpload::where('status', '5')->get();
+            //dd($alluploads);
+            if ($alluploads) {
+                foreach ($alluploads as $i => $allupload) {
+                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->get();
+                    //dd($orders, count($orders));
+                    $tot_jemaah = $tot_jemaah + count($orders);
+
+                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'LITE')->get();
+                    $tot_lite = $tot_lite + count($orders);
+
+                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'BASIC')->get();
+                    $tot_basic = $tot_basic + count($orders);     
+                    
+                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'STANDARD')->get();
+                    $tot_standard = $tot_standard + count($orders); 
+
+                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'PREMIUM')->get();
+                    $tot_premium = $tot_premium + count($orders); 
+
+                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('pcr', 'PCR')->get();
+                    $tot_pcr = $tot_pcr + count($orders);
+
+                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('tpa', 'LIKE', 'TPA%')->get();
+                    $tot_tpa = $tot_tpa + count($orders);                
+                }
+            }
 
 
-        $amt_inv = 0.00;
-        $amt_pay = 0.00;
+            $amt_inv = 0.00;
+            $amt_pay = 0.00;
 
-        //calc amount of invoice, paid payment
-        $alluploads = FileUpload::where('status', '3')->orWhere('status', '4')->orWhere('status', '5')->get();
-        //dd($alluploads);
-        if ($alluploads) {
-            foreach ($alluploads as $i => $allupload) {
+            //calc amount of invoice, paid payment
+            $alluploads = FileUpload::where('status', '3')->orWhere('status', '4')->orWhere('status', '5')->get();
+            //dd($alluploads);
+            if ($alluploads) {
+                foreach ($alluploads as $i => $allupload) {
 
-                //still invoices
-                if ($allupload->status == '3') {
-                    if ($allupload->json_inv) {
-                        $data_decode = json_decode($allupload->json_inv, true);
-                        $tot_inv2 = $data_decode['tot_inv2'];
-                        if ($tot_inv2) {
-                            $amt_inv = 0 + $amt_inv + $tot_inv2;
+                    //still invoices
+                    if ($allupload->status == '3') {
+                        if ($allupload->json_inv) {
+                            $data_decode = json_decode($allupload->json_inv, true);
+                            $tot_inv2 = $data_decode['tot_inv2'];
+                            if ($tot_inv2) {
+                                $amt_inv = 0 + $amt_inv + $tot_inv2;
+                            }
+                        }
+                    }
+
+                    //already paid
+                    if ($allupload->status == '4' || $allupload->status == '5') {
+                        if ($allupload->json_inv) {
+                            $data_decode = json_decode($allupload->json_inv, true);
+                            $tot_inv2 = $data_decode['tot_inv2'];
+                            if ($tot_inv2) {
+                                $amt_pay = 0 + $amt_pay + $tot_inv2;
+                            }
                         }
                     }
                 }
-
-                //already paid
-                if ($allupload->status == '4' || $allupload->status == '5') {
-                    if ($allupload->json_inv) {
-                        $data_decode = json_decode($allupload->json_inv, true);
-                        $tot_inv2 = $data_decode['tot_inv2'];
-                        if ($tot_inv2) {
-                            $amt_pay = 0 + $amt_pay + $tot_inv2;
-                        }
-                    }
-                }
             }
-        }        
-
+        }
         //dd($tot_jemaah, $tot_lite, $tot_basic, $tot_standard, $tot_premium, $tot_pcr, $tot_tpa, $amt_inv, $amt_pay);
 
         if (view()->exists($request->path())) {
-            return view($request->path(), compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 'tot_premium', 'tot_pcr', 'tot_tpa', 'amt_inv', 'amt_pay'));
+            if (!empty($checkUserRole->getRoleNames()[0])) {
+                return view($request->path(), compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 'tot_premium', 'tot_pcr', 'tot_tpa', 'amt_inv', 'amt_pay'));
+            } else {
+                return view($request->path());
+            }
         }
         return abort(404);
     }

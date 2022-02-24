@@ -572,10 +572,10 @@ class AdminController extends Controller
 
     public function user_list()
     {
-        // $role = Role::create(['name' => 'fin']);
+        // $role = Role::create(['name' => 'mkh']);
         // $role = Role::where('id', 3)->first();
         // Auth::user()->assignRole($role);
-        $roles = Role::whereIn('id', [1, 2, 4, 5])->get();
+        $roles = Role::whereIn('id', [1, 2, 4, 5, 6])->get();
         $users = DashboardUser::all();
         return view('admin.user-list', compact('users',  'roles'));
     }

@@ -16,7 +16,7 @@
         @slot('title') EXCEL DETAIL @endslot
     @endcomponent
 
-    <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    {{-- <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -35,7 +35,7 @@
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    </div><!-- /.modal --> --}}
 
     <div class="modal fade bs-example-modal-center" id="editTaDialog" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -294,6 +294,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitle">Download All ECert</h5>
+                    <button type="button" id="btnClose" onclick="deleteAll({{$uploads->id}})" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -393,11 +394,11 @@
                             $('#getall_result1').html(dataHtml1);
                             $('#getall_result2').html(dataHtml2);
                         }
-                        // $('#downloadall_modal').modal({
-                        //     backdrop: 'static',
-                        //     keyboard: false
-                        // });
-                        // $('#downloadall_modal').modal('show');
+                        $('#downloadall_modal').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                        $('#downloadall_modal').modal('show');
                         // $('#modalTitle').text('Generating/Merging all ECert ... Please Wait');
                         // console.log("getAll=", data);
                         // $('#modalTitle').text('Completed');

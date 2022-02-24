@@ -78,53 +78,54 @@
     @endif    
 
     @if (auth()->user()->hasAnyRole('akc', 'fin'))
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="row">
-                {{-- <h4 class="card-title mb-4"></h4> --}}
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="text-muted fw-medium">Travel Agent Request</p>
-                                    <h4 class="mb-0">{{ $tra_uploads }}</h4>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="row">
+                    {{-- <h4 class="card-title mb-4"></h4> --}}
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted fw-medium">Travel Agent Request</p>
+                                        <h4 class="mb-0">{{ $tra_uploads }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="text-muted fw-medium">DIY Agent Request</p>
-                                    <h4 class="mb-0">{{ $agent_uploads }}</h4>
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted fw-medium">DIY Agent Request</p>
+                                        <h4 class="mb-0">{{ $agent_uploads }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="text-muted fw-medium">DIY Individu Request</p>
-                                    <h4 class="mb-0">{{ $diy_uploads }}</h4>
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted fw-medium">DIY Individu Request</p>
+                                        <h4 class="mb-0">{{ $diy_uploads }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="text-muted fw-medium">All Request</p>
-                                    <h4 class="mb-0">{{count($total_uploads)}}</h4>
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted fw-medium">All Request</p>
+                                        <h4 class="mb-0">{{count($total_uploads)}}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -132,74 +133,74 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="row">
-            <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="text-muted fw-medium">Pending Invoice Endorsement</p>
-                                    <h4 class="mb-0">{{ $fin_inv }}</h4>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="row">
+                <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted fw-medium">Pending Invoice Endorsement</p>
+                                        <h4 class="mb-0">{{ $fin_inv }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="text-muted fw-medium">Pending Payment Endorsement</p>
-                                    <h4 class="mb-0">{{ $fin_pay }}</h4>
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted fw-medium">Pending Payment Endorsement</p>
+                                        <h4 class="mb-0">{{ $fin_pay }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">LITE</p>
+                                                <h4 class="mb-0">{{ $tot_lite }}</h4>
+                                                </td>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">BASIC</p>
+                                                <h4 class="mb-0">{{ $tot_basic }}</h4>
+                                                </td>                                                                                      
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>                
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
                                     <table width="100%">
-                                        <tr>
-                                            <td width="40%">
-                                            <p class="text-muted fw-medium">LITE</p>
-                                            <h4 class="mb-0">{{ $tot_lite }}</h4>
-                                            </td>
-                                            <td width="40%">
-                                            <p class="text-muted fw-medium">BASIC</p>
-                                            <h4 class="mb-0">{{ $tot_basic }}</h4>
-                                            </td>                                                                                      
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                <table width="100%">
-                                        <tr>
-                                            <td width="40%">
-                                            <p class="text-muted fw-medium">PCR</p>
-                                            <h4 class="mb-0">{{ $tot_pcr }}</h4>
-                                            </td>
-                                            <td width="40%">
-                                            <p class="text-muted fw-medium">TPA</p>
-                                            <h4 class="mb-0">{{ $tot_tpa }}</h4>
-                                            </td>                                                                                    
-                                        </tr>
-                                    </table>
+                                            <tr>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">PCR</p>
+                                                <h4 class="mb-0">{{ $tot_pcr }}</h4>
+                                                </td>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">TPA</p>
+                                                <h4 class="mb-0">{{ $tot_tpa }}</h4>
+                                                </td>                                                                                    
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -207,157 +208,156 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="text-muted fw-medium">Amount Invoiced</p>
-                                    <h4 class="mb-0">RM {{ number_format((float)$amt_inv, 2, '.', ',') }}</h4>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted fw-medium">Amount Invoiced</p>
+                                        <h4 class="mb-0">RM {{ number_format((float)$amt_inv, 2, '.', ',') }}</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="text-muted fw-medium">Amount Paid</p>
-                                    <h4 class="mb-0">RM {{ number_format((float)$amt_pay, 2, '.', ',') }}</h4>
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted fw-medium">Amount Paid</p>
+                                        <h4 class="mb-0">RM {{ number_format((float)$amt_pay, 2, '.', ',') }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">STANDARD</p>
+                                                <h4 class="mb-0">{{ $tot_standard }}</h4>
+                                                </td>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">PREMIUM</p>
+                                                <h4 class="mb-0">{{ $tot_premium }}</h4>
+                                                </td>                                                                                        
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>  
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
                                     <table width="100%">
-                                        <tr>
-                                            <td width="40%">
-                                            <p class="text-muted fw-medium">STANDARD</p>
-                                            <h4 class="mb-0">{{ $tot_standard }}</h4>
-                                            </td>
-                                            <td width="40%">
-                                            <p class="text-muted fw-medium">PREMIUM</p>
-                                            <h4 class="mb-0">{{ $tot_premium }}</h4>
-                                            </td>                                                                                        
-                                        </tr>
-                                    </table>
+                                            <tr>
+                                                <td width="100%">
+                                                <p class="text-muted fw-medium">TOTAL JEMAAH</p>
+                                                <h4 class="mb-0">{{ $tot_jemaah }}</h4>
+                                                </td>                                                                                     
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>                              
                 </div>
-                <div class="col-md-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="media-body">
-                                <table width="100%">
-                                        <tr>
-                                            <td width="100%">
-                                            <p class="text-muted fw-medium">TOTAL JEMAAH</p>
-                                            <h4 class="mb-0">{{ $tot_jemaah }}</h4>
-                                            </td>                                                                                     
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>                              
             </div>
-        </div>
-    </div>    
+        </div>    
     @endif
 
     @if (auth()->user()->hasAnyRole('akc', 'fin'))
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card mini-stats-wid">
-                <div class="card-body">
-                    <div class="media">
-                        <div class="media-body">
-                            <p class="text-muted fw-medium">Search Record</p>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="search_by">Search By</label>
-                                    <select id="search_by" name="search_by" class="form-control select2-search-disable" required>
-                                        <option value="name">Traveller Name</option>
-                                        <option value="passport">Traveller Passport No</option>
-                                        <option value="ic">Traveller IC No</option>
-                                        <option value="agent_name">Travel Agent Name</option>
-                                        <option value="ecert">E-Cert No</option>
-                                        <option value="invoice">Invoice No</option>
-                                    </select>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted fw-medium">Search Record</p>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="search_by">Search By</label>
+                                        <select id="search_by" name="search_by" class="form-control select2-search-disable" required>
+                                            <option value="name">Traveller Name</option>
+                                            <option value="passport">Traveller Passport No</option>
+                                            <option value="ic">Traveller IC No</option>
+                                            <option value="agent_name">Travel Agent Name</option>
+                                            <option value="ecert">E-Cert No</option>
+                                            <option value="invoice">Invoice No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="plan">Search Text</label>
+                                        <input type="text" class="form-control col-md-2" id="search_val" name="search_val" placeholder="Enter search text">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="plan">&nbsp;</label>
+                                        <br>
+                                        <button class="btn btn-primary waves-effect waves-light col-md-4" type="button" title="Search Record" id="searchDash">Search</button>
+                                    </div>                                
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="plan">Search Text</label>
-                                    <input type="text" class="form-control col-md-2" id="search_val" name="search_val" placeholder="Enter search text">
+                                <!--
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <button class="btn btn-primary waves-effect waves-light col-md-12" type="button" id="searchDash">Search</button>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="plan">&nbsp;</label>
-                                    <br>
-                                    <button class="btn btn-primary waves-effect waves-light col-md-4" type="button" title="Search Record" id="searchDash">Search</button>
-                                </div>                                
-                            </div>
-                            <!--
-                            <br>
-                            <div class="row">
-                                <div class="col-md-12 text-center">
-                                    <button class="btn btn-primary waves-effect waves-light col-md-12" type="button" id="searchDash">Search</button>
+                                -->
+                                <br>
+                                <div id="table1">
+                                    <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                <th data-priority="0">#</th>
+                                                <th data-priority="1">Name</th>
+                                                <th data-priority="1">Passport No</th>
+                                                <th data-priority="1">IC No</th>
+                                                <th data-priority="3">DEP Date</th>
+                                                <th data-priority="3">RTN Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
-                            -->
-                            <br>
-                            <div id="table1">
-                                <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
-                                    <thead>
-                                        <tr>
-                                            <th data-priority="0">#</th>
-                                            <th data-priority="1">Name</th>
-                                            <th data-priority="1">Passport No</th>
-                                            <th data-priority="1">IC No</th>
-                                            <th data-priority="3">DEP Date</th>
-                                            <th data-priority="3">RTN Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
 
-                            <div id="table2" style="display: none;">
-                                <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th data-priority="1">Filename</th>
-                                            <th data-priority="3">Upload Date</th>
-                                            <th data-priority="1">Submission Date</th>
-                                            <th data-priority="1">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <div id="table2" style="display: none;">
+                                    <table id="datatable2" class="table table-bordered dt-responsive nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th data-priority="1">Filename</th>
+                                                <th data-priority="3">Upload Date</th>
+                                                <th data-priority="1">Submission Date</th>
+                                                <th data-priority="1">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     {{--
     @else
         <div class="row">

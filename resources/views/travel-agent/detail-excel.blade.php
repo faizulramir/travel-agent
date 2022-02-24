@@ -16,7 +16,7 @@
         @slot('title') EXCEL DETAIL @endslot
     @endcomponent
 
-    <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    {{-- <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -35,7 +35,7 @@
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    </div><!-- /.modal --> --}}
 
     <div class="row">
         <div class="col-12">
@@ -69,7 +69,7 @@
                             @endif
                             @if ($uploads->status === '5')
                             <div class="col-md-6" style="text-align: right; display: {{ count($check) != 0 ? 'inline' : 'none' }}">
-                                <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$id}})" title="Download all ECert">Download All ECert</button>
+                                <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadall_ecert({{$id}})" title="Download all ECert">Download All ECert</button>
                             </div>
                             @endif
                         </div>                        
@@ -207,6 +207,25 @@
         </div>
     </div>
 
+    <div class="modal fade bs-example-modal-center" id="downloadall_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Download All ECert</h5>
+                    <button type="button" id="btnClose" onclick="deleteAll({{$uploads->id}})" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p id="getall_result1">Total ECert to download:</p>
+                            <p id="getall_result2"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.min.js" integrity="sha512-BMIFH0QGwPdinbGu7AraCzG9T4hKEkcsbbr+Uqv8IY3G5+JTzs7ycfGbz7Xh85ONQsnHYrxZSXgS1Pdo9r7B6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -218,7 +237,59 @@
             }
         });
 
-        
+        function downloadall_ecert (id) {
+            if (id && id!=undefined) {
+                $.ajax({
+                    url: '/ecert_getall/' + id,
+                    type: 'GET',
+                    //timeout: 500000, // sets timeout to 500 seconds
+                    success: function (data) {
+                        console.log("getall=", data);
+                        if (data) {
+                            let pages = data.pages;
+                            let dataHtml1 = '';
+                            let dataHtml2 = '';
+                            if (pages && pages.length > 0) {
+                                pages.forEach(page => {
+                                    console.log("Page: ", page.page, " - Range: ", page.range, " - Page: ", page.page);
+                                    dataHtml1 = "<p>Total ECert to download: <b>" + page.total + "</b></p>";
+                                    let click = "downloadall_ecert_page(" + page.id + ", " + page.page + ")";
+                                    dataHtml2 = dataHtml2 + '&nbsp; <a target="_blank" class="btn btn-success" href="/ecert_getall_page/' +page.id+ '/' +page.page+ '" type="submit"> Download ECert ('+ page.range +')</a> &nbsp;';
+                                });
+                            }
+                            $('#getall_result1').html(dataHtml1);
+                            $('#getall_result2').html(dataHtml2);
+                        }
+                        $('#downloadall_modal').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                        $('#downloadall_modal').modal('show');
+                        // $('#modalTitle').text('Generating/Merging all ECert ... Please Wait');
+                        // console.log("getAll=", data);
+                        // $('#modalTitle').text('Completed');
+                    }
+                }); 
+            }
+            else {
+                alert("Request ID not valid! Process Not Allowed.");
+            }
+
+        }      
+
+        function downloadall_ecert_page (id, page) {
+            alert("downloadall_ecert_page: " + id + "  page: " + page);
+
+            $.ajax({
+                url: '/ecert_getall_page/' + id + '/' + page,
+                type: 'GET',
+                timeout: 500000, // sets timeout to 500 seconds
+                success: function (data) {
+                    console.log(data);
+                    alert("ECert Successfully Merged!");
+                }
+            }); 
+        }
 
         function downloadAll (id) {
             $('#btnAfter').hide();
