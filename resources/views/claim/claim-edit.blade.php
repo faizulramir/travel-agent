@@ -258,25 +258,29 @@
                 const data = new Array();
                 const dataAll = new Array();
                 for (let index = 0; index < i; index++) {
-                    $cnt = -1;
+                    var cnt = -1;
                     console.log('#row' + index);
-                    $('#row' + index).find("input").each(function() {
-                        $cnt = $cnt + 1;
-                        data[$cnt] = this.value;
+                    $('#row' + index + '> td').find("input").each(function() {
+                        cnt = cnt + 1;
+                        data.push(this.value);
                     });
-                    dataAll.push(data);
+                    // dataAll.push(data);
                 }
-                console.log(JSON.stringify(dataAll));
+                // var i,j, temporary, chunk = 7;
+                // for (i = 0,j = data.length; i < j; i += chunk) {
+                //     temporary = data.slice(i, i + chunk);
+                //     console.log(temporary);
+                // }
                 $.ajax({
                     url: '/claim_add',
                     type: 'POST',
                     data: {
                         id: $('#jemaahId').val(),
-                        jsonData: JSON.stringify(dataAll),
+                        jsonData: JSON.stringify(data),
                     },
                     success: function (data) {
-                        // alert(data.Data);
-                        // location.reload();
+                        alert(data.Data);
+                        location.reload();
                     }
                 });
             });
