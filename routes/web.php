@@ -43,6 +43,7 @@ Route::get('/create_cert_ind/{order_id}', [App\Http\Controllers\PaymentControlle
 Route::post('/submit_payment', [App\Http\Controllers\PaymentController::class, 'submit_payment'])->name('submit_payment');
 
 Route::get('/ecert_getall/{id}', [App\Http\Controllers\PaymentController::class, 'ecert_getall'])->name('ecert_getall');
+Route::get('/ecert_getall_page/{id}/{page}', [App\Http\Controllers\PaymentController::class, 'ecert_getall_page'])->name('ecert_getall_page');
 
 
 

@@ -115,7 +115,8 @@
 
                             @if ($uploads->status === '5' && $uploads->status != '99')
                                 <a style="display: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'inline' : 'none' :  'none' }};" href="{{ route('download_supp_doc',  [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary w-md" id="download_cert">Download Supporting Docs</a>
-                                <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
+                                <!-- <button class="btn btn-primary w-md" id="download_all_cert" onclick="downloadAll({{$uploads->id}})" title="Download all ECert">Download All ECert</button> -->
+                                <button class="btn btn-primary w-md" id="downloadall_ecert" onclick="downloadall_ecert({{$uploads->id}})" title="Download all ECert">Download All ECert</button>
                             @endif
                         </div>                        
                     </div>
@@ -288,6 +289,24 @@
         </div>
     </div>    
 
+    <div class="modal fade bs-example-modal-center" id="downloadall_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Download All ECert</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p id="getall_result1">Total ECert to download:</p>
+                            <p id="getall_result2"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>       
+
 
 @endsection
 @section('script')
@@ -339,11 +358,9 @@
 
             $.ajax({
                 url: '/ecert_all/' + id,
-                //url: '/ecert_getall/' + id,
                 type: 'GET',
                 timeout: 500000, // sets timeout to 500 seconds
                 success: function (data) {
-                    //console.log("getAll=", data);
                     $('#modalTitle').text('Completed');
                     $('#btnBefore').hide();
                     $('#btnAfter').show();
@@ -352,6 +369,62 @@
                 }
             }); 
         }
+
+        function downloadall_ecert (id) {
+            if (id && id!=undefined) {
+                $.ajax({
+                    url: '/ecert_getall/' + id,
+                    type: 'GET',
+                    //timeout: 500000, // sets timeout to 500 seconds
+                    success: function (data) {
+                        console.log("getall=", data);
+                        if (data) {
+                            let pages = data.pages;
+                            let dataHtml1 = '';
+                            let dataHtml2 = '';
+                            if (pages && pages.length > 0) {
+                                pages.forEach(page => {
+                                    console.log("Page: ", page.page, " - Range: ", page.range, " - Page: ", page.page);
+                                    dataHtml1 = "<p>Total ECert to download: <b>" + page.total + "</b></p>";
+                                    let click = "downloadall_ecert_page(" + page.id + ", " + page.page + ")";
+                                    dataHtml2 = dataHtml2 + '&nbsp; <a target="_blank" class="btn btn-success" href="/ecert_getall_page/' +page.id+ '/' +page.page+ '" type="submit"> Download ECert ('+ page.range +')</a> &nbsp;';
+                                });
+                            }
+                            $('#getall_result1').html(dataHtml1);
+                            $('#getall_result2').html(dataHtml2);
+                        }
+                        // $('#downloadall_modal').modal({
+                        //     backdrop: 'static',
+                        //     keyboard: false
+                        // });
+                        // $('#downloadall_modal').modal('show');
+                        // $('#modalTitle').text('Generating/Merging all ECert ... Please Wait');
+                        // console.log("getAll=", data);
+                        // $('#modalTitle').text('Completed');
+                    }
+                }); 
+            }
+            else {
+                alert("Request ID not valid! Process Not Allowed.");
+            }
+
+        }      
+
+        function downloadall_ecert_page (id, page) {
+            alert("downloadall_ecert_page: " + id + "  page: " + page);
+
+            $.ajax({
+                url: '/ecert_getall_page/' + id + '/' + page,
+                type: 'GET',
+                timeout: 500000, // sets timeout to 500 seconds
+                success: function (data) {
+                    console.log(data);
+                    alert("ECert Successfully Merged!");
+                }
+            }); 
+        }  
+
+
 
         function chooseSupDoc (type) {
             if (type == 'eticket') {

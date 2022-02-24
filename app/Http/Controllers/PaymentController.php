@@ -704,57 +704,89 @@ class PaymentController extends Controller
     public function ecert_getall ($id) {
         $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->get();
 
+        $max_count = 30;
         $divide = 0;
         $remain = 0;
         $pages = 0;
+
         if ($order) {
-            $divide = (int) (count($order) / 30);
-            $remain = (int) (count($order) % 30);
+            $tot_count = count($order);
+            $divide = (int) ($tot_count / $max_count);
+            $remain = (int) ($tot_count % $max_count);
             if ($remain>0) $pages = 1 + $divide;
+            
+            $pages_arr = array();
+            for ($x = 0; $x < $pages; $x++) {
+                $balance = (($tot_count-($x+1)*$max_count)>0 ? (($x+1)*$max_count) : (($x+1)*$max_count)-((($x+1)*$max_count)-$tot_count));
+                $range = ''. (($x*$max_count)+1) .' - '. $balance;
+                $tmpArr = array (
+                    'id' => $id,
+                    'total' => $tot_count,
+                    'max' => $max_count,
+                    'page' => $x+1,
+                    'range' => $range,
+                );
+                array_push($pages_arr, $tmpArr);
+            }
 
-            $order1 = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset(0*30)->limit(30)->get();
-            $order2 = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset(1*30)->limit(30)->get();
-
-            dd(count($order), $divide, $remain, $pages, $order1, $order2);
-
+            //$order1 = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset(0*30)->limit(30)->get();
+            //$order2 = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset(1*30)->limit(30)->get();
+            //dd(count($order), $divide, $remain, $pages, count($order1), count($order2), $order1[29]->ecert, $order2[0]->ecert, $pages_arr);
+            //dd(count($order), $divide, $remain, $pages, $pages_arr);
             return response()->json([
                 'isSuccess' => true,
                 'Data' => 'Successfully Merged!',
-                'pages' => $pages
+                'pages' => $pages_arr
             ], 200);
         }
 
-        //dd(count($order), $divide, $remain, $pages);
+        return response()->json([
+            'isSuccess' => false,
+            'Data' => 'No Data Found!',
+            'pages' => null
+        ], 200); // Status code here
+        // return $pdf->stream();
+    }
 
-        //if ($order) ini_set('max_execution_time', '500');
+    public function ecert_getall_page ($id, $page) {
+        $max_count = 30;
+        $page = (0 + $page) - 1;
+        //dd($id, $page, $max_count);
+
+        if ($page<0) {
+            return response()->json([
+                'isSuccess' => false,
+                'Data' => 'No Data Found!',
+                'pages' => null
+            ], 200); // Status code here
+        }
+
+        //$order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->get();
+        $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset($page*$max_count)->limit($max_count)->get();
+        //dd($id, $page, $max_count, count($order), $order);
+
+        if ($order) {
+            ini_set('max_execution_time', '500');
+        } 
+        else {
+            return response()->json([
+                'isSuccess' => false,
+                'Data' => 'No Data Found!',
+                'pages' => null
+            ], 200); // Status code here
+        }
 
         foreach ($order as $key => $orders) {
             $plan = Plan::where('name', $orders->plan_type)->first();
             $url_bg = Storage::path('template/template_cert.png');
 
             $cert_number = $orders->ecert;
-
-            //fix birth date
-            //dd($orders->ecert, $orders->dob, $orders->dep_date);
-            // $dob = new Carbon($orders->dob);
-            // $dobyear = 0 + $dob->format('Y');
-            // $nowyear = Carbon::now()->year;
-            // $correctyear = $dobyear;
-            // $newbirth = $dob;
-            // if ($dobyear > $nowyear) {
-            //     $correctyear = $dobyear - 100;
-            //     $newbirth = Carbon::create($correctyear, 0 + $dob->format('m'), 0 + $dob->format('d'));
-            // }
-            //dd($orders->dob,  $dobyear, $nowyear, $correctyear, $newbirth->format('Y-m-d'));
             $newbirth = $orders->dob;
 
-
-            //fix plan duration date
-            //$total_days = $plan->total_days;
-            //$addDays = (0 + $total_days) - 1;
             $depdate = new Carbon($orders->dep_date);
             $rtndate = new Carbon($orders->return_date);
             //$rtndate->addDays($addDays);
+
             $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
@@ -763,7 +795,9 @@ class PaymentController extends Controller
             Storage::put(Auth::id().'/ecert/'.$id.'/'.$orders->passport_no.'.pdf',$content);
         }
         
-        $pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
+        //$pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
+        $pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset($page*$max_count)->limit($max_count)->get();
+
         $tmpArr = array();
         foreach ($pdf_id as $key => $pdf) {
             array_push($tmpArr, Storage::path(Auth::id().'/ecert/'.$id.'/'.$pdf->passport_no.'.pdf'));
@@ -771,16 +805,21 @@ class PaymentController extends Controller
         // dd($tmpArr);
         $merger = new Merger;
         $merger->addIterator($tmpArr);
+
+        $merged_name = "merged-".$id.'-'.(($page*$max_count)+1).'-'.count($pdf_id).'.pdf';
         
         $createdPdf = $merger->merge();
-        Storage::put(Auth::id().'/ecert/'.$id.'/merged.pdf',$createdPdf);
+        //Storage::put(Auth::id().'/ecert/'.$id.'/merged.pdf',$createdPdf);
+        Storage::put(Auth::id().'/ecert/'.$id.'/'.$merged_name,$createdPdf);
+
+        return response()->file(Storage::path(Auth::id().'/ecert/'.$id.'/'.$merged_name), [ 'Content-Disposition' => 'filename='.$merged_name ]);
         
-        return response()->json([
-            'isSuccess' => true,
-            'Data' => 'Successfully Merged!'
-        ], 200); // Status code here
-        // return $pdf->stream();
-    }
+        // return response()->json([
+        //     'isSuccess' => true,
+        //     'Data' => 'Successfully Merged!'
+        // ], 200); // Status code here
+        //return $createdPdf->stream();
+    }   
 
 
 
