@@ -50,7 +50,9 @@ class PcrController extends Controller
     public function post_return_date($val, $id)
     {
         $order = Order::where('id', $id)->first();
-        $order->pcr_date = $val;
+        // $order->pcr_date = $val;
+        $order->pcr_date = $val ? Carbon::createFromFormat('Y-m-d', $val)->format('d/m/Y') : '';
+
         $order->save();
 
         return response()->json([

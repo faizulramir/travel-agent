@@ -95,7 +95,7 @@
                         <div class="col-lg-3">
                             <div>
                                 <label for="plan">Departure Date</label>
-                                <p class="data-jemaah">{{ $jemaah->dep_date }}</p>
+                                <p class="data-jemaah">{{$jemaah->dep_date ? date('d-m-Y', strtotime($jemaah->dep_date)): '' }}</p>
                             </div>
                         </div>
                     </div>                    
@@ -122,11 +122,12 @@
                         <div class="col-lg-3">
                             <div>
                                 <label for="plan">Return Date</label>
-                                <p class="data-jemaah">{{ $jemaah->return_date }}</p>
+                                <p class="data-jemaah">{{$jemaah->return_date ? date('d-m-Y', strtotime($jemaah->return_date)): '' }}</p>
                             </div>
                         </div>
                     </div>
-
+                    
+                    <input type="hidden" value="{{$jemaah->id}}" id="jemaahId" name="jemaahId">
                     <hr/>
 
                     <div class="row">
@@ -149,41 +150,41 @@
                                                     <td>Others</td>
                                                     <td>Action</td>
                                                 </tr>
-                                                <tr id='addr0'>
+                                                <tr id='row0'>
                                                     <td>1</td>
                                                     <td>
-                                                    <div class="form-group">
-                                                            <input class="form-control" id="rowInput0" placeholder="Enter Date" type="date">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="rowInput1" placeholder="Enter Date" type="date">
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <input class="form-control" id="rowInput1"  placeholder="Enter Pt. File#" type="number">
+                                                            <input class="form-control" id="rowInput2"  placeholder="Enter Pt. File#" type="number">
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <input class="form-control" id="rowInput2" placeholder="Enter Invoice#" type="number">
+                                                            <input class="form-control" id="rowInput3" placeholder="Enter Invoice#" type="number">
                                                         </div>
                                                     </td>  
                                                     <td>
                                                         <div class="form-group">
-                                                            <input class="form-control" id="rowInput3" placeholder="Enter Consultation" type="number">
+                                                            <input class="form-control" id="rowInput4" placeholder="Enter Consultation" type="number">
                                                         </div>
                                                     </td>    
                                                     <td>
                                                         <div class="form-group">
-                                                            <input class="form-control" id="rowInput4" placeholder="Enter Drugs" type="number">
+                                                            <input class="form-control" id="rowInput5" placeholder="Enter Drugs" type="number">
                                                         </div>
                                                     </td>    
                                                     <td>
                                                         <div class="form-group">
-                                                            <input class="form-control" id="rowInput5" placeholder="Enter Services" type="number">
+                                                            <input class="form-control" id="rowInput6" placeholder="Enter Services" type="number">
                                                         </div>
                                                     </td>    
                                                     <td>
                                                         <div class="form-group">
-                                                            <input class="form-control" id="rowInput6" placeholder="Enter Others" type="number">
+                                                            <input class="form-control" id="rowInput7" placeholder="Enter Others" type="number">
                                                         </div>
                                                     </td>                                     
                                                     <td>
@@ -221,19 +222,24 @@
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         $(document).ready(function(){
             var i=1;
             $("#add_row").click(function(){
                 html = '';
                 html += '<td>' + (i+1) + '</td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput0" name="rowInput0" placeholder="Enter Date" type="date"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput1" name="rowInput1" placeholder="Enter Pt. File#" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput2" name="rowInput2" placeholder="Enter Invoice#" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput3" name="rowInput3" placeholder="Enter Consultation" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput4" name="rowInput4" placeholder="Enter Drugs" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput5" name="rowInput5" placeholder="Enter Services" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput6" name="rowInput6" placeholder="Enter Other" type="number"></div></td>';
+                html += '<td><div class="form-group"><input class="form-control" id="rowInput1" name="rowInput1" placeholder="Enter Date" type="date"></div></td>';
+                html += '<td><div class="form-group"><input class="form-control" id="rowInput2" name="rowInput2" placeholder="Enter Pt. File#" type="number"></div></td>';
+                html += '<td><div class="form-group"><input class="form-control" id="rowInput3" name="rowInput3" placeholder="Enter Invoice#" type="number"></div></td>';
+                html += '<td><div class="form-group"><input class="form-control" id="rowInput4" name="rowInput4" placeholder="Enter Consultation" type="number"></div></td>';
+                html += '<td><div class="form-group"><input class="form-control" id="rowInput5" name="rowInput5" placeholder="Enter Drugs" type="number"></div></td>';
+                html += '<td><div class="form-group"><input class="form-control" id="rowInput6" name="rowInput6" placeholder="Enter Services" type="number"></div></td>';
+                html += '<td><div class="form-group"><input class="form-control" id="rowInput7" name="rowInput7" placeholder="Enter Other" type="number"></div></td>';
                 html += '<td><a id="delete_row" data-delete=' + (i+1) + ' class="pull-right waves-effect waves-light" style="color: red;"  onclick="return confirm(\'Do you really want to delete?\');"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>';               
                 //$('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='name"+i+"' type='text' placeholder='Name' class='form-control input-md'  /> </td><td><input  name='mail"+i+"' type='text' placeholder='Mail'  class='form-control input-md'></td><td><input  name='mobile"+i+"' type='text' placeholder='Mobile'  class='form-control input-md'></td>");
                 $('#row'+i).html(html);
@@ -248,8 +254,33 @@
                 }
             });
 
+            $("#save_btn").click(function(){
+                const data = new Array();
+                const dataAll = new Array();
+                for (let index = 0; index < i; index++) {
+                    $cnt = -1;
+                    console.log('#row' + index);
+                    $('#row' + index).find("input").each(function() {
+                        $cnt = $cnt + 1;
+                        data[$cnt] = this.value;
+                    });
+                    dataAll.push(data);
+                }
+                console.log(JSON.stringify(dataAll));
+                $.ajax({
+                    url: '/claim_add',
+                    type: 'POST',
+                    data: {
+                        id: $('#jemaahId').val(),
+                        jsonData: JSON.stringify(dataAll),
+                    },
+                    success: function (data) {
+                        // alert(data.Data);
+                        // location.reload();
+                    }
+                });
+            });
         });
-
 
     </script>
     <!-- Datatable init js -->

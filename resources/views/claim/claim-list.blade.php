@@ -75,7 +75,13 @@
                                                 REJECTED
                                             @endif
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            @php
+                                                $cnt = 0;
+                                                $order = count(\App\Models\Order::where([['file_id', $file->id], ['pcr_result', '1']])->get());
+                                            @endphp
+                                            {{$order}}
+                                        </td>
                                         <td>
                                             <a href="{{ route('claim_detail', $file->id) }}" class="waves-effect" style="color:#ed2994;">
                                                 <i class="bx bxs-collection font-size-24" title="Show Detail"></i>

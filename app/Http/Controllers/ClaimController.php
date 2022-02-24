@@ -37,7 +37,7 @@ class ClaimController extends Controller
 
     public function claim_detail($id)
     {
-        $orders = Order::where([['file_id', '=', $id]])->get();
+        $orders = Order::where([['file_id', '=', $id]])->orderBy('pcr_result', 'DESC')->get();
         return view('claim.claim-detail', compact('orders'));
     }
 
@@ -50,13 +50,14 @@ class ClaimController extends Controller
         return view('claim.claim-edit', compact('plans', 'tpas', 'jemaah'));
     }
 
+    public function claim_add(Request $request)
+    {
+        $jemaah = Order::where('id', $request->id)->first();
+        // $test = json_decode($request->json_data);
+        dd($_POST['jsonData']);
 
-
-
-
-
-
-
+        return redirect()->back();
+    }
 
     public function application_list()
     {

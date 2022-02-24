@@ -54,10 +54,7 @@
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)): '' }}</td>
                                         <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO'? '('.$order->ecert.')' : '') }}</td>
                                         <td>
-                                            @php
-                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->return_date)));
-                                            @endphp
-                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
+                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{ $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '' }}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
                                         </td>
                                         <td>
                                             <select id="pcr_result{{$order->id}}" name="pcr_result{{$order->id}}" onchange="updateStatus({{$order->id}})" class="form-control select2-search-disable" required>
