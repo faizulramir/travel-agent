@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title') PCR LIST @endsection
+@section('title') CLAIM LIST @endsection
 
 @section('css')
     <!-- Responsive Table css -->
@@ -13,7 +13,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') ADMIN @endslot
-        @slot('title') PCR LIST @endslot
+        @slot('title') CLAIM LIST @endslot
     @endcomponent
 
     <div class="row">
@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6" style="text-align: left;">
-                            <a href="{{ route('pcr_excel_list') }}" class="btn btn-primary w-md">
+                            <a href="{{ route('claim_list') }}" class="btn btn-primary w-md">
                                 <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
                             </a>
                         </div>
@@ -39,12 +39,12 @@
                                     <th data-priority="3">RTN Date</th>
                                     <th data-priority="3">ECare</th>
                                     <th data-priority="3">PCR Date</th>
+                                    <th data-priority="3">TPA</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($orders as $i => $order)
-
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $order->name }}</td>
@@ -58,10 +58,8 @@
                                             @endphp
                                             <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
                                         </td>
+                                        <td>{{ $order->tpa }}</td>
                                         <td>
-                                            <!-- <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                <i class="bx bx-food-menu font-size-24" title="Print E-Cert"></i>
-                                            </a> -->
                                             @if ($order->pcr_result == null) 
                                                 <a href="#" class="waves-effect" style="color: blue;">
                                                     <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">
@@ -72,6 +70,19 @@
                                                     <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="Download PCR Result"></i>
                                                 </a>
                                             @endif
+
+                                            @if ($order->upload->status == '5')
+                                                @if ($order->plan_type != 'NO' &&  $order->status == '1')
+                                                    <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
+                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
+                                                    </a>
+                                                @endif                                                
+                                            @endif
+
+                                            <a href="{{ route('claim_edit', $order->id) }}" class="waves-effect" style="color: black;">
+                                                <i class="bx bx-edit-alt font-size-24" title="Edit Claim"></i>
+                                            </a>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -113,36 +124,30 @@
                         contentType: false,
                         processData: false,
                         success: function (data) {
-                            alert(data.Data)
-                            location.reload()
+                            alert(data.Data);
+                            location.reload();
                         }
                     });
                 });
             });
-
             return supp_id;
         }
 
-        function clicked(e, id)
-        {
-            // if(!confirm('Are you sure to submit?')) {
-            //     e.preventDefault();
-            // } else {
-                $("#pcr_date" + id).change(function () {
-                    var end = this.value;
-                    var userId = id;
-                    var firstDropVal = $('#pcr_date' + id).val();
+        function clicked(e, id) {
+            $("#pcr_date" + id).change(function () {
+                var end = this.value;
+                var userId = id;
+                var firstDropVal = $('#pcr_date' + id).val();
 
-                    $.ajax({
-                        type:'get',
-                        url:'/post_return_date' + '/' + firstDropVal + '/' + userId,
-                        data:'_token = <?php echo csrf_token() ?>',
-                        success:function(data) {
-                            alert(data.Data)
-                        }
-                    });
+                $.ajax({
+                    type:'get',
+                    url:'/post_return_date' + '/' + firstDropVal + '/' + userId,
+                    data:'_token = <?php echo csrf_token() ?>',
+                    success:function(data) {
+                        alert(data.Data)
+                    }
                 });
-            // }
+            });
         }
 
     </script>

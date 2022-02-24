@@ -41,10 +41,8 @@ Route::get('/create_invoice_ind/{order_id}', [App\Http\Controllers\PaymentContro
 Route::get('/create_invoice/{order_id}', [App\Http\Controllers\PaymentController::class, 'create_invoice'])->name('create_invoice');
 Route::get('/create_cert_ind/{order_id}', [App\Http\Controllers\PaymentController::class, 'create_cert_ind'])->name('create_cert_ind');
 Route::post('/submit_payment', [App\Http\Controllers\PaymentController::class, 'submit_payment'])->name('submit_payment');
-
 Route::get('/ecert_getall/{id}', [App\Http\Controllers\PaymentController::class, 'ecert_getall'])->name('ecert_getall');
 Route::get('/ecert_getall_page/{id}/{page}', [App\Http\Controllers\PaymentController::class, 'ecert_getall_page'])->name('ecert_getall_page');
-
 
 
 //travel agent
@@ -163,3 +161,11 @@ Route::post('/post_pcr_doc', [App\Http\Controllers\PcrController::class, 'post_p
 
 //email
 Route::post('/send_mail/{subject_to_send}/{to_name}/{to_email}/{body}/{title}', [App\Http\Controllers\EmailController::class, 'send_mail'])->name('send_mail');
+
+
+//claim
+Route::get('/claim_list', [App\Http\Controllers\ClaimController::class, 'claim_list'])->name('claim_list');
+Route::get('/claim_detail/{id}', [App\Http\Controllers\ClaimController::class, 'claim_detail'])->name('claim_detail');
+Route::get('/claim_edit/{id}', [App\Http\Controllers\ClaimController::class, 'claim_edit'])->name('claim_edit');
+
+

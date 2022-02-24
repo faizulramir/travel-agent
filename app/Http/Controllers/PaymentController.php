@@ -589,7 +589,6 @@ class PaymentController extends Controller
 
         $cert_number = $orders->ecert;
 
-
         //fix birth date
         //dd($orders->ecert, $orders->dob, $orders->dep_date);
         // if (str_contains($orders->dob, '/')) {

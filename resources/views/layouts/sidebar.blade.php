@@ -74,15 +74,21 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('user_list') }}" class="waves-effect">
-                            <i class="bx bxs-user-detail"></i>
-                            <span key="t-ta">USER LIST</span>
+                        <a href="{{ route('claim_list') }}" class="waves-effect">
+                            <i class="bx bx-money"></i>
+                            <span key="t-ta">CLAIM LIST</span>
                         </a>
-                    </li>
+                    </li> 
                     <li>
                         <a href="{{ route('plan_list') }}" class="waves-effect">
                             <i class="bx bxs-briefcase-alt-2"></i>
                             <span key="t-ta">PLAN LIST</span>
+                        </a>
+                    </li>                   
+                    <li>
+                        <a href="{{ route('user_list') }}" class="waves-effect">
+                            <i class="bx bxs-user-detail"></i>
+                            <span key="t-ta">USER LIST</span>
                         </a>
                     </li>
                     <li>
