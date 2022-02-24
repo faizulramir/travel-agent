@@ -22,6 +22,11 @@ class PcrController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function __construct()
+    {
+        $this->middleware(['role:fin|akc|mkh']);
+    }
+
     public function pcr_excel_list()
     {
         //$files = FileUpload::all();

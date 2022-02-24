@@ -25,9 +25,8 @@ class ClaimController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['role:fin|akc']);
+        $this->middleware(['role:fin|akc|mkh']);
     }
-
     
     public function claim_list()
     {

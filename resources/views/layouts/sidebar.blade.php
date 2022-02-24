@@ -58,6 +58,12 @@
                             <span key="t-ta">EXCEL LIST</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('claim_list') }}" class="waves-effect">
+                            <i class="bx bx-money"></i>
+                            <span key="t-ta">CLAIM LIST</span>
+                        </a>
+                    </li> 
                 @endif
                 
                 @if (auth()->user()->hasAnyRole('akc'))
@@ -99,6 +105,21 @@
                     </li>
                 @endif
 
+                @if (auth()->user()->hasAnyRole('mkh'))
+                    <li>
+                        <a href="{{ route('pcr_excel_list') }}" class="waves-effect">
+                            <i class="bx bx-bolt-circle"></i>
+                            <span key="t-ta">PCR LIST</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('claim_list') }}" class="waves-effect">
+                            <i class="bx bx-money"></i>
+                            <span key="t-ta">CLAIM LIST</span>
+                        </a>
+                    </li> 
+                @endif                
+
                 @if (auth()->user()->hasAnyRole('ind'))
                     <li>
                         <a href="{{ route('application_list') }}" class="waves-effect">
@@ -107,7 +128,6 @@
                         </a>
                     </li>
                 @endif
-
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
