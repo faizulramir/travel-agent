@@ -157,6 +157,7 @@ Route::get('/pcr_excel_list', [App\Http\Controllers\PcrController::class, 'pcr_e
 Route::get('/excel_detail_pcr/{id}', [App\Http\Controllers\PcrController::class, 'excel_detail_pcr'])->name('excel_detail_pcr');
 Route::get('/post_return_date/{val}/{id}', [App\Http\Controllers\PcrController::class, 'post_return_date'])->name('post_return_date');
 Route::post('/post_pcr_doc', [App\Http\Controllers\PcrController::class, 'post_pcr_doc'])->name('post_pcr_doc');
+Route::post('/post_quarantine', [App\Http\Controllers\PcrController::class, 'post_quarantine'])->name('post_quarantine');
 
 
 //email

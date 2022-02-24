@@ -39,6 +39,7 @@
                                     <th data-priority="3">RTN Date</th>
                                     <th data-priority="3">ECare</th>
                                     <th data-priority="3">PCR Date</th>
+                                    <th data-priority="3">Quarantine</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
@@ -59,17 +60,22 @@
                                             <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
                                         </td>
                                         <td>
+                                            <select id="pcr_result{{$order->id}}" name="pcr_result{{$order->id}}" onchange="updateStatus({{$order->id}})" class="form-control select2-search-disable" required>
+                                                <option value="0" {{ ($order->pcr_result == '0' || $order->pcr_result == null) ? 'selected' : '' }}>No</option>
+                                                <option value="1" {{ ($order->pcr_result == '1') ? 'selected' : '' }}>Yes</option>
+                                            </select>
+                                        </td>
+                                        <td>
                                             <!-- <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
                                                 <i class="bx bx-food-menu font-size-24" title="Print E-Cert"></i>
                                             </a> -->
-                                            @if ($order->pcr_result == null) 
-                                                <a href="#" class="waves-effect" style="color: blue;">
-                                                    <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">
-                                                    <i onclick="openDetail({{$order->id}})" id="uploadPCR{{$order->id}}" class="bx bxs-cloud-upload font-size-24" title="Upload PCR Result"></i>
-                                                </a>
-                                            @else
+                                            <a href="#" class="waves-effect" style="color: blue;">
+                                                <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">
+                                                <i onclick="openDetail({{$order->id}})" id="uploadPCR{{$order->id}}" class="bx bxs-cloud-upload font-size-24" title="Upload PCR Result"></i>
+                                            </a>
+                                            @if ($order->pcr_file_name)
                                                 <a href="{{ route('downloadPCR', [$order->user_id, $order->id, $order->pcr_file_name]) }}" class="waves-effect" style="color: green;">
-                                                    <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="Download PCR Result"></i>
+                                                    <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="{{ $order->pcr_file_name }}"></i>
                                                 </a>
                                             @endif
                                         </td>
@@ -93,6 +99,29 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        function updateStatus (id) {
+            $(document).ready(function() {
+                var form_data = new FormData();
+                form_data.append("id", id);
+                form_data.append("pcr_result", $("#pcr_result" + id).val());
+                
+                $.ajax({
+                    url: '/post_quarantine',
+                    type: 'POST',
+                    data: form_data,
+                    dataType: 'JSON',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        alert(data.Data)
+                        // location.reload()
+                    }
+                });
+            });
+        }
+        
 
         function openDetail (id) {
             $(document).ready(function() {
