@@ -527,18 +527,39 @@ class AdminController extends Controller
                     $order->name = $json[1];
                     $order->passport_no = $json[2];
                     $order->ic_no = $json[3];
-                    $order->dob = $json[4];
+                    try {
+                        $order->dob = $json[4] ? Carbon::createFromFormat('m/d/Y', $json[4])->format('d-m-Y') : '';
+                    } catch (\Throwable $th) {
+                        $order->dob = $json[4];
+                    }
                     $order->ex_illness = $json[5];
                     $order->hp_no = $json[6];
                     $order->plan_type = $json[7];
                     $order->email = $json[8];
-                    $order->dep_date = $json[9];
-                    $order->return_date = $json[10];
+
+                    try {
+                        $order->dep_date = $json[9] ? Carbon::createFromFormat('m/d/Y', $json[9])->format('d-m-Y') : '';
+                    } catch (\Throwable $th) {
+                        $order->dep_date = $json[9];
+                    }
+
+                    try {
+                        $order->return_date = $json[10] ? Carbon::createFromFormat('m/d/Y', $json[10])->format('d-m-Y') : '';
+                    } catch (\Throwable $th) {
+                        $order->return_date = $json[10];
+                    }
+                    
                     $order->user_id = $uploads->user_id;
                     $order->file_id = $uploads->id;
                     // $order->ecert = $uploads->id;
                     $order->invoice = $uploads->id;
-                    $order->pcr_date = $json[10];
+
+                    try {
+                        $order->pcr_date = $json[10] ? Carbon::createFromFormat('m/d/Y', $json[10])->format('d-m-Y') : '';
+                    } catch (\Throwable $th) {
+                        $order->pcr_date = $json[10];
+                    }
+
                     $order->pcr_result = null;
                     $order->pcr = $json[11];
                     $order->tpa = $json[12];
