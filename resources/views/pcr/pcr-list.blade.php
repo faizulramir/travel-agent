@@ -38,8 +38,10 @@
                                     <th data-priority="3" width="10%">DEP Date</th>
                                     <th data-priority="1" width="10%">RTN Date</th>
                                     <th data-priority="1" width="10%">ECare</th>
+
                                     <th data-priority="1" width="5%">PCR</th>
                                     <th data-priority="1" width="10%">PCR Date</th>
+
                                     <th data-priority="1" width="5%">Quarantine</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
@@ -53,13 +55,21 @@
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : '' }}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)): '' }}</td>
                                         <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO' && $order->status=='1'? '('.$order->ecert.')' : '') }}</td>
+                                        <td>{{ $order->pcr }}
+
+                                        {{--
+                                        @php
+                                         if ($order->pcr_date) Carbon\Carbon::createFromFormat('d/m/Y', trim($order->pcr_date))->format('Y-m-d');
+                                        @endphp
                                         <td>
-<<<<<<< HEAD
-                                            {{ $order->pcr }}
-=======
-                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{ $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '' }}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
->>>>>>> 33914307a60ce511075b915b97cacbad6e39151c
+                                             <input type="date" class="form-control" 
+                                                    name="pcr_date{{$order->id}}" 
+                                                    value="{{ $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '' }}" 
+                                                    id="pcr_date{{$order->id}}" 
+                                                    onclick="clicked(event, {{$order->id}})"> 
                                         </td>
+                                        --}}
+
                                         <td>
                                             @if ($order->status == '1')
                                                 @php
@@ -111,6 +121,7 @@
                                                 </a>
                                             @endif                                            
                                         </td>
+                                        
                                     </tr>
                                 @endforeach
                             </tbody>

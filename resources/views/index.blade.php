@@ -87,32 +87,18 @@
                             <div class="card-body">
                                 <div class="media">
                                     <div class="media-body">
-                                        <p class="text-muted fw-medium">Travel Agent Request</p>
-                                        <h4 class="mb-0">{{ $tra_uploads }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">DIY Agent Request</p>
-                                        <h4 class="mb-0">{{ $agent_uploads }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="text-muted fw-medium">DIY Individu Request</p>
-                                        <h4 class="mb-0">{{ $diy_uploads }}</h4>
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">Admin</p>
+                                                <h4 class="mb-0">{{ $akc_uploads }}</h4>
+                                                </td>
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">Travel Agent Request</p>
+                                                <h4 class="mb-0">{{ $tra_uploads }}</h4>
+                                                </td>                                                                                      
+                                            </tr>
+                                        </table>                                        
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +110,28 @@
                                 <div class="media">
                                     <div class="media-body">
                                         
-
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">DIY Agent Request</p>
+                                                <h4 class="mb-0">{{ $agn_uploads }}</h4>
+                                                </td>
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">DIY Individu Request</p>
+                                                <h4 class="mb-0">{{ $diy_uploads }}</h4>
+                                                </td>                                                                                      
+                                            </tr>
+                                        </table>                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
                                         <table width="100%">
                                             <tr>
                                                 <td width="40%">
@@ -136,8 +143,29 @@
                                                 <h4 class="mb-0">{{ $tot_jemaah }}</h4>
                                                 </td>                                                                                      
                                             </tr>
+                                        </table>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">RESCHEDULE</p>
+                                                <h4 class="mb-0">{{ $tot_res }}</h4>
+                                                </td>                                                  
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">CANCELLED/UNBOARDING</p>
+                                                <h4 class="mb-0">{{ $tot_can }}</h4>
+                                                </td>      
+                                            </tr>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
@@ -276,16 +304,16 @@
                             <div class="card-body">
                                 <div class="media">
                                     <div class="media-body">
-                                    <table width="100%">
+                                        <table width="100%">
                                             <tr>
-                                                <td width="60%">
-                                                <p class="text-muted fw-medium">CANCELLED/UNBOARDING</p>
-                                                <h4 class="mb-0">{{ $tot_can }}</h4>
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">&nbsp;</p>
+                                                <h4 class="mb-0">&nbsp;</h4>
+                                                </td>                                                  
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">&nbsp;</p>
+                                                <h4 class="mb-0">&nbsp;</h4>
                                                 </td>      
-                                                <td width="40%">
-                                                <p class="text-muted fw-medium">RESCHEDULE</p>
-                                                <h4 class="mb-0">{{ $tot_res }}</h4>
-                                                </td>                                                                                                                                  
                                             </tr>
                                         </table>
                                     </div>
@@ -307,7 +335,7 @@
                             <div class="media-body">
                                 <p class="text-muted fw-medium">Search Record</p>
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label for="search_by">Search By</label>
                                         <select id="search_by" name="search_by" class="form-control select2-search-disable" required>
                                             <option value="name">Traveller Name</option>
@@ -318,15 +346,16 @@
                                             <option value="invoice">Invoice No</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label for="plan">Search Text</label>
                                         <input type="text" class="form-control col-md-2" id="search_val" name="search_val" placeholder="Enter search text">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label for="plan">&nbsp;</label>
                                         <br>
-                                        <button class="btn btn-primary waves-effect waves-light col-md-4" type="button" title="Search Record" id="searchDash">Search</button>
-                                    </div>                                
+                                        <button class="btn btn-primary waves-effect waves-light" type="button" title="Search Record" id="searchDash">Search</button>
+                                    </div> 
+                                    <div class="col-md-3"></div>                               
                                 </div>
                                 <!--
                                 <br>

@@ -47,20 +47,16 @@ class HomeController extends Controller
 
             $total_uploads = $uploads;
             $tra_uploads = 0;
+            $agn_uploads = 0;
+            $diy_uploads = 0;
+            $akc_uploads = 0;
             $tra_docs = 0;
             $tra_pays = 0;
-
-            $fin_inv = 0;
-            $fin_pay = 0;
-
-            $agent_uploads = 0;
-            $diy_uploads = 0;
 
             //count file uploads
             if ($uploads) {
                 foreach ($uploads as $i => $upload) {
                     $user = DashboardUser::where('id', $upload->user_id)->first();
-                    //dd($user);
                     if ($user->getRoleNames()[0] == 'tra') {
                         $tra_uploads = $tra_uploads + 1;
                         if ($user->id == $upload->user_id) {
@@ -72,12 +68,17 @@ class HomeController extends Controller
                             }
                         }
                     } else if ($user->getRoleNames()[0] == 'ag') {
-                        $agent_uploads = $agent_uploads + 1;
+                        $agn_uploads = $agn_uploads + 1;
                     } else if ($user->getRoleNames()[0] == 'ind') {
                         $diy_uploads = $diy_uploads + 1;
-                    } 
+                    } else if ($user->getRoleNames()[0] == 'akc' || $user->getRoleNames()[0] == 'fin') {
+                        $akc_uploads = $akc_uploads + 1;
+                    }                     
                 }
             }
+
+            $fin_inv = 0;
+            $fin_pay = 0;
 
             //count invoice/payment
             $user = DashboardUser::where('id', $curUser)->first();
@@ -176,7 +177,7 @@ class HomeController extends Controller
 
         if (view()->exists($request->path())) {
             if (!empty($checkUserRole->getRoleNames()[0])) {
-                return view($request->path(), compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 'tot_premium', 'tot_pcr', 'tot_tpa', 'tot_can', 'tot_res', 'amt_inv', 'amt_pay'));
+                return view($request->path(), compact('total_uploads', 'agn_uploads', 'diy_uploads', 'tra_uploads', 'akc_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 'tot_premium', 'tot_pcr', 'tot_tpa', 'tot_can', 'tot_res', 'amt_inv', 'amt_pay'));
             } else {
                 return view($request->path());
             }
