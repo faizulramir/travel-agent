@@ -29,19 +29,19 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="3">Passport No</th>
-                                    <th data-priority="3">DEP Date</th>
-                                    <th data-priority="3">RTN Date</th>
-                                    <th data-priority="3">ECare</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="15%">Patient Name</th>
+                                    <th data-priority="1" width="10%">Passport No</th>
+                                    <th data-priority="3" width="10%">DEP Date</th>
+                                    <th data-priority="3" width="10%">RTN Date</th>
+                                    <th data-priority="1">ECare</th>
                                     <th data-priority="3">PCR Date</th>
                                     <th data-priority="3">TPA</th>
-                                    <th data-priority="1">Quarantine</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="1" width="5%">Quarantine</th>
+                                    <th data-priority="1">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,14 +54,17 @@
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)): '' }}</td>
                                         <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO'? '('.$order->ecert.')' : '') }}</td>
                                         <td>
-                                            @php
-                                            try {
-                                                $temp_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
-                                            } catch (\Throwable $th) {
-                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
-                                            }
-                                            @endphp
-                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
+                                            {{ $order->pcr }}
+                                            @if ($order->pcr != 'NO') 
+                                                @php
+                                                try {
+                                                    $temp_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
+                                                } catch (\Throwable $th) {
+                                                    $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
+                                                }
+                                                @endphp
+                                                ({{ $temp_date }})
+                                            @endif
                                         </td>
                                         <td>{{ $order->tpa }}</td>
                                         <td>{{ ($order->pcr_result == '0' || $order->pcr_result == null) ? 'NO' : 'YES' }}</td>
