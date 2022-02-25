@@ -57,27 +57,31 @@
                                         <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO' && $order->status=='1'? '('.$order->ecert.')' : '') }}</td>
                                         <td>{{ $order->pcr }}
 
-                                        {{--
+                                        
                                         @php
-                                         if ($order->pcr_date) Carbon\Carbon::createFromFormat('d/m/Y', trim($order->pcr_date))->format('Y-m-d');
+                                            try {
+                                                $temp_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
+                                            } catch (\Throwable $th) {
+                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
+                                            }
                                         @endphp
                                         <td>
                                              <input type="date" class="form-control" 
                                                     name="pcr_date{{$order->id}}" 
                                                     value="{{ $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '' }}" 
                                                     id="pcr_date{{$order->id}}" 
-                                                    onclick="clicked(event, {{$order->id}})"> 
+                                                    onchange="clicked(event, {{$order->id}})"> 
                                         </td>
-                                        --}}
+                                       
 
-                                        <td>
+                                        {{-- <td>
                                             @if ($order->status == '1')
                                                 @php
-                                                    $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->return_date)));
+                                                    $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
                                                 @endphp
-                                                <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
+                                                <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onchange="clicked(event, {{$order->id}})">
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         <td>
                                              @if ($order->status == '1')
                                                 <select id="pcr_result{{$order->id}}" name="pcr_result{{$order->id}}" onchange="updateStatus({{$order->id}})" class="form-control select2-search-disable" required>
@@ -200,7 +204,7 @@
             // if(!confirm('Are you sure to submit?')) {
             //     e.preventDefault();
             // } else {
-                $("#pcr_date" + id).change(function () {
+                // $("#pcr_date" + id).change(function () {
                     var end = this.value;
                     var userId = id;
                     var firstDropVal = $('#pcr_date' + id).val();
@@ -211,9 +215,10 @@
                         data:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                             alert(data.Data)
+                            location.reload()
                         }
                     });
-                });
+                // });
             // }
         }
 

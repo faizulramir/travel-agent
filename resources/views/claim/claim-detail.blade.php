@@ -55,7 +55,11 @@
                                         <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO'? '('.$order->ecert.')' : '') }}</td>
                                         <td>
                                             @php
-                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->return_date)));
+                                            try {
+                                                $temp_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
+                                            } catch (\Throwable $th) {
+                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
+                                            }
                                             @endphp
                                             <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
                                         </td>
