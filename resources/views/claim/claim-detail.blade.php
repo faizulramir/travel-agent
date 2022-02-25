@@ -28,7 +28,8 @@
                         </div>
                         <div class="col-md-6" style="text-align: right;">
                             <a href="{{ route('export_claim', $file_id) }}" class="btn btn-primary w-md">
-                                <i class="bx bxs-printer font-size-24" title="Export Excel"></i>
+                                <!-- <i class="bx bxs-printer font-size-24" title="Export to Excel"></i> -->
+                                Export Claims To Excel
                             </a>
                         </div>
                     </div>
@@ -122,6 +123,12 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+
+        $(document).ready(function() {
+            $('#datatable').dataTable({
+                stateSave: true,
+            });
         });
 
         function openDetail (id) {

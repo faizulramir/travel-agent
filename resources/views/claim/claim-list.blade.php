@@ -41,15 +41,16 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Travel Agent</th>
-                                    <th data-priority="1">Filename</th>
-                                    <th data-priority="3">Submission Date</th>
-                                    <th data-priority="1">Status</th>
-                                    <th data-priority="1">Quarantine</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="20%">Travel Agent</th>
+                                    <th data-priority="1" width="30%">Filename</th>
+                                    <th data-priority="1" width="5%">Jemaah</th>
+                                    <th data-priority="3" width="10%">Submission</th>
+                                    <th data-priority="1" width="5%">Status</th>
+                                    <th data-priority="1" width="5%">Quarantine</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
@@ -59,6 +60,12 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ strtoupper($file->user->name) }}</td>
                                         <td>{{ $file->file_name }}</td>
+                                        <td>
+                                            @php
+                                            $jemaah = count(\App\Models\Order::where([['file_id', $file->id]])->get());
+                                            @endphp
+                                            {{ $jemaah }}                                         
+                                        </td>
                                         <td>{{ $file->submit_date ? date('d-m-Y H:i:s', strtotime($file->submit_date)) : '' }}</td>
                                         <td>
                                             @if ($file->status == '0' || $file->status == '2')
@@ -96,8 +103,6 @@
             </div>
         </div>
     </div>
-
-    
 
 @endsection
 @section('script')

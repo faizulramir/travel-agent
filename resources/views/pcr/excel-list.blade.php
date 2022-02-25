@@ -45,10 +45,11 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="20%">Travel Agent</th>
+                                    <th data-priority="1" width="15%">Travel Agent</th>
                                     <th data-priority="1" width="20%">Filename</th>
                                     <th data-priority="3" width="10%">Submission</th>
                                     <th data-priority="1" width="10%">Status</th>
+                                    <th data-priority="1" width="8%">PCR Applicant</th>
                                     <th data-priority="1" width="5%">Quarantine</th>
                                     <th data-priority="3" width="5%">Action</th>
                                 </tr>
@@ -74,6 +75,12 @@
                                             @elseif ($file->status == '99')
                                                 REJECTED
                                             @endif
+                                        </td>
+                                        <td>
+                                            @php
+                                                $applicant = count(\App\Models\Order::where([['file_id', $file->id], ['pcr', '!=', 'NO']])->get());
+                                            @endphp
+                                            {{$applicant}}
                                         </td>
                                         <td>
                                             @php

@@ -16,6 +16,9 @@
         .data-jemaah {
             font-size:1.10rem;
         }
+        .hidden {
+            display:none;
+        }
     </style>
 @endsection
 
@@ -110,7 +113,11 @@
                         <div class="col-lg-3">
                             <div>
                                 <label for="plan">PCR</label>
-                                <p class="data-jemaah">{{ $jemaah->pcr }}</p>
+                                <p class="data-jemaah">{{ $jemaah->pcr }} 
+                                    @if ($jemaah->pcr != 'NO')
+                                        ({{ $jemaah->pcr_date }})
+                                    @endif
+                                </p>
                             </div>
                         </div> 
                         <div class="col-lg-3">
@@ -160,6 +167,8 @@
                                                         <a id="addBtn" class="btn btn-primary pull-left waves-effect waves-light">+ Add Row</a>
                                                         &nbsp;&nbsp;
                                                         <a id="save_btn" class="btn btn-primary pull-left waves-effect waves-light">Save</a>
+                                                        &nbsp;&nbsp;
+                                                        <span id="change_alert" class="alert hidden" style="color:red;">Changes made. Please click Save.</span>
                                                     </td>
                                                 </tr>
                                             </tfoot>
@@ -191,6 +200,16 @@
         $(document).ready(function () {
             var rowIdx = 0;
 
+            $(document).on('change', 'input', function() {
+                //console.log("Change: Editing... ");
+                $('#change_alert').removeClass('hidden');
+            });
+            $(document).on('keyup', 'input', function() {
+                //console.log("Keyup: Editing... ");
+                $('#change_alert').removeClass('hidden');
+            });
+
+
             $.ajax({
                 url: '/get_claim_json/' + $('#jemaahId').val(),
                 type: 'GET',
@@ -201,8 +220,8 @@
                                 <td class="row-index text-center">
                                     <p>${rowIdx}</p>
                                 </td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Enter Date" type="date" value="${e.rowInput1}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Enter Pt. File#" type="number" value="${e.rowInput2}"></div></td>
+                                <td><div class="form-group"><input class="form-control" id="rowInput1" name="rowInput1" placeholder="Enter Date" type="date" value="${e.rowInput1}"></div></td>
+                                <td><div class="form-group"><input class="form-control" id="rowInput2" name="rowInput2" placeholder="Enter Pt. File#" type="number" value="${e.rowInput2}"></div></td>
                                 <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Enter Invoice#" type="number" value="${e.rowInput3}"></div></td>
                                 <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number" value="${e.rowInput4}"></div></td>
                                 <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number" value="${e.rowInput5}"></div></td>
@@ -245,10 +264,13 @@
                     });
                     $(this).closest('tr').remove();
                     rowIdx--;
+
+                    $('#change_alert').removeClass('hidden');
                 }
             });
 
             $("#save_btn").click(function(){
+                $('#change_alert').removeClass('hidden').addClass('hidden');
                 const data = new Array();
                 const dataAll = new Array();
                 for (let index = 1; index <= rowIdx; index++) {
@@ -269,6 +291,7 @@
                     }
                 });
             });
+
         });
         
     </script>
