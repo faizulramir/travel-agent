@@ -55,13 +55,20 @@
                                         <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO'? '('.$order->ecert.')' : '') }}</td>
                                         <td>
                                             @php
-                                            try {
-                                                $temp_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
-                                            } catch (\Throwable $th) {
-                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
-                                            }
+                                                try {
+                                                    $pcr_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
+                                                } catch (\Throwable $th) {
+                                                    $pcr_date =  date('Y-m-d', strtotime($order->pcr_date));
+                                                }
+                                                
+                                                $rtn_date = date('Y-m-d', strtotime($order->return_date));
+                                                if ($pcr_date == $rtn_date)
+                                                    $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($pcr_date)));
+                                                else {
+                                                    $temp_date =  date('Y-m-d', strtotime($pcr_date));
+                                                }
                                             @endphp
-                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
+                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})" max="{{ $rtn_date }}">
                                         </td>
                                         <td>{{ $order->tpa }}</td>
                                         <td>{{ ($order->pcr_result == '0' || $order->pcr_result == null) ? 'NO' : 'YES' }}</td>
@@ -150,6 +157,7 @@
                     data:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
                         alert(data.Data)
+                        location.reload();
                     }
                 });
             });
