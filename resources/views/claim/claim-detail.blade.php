@@ -26,6 +26,11 @@
                                 <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
                             </a>
                         </div>
+                        <div class="col-md-6" style="text-align: right;">
+                            <a href="{{ route('export_claim', $file_id) }}" class="btn btn-primary w-md">
+                                <i class="bx bxs-printer font-size-24" title="Export Excel"></i>
+                            </a>
+                        </div>
                     </div>
                     <br>
                     <div>

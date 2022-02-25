@@ -147,7 +147,7 @@
                                                         <td>Consultation</td>
                                                         <td>Drugs</td>
                                                         <td>Services</td>
-                                                        <td>Others</td>
+                                                        <td>Discount</td>
                                                         <td>Action</td>
                                                     </tr>
                                                 </thead>
@@ -207,7 +207,7 @@
                                 <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number" value="${e.rowInput4}"></div></td>
                                 <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number" value="${e.rowInput5}"></div></td>
                                 <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Enter Services" type="number" value="${e.rowInput6}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Other" type="number" value="${e.rowInput7}">
+                                <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Discount" type="number" value="${e.rowInput7}">
                                 <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
                                 </tr>`);
                         });
@@ -226,7 +226,7 @@
                     <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number"></div></td>
                     <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number"></div></td>
                     <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Enter Services" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Other" type="number">
+                    <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Discount" type="number">
                     <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
                     </tr>`);
             });
