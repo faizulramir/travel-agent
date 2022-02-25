@@ -645,7 +645,7 @@
 
         function clicked(e, id)
         {
-            if(!confirm('Confirm to submit this Excel?')) {
+            if(!confirm('Confirm to submit this Excel? XX')) {
                 e.preventDefault();
             } else {
                 var form_data = new FormData();
