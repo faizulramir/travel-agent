@@ -138,66 +138,26 @@
                                         <h5>Claim Entries</h5>
                                         <table id="table_claim" class="table table-striped table-advance table-hover w-100">
                                             <form class="form-inline" role="form">
-                                            <tbody>
-                                                <tr>
-                                                    <td>#</td>
-                                                    <td>Date</td>
-                                                    <td>Pt. File#</td>
-                                                    <td>Invoice#</td>
-                                                    <td>Consultation</td>
-                                                    <td>Drugs</td>
-                                                    <td>Services</td>
-                                                    <td>Others</td>
-                                                    <td>Action</td>
-                                                </tr>
-                                                <tr id='row0'>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input class="form-control" id="rowInput1" placeholder="Enter Date" type="date">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input class="form-control" id="rowInput2"  placeholder="Enter Pt. File#" type="number">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input class="form-control" id="rowInput3" placeholder="Enter Invoice#" type="number">
-                                                        </div>
-                                                    </td>  
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input class="form-control" id="rowInput4" placeholder="Enter Consultation" type="number">
-                                                        </div>
-                                                    </td>    
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input class="form-control" id="rowInput5" placeholder="Enter Drugs" type="number">
-                                                        </div>
-                                                    </td>    
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input class="form-control" id="rowInput6" placeholder="Enter Services" type="number">
-                                                        </div>
-                                                    </td>    
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input class="form-control" id="rowInput7" placeholder="Enter Others" type="number">
-                                                        </div>
-                                                    </td>                                     
-                                                    <td>
-                                                        <a id='delete_row' class="pull-right waves-effect waves-light" style="color: red;" onclick="return confirm('Do you really want to delete?');"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a>
-                                                    </td>
-                                                </tr>
-                                                <tr id='row1'></tr>
+                                                <thead>
+                                                    <tr>
+                                                        <td>#</td>
+                                                        <td>Date</td>
+                                                        <td>Pt. File#</td>
+                                                        <td>Invoice#</td>
+                                                        <td>Consultation</td>
+                                                        <td>Drugs</td>
+                                                        <td>Services</td>
+                                                        <td>Others</td>
+                                                        <td>Action</td>
+                                                    </tr>
+                                                </thead>
+                                            <tbody id="tbody">
                                             </tbody>
                                             </form> 
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="9">
-                                                        <a id="add_row" class="btn btn-primary pull-left waves-effect waves-light">+ Add Row</a>
+                                                        <a id="addBtn" class="btn btn-primary pull-left waves-effect waves-light">+ Add Row</a>
                                                         &nbsp;&nbsp;
                                                         <a id="save_btn" class="btn btn-primary pull-left waves-effect waves-light">Save</a>
                                                     </td>
@@ -228,49 +188,74 @@
             }
         });
 
-        $(document).ready(function(){
-            var i=1;
-            $("#add_row").click(function(){
-                html = '';
-                html += '<td>' + (i+1) + '</td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput1" name="rowInput1" placeholder="Enter Date" type="date"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput2" name="rowInput2" placeholder="Enter Pt. File#" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput3" name="rowInput3" placeholder="Enter Invoice#" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput4" name="rowInput4" placeholder="Enter Consultation" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput5" name="rowInput5" placeholder="Enter Drugs" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput6" name="rowInput6" placeholder="Enter Services" type="number"></div></td>';
-                html += '<td><div class="form-group"><input class="form-control" id="rowInput7" name="rowInput7" placeholder="Enter Other" type="number"></div></td>';
-                html += '<td><a id="delete_row" data-delete=' + (i+1) + ' class="pull-right waves-effect waves-light" style="color: red;"  onclick="return confirm(\'Do you really want to delete?\');"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>';               
-                //$('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='name"+i+"' type='text' placeholder='Name' class='form-control input-md'  /> </td><td><input  name='mail"+i+"' type='text' placeholder='Mail'  class='form-control input-md'></td><td><input  name='mobile"+i+"' type='text' placeholder='Mobile'  class='form-control input-md'></td>");
-                $('#row'+i).html(html);
-                $('#table_claim').append('<tr id="row'+(i+1)+'"></tr>');
-                i++; 
+        $(document).ready(function () {
+            var rowIdx = 0;
+
+            $.ajax({
+                url: '/get_claim_json/' + $('#jemaahId').val(),
+                type: 'GET',
+                success: function (data) {
+                    if (data.Data) {
+                        data.Data.forEach(e => {
+                            $('#tbody').append(`<tr id="R${++rowIdx}">
+                                <td class="row-index text-center">
+                                    <p>${rowIdx}</p>
+                                </td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Enter Date" type="date" value="${e.rowInput1}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Enter Pt. File#" type="number" value="${e.rowInput2}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Enter Invoice#" type="number" value="${e.rowInput3}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number" value="${e.rowInput4}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number" value="${e.rowInput5}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Enter Services" type="number" value="${e.rowInput6}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Other" type="number" value="${e.rowInput7}">
+                                <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
+                                </tr>`);
+                        });
+                    }
+                }
             });
 
-            $("#delete_row").click(function(){
-                if(i>1){
-                $("#row"+(i-1)).html('');
-                i--;
+            $('#addBtn').on('click', function () {
+                $('#tbody').append(`<tr id="R${++rowIdx}">
+                    <td class="row-index text-center">
+                        <p>${rowIdx}</p>
+                    </td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Enter Date" type="date" value=""></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Enter Pt. File#" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Enter Invoice#" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Enter Services" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Other" type="number">
+                    <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
+                    </tr>`);
+            });
+            
+
+            $('#tbody').on('click', '.remove', function () {
+                if (!confirm('Are you sure to delete?')) {
+                } else {
+                    var child = $(this).closest('tr').nextAll();
+                    child.each(function () {
+                    var id = $(this).attr('id');
+                    var idx = $(this).children('.row-index').children('p');
+                    var dig = parseInt(id.substring(1));
+                    idx.html(`${dig - 1}`);
+                    $(this).attr('id', `R${dig - 1}`);
+                    });
+                    $(this).closest('tr').remove();
+                    rowIdx--;
                 }
             });
 
             $("#save_btn").click(function(){
                 const data = new Array();
                 const dataAll = new Array();
-                for (let index = 0; index < i; index++) {
-                    var cnt = -1;
-                    console.log('#row' + index);
-                    $('#row' + index + '> td').find("input").each(function() {
-                        cnt = cnt + 1;
+                for (let index = 1; index <= rowIdx; index++) {
+                    $('#R' + index + '> td').find("input").each(function() {
                         data.push(this.value);
                     });
-                    // dataAll.push(data);
                 }
-                // var i,j, temporary, chunk = 7;
-                // for (i = 0,j = data.length; i < j; i += chunk) {
-                //     temporary = data.slice(i, i + chunk);
-                //     console.log(temporary);
-                // }
                 $.ajax({
                     url: '/claim_add',
                     type: 'POST',
@@ -285,7 +270,7 @@
                 });
             });
         });
-
+        
     </script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
