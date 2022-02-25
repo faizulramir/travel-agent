@@ -170,5 +170,6 @@ Route::get('/claim_detail/{id}', [App\Http\Controllers\ClaimController::class, '
 Route::get('/claim_edit/{id}', [App\Http\Controllers\ClaimController::class, 'claim_edit'])->name('claim_edit');
 Route::post('/claim_add', [App\Http\Controllers\ClaimController::class, 'claim_add'])->name('claim_add');
 Route::get('/get_claim_json/{id}', [App\Http\Controllers\ClaimController::class, 'get_claim_json'])->name('get_claim_json');
+Route::get('/export_claim/{id}', [App\Http\Controllers\ClaimController::class, 'export_claim'])->name('export_claim');
 
 

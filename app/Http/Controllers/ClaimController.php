@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Session;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\ClaimExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClaimController extends Controller
 {
@@ -46,7 +48,8 @@ class ClaimController extends Controller
     public function claim_detail($id)
     {
         $orders = Order::where([['file_id', '=', $id]])->orderBy('pcr_result', 'DESC')->get();
-        return view('claim.claim-detail', compact('orders'));
+        $file_id = $id;
+        return view('claim.claim-detail', compact('orders', 'file_id'));
     }
 
     public function claim_edit($id)
@@ -263,4 +266,62 @@ class ClaimController extends Controller
             'Data' => 'Successfully Uploaded!'
         ], 200); // Status code here
     }
+
+    public function  export_claim (Request $request, $id)
+    {
+        $headers[] = [
+            'Date',
+            'Company ID',
+            'Pt. File#',
+            'Patient Name',
+            'Invoice#',
+            'Consultation',
+            'Drugs',
+            'Services',
+            'Grand Total',
+            'Discount',
+            'Total',
+        ];
+
+        $json_arr = array();
+        // <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Enter Date" type="date" value="${e.rowInput1}"></div></td>
+        // <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Enter Pt. File#" type="number" value="${e.rowInput2}"></div></td>
+        // <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Enter Invoice#" type="number" value="${e.rowInput3}"></div></td>
+        // <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number" value="${e.rowInput4}"></div></td>
+        // <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number" value="${e.rowInput5}"></div></td>
+        // <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Enter Services" type="number" value="${e.rowInput6}"></div></td>
+        // <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Other" type="number" value="${e.rowInput7}">
+        $orders = Order::where([['file_id', '=', $id], ['claim_json', '!=', null]])->get();
+        $file_name = FileUpload::where('id', $id)->first();
+        foreach ($orders as $i => $order) {
+            $json_d = json_decode($order->claim_json, true);
+            $json_d = $json_d['data'];
+            foreach ($json_d as $j => $json) {
+                $g_total = ($json['rowInput4'] ? $json['rowInput4'] : 0) + ($json['rowInput5'] ? $json['rowInput5'] : 0) + ($json['rowInput6'] ? $json['rowInput6'] : 0);
+                $total = $g_total - ($json['rowInput7'] ? $json['rowInput7'] : 0);
+                $temp_arr = array(
+                    $json['rowInput1'],
+                    $order->ecert,
+                    $json['rowInput2'],
+                    $order->name,
+                    $json['rowInput3'],
+                    $json['rowInput4'],
+                    $json['rowInput5'],
+                    $json['rowInput6'],
+                    $g_total,
+                    $json['rowInput7'],
+                    $total,
+                );
+                array_push($json_arr, $temp_arr);
+            }
+        }
+        // dd($json_arr);
+        $export = new ClaimExport([
+            $json_arr
+        ]);
+
+        return Excel::download($export, 'claims_'.$file_name->ta_name.'.xlsx');
+    }
 }
+
+
