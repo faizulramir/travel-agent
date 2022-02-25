@@ -123,8 +123,21 @@
                             <div class="card-body">
                                 <div class="media">
                                     <div class="media-body">
-                                        <p class="text-muted fw-medium">All Request</p>
-                                        <h4 class="mb-0">{{count($total_uploads)}}</h4>
+                                        
+
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">PROCESSED EXCEL</p>
+                                                <h4 class="mb-0">{{ count($total_uploads )}}</h4>
+                                                </td>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">TOTAL JEMAAH</p>
+                                                <h4 class="mb-0">{{ $tot_jemaah }}</h4>
+                                                </td>                                                                                      
+                                            </tr>
+                                        </table>
+
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +156,7 @@
                                 <div class="media">
                                     <div class="media-body">
                                         <p class="text-muted fw-medium">Pending Invoice Endorsement</p>
-                                        <h4 class="mb-0">{{ $fin_inv }}</h4>
+                                        <h4 class="mb-0" style="color:orange;">{{ $fin_inv }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -155,7 +168,7 @@
                                 <div class="media">
                                     <div class="media-body">
                                         <p class="text-muted fw-medium">Pending Payment Endorsement</p>
-                                        <h4 class="mb-0">{{ $fin_pay }}</h4>
+                                        <h4 class="mb-0" style="color:orange;">{{ $fin_pay }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -217,7 +230,7 @@
                             <div class="card-body">
                                 <div class="media">
                                     <div class="media-body">
-                                        <p class="text-muted fw-medium">Amount Invoiced</p>
+                                        <p class="text-muted fw-medium">AMOUNT INVOICED</p>
                                         <h4 class="mb-0">RM {{ number_format((float)$amt_inv, 2, '.', ',') }}</h4>
                                     </div>
                                 </div>
@@ -229,7 +242,7 @@
                             <div class="card-body">
                                 <div class="media">
                                     <div class="media-body">
-                                        <p class="text-muted fw-medium">Amount Paid</p>
+                                        <p class="text-muted fw-medium">AMOUNT PAID</p>
                                         <h4 class="mb-0">RM {{ number_format((float)$amt_pay, 2, '.', ',') }}</h4>
                                     </div>
                                 </div>
@@ -265,10 +278,14 @@
                                     <div class="media-body">
                                     <table width="100%">
                                             <tr>
-                                                <td width="100%">
-                                                <p class="text-muted fw-medium">TOTAL JEMAAH</p>
-                                                <h4 class="mb-0">{{ $tot_jemaah }}</h4>
-                                                </td>                                                                                     
+                                                <td width="60%">
+                                                <p class="text-muted fw-medium">CANCELLED/UNBOARDING</p>
+                                                <h4 class="mb-0">{{ $tot_can }}</h4>
+                                                </td>      
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">RESCHEDULE</p>
+                                                <h4 class="mb-0">{{ $tot_res }}</h4>
+                                                </td>                                                                                                                                  
                                             </tr>
                                         </table>
                                     </div>

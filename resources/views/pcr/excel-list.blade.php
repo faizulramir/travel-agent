@@ -41,17 +41,16 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Requestor</th>
-                                    <th data-priority="1">Filename</th>
-                                    {{--<th data-priority="3">Upload Date</th>--}}
-                                    <th data-priority="3">Submission Date</th>
-                                    <th data-priority="1">Status</th>
-                                    <th data-priority="1">Quarantine</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="20%">Travel Agent</th>
+                                    <th data-priority="1" width="20%">Filename</th>
+                                    <th data-priority="3" width="10%">Submission</th>
+                                    <th data-priority="1" width="10%">Status</th>
+                                    <th data-priority="1" width="5%">Quarantine</th>
+                                    <th data-priority="3" width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,7 +59,6 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ strtoupper($file->user->name) }}</td>
                                         <td>{{ $file->file_name }}</td>
-                                        {{--<td>{{ $file->upload_date ? date('d-m-Y', strtotime($file->upload_date)) : '' }}</td>--}}
                                         <td>{{ $file->submit_date ? date('d-m-Y H:i:s', strtotime($file->submit_date)) : '' }}</td>
                                         <td>
                                             @if ($file->status == '0' || $file->status == '2')
@@ -109,6 +107,7 @@
     <script>
 
         $('#refreshBtn').click(function() {
+            $('#datatable').DataTable().state.clear();
             location.reload();
         });
 

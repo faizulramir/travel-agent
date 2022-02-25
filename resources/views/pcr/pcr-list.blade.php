@@ -29,55 +29,83 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th data-priority="0" width="5%">#</th>
                                     <th data-priority="1">Name</th>
-                                    <th data-priority="3">Passport No</th>
-                                    <th data-priority="3">DEP Date</th>
-                                    <th data-priority="3">RTN Date</th>
-                                    <th data-priority="3">ECare</th>
-                                    <th data-priority="3">PCR Date</th>
-                                    <th data-priority="3">Quarantine</th>
+                                    <th data-priority="1" width="10%">Passport No</th>
+                                    <th data-priority="3" width="10%">DEP Date</th>
+                                    <th data-priority="1" width="10%">RTN Date</th>
+                                    <th data-priority="1" width="10%">ECare</th>
+                                    <th data-priority="1" width="5%">PCR</th>
+                                    <th data-priority="1" width="10%">PCR Date</th>
+                                    <th data-priority="1" width="5%">Quarantine</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($orders as $i => $order)
-
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $order->name }}</td>
                                         <td>{{ $order->passport_no }}</td>
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : '' }}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)): '' }}</td>
-                                        <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO'? '('.$order->ecert.')' : '') }}</td>
+                                        <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO' && $order->status=='1'? '('.$order->ecert.')' : '') }}</td>
                                         <td>
-                                            @php
-                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->return_date)));
-                                            @endphp
-                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
+                                            {{ $order->pcr }}
                                         </td>
                                         <td>
-                                            <select id="pcr_result{{$order->id}}" name="pcr_result{{$order->id}}" onchange="updateStatus({{$order->id}})" class="form-control select2-search-disable" required>
-                                                <option value="0" {{ ($order->pcr_result == '0' || $order->pcr_result == null) ? 'selected' : '' }}>No</option>
-                                                <option value="1" {{ ($order->pcr_result == '1') ? 'selected' : '' }}>Yes</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <!-- <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                <i class="bx bx-food-menu font-size-24" title="Print E-Cert"></i>
-                                            </a> -->
-                                            <a href="#" class="waves-effect" style="color: blue;">
-                                                <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">
-                                                <i onclick="openDetail({{$order->id}})" id="uploadPCR{{$order->id}}" class="bx bxs-cloud-upload font-size-24" title="Upload PCR Result"></i>
-                                            </a>
-                                            @if ($order->pcr_file_name)
-                                                <a href="{{ route('downloadPCR', [$order->user_id, $order->id, $order->pcr_file_name]) }}" class="waves-effect" style="color: green;">
-                                                    <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="{{ $order->pcr_file_name }}"></i>
-                                                </a>
+                                            @if ($order->status == '1')
+                                                @php
+                                                    $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->return_date)));
+                                                @endphp
+                                                <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
                                             @endif
+                                        </td>
+                                        <td>
+                                             @if ($order->status == '1')
+                                                <select id="pcr_result{{$order->id}}" name="pcr_result{{$order->id}}" onchange="updateStatus({{$order->id}})" class="form-control select2-search-disable" required>
+                                                    <option value="0" {{ ($order->pcr_result == '0' || $order->pcr_result == null) ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ ($order->pcr_result == '1') ? 'selected' : '' }}>Yes</option>
+                                                </select>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($order->status == '0')
+                                                <a href="#" class="waves-effect" style="color: red;">
+                                                    <i class="bx bx-dislike font-size-24" title="Traveller: CANCELLED"></i>
+                                                </a>
+                                            @elseif ($order->status == '1')
+                                                <a href="#" class="waves-effect" style="color: green;">
+                                                    <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
+                                                </a>
+                                                @if ($order->plan_type)
+                                                <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
+                                                    <i class="bx bx-food-menu font-size-24" title="Print E-Cert"></i>
+                                                </a>
+                                                @endif
+
+                                                <a href="#" class="waves-effect" style="color: blue;">
+                                                    <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">
+                                                    <i onclick="openDetail({{$order->id}})" id="uploadPCR{{$order->id}}" class="bx bxs-cloud-upload font-size-24" title="Upload PCR Result"></i>
+                                                </a>
+
+                                                @if ($order->pcr_file_name)
+                                                    <a href="{{ route('downloadPCR', [$order->user_id, $order->id, $order->pcr_file_name]) }}" class="waves-effect" style="color: green;">
+                                                        <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="Download PCR Result"></i>
+                                                    </a>
+                                                @endif                                            
+                                            @elseif ($order->status == '2')
+                                                <a href="#" class="waves-effect" style="color: black;">
+                                                    <i class="bx bxs-plane-alt font-size-24" title="Traveller: UNBOARDING"></i>
+                                                </a>
+                                            @elseif ($order->status == '3')
+                                                <a href="#" class="waves-effect" style="color: blue;">
+                                                    <i class="bx bx-time-five font-size-24" title="Traveller: RESCHEDULE"></i>
+                                                </a>
+                                            @endif                                            
                                         </td>
                                     </tr>
                                 @endforeach

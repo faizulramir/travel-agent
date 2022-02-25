@@ -40,8 +40,9 @@ class HomeController extends Controller
         $checkUserRole = DashboardUser::where('id', $curUser)->first();
         if (!empty($checkUserRole->getRoleNames()[0])) {
             //dd($curUser);
-            //$uploads = FileUpload::all();
-            $uploads = FileUpload::where('user_id', $curUser)->get();
+
+            $uploads = FileUpload::all();
+            //$uploads = FileUpload::where('user_id', $curUser)->get();
             //dd($uploads);
 
             $total_uploads = $uploads;
@@ -55,6 +56,7 @@ class HomeController extends Controller
             $agent_uploads = 0;
             $diy_uploads = 0;
 
+            //count file uploads
             if ($uploads) {
                 foreach ($uploads as $i => $upload) {
                     $user = DashboardUser::where('id', $upload->user_id)->first();
@@ -69,25 +71,20 @@ class HomeController extends Controller
                                 $tra_docs = $tra_docs + 1;
                             }
                         }
-        
                     } else if ($user->getRoleNames()[0] == 'ag') {
                         $agent_uploads = $agent_uploads + 1;
                     } else if ($user->getRoleNames()[0] == 'ind') {
                         $diy_uploads = $diy_uploads + 1;
-
                     } 
-                    
                 }
-
             }
 
+            //count invoice/payment
             $user = DashboardUser::where('id', $curUser)->first();
             if ($user->getRoleNames()[0] == 'fin') {
-
                 $uploads = FileUpload::all();
                 if ($uploads) {
                     foreach ($uploads as $i => $upload) {
-        
                         //echo $upload->status;
                         if ($upload->status == '2.1') {
                             $fin_inv = $fin_inv + 1;
@@ -96,13 +93,9 @@ class HomeController extends Controller
                             $fin_pay = $fin_pay + 1;
                         }               
                     }
-        
                 }
             }
 
-            //dd($fin_inv, $fin_pay);
-
-            //calculate number of Jemaah
 
             $tot_jemaah = 0;
             $tot_lite = 0;
@@ -111,45 +104,51 @@ class HomeController extends Controller
             $tot_premium = 0;
             $tot_pcr = 0;
             $tot_tpa = 0;
+            $tot_can = 0;
+            $tot_res = 0;
 
+            //count number of Jemaah
             $alluploads = FileUpload::where('status', '5')->get();
             //dd($alluploads);
             if ($alluploads) {
                 foreach ($alluploads as $i => $allupload) {
-                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->get();
-                    //dd($orders, count($orders));
-                    $tot_jemaah = $tot_jemaah + count($orders);
+                    if ($allupload->status != '99') {
+                        $orders = Order::where('file_id', $allupload->id)->where('status', '1')->get();
+                        $orders1 = Order::where('file_id', $allupload->id)->where('status', '0')->orWhere('status', '2')->get();
+                        $orders2 = Order::where('file_id', $allupload->id)->where('status', '3')->get();
+                        //dd($orders, count($orders));
+                        $tot_jemaah = $tot_jemaah + count($orders);
+                        $tot_can = $tot_can + count($orders1);
+                        $tot_res = $tot_res + count($orders2);
 
-                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'LITE')->get();
-                    $tot_lite = $tot_lite + count($orders);
+                        $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'LITE')->get();
+                        $tot_lite = $tot_lite + count($orders);
 
-                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'BASIC')->get();
-                    $tot_basic = $tot_basic + count($orders);     
-                    
-                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'STANDARD')->get();
-                    $tot_standard = $tot_standard + count($orders); 
+                        $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'BASIC')->get();
+                        $tot_basic = $tot_basic + count($orders);     
+                        
+                        $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'STANDARD')->get();
+                        $tot_standard = $tot_standard + count($orders); 
 
-                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'PREMIUM')->get();
-                    $tot_premium = $tot_premium + count($orders); 
+                        $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('plan_type', 'PREMIUM')->get();
+                        $tot_premium = $tot_premium + count($orders); 
 
-                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('pcr', 'PCR')->get();
-                    $tot_pcr = $tot_pcr + count($orders);
+                        $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('pcr', 'PCR')->get();
+                        $tot_pcr = $tot_pcr + count($orders);
 
-                    $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('tpa', 'LIKE', 'TPA%')->get();
-                    $tot_tpa = $tot_tpa + count($orders);                
+                        $orders = Order::where('file_id', $allupload->id)->where('status', '1')->where('tpa', 'LIKE', 'TPA%')->get();
+                        $tot_tpa = $tot_tpa + count($orders); 
+                    }               
                 }
             }
-
 
             $amt_inv = 0.00;
             $amt_pay = 0.00;
 
-            //calc amount of invoice, paid payment
+            //calculate amount of invoice, paid payment
             $alluploads = FileUpload::where('status', '3')->orWhere('status', '4')->orWhere('status', '5')->get();
-            //dd($alluploads);
             if ($alluploads) {
                 foreach ($alluploads as $i => $allupload) {
-
                     //still invoices
                     if ($allupload->status == '3') {
                         if ($allupload->json_inv) {
@@ -160,7 +159,6 @@ class HomeController extends Controller
                             }
                         }
                     }
-
                     //already paid
                     if ($allupload->status == '4' || $allupload->status == '5') {
                         if ($allupload->json_inv) {
@@ -178,7 +176,7 @@ class HomeController extends Controller
 
         if (view()->exists($request->path())) {
             if (!empty($checkUserRole->getRoleNames()[0])) {
-                return view($request->path(), compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 'tot_premium', 'tot_pcr', 'tot_tpa', 'amt_inv', 'amt_pay'));
+                return view($request->path(), compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 'tot_premium', 'tot_pcr', 'tot_tpa', 'tot_can', 'tot_res', 'amt_inv', 'amt_pay'));
             } else {
                 return view($request->path());
             }

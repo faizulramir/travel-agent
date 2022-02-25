@@ -37,8 +37,7 @@
             <div class="modal-content ">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirmation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -47,29 +46,32 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Filename: <s style="text-decoration: none" id="filename"></s></h5>
                                     <h5 class="card-title">Total Jemaah: <s style="text-decoration: none" id="total_records"></s></h5>
-                                    <div class="table-rep-plugin">
-                                        <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                            <table id="exceltable" class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th data-priority="1">Name</th>
-                                                        <th data-priority="3">Passport No</th>
-                                                        <th data-priority="1">IC No</th>
-                                                        <th data-priority="1">E-Care</th>
-                                                        <th data-priority="1">DEP Date</th>
-                                                        <th data-priority="1">RTN Date</th>
-                                                        <th data-priority="1">PCR</th>
-                                                        <th data-priority="1">TPA</th>
-                                                        {{-- <th data-priority="3">Add. Days</th> --}}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+
+                                    <div style="height:400px;overflow:auto">
+                                        <div class="table-rep-plugin">
+                                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                                <table id="exceltable" class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th data-priority="1">Name</th>
+                                                            <th data-priority="3">Passport No</th>
+                                                            <th data-priority="1">IC No</th>
+                                                            <th data-priority="1">E-Care</th>
+                                                            <th data-priority="1">DEP Date</th>
+                                                            <th data-priority="1">RTN Date</th>
+                                                            <th data-priority="1">PCR</th>
+                                                            <th data-priority="1">TPA</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
-                                    <br>
+                                    <br><br>
+
                                     <form action="#" method="POST">
                                         <div class="row">
                                             <div class="col-lg-4">
@@ -90,7 +92,7 @@
                                                         {{-- @if (auth()->user()->hasAnyRole('tra'))
                                                             <input class="form-control" type="text" name="travel_agent" value="{{ auth()->user()->name }}" readonly>
                                                         @elseif (auth()->user()->hasAnyRole('ag')) --}}
-                                                    <input class="form-control" type="text" name="travel_agent" id="travel_agent" value="" placeholder="Please Insert Travel Agent">
+                                                    <input class="form-control" type="text" name="travel_agent" id="travel_agent" value="" placeholder="Enter Travel Agent Name">
                                                         {{-- @endif --}}
                                                     {{-- </select> --}}
                                                 </div>
@@ -101,7 +103,7 @@
                                             <div class="col-lg-12">
                                                 <input class="form-check-input" type="checkbox" id="agreement">
                                                 <label class="form-check-label" for="agreement" style="color:red">
-                                                    &nbsp;&nbsp;<b>Rekod telah disemak dan disahkan kesemua maklumat adalah betul dan lengkap</b>
+                                                    &nbsp;&nbsp;<b>Records have been reviewed and verified. All information is correct and complete.</b>
                                                 </label>
                                             </div>
                                         </div>
