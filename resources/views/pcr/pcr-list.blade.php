@@ -68,7 +68,7 @@
                                         <td>
                                              <input type="date" class="form-control" 
                                                     name="pcr_date{{$order->id}}" 
-                                                    value="{{ $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '' }}" 
+                                                    value="{{ $temp_date }}" 
                                                     id="pcr_date{{$order->id}}" 
                                                     onchange="clicked(event, {{$order->id}})"> 
                                         </td>

@@ -30,7 +30,16 @@ class ClaimController extends Controller
     
     public function claim_list()
     {
-        $temp_file = FileUpload::where('status','=','5')->orderBy('submit_date', 'DESC')->orderBy('status', 'ASC')->get();
+        $files = FileUpload::where('status','=','5')->get();
+        $temp_file = array();
+
+        foreach ($files as $i => $file) {
+            $pcr = Order::where([['file_id', '=', $file->id], ['pcr', '=', 'PCR']])->get();
+            if ($pcr->isNotEmpty()) {
+                $fileUploads = FileUpload::where('id', $file->id)->first();;
+                array_push($temp_file, $fileUploads);
+            }
+        }
         return view('claim.claim-list', compact('temp_file'));
     }
 
@@ -45,8 +54,20 @@ class ClaimController extends Controller
         $plans = Plan::whereIn('id', [1, 5, 6, 7])->get();
         $tpas = Plan::whereNotIn('id', [1, 5, 6, 7, 8])->get();
         $jemaah = Order::where('id', $id)->first();
-        //dd($jemaah);
+        
         return view('claim.claim-edit', compact('plans', 'tpas', 'jemaah'));
+    }
+
+    public function get_claim_json ($id)
+    {
+        $jemaah = Order::where('id', $id)->first();
+        $claimJson = json_decode($jemaah->claim_json, true);
+        $claimJson = $claimJson['data'];
+
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => $claimJson,
+        ], 200);
     }
 
     public function claim_add(Request $request)
