@@ -45,6 +45,7 @@ class UploadDetailController extends Controller
         //remove excel header entry
         unset($orders[0]);
 
+        unset($orders[9]);
         //filter only available entry - checking row number availability
         $orders = \Arr::where($orders, function ($value, $key) {
             return $value[0]!=null && $value[0]!='';
