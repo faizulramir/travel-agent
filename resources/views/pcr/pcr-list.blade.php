@@ -54,7 +54,11 @@
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)): '' }}</td>
                                         <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO' && $order->status=='1'? '('.$order->ecert.')' : '') }}</td>
                                         <td>
+<<<<<<< HEAD
                                             {{ $order->pcr }}
+=======
+                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{ $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '' }}" id="pcr_date{{$order->id}}" onclick="clicked(event, {{$order->id}})">
+>>>>>>> 33914307a60ce511075b915b97cacbad6e39151c
                                         </td>
                                         <td>
                                             @if ($order->status == '1')

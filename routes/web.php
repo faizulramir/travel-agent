@@ -168,5 +168,6 @@ Route::post('/send_mail/{subject_to_send}/{to_name}/{to_email}/{body}/{title}', 
 Route::get('/claim_list', [App\Http\Controllers\ClaimController::class, 'claim_list'])->name('claim_list');
 Route::get('/claim_detail/{id}', [App\Http\Controllers\ClaimController::class, 'claim_detail'])->name('claim_detail');
 Route::get('/claim_edit/{id}', [App\Http\Controllers\ClaimController::class, 'claim_edit'])->name('claim_edit');
+Route::post('/claim_add', [App\Http\Controllers\ClaimController::class, 'claim_add'])->name('claim_add');
 
 

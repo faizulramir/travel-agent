@@ -36,7 +36,7 @@ class ClaimController extends Controller
 
     public function claim_detail($id)
     {
-        $orders = Order::where([['file_id', '=', $id]])->get();
+        $orders = Order::where([['file_id', '=', $id]])->orderBy('pcr_result', 'DESC')->get();
         return view('claim.claim-detail', compact('orders'));
     }
 
@@ -49,13 +49,39 @@ class ClaimController extends Controller
         return view('claim.claim-edit', compact('plans', 'tpas', 'jemaah'));
     }
 
+    public function claim_add(Request $request)
+    {
+        $jemaah = Order::where('id', $request->id)->first();
+        $json_data = json_decode(request()->post('jsonData'));
+        $chunck_json = array_chunk($json_data, 7);
+        
+        $arr_json = array();
+        foreach ($chunck_json as $i => $json) {
+            $temp_arr = array(
+                'rowInput1' => $json[0],
+                'rowInput2' => $json[1],
+                'rowInput3' => $json[2],
+                'rowInput4' => $json[3],
+                'rowInput5' => $json[4],
+                'rowInput6' => $json[5],
+                'rowInput7' => $json[6],
+            );
 
+            array_push($arr_json, $temp_arr);
+        }
 
+        $arr_data = array(
+            'data' => $arr_json,
+        );
 
-
-
-
-
+        $jemaah->claim_json = json_encode($arr_data);
+        $jemaah->save();
+        
+        return response()->json([
+            'isSuccess' => true,
+            'Data' => 'Successfully Submitted!'
+        ], 200);
+    }
 
     public function application_list()
     {
