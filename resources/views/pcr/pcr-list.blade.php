@@ -56,32 +56,23 @@
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)): '' }}</td>
                                         <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO' && $order->status=='1'? '('.$order->ecert.')' : '') }}</td>
                                         <td>{{ $order->pcr }}
-
-                                        
-                                        @php
-                                            try {
-                                                $temp_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
-                                            } catch (\Throwable $th) {
-                                                $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
-                                            }
-                                        @endphp
                                         <td>
-                                             <input type="date" class="form-control" 
-                                                    name="pcr_date{{$order->id}}" 
-                                                    value="{{ $temp_date }}" 
-                                                    id="pcr_date{{$order->id}}" 
-                                                    onchange="clicked(event, {{$order->id}})"> 
+                                            @php
+                                                try {
+                                                    $pcr_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
+                                                } catch (\Throwable $th) {
+                                                    $pcr_date =  date('Y-m-d', strtotime($order->pcr_date));
+                                                }
+                                                
+                                                $rtn_date = date('Y-m-d', strtotime($order->return_date));
+                                                if ($pcr_date == $rtn_date)
+                                                    $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($pcr_date)));
+                                                else {
+                                                    $temp_date =  date('Y-m-d', strtotime($pcr_date));
+                                                }
+                                            @endphp
+                                            <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{ $temp_date }}" id="pcr_date{{$order->id}}" onchange="clicked(event, {{$order->id}})" max="{{ $rtn_date }}"> 
                                         </td>
-                                       
-
-                                        {{-- <td>
-                                            @if ($order->status == '1')
-                                                @php
-                                                    $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
-                                                @endphp
-                                                <input type="date" class="form-control" name="pcr_date{{$order->id}}" value="{{$temp_date}}" id="pcr_date{{$order->id}}" onchange="clicked(event, {{$order->id}})">
-                                            @endif
-                                        </td> --}}
                                         <td>
                                              @if ($order->status == '1')
                                                 <select id="pcr_result{{$order->id}}" name="pcr_result{{$order->id}}" onchange="updateStatus({{$order->id}})" class="form-control select2-search-disable" required>

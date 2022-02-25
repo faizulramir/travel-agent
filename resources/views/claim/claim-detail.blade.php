@@ -52,16 +52,23 @@
                                         <td>{{ $order->passport_no }}</td>
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : '' }}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)): '' }}</td>
-                                        <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO'? '('.$order->ecert.')' : '') }}</td>
+                                        <td>{{ $order->plan_type }} {{ ($order->plan_type!='NO'? ' ('.$order->ecert.')' : '') }}</td>
                                         <td>
                                             {{ $order->pcr }}
-                                            @if ($order->pcr != 'NO') 
+                                            @if ($order->pcr != 'NO')
                                                 @php
-                                                try {
-                                                    $temp_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
-                                                } catch (\Throwable $th) {
-                                                    $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($order->pcr_date)));
-                                                }
+                                                    try {
+                                                        $pcr_date = $order->pcr_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $order->pcr_date)->format('Y-m-d') : '';
+                                                    } catch (\Throwable $th) {
+                                                        $pcr_date =  date('Y-m-d', strtotime($order->pcr_date));
+                                                    }
+                                                    
+                                                    $rtn_date = date('Y-m-d', strtotime($order->return_date));
+                                                    if ($pcr_date == $rtn_date)
+                                                        $temp_date =  date('Y-m-d', strtotime('-2 day', strtotime($pcr_date)));
+                                                    else {
+                                                        $temp_date =  date('Y-m-d', strtotime($pcr_date));
+                                                    }
                                                 @endphp
                                                 ({{ $temp_date }})
                                             @endif
@@ -69,16 +76,17 @@
                                         <td>{{ $order->tpa }}</td>
                                         <td>{{ ($order->pcr_result == '0' || $order->pcr_result == null) ? 'NO' : 'YES' }}</td>
                                         <td>
+                                            @if ($order->pcr != 'NO') 
                                             <a href="#" class="waves-effect" style="color: blue;">
                                                 <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">
                                                 <i onclick="openDetail({{$order->id}})" id="uploadPCR{{$order->id}}" class="bx bxs-cloud-upload font-size-24" title="Upload PCR Result"></i>
                                             </a>
+                                            @endif
                                             @if ($order->pcr_file_name !== null) 
                                                 <a href="{{ route('downloadPCR', [$order->user_id, $order->id, $order->pcr_file_name]) }}" class="waves-effect" style="color: green;">
                                                     <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="Download PCR Result"></i>
                                                 </a>
                                             @endif
-
                                             @if ($order->upload->status == '5')
                                                 @if ($order->plan_type != 'NO' &&  $order->status == '1')
                                                     <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
@@ -86,11 +94,9 @@
                                                     </a>
                                                 @endif                                                
                                             @endif
-
                                             <a href="{{ route('claim_edit', $order->id) }}" class="waves-effect" style="color: black;">
                                                 <i class="bx bx-edit-alt font-size-24" title="Edit Claim"></i>
                                             </a>
-
                                         </td>
                                     </tr>
                                 @endforeach
@@ -153,6 +159,7 @@
                     data:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
                         alert(data.Data)
+                        location.reload();
                     }
                 });
             });
