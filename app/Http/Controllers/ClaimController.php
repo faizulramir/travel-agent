@@ -54,6 +54,10 @@ class ClaimController extends Controller
         $plans = Plan::whereIn('id', [1, 5, 6, 7])->get();
         $tpas = Plan::whereNotIn('id', [1, 5, 6, 7, 8])->get();
         $jemaah = Order::where('id', $id)->first();
+
+        $claim_arr = json_decode($jemaah->claim_json, TRUE);
+        //dd($jemaah->claim_json, $claim_arr);
+        
         
         return view('claim.claim-edit', compact('plans', 'tpas', 'jemaah'));
     }
