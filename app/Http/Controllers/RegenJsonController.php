@@ -240,8 +240,12 @@ class RegenJsonController extends Controller
             }
 
             $tot_inv = $tot_ecert;
+            //discard comma in value --
             if ($disArr && $disArr['COST']) {
                 $tot_inv = $tot_ecert - $disArr['COST'];
+                
+                //$discount = str_replace(',', '', ''.$disArr['COST']);
+                //$tot_inv = $tot_ecert - $discount;
             }
 
             $tot_inv2 = $tot_inv + ($pcrArr && $pcrArr['COST']? $pcrArr['COST'] : 0) + $tot_tpa;

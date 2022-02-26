@@ -25,48 +25,31 @@
                     <form action="#" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        {{--
-                        <h4 class="card-title">Invoice Summary</h4>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="plan">Invoice No: {{ $invoice_num }} </label>
-                                <br>
-                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
-                            </div>
-                        </div>
-                        <br>
-                        --}}
-                        <h4 class="card-title">Invoice Summary</h4>
+                        <h4 class="card-title">Invoice Summary (ADMIN)</h4>
                         <br>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Travel Agent Name: {{ $uploads->ta_name }}</label> 
+                                <label for="plan">Travel Agent Name: <b>{{ $uploads->ta_name }}</b></label> 
                             </div>  
                             <div class="col-md-4">
-                                <label for="plan">Filename: {{ $uploads->file_name }}</label>        
+                                <label for="plan">Filename: <b>{{ $uploads->file_name }}</b></label>        
                             </div>                              
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Invoice No: {{ $invoice_num }}</label>
+                                <label for="plan">Invoice No: <b>{{ $invoice_num }}</b></label>
+                                @if ($uploads->status == '5' || $uploads->status == '4')
+                                <span style="color:red;"><b>PAID</b></span>
+                                @endif
                             </div>
                             <div class="col-md-4">
-                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
+                                <label for="plan">Total Jemaah: <b>{{ $tot_rec }}</b></label>
                             </div>    
                         </div>
                         <br><br>
                         
                         <div class="row">
                             <div class="col-md-3">
-                                {{--
-                                <label for="plan">Plan</label>
-                                <p>
-                                    @foreach ($plan_arr as $i => $plan_a)
-                                        {{ $plan_a }} {{ $i }},
-                                    @endforeach
-                                </p>
-                                --}}
 
                                 <label for="plan">Plan: E-CARE</label>
                                 <p>
@@ -205,7 +188,11 @@
         });
         
         $('#cancel_invoice').click(function() {
-            alert("Confirm to Cancel this Invoice ?");
+            //alert("Confirm to Cancel this Invoice ?");
+            if (confirm("Confirm to Cancel this Invoice ?") == true) {
+                return true;
+            }
+            return false;
         });
 
     </script>

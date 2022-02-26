@@ -29,26 +29,26 @@
                         {{--
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="plan">Invoice No: {{ $invoice_num }}</label>
+                                <label for="plan">Invoice No: <b>{{ $invoice_num }}</b></label>
                                 <br>
-                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
+                                <label for="plan">Total Jemaah: <b>{{ $tot_rec }}</b></label>
                             </div>
                         </div>
                         --}}
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Travel Agent Name: {{ $uploads->ta_name }}</label>                                
+                                <label for="plan">Travel Agent Name: <b>{{ $uploads->ta_name }}</b></label>                                
                             </div>                             
                             <div class="col-md-4">
-                                <label for="plan">File Name: {{ $uploads->file_name }}</label>
+                                <label for="plan">File Name: <b>{{ $uploads->file_name }}</b></label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Invoice No: {{ $invoice_num }}</label>
+                                <label for="plan">Invoice No: <b>{{ $invoice_num }}</b></label>
                             </div>
                             <div class="col-md-4">
-                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
+                                <label for="plan">Total Jemaah: <b>{{ $tot_rec }}</b></label>
                             </div>    
                         </div>
 

@@ -217,7 +217,15 @@ class PaymentController extends Controller
             $tot_tpa = $tot_tpa + $tpa_cost;
         }
         $tot_inv = $tot_ecert + $tot_pcr + $tot_tpa;
+
+        //discard comma in value --
         $tot_inv = $tot_inv - $uploads->discount;
+        // if ($uploads->discount) {
+        //     $discount = str_replace(',', '', ''.$uploads->discount);
+        //     $tot_inv = $tot_inv - $discount;
+        // }
+
+
         $invoice_num = null;
         if ($orders && $orders[0]) {
             $invoice_num = $orders[0]->invoice;
@@ -568,7 +576,15 @@ class PaymentController extends Controller
                 );
             }
 
-            $tot_inv = $tot_ecert - ($disArr ? $disArr['COST'] : 0);
+
+            //$tot_inv = $tot_ecert - ($disArr ? $disArr['COST'] : 0);
+            $tot_inv = $tot_ecert;
+            if ($disArr && $disArr['COST']) {
+                $tot_inv = $tot_ecert - $disArr['COST'];
+                
+                //$discount = str_replace(',', '', ''.$disArr['COST']);
+                //$tot_inv = $tot_ecert - $discount;
+            }
 
             $tot_inv2 = $tot_inv + ($disArr ? $disArr['COST'] : 0) + $tot_tpa;
         }

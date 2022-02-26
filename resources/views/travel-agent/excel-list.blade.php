@@ -49,16 +49,17 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="10%">Filename</th>
+                                    <th data-priority="1" width="25%">Filename</th>
+                                    <th data-priority="3" width="5%">Jemaah</th>
                                     <th data-priority="3" width="10%">Upload Date</th>
                                     <th data-priority="1" width="10%">Submission</th>
                                     <th data-priority="3" width="10%">Supp. Docs</th>
                                     <th data-priority="1" width="10%">Payment</th>
-                                    <th data-priority="1">Status</th>
+                                    <th data-priority="1" width="15%">Status</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
@@ -67,6 +68,14 @@
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $upload->file_name }}</td>
+                                        <td>
+                                            @php
+                                            $jemaah = count(\App\Models\Order::where([['file_id', $upload->id]])->get());
+                                            @endphp
+                                            @if ($upload->status != '0' && $upload->status != '1' && $upload->status != '2')
+                                            {{ $jemaah }} 
+                                            @endif 
+                                        </td>
                                         <td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
                                         <td>
@@ -93,9 +102,9 @@
                                             @if ($upload->status == '0')
                                                 Pending Submission
                                             @elseif ($upload->status == '2')
-                                                <p>Pending AKC Approval</p>
+                                                <p>Pending AKC (Approval)</p>
                                             @elseif ($upload->status == '2.1' || $upload->status == '2.2' || $upload->status == '2.3')
-                                                <p>Pending AKC Invoice</p>
+                                                <p>Pending AKC (Invoice)</p>
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
@@ -402,6 +411,7 @@
         });
 
         $('#refreshBtn').click(function() {
+            $('#datatable').DataTable().state.clear();
             location.reload();
         });
 
@@ -676,7 +686,7 @@
                 processData: false,
                 success: function (data) {
                     alert("E-Ticket Docs - " + data.Data)
-                    location.reload()
+                    //location.reload()
                 }
             });
         });
@@ -696,7 +706,7 @@
                 processData: false,
                 success: function (data) {
                     alert("E-Visa Docs - " + data.Data)
-                    location.reload()
+                    //location.reload()
                 }
             });
         });
@@ -717,7 +727,7 @@
                 processData: false,
                 success: function (data) {
                     alert("Passport Docs - " + data.Data)
-                    location.reload()
+                    //location.reload()
                 }
             });
         });

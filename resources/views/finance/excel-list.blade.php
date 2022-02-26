@@ -321,7 +321,7 @@
     
 
 
-
+    <!-- 
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -423,6 +423,67 @@
             </div>
         </div>
     </div>
+    -->
+    
+    <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Supporting Documents</h5>
+                    <button type="button" id="btnClose" onclick="closeDetail()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-left">
+                    <div class="row text-left">
+                        <div class="col-md-12">
+                            <input type="hidden" id="suppId" name="suppId">
+                            <input type="hidden" id="idDownload" name="idDownload">
+                            <input type="hidden" id="suppdocs" name="suppdocs">
+
+                            <table border="0" width="100%" id="tableUploadDownload">
+                                <tr>
+                                    <td width="30%">Document Passport</td>
+                                    <td width="20%">
+                                        <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Upload</button>
+                                    </td>    
+                                    <td width="45%" id="passportdownload"></td> 
+                                </tr>  
+                                <tr>
+                                    <td>Document E-Ticket</td>
+                                    <td>
+                                        <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Upload</button>
+                                    </td>    
+                                    <td id="eticketdownload"></td> 
+                                </tr>       
+                                <tr>
+                                    <td>Document E-Visa</td>
+                                    <td>
+                                        <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Upload</button>
+                                    </td>    
+                                    <td id="visadownload"></td> 
+                                </tr>       
+                                <tr>
+                                    <td>Payment Receipt</td>
+                                    <td>
+                                        <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Upload</button>
+                                    </td>    
+                                    <td id="payreceiptdownload"></td> 
+                                </tr>                                                                                         
+                                <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                </tr>                                                                  
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+
+
 
 @endsection
 @section('script')
@@ -462,7 +523,7 @@
                 processData: false,
                 success: function (data) {
                     alert("E-Ticket Docs - " + data.Data)
-                    location.reload()
+                    //location.reload()
                 }
             });
         });
@@ -482,7 +543,7 @@
                 processData: false,
                 success: function (data) {
                     alert("E-Visa Docs - " + data.Data)
-                    location.reload()
+                    //location.reload()
                 }
             });
         });
@@ -502,7 +563,7 @@
                 processData: false,
                 success: function (data) {
                     alert("Passport Docs - " + data.Data)
-                    location.reload()
+                    //location.reload()
                 }
             });
         });
@@ -522,30 +583,76 @@
                 processData: false,
                 success: function (data) {
                     alert("Payment Receipt - " + data.Data);
-                    location.reload()
+                    //location.reload()
                 }
             });
         });
 
-        function downloadDetail (type, id) {
-            $("#eticketDown").attr("href", "/supp_doc_download_admin/" + id + "/" + type)
-            // $('#downloadSuppDoc').modal('show');
+        function downloadDetail (id) {
+            $("#eticketDown").attr("href", "/supp_doc_download_admin/" + id + "/eticket")
+            $('#downloadSuppDoc').modal('show');
             $("#idDownload").val(id);
         }
 
-        $(document).ready(function() {
-            $("#showSuppDoc").modal({
-                keyboard: false,
-                backdrop: 'static'
-            });
-        });
-
         function closeDetail() {
             //alert("close");
-            //location.reload();
+            location.reload();
         }
 
         function openDetail (id, docs) {
+            $("#suppId").val(id);
+            $("#suppdocs").val(docs);
+            if (docs) {
+                $.ajax({
+                    url: '/supp_doc_check/' + id + '/' + docs,
+                    type: 'GET',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var objp = data.Data.find(o => o['passport']);
+                        var obje = data.Data.find(o => o['eticket']);
+                        var objv = data.Data.find(o => o['visa']);
+                        var objr = data.Data.find(o => o['payreceipt']);
+                        //console.log(objv);
+                        if (docs.includes('P') && objp!=null && objp!=undefined) {
+                            $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/passport" type="submit">'+ objp.passport +'</a>');
+                        } else {
+                            $('#passportdownload').html('');
+                        }
+
+                        if (docs.includes('T') && obje!=null && obje!=undefined) {
+                            $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/eticket" type="submit">'+ obje.eticket +'</a>');
+                        } else {
+                            $('#eticketdownload').html('');
+                        }
+
+                        if (docs.includes('V') && objv!=null && objv!=undefined) {
+                            $('#visadownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/visa" type="submit">'+ objv.visa +'</a>');
+                        } else {
+                            $('#visadownload').html('');
+                        }
+
+                        if (docs.includes('R') && objr!=null && objr!=undefined) {
+                            $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" type="submit">'+ objr.payreceipt +'</a>');
+                        } else {
+                            $('#payreceiptdownload').html('');
+                        }
+
+                        $('#showSuppDoc').modal('show');
+                    }
+                });
+            } else {
+                $('#passportdownload').html('');
+                $('#eticketdownload').html('');
+                $('#visadownload').html('');
+                $('#payreceiptdownload').html('');
+                $('#showSuppDoc').modal('show');
+            }
+            
+        }
+
+        function openDetailX (id, docs) {
             $("#suppId").val(id);
             $("#suppdocs").val(docs);
             

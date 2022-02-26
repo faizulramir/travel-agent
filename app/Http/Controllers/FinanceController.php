@@ -464,11 +464,18 @@ class FinanceController extends Controller
 
         $disArr = null;
         if ($files->status == '2.1') {
+
+            $discount = $request->discount;
+            //check and discard comma in value
+            if ($request->discount) {
+                $discount = str_replace(',', '', ''.$request->discount);
+            } 
+
             $disArr = array(
                 'PLAN' => 'DISCOUNT',
-                'PRICE' => $request->discount,
+                'PRICE' => $discount, //$request->discount,
                 'COUNT' => '1',
-                'COST' => $request->discount,
+                'COST' => $discount, //$request->discount,
             );
         }
         else {
@@ -482,10 +489,15 @@ class FinanceController extends Controller
             }
         }
 
+        //dd($disArr['COST']);
         $tot_inv = $tot_ecert;
+        //discard comma in value --
         if ($disArr && $disArr['COST']) {
             $tot_inv = $tot_ecert - $disArr['COST'];
+            // $discount = str_replace(',', '', ''.$disArr['COST']);
+            // $tot_inv = $tot_ecert - $discount;
         }
+        //dd($disArr['COST'], $discount, $tot_inv);
 
         $tot_inv2 = $tot_inv + ($pcrArr && $pcrArr['COST']? $pcrArr['COST'] : 0) + $tot_tpa;
         
@@ -534,6 +546,13 @@ class FinanceController extends Controller
         if ($uploads->status == '2.1') {
             $uploads->status = '3';
             $uploads->discount = $request->discount;
+
+            //check and discard comma in value
+            if ($request->discount) {
+                $discount = str_replace(',', '', ''.$request->discount);
+                $uploads->discount = $discount;
+            }
+
             $uploads->percent = $request->percent_disc;
             $uploads->save();
             

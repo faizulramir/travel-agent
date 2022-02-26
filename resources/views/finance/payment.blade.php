@@ -20,36 +20,31 @@
                 <div class="card-body">
                     <form action="{{ route('endorse_payment', $uploads->id) }}" method="POST" id="formSubmit" enctype="multipart/form-data">
                         @csrf
-                        <h4 class="card-title">Invoice Summary FIN</h4>
+                        <h4 class="card-title">Invoice Summary (FINANCE)</h4>
                         <br>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Travel Agent Name: {{ $uploads->ta_name }}</label>                                
+                                <label for="plan">Travel Agent Name: <b>{{ $uploads->ta_name }}</b></label>                                
                             </div>  
                             <div class="col-md-4">
-                                <label for="plan">Filename: {{ $uploads->file_name }}</label>
+                                <label for="plan">Filename: <b>{{ $uploads->file_name }}</b></label>
                             </div>  
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Invoice No: {{ $invoice_num }}</label>
+                                <label for="plan">Invoice No: <b>{{ $invoice_num }}</b></label> &nbsp;&nbsp; 
+                                @if ($uploads->status == '5' || $uploads->status == '4')
+                                <span style="color:red;"><b>PAID</b></span>
+                                @endif
                             </div>
                             <div class="col-md-4">
-                                <label for="plan">Total Jemaah: {{ $tot_rec }}</label>
+                                <label for="plan">Total Jemaah: <b>{{ $tot_rec }}</b></label>
                             </div>
                         </div>
                         <br><br>
 
                         <div class="row">
                             <div class="col-md-3">
-                                {{--
-                                <label for="plan">Plan</label>
-                                <p>
-                                    @foreach ($plan_arr as $i => $plan_a)
-                                        {{ $plan_a }} {{ $i }},
-                                    @endforeach
-                                </p>
-                                --}}
 
                                 <label for="plan">&raquo; Plan E-CARE</label>
                                 <p>
@@ -59,16 +54,23 @@
                                 </p>
                                 <label for="plan">&raquo; Plan PCR</label>
                                 <p>
-                                    {{-- @foreach ($invoice_arr as $inv) --}}
-                                    {{ $pcr_detail->cnt }} x <b>{{ $pcr_detail->name }}</b> = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
-                                    {{-- @endforeach --}}
+                                    @if ($pcr_detail && $pcr_detail->cnt>0)
+                                        {{ $pcr_detail->cnt }} x <b>{{ $pcr_detail->name }}</b> = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
+                                    @else
+                                        0 x <b>PCR</b> <br>
+                                    @endif
                                 </p>
                                 <label for="plan">&raquo; Plan TPA</label>
                                 <p>
-                                    @foreach ($tpa_total_arr as $inv)
-                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
-                                    @endforeach
+                                    @if ($tpa_total_arr && count($tpa_total_arr)>0)
+                                        @foreach ($tpa_total_arr as $inv)
+                                            {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                        @endforeach
+                                    @else
+                                        0 x <b>TPA</b> <br>
+                                    @endif
                                 </p>
+
                             </div>
 
                             <div class="col-md-3">
@@ -120,16 +122,14 @@
                                 @if(isset($pay))
                                     <label for="plan">Payment Receipt</label>
                                     @if ($pay->pay_file == null)
-                                        <p>File not found</p>
-                                        <a href="#" class="btn btn-primary waves-effect waves-light">
+                                        <p>Receipt not uploaded</p>
+                                        <!-- <a href="#" class="btn btn-primary waves-effect waves-light">
                                             Upload Payment Receipt
-                                        </a>
+                                        </a> -->
                                         <br>
+                                        <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" onclick="openDetail({{$uploads->id}},'{{$uploads->supp_doc}}')">Upload Payment Receipt</a>
                                     @else
                                         <p>
-                                            {{--<a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
-                                                Download Invoice
-                                            </a>--}}
                                             <a href="{{ route('download_payment', [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary waves-effect waves-light">
                                                 Download Receipt
                                             </a>
@@ -184,6 +184,65 @@
         </div>
     </div>
 
+
+    <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Supporting Documents</h5>
+                    <button type="button" id="btnClose" onclick="closeDetail()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-left">
+                    <div class="row text-left">
+                        <div class="col-md-12">
+                            <input type="hidden" id="suppId" name="suppId">
+                            <input type="hidden" id="idDownload" name="idDownload">
+                            <input type="hidden" id="suppdocs" name="suppdocs">
+
+                            <table border="0" width="100%" id="tableUploadDownload">
+                                <tr>
+                                    <td width="30%">Document Passport</td>
+                                    <td width="20%">
+                                        <input type="file" name="passport_file_name" id="passport_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('passport')" type="submit" id="passport">Upload</button>
+                                    </td>    
+                                    <td width="45%" id="passportdownload"></td> 
+                                </tr>  
+                                <tr>
+                                    <td>Document E-Ticket</td>
+                                    <td>
+                                        <input type="file" name="eticket_file_name" id="eticket_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('eticket')" type="submit" id="eticket">Upload</button>
+                                    </td>    
+                                    <td id="eticketdownload"></td> 
+                                </tr>       
+                                <tr>
+                                    <td>Document E-Visa</td>
+                                    <td>
+                                        <input type="file" name="visa_file_name" id="visa_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('visa')" type="submit" id="visa">Upload</button>
+                                    </td>    
+                                    <td id="visadownload"></td> 
+                                </tr>       
+                                <tr>
+                                    <td>Payment Receipt</td>
+                                    <td>
+                                        <input type="file" name="pay_file_name" id="payreceipt_file" style="display: none;">
+                                        <button class="btn btn-primary" onclick="chooseSupDoc('payreceipt')" type="submit" id="payreceipt">Upload</button>
+                                    </td>    
+                                    <td id="payreceiptdownload"></td> 
+                                </tr>                                                                                         
+                                <tr>
+                                    <td colspan="3">&nbsp;</td>
+                                </tr>                                                                  
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+
 @endsection
 @section('script')
     <script>
@@ -232,8 +291,173 @@
         });
         
         $('#reject_data').click(function() {
-            alert("Confirm to Reject Invoice Endorsement ?");
+            //alert("Confirm to Reject Invoice Endorsement ?");
+            if (confirm("Confirm to Reject Invoice Endorsement ?") == true) {
+                return true;
+            }
+            return false;
         });
+
+
+        //supporting documents
+        function chooseSupDoc (type) {
+            if (type == 'eticket') {
+                $("#eticket_file").trigger("click");
+            } else if (type == 'visa') {
+                $("#visa_file").trigger("click");
+            } else if (type == 'passport') {
+                $("#passport_file").trigger("click");
+            } else if (type == 'payreceipt') {
+                $("#payreceipt_file").trigger("click");
+            }
+        }
+
+        $("#eticket_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#eticket_file")[0].files[0]);
+            form_data.append("type", 'eticket');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("E-Ticket Docs - " + data.Data)
+                    //location.reload()
+                }
+            });
+        });
+
+        $("#visa_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#visa_file")[0].files[0]);
+            form_data.append("type", 'visa');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("E-Visa Docs - " + data.Data)
+                    //location.reload()
+                }
+            });
+        });
+
+        $("#passport_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#passport_file")[0].files[0]);
+            form_data.append("type", 'passport');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("Passport Docs - " + data.Data)
+                    //location.reload()
+                }
+            });
+        });
+
+        $("#payreceipt_file").change(function () {
+            var form_data = new FormData();
+            form_data.append("file", $("#payreceipt_file")[0].files[0]);
+            form_data.append("type", 'payreceipt');
+            form_data.append("id", $("#suppId").val());
+            $.ajax({
+                url: '/supp_doc_post_admin',
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert("Payment Receipt - " + data.Data);
+                    //location.reload()
+                }
+            });
+        });
+
+        function downloadDetail (id) {
+            $("#eticketDown").attr("href", "/supp_doc_download_admin/" + id + "/eticket")
+            $('#downloadSuppDoc').modal('show');
+            $("#idDownload").val(id);
+        }
+
+        function closeDetail() {
+            //alert("close");
+            location.reload();
+        }
+
+        function openDetail (id, docs) {
+            $("#suppId").val(id);
+            $("#suppdocs").val(docs);
+            if (docs) {
+                $.ajax({
+                    url: '/supp_doc_check/' + id + '/' + docs,
+                    type: 'GET',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var objp = data.Data.find(o => o['passport']);
+                        var obje = data.Data.find(o => o['eticket']);
+                        var objv = data.Data.find(o => o['visa']);
+                        var objr = data.Data.find(o => o['payreceipt']);
+                        //console.log(objv);
+                        if (docs.includes('P') && objp!=null && objp!=undefined) {
+                            $('#passportdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/passport" type="submit">'+ objp.passport +'</a>');
+                        } else {
+                            $('#passportdownload').html('');
+                        }
+
+                        if (docs.includes('T') && obje!=null && obje!=undefined) {
+                            $('#eticketdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/eticket" type="submit">'+ obje.eticket +'</a>');
+                        } else {
+                            $('#eticketdownload').html('');
+                        }
+
+                        if (docs.includes('V') && objv!=null && objv!=undefined) {
+                            $('#visadownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/visa" type="submit">'+ objv.visa +'</a>');
+                        } else {
+                            $('#visadownload').html('');
+                        }
+
+                        if (docs.includes('R') && objr!=null && objr!=undefined) {
+                            $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" type="submit">'+ objr.payreceipt +'</a>');
+                        } else {
+                            $('#payreceiptdownload').html('');
+                        }
+
+                        $('#showSuppDoc').modal('show');
+                    }
+                });
+            } else {
+                $('#passportdownload').html('');
+                $('#eticketdownload').html('');
+                $('#visadownload').html('');
+                $('#payreceiptdownload').html('');
+                $('#showSuppDoc').modal('show');
+            }
+            
+        }
+
+
+
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
