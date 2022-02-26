@@ -223,16 +223,26 @@ class AdminController extends Controller
         //include number of records count
         $rec_count_arr = array();
         $suppdoc_arr = array();
+        $stats_arr = array();
+
+        $pending1 = 0;
+        $pending2 = 0;
+        $pending3 = 0;
+        $pending4 = 0;
 
         if ($uploads) {
             foreach ($uploads as $upload) {
-                //echo "<span style='color:black'>file=".$upload->id."</span><br>";
                 $count = 0;
                 $orders = Order::where([['file_id', '=' ,$upload->id]])->get();
                 if ($orders) {
                     $count = count($orders);
                 }
                 array_push($rec_count_arr, $count); //prepare costing for each record
+
+                if ($upload->status == '2' || $upload->status == '2.2' || $upload->status == '2.3') $pending1 = $pending1 + 1;
+                if ($upload->status == '2.1') $pending2 = $pending2 + 1;
+                if ($upload->status == '3') $pending3 = $pending3 + 1;
+                if (!$upload->supp_doc) $pending4 = $pending4 + 1;
                 
                 //fuad: get the supp_doc data
                 if ($upload->supp_doc) {
@@ -331,7 +341,14 @@ class AdminController extends Controller
         //dd($rec_count_arr);
         //dd($suppdoc_arr);
 
-        return view('admin.excel-list', compact('uploads', 'users', 'rec_count_arr', 'suppdoc_arr'));
+        $stats_arr = array(
+            'pending1' => $pending1,
+            'pending2' => $pending2,
+            'pending3' => $pending3,
+            'pending4' => $pending4,
+        );
+
+        return view('admin.excel-list', compact('uploads', 'users', 'rec_count_arr', 'suppdoc_arr', 'stats_arr'));
     }
 
     public function excel_detail_admin($id)

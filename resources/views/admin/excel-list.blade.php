@@ -133,12 +133,34 @@
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                             <a href="{{ route('download_template') }}" class="btn btn-primary w-md" target="_blank">Download Excel Template</a>
                             <button type="submit" class="btn btn-primary w-md" id="add_button">Add Excel</button>
                         </div>
-                        <div class="col-md-6" style="text-align: right;">
+
+                        <div class="col-md-7">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="padding:8px;">
+                                            <h4 style="color:orange;">{{ $stats_arr && $stats_arr['pending1'] ? $stats_arr['pending1'] : 0 }} <span class="badge badge-primary align-top" style="color:#606060;vertical-align:top;font-size:0.85rem;">Pending Approval</span></h4>
+                                        </td>
+                                        <td style="padding:8px;">
+                                            <h4 style="color:orange;">{{ $stats_arr && $stats_arr['pending2'] ? $stats_arr['pending2'] : 0 }} <span class="badge badge-primary align-top" style="color:#606060;vertical-align:top;font-size:0.85rem;">Pending Invoice</span></h4>
+                                        </td>
+                                        <td style="padding:8px;">
+                                            <h4 style="color:orange;">{{ $stats_arr && $stats_arr['pending3'] ? $stats_arr['pending3'] : 0 }} <span class="badge badge-primary align-top" style="color:#606060;vertical-align:top;font-size:0.85rem;">Pending Payment</span></h4>
+                                        </td>
+                                        <td style="padding:8px;">
+                                            <h4 style="color:orange;">{{ $stats_arr && $stats_arr['pending4'] ? $stats_arr['pending4'] : 0 }} <span class="badge badge-primary align-top" style="color:#606060;vertical-align:top;font-size:0.85rem;">Pending Docs Upload</span></h4>
+                                        </td>                                                                                                                    
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2" style="text-align: right;">
                             <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">Refresh</button>
                         </div>
                     </div>
@@ -163,7 +185,7 @@
                                 $bil1 = 0
                                 @endphp
                                 @foreach ($uploads as $i => $upload)
-                                    @if(!($upload->status == '5' && $upload->supp_doc != null))
+                                    @if(!($upload->status == '5' && $upload->supp_doc != null) && $upload->status != '99')
                                     @php 
                                     $bil1 = $bil1 + 1
                                     @endphp
@@ -375,7 +397,7 @@
                                     $bil2 = 0
                                 @endphp
                                 @foreach ($uploads as $x => $upload)
-                                    @if($upload->status == '5' && $upload->supp_doc != null)
+                                    @if(($upload->status == '5' && $upload->supp_doc != null) || $upload->status == '99')
                                         @php 
                                             $bil2 = $bil2 + 1
                                         @endphp

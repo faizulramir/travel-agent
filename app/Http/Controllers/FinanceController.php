@@ -35,6 +35,10 @@ class FinanceController extends Controller
     {
         $uploads = FileUpload::whereIn('status', ['4', '5', '2.1'])->orderBy('submit_date', 'DESC')->orderBy('status', 'DESC')->get();
 
+        $stats_arr = array();
+        $pending1 = 0;
+        $pending2 = 0;
+
         //include number of records count
         $rec_count_arr = array();
         if ($uploads) {
@@ -46,11 +50,19 @@ class FinanceController extends Controller
                     $count = count($orders);
                 }
                 array_push($rec_count_arr, $count); //prepare costing for each record
+
+                if ($upload->status == '2.1') $pending1 = $pending1 + 1;
+                if ($upload->status == '4') $pending2 = $pending2 + 1;
             }
         }
         //dd($rec_count_arr);
 
-        return view('finance.excel-list', compact('uploads', 'rec_count_arr'));
+        $stats_arr = array(
+            'pending1' => $pending1,
+            'pending2' => $pending2,
+        );
+
+        return view('finance.excel-list', compact('uploads', 'rec_count_arr', 'stats_arr'));
     }
 
     public function payment_detail($id)

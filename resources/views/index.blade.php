@@ -94,7 +94,7 @@
                                                 <h4 class="mb-0">{{ $akc_uploads }}</h4>
                                                 </td>
                                                 <td width="50%">
-                                                <p class="text-muted fw-medium">Travel Agent Request</p>
+                                                <p class="text-muted fw-medium">Travel Agent Excel</p>
                                                 <h4 class="mb-0">{{ $tra_uploads }}</h4>
                                                 </td>                                                                                      
                                             </tr>
@@ -113,7 +113,7 @@
                                         <table width="100%">
                                             <tr>
                                                 <td width="50%">
-                                                <p class="text-muted fw-medium">DIY Agent Request</p>
+                                                <p class="text-muted fw-medium">DIY Agent Excel</p>
                                                 <h4 class="mb-0">{{ $agn_uploads }}</h4>
                                                 </td>
                                                 <td width="50%">
