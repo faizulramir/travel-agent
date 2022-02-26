@@ -54,7 +54,7 @@
                         @endif                        
                         <div class="col-md-3" style="text-align: left;">
                             <a href="{{ route('excel_list') }}" class="btn btn-primary w-md">
-                                <i class="bx bx-chevrons-left font-size-20" title="Back"></i>
+                                <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
                             </a>
                         </div>
                         <div class="col-md-3 text-right">
@@ -77,16 +77,16 @@
                     <br>
 
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th data-priority="0">#</th>
                                     <th data-priority="1">Name</th>
                                     <th data-priority="1">Passport No</th>
-                                    <th data-priority="1">IC No</th>
-                                    <th data-priority="1">DEP Date (DMY)</th>
-                                    <th data-priority="5">RTN Date (DMY)</th>                                    
-                                    <th data-priority="1">Plan</th>
+                                    <th data-priority="3">IC No</th>
+                                    <th data-priority="1">DEP Date</th>
+                                    <th data-priority="3">RTN Date</th>                                    
+                                    <th data-priority="1">ECare Plan</th>
                                     <th data-priority="3">PCR</th>
                                     <th data-priority="3">TPA</th>
                                     @if ($uploads->status === '5')
@@ -118,6 +118,7 @@
                                         @endif
                                         <td>
                                             @if (!$payment && $order->upload->status != '99')
+                                                {{--
                                                 @if ($order->status == '1')
                                                     <a href="{{ route('update_detail_ta', [$order->id, '0'])}}" onclick="return confirm('Confirm to CANCEL Traveller?');" class="waves-effect" style="color: red;">
                                                         <i class="bx bx-trash-alt font-size-24" title="Cancel Traveller"></i>
@@ -127,6 +128,7 @@
                                                         <i class="bx bx-paper-plane font-size-24" title="Enable Traveller"></i>
                                                     </a>
                                                 @endif
+                                                --}}
                                             @endif
                                             @if ($order->status == '1' && $payment && $order->upload->status == '5')
                                                 {{-- <a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: black;" target="_blank">
@@ -456,10 +458,7 @@
                     //location.reload()
                 }
             });
-        });
-
-
-       
+        });   
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

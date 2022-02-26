@@ -58,8 +58,8 @@
                                     <th data-priority="3">Passport No</th>
                                     <th data-priority="1">IC No</th>
                                     <th data-priority="1">Birth Date</th>
-                                    <th data-priority="1">DEP Date (DMY)</th>
-                                    <th data-priority="3">RTN Date (DMY)</th>
+                                    <th data-priority="1">DEP Date</th>
+                                    <th data-priority="3">RTN Date</th>
                                     <th data-priority="1">Plan</th>
                                     <th data-priority="1">PCR</th>
                                     <th data-priority="1">TPA</th>

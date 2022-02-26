@@ -27,7 +27,15 @@
                             <div class="media">
                                 <div class="media-body">
                                     <p class="text-muted fw-medium">Total Excel Submission</p>
-                                    <h4 class="mb-0">{{ $tra_uploads }}</h4>
+                                    <h4 class="mb-0">
+                                        @if (auth()->user()->hasAnyRole('tra'))
+                                            {{ $tra_uploads }}
+                                        @elseif (auth()->user()->hasAnyRole('ag'))
+                                            {{ $agn_uploads }}
+                                        @elseif (auth()->user()->hasAnyRole('ind'))
+                                            {{ $ind_uploads }}
+                                        @endif
+                                    </h4>
                                 </div>
                             </div>
                         </div>
@@ -57,21 +65,19 @@
                         </div>
                     </div>
                 </div>
-                {{--
                 <div class="col-md-3">
                     <div class="card mini-stats-wid">
                         <div class="card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <p class="text-muted fw-medium">All Request</p>
-                                    <h4 class="mb-0">{{count($total_uploads)}}</h4>
+                                    <p class="text-muted fw-medium">&nbsp;</p>
+                                    <h4 class="mb-0">&nbsp;</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-                --}}
             </div>
         </div>
     </div>

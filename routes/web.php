@@ -61,13 +61,17 @@ Route::get('/supp_doc_download_ta/{id}/{type}', [App\Http\Controllers\TravelAgen
 //agent
 Route::get('/excel_list_agent', [App\Http\Controllers\AgentController::class, 'excel_list_agent'])->name('excel_list_agent');
 Route::post('/excel_post_agent', [App\Http\Controllers\AgentController::class, 'excel_post_agent'])->name('excel_post_agent');
-Route::post('/supp_doc_post_agent', [App\Http\Controllers\AgentController::class, 'supp_doc_post_agent'])->name('supp_doc_post_agent');
+Route::post('/supp_doc_post_agn', [App\Http\Controllers\AgentController::class, 'supp_doc_post_agn'])->name('supp_doc_post_agn');
 Route::post('/submit_post_agent', [App\Http\Controllers\AgentController::class, 'submit_post_agent'])->name('submit_post_agent');
 Route::get('/download_cert_agent', [App\Http\Controllers\AgentController::class, 'download_cert_agent'])->name('download_cert_agent');
 Route::get('/download_invoice_agent', [App\Http\Controllers\AgentController::class, 'download_invoice_agent'])->name('download_invoice_agent');
 Route::get('/delete_excel_agent/{id}', [App\Http\Controllers\AgentController::class, 'delete_excel_agent'])->name('delete_excel_agent');
 Route::get('/excel_detail_agent/{id}', [App\Http\Controllers\AgentController::class, 'excel_detail_agent'])->name('excel_detail_agent');
 Route::get('/update_detail_agent/{id}/{status}', [App\Http\Controllers\AgentController::class, 'update_detail_agent'])->name('update_detail_agent');
+
+Route::get('/download_template_agn', [App\Http\Controllers\AgentController::class, 'download_template_agn'])->name('download_template_agn');
+Route::get('/supp_doc_check_agn/{id}/{type}', [App\Http\Controllers\AgentController::class, 'supp_doc_check_agn'])->name('supp_doc_check_agn');
+Route::get('/supp_doc_download_agn/{id}/{type}', [App\Http\Controllers\AgentController::class, 'supp_doc_download_agn'])->name('supp_doc_download_agn');
 
 
 //admin

@@ -130,8 +130,7 @@ class TravelAgentController extends Controller
         ], 200); // Status code here
     }
 
-    public function supp_doc_post_ta(Request $request)
-    {
+    public function supp_doc_post_ta(Request $request) {
         $uploads = FileUpload::where('id', request()->post('id'))->first();
         $collection = collect($request->all());
 
@@ -259,9 +258,7 @@ class TravelAgentController extends Controller
         }
     }
 
-    
-    public function supp_doc_download_ta(Request $req, $id, $type)
-    {
+    public function supp_doc_download_ta(Request $req, $id, $type) {
         //dd($id, $type);
         $uploads = FileUpload::where('id', $id)->first();
         //dd($uploads);

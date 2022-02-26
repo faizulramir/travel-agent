@@ -66,7 +66,7 @@
                             <tbody>
                                 @foreach ($uploads as $i => $upload)
                                     <tr>
-                                        <td>{{ $i + 1 }}</td>
+                                        <td>{{ $i+ 1 }}</td>
                                         <td>{{ $upload->file_name }}</td>
                                         <td>
                                             @php
@@ -264,7 +264,6 @@
         </div>
     </div>
 
-
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
@@ -322,7 +321,6 @@
             </div>
         </div>
     </div>
-
 
     {{--
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
@@ -659,6 +657,7 @@
             return ''+( date_info.getDate()>9?date_info.getDate():'0'+date_info.getDate())+'-'+((date_info.getMonth()+1)>9? (date_info.getMonth()+1):'0'+(date_info.getMonth()+1))+'-'+date_info.getFullYear();
         }
 
+        
         //supporting documents ....
         function chooseSupDoc (type) {
             if (type == 'eticket') {
