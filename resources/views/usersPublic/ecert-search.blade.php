@@ -24,7 +24,7 @@
                                 <div style="float:left;">
                                     <br><br>
                                     <a href="https://alkhairicare.com/" target="_blank">
-                                        <img src="{{ URL::asset('/assets/images/akc.png') }}" width="100%" alt="" height="50" class="auth-logo-dark">
+                                        <img src="{{ URL::asset('/assets/images/Logo-Al-Khairi-Care-04-01.png') }}" width="100%" alt="" height="120px" class="auth-logo-dark">
                                     </a>
                                 </div>
                                 <div style="clear:both;"></div>

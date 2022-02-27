@@ -62,7 +62,7 @@
             </div>
             <div class="column" style="padding: 0; margin: 0; text-align: center;">
                 <br><br>
-                <img src="assets/images/akc-logo.png" alt="" height="40">
+                <img src="assets/images/Logo-Al-Khairi-Care-04-01.png" alt="" height="50">
             </div>
         </div>
 

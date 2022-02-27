@@ -51,13 +51,15 @@ class PublicController extends Controller
         $mon = $months[$curm - 1];
         $tmpdate = $tmpd .'-'. $mon .'-'. $tmpy;
 
-        //dd($request->all(), $depdate, $tmpdate, $tmpy);
-        
+        $tmpdate2 = date('d-m-Y', strtotime($request->depart_date)); //added!
+
+        //dd($request->all(), $depdate, $tmpdate, $tmpy, $tmpdate2);
         //dd($request->passport, $request->depart_date, $depdate, $tmpy, $tmpm, $tmpd, $curm, $mon, $tmpdate);
 
         //$order = Order::where([['passport_no', '=', $request->passport], ['dep_date', '=', $request->depart_date]])->first();
         $order = Order::where([['passport_no', '=', $request->passport], ['dep_date', '=', $request->depart_date]])
                         ->orWhere([['passport_no', '=', $request->passport], ['dep_date', '=', $tmpdate], ['plan_type', '!=', 'NO']])
+                        ->orWhere([['passport_no', '=', $request->passport], ['dep_date', '=', $tmpdate2], ['plan_type', '!=', 'NO']]) //added!
                         ->first();
 
         if ($order && $order->plan_type == 'NO') $order = null;
