@@ -65,9 +65,16 @@
                                 </p>
                                 <label for="plan">Plan: TPA</label>
                                 <p>
-                                    @foreach ($tpa_total_arr as $inv)
+                                    {{-- @foreach ($tpa_total_arr as $inv)
                                         {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
-                                    @endforeach
+                                    @endforeach --}}
+                                    @if ($tpa_total_arr && count($tpa_total_arr)>0)
+                                        @foreach ($tpa_total_arr as $inv)
+                                            {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
+                                        @endforeach
+                                    @else
+                                        0 x <b>TPA</b> <br>
+                                    @endif                                    
                                 </p>
 
                             </div>

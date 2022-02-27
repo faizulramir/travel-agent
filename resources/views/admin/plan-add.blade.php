@@ -40,13 +40,13 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">Days Cover</label>
+                                    <label for="plan">Plan Coverage Days</label>
                                     <input class="form-control" type="number" name="total_days">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">Plan Price / Day (RM)</label>
+                                    <label for="plan">Plan Addt. Day Price (RM) (Per Day)</label>
                                     <input class="form-control" type="number" name="price_per_day">
                                 </div>
                             </div>

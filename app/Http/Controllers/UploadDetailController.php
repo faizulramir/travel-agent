@@ -41,6 +41,7 @@ class UploadDetailController extends Controller
         $spreadsheet = $spreadsheet->getActiveSheet();
         //$spreadsheet = $spreadsheet->getFirstSheetIndex();
         $orders =  $spreadsheet->toArray();
+        //dd($orders);
 
         //remove excel header entry
         unset($orders[0]);
@@ -52,6 +53,8 @@ class UploadDetailController extends Controller
         });
         //print_r($orders);
         //die();
+
+        //dd($orders);
 
         return view('upload.detail', compact('orders'));
     }

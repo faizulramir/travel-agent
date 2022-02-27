@@ -35,11 +35,13 @@
                         <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="3">Price</th>
-                                    <th data-priority="1">Quantity</th>
-                                    <th data-priority="1">Description</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="20%">Name</th>
+                                    <th data-priority="1" width="10%">Price (RM)</th>
+                                    <th data-priority="1" width="15%">Addt. Day Price (RM)</th>
+                                    <th data-priority="1" width="10%">Coverage Days</th>
+                                    <th data-priority="3" width="20%">Description</th>
+                                    <th data-priority="3" width="5%">Quantity</th>
                                     <th data-priority="3">Action</th>
                                 </tr>
                             </thead>
@@ -49,7 +51,10 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $plan->name }}</td>
                                         <td>{{ $plan->price }}</td>
+                                        <td>{{ $plan->price_per_day }}</td>
+                                        <td>{{ $plan->total_days }}</td>
                                         {{-- <td>{{ !empty($orders[$i]) ? array_keys($orders[$i])[0] == $plan->name ? $orders[$i][$plan->name] : 0 : 0 }}</td> --}}
+                                        <td>{{ $plan->description }}</td>
                                         <td>
                                             @foreach ($orders as $i => $order) 
                                                 @if (array_keys($order)[0] == $plan->name) 
@@ -57,7 +62,6 @@
                                                 @endif
                                             @endforeach
                                         </td>
-                                        <td>{{ $plan->description }}</td>
                                         <td>
                                             <a href="{{ route('plan_delete', $plan->id) }}" onclick="return confirm('Do you really want to delete?');" class="waves-effect" style="color: red;">
                                                 <i class="bx bx-trash-alt font-size-20" title="Delete"></i>

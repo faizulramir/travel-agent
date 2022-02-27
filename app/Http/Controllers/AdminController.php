@@ -556,7 +556,7 @@ class AdminController extends Controller
                 
                 foreach ($data_array as $i => $json) {
 
-                    
+                    //dd($json);
                     $order = new Order;
                     $order->name = $json[1];
                     $order->passport_no = $json[2];
@@ -571,28 +571,68 @@ class AdminController extends Controller
                     $order->plan_type = $json[7];
                     $order->email = $json[8];
 
+                    /* -- original
                     try {
                         $order->dep_date = $json[9] ? Carbon::createFromFormat('m/d/Y', $json[9])->format('d-m-Y') : '';
                     } catch (\Throwable $th) {
                         $order->dep_date = $json[9];
                     }
 
-                    try {
+                    try {                      
                         $order->return_date = $json[10] ? Carbon::createFromFormat('m/d/Y', $json[10])->format('d-m-Y') : '';
                     } catch (\Throwable $th) {
                         $order->return_date = $json[10];
                     }
-                    
-                    $order->user_id = $uploads->user_id;
-                    $order->file_id = $uploads->id;
-                    // $order->ecert = $uploads->id;
-                    $order->invoice = $uploads->id;
 
                     try {
                         $order->pcr_date = $json[10] ? Carbon::createFromFormat('m/d/Y', $json[10])->format('d-m-Y') : '';
                     } catch (\Throwable $th) {
                         $order->pcr_date = $json[10];
                     }
+                    */
+
+                    try {
+                        $order->dep_date = $json[9] ? Carbon::createFromFormat('d/m/Y', $json[9])->format('d-m-Y') : '';
+                    } catch (\Throwable $th) {
+                        $order->dep_date = $json[9];
+                    }
+
+                    $tmp_date = ''.$order->dep_date;
+                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $order->dep_date = date('d-m-Y', strtotime($tmp_date));
+
+                    //dd($json, $json[9], $tmp_date, $order->dep_date);
+
+                    try {                      
+                        $order->return_date = $json[10] ? Carbon::createFromFormat('d/m/Y', $json[10])->format('d-m-Y') : '';
+                    } catch (\Throwable $th) {
+                        $order->return_date = $json[10];
+                    }
+
+                    $tmp_date = ''.$order->return_date;
+                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $order->return_date = date('d-m-Y', strtotime($tmp_date));
+
+                    //dd($json, $json[9], $order->dep_date, $json[10], $order->return_date);
+
+                    try {
+                        $order->pcr_date = $json[10] ? Carbon::createFromFormat('d/m/Y', $json[10])->format('d-m-Y') : '';
+                    } catch (\Throwable $th) {
+                        $order->pcr_date = $json[10];
+                    }
+
+                    $tmp_date = ''.$order->pcr_date;
+                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $order->pcr_date = date('d-m-Y', strtotime($tmp_date));
+
+                    //dd($json, $json[9], $order->dep_date, $json[10], $order->return_date, $order->pcr_date);
+
+
+                    
+                    $order->user_id = $uploads->user_id;
+                    $order->file_id = $uploads->id;
+                    // $order->ecert = $uploads->id;
+                    $order->invoice = $uploads->id;
 
                     $order->pcr_result = null;
                     $order->pcr = $json[11];
@@ -818,7 +858,7 @@ class AdminController extends Controller
     }
 
     public function user_add (Request $request) {
-        $roles = Role::whereIn('id', [1, 2, 4, 5])->get();
+        $roles = Role::whereIn('id', [1, 2, 4, 5, 6])->get();
 
         return view('admin.user-add', compact('roles'));
     }
@@ -870,7 +910,7 @@ class AdminController extends Controller
     }
 
     public function user_edit ($id) {
-        $roles = Role::whereIn('id', [1, 2, 4, 5])->get();
+        $roles = Role::whereIn('id', [1, 2, 4, 5, 6])->get();
         $user = DashboardUser::where('id', $id)->first();
 
         return view('admin.user-edit', compact('roles', 'user', 'id'));
