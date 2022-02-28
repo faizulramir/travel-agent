@@ -107,6 +107,12 @@
 
                 @if (auth()->user()->hasAnyRole('mkh'))
                     <li>
+                        <a href="{{ route('excel_list_mkh') }}" class="waves-effect">
+                            <i class="bx bx-file"></i>
+                            <span key="t-ta">EXCEL LIST</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('pcr_excel_list') }}" class="waves-effect">
                             <i class="bx bx-bolt-circle"></i>
                             <span key="t-ta">PCR LIST</span>

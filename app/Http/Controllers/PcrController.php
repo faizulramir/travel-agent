@@ -111,4 +111,41 @@ class PcrController extends Controller
             'Data' => 'Successfully Updated'
         ], 200);
     }
+
+
+    public function excel_list_mkh() {
+        $uploads = FileUpload::whereIn('status', ['5',])->orderBy('submit_date', 'DESC')->orderBy('status', 'DESC')->get();
+
+        //include number of records count
+        $rec_count_arr = array();
+        if ($uploads) {
+            foreach ($uploads as $upload) {
+                //echo "<span style='color:black'>file=".$upload->id."</span><br>";
+                $count = 0;
+                $orders = Order::where([['file_id', '=' ,$upload->id]])->get();
+                if ($orders) {
+                    $count = count($orders);
+                }
+                array_push($rec_count_arr, $count); //prepare costing for each record
+            }
+        }
+        //dd($rec_count_arr);
+
+        return view('pcr.excel-list-mkh', compact('uploads', 'rec_count_arr'));
+    }
+
+    public function excel_detail_mkh($id) {
+
+        $uploads = FileUpload::where('id', $id)->first();
+        $orders = Order::where([['file_id', '=', $uploads->id], ['status', '=', '1']])->get();
+
+        return view('pcr.detail-excel', compact('uploads', 'orders'));
+    }
+
+
+
+
+
+
+
 }

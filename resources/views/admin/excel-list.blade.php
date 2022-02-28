@@ -339,6 +339,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="card-title">Database</div>
+                        <!--
                         <div class="row">
                             <div class="col-md-2">
                                 <label for="search_by">Search By Year</label>
@@ -375,6 +376,7 @@
                             </div>           
                             <div class="col-md-4"></div>                     
                         </div>
+                        -->
                     </div>
                     <br>
                     <div>

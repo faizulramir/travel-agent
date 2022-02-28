@@ -28,7 +28,7 @@ class PaymentController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['role:tra|akc|ag|ind|fin']);
+        $this->middleware(['role:tra|akc|ag|ind|fin|mkh']);
     }
     
     public function payment($id)

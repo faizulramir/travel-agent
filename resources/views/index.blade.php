@@ -419,6 +419,66 @@
         </div>
     --}}
     @endif
+
+    @if (auth()->user()->hasAnyRole('mkh'))
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="row">
+                {{-- <h4 class="card-title mb-4"></h4> --}}
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">&nbsp;</p>
+                                    <h4 class="mb-0">&nbsp;</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">&nbsp;</p>
+                                    <h4 class="mb-0">&nbsp;</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">&nbsp;</p>
+                                    <h4 class="mb-0">&nbsp;</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="text-muted fw-medium">&nbsp;</p>
+                                    <h4 class="mb-0">&nbsp;</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif  
+
 @endsection
 
 @section('script')

@@ -163,6 +163,11 @@ Route::get('/post_return_date/{val}/{id}', [App\Http\Controllers\PcrController::
 Route::post('/post_pcr_doc', [App\Http\Controllers\PcrController::class, 'post_pcr_doc'])->name('post_pcr_doc');
 Route::post('/post_quarantine', [App\Http\Controllers\PcrController::class, 'post_quarantine'])->name('post_quarantine');
 
+Route::get('/excel_list_mkh', [App\Http\Controllers\PcrController::class, 'excel_list_mkh'])->name('excel_list_mkh');
+Route::get('/excel_detail_mkh/{id}', [App\Http\Controllers\PcrController::class, 'excel_detail_mkh'])->name('excel_detail_mkh');
+
+
+
 
 //email
 Route::post('/send_mail/{subject_to_send}/{to_name}/{to_email}/{body}/{title}', [App\Http\Controllers\EmailController::class, 'send_mail'])->name('send_mail');
