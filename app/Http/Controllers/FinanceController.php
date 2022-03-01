@@ -534,12 +534,15 @@ class FinanceController extends Controller
         //dd($uploads->status, $ecertCnt, $orders);
 
         //only generate ECERT number when PAYMENT CONFIRMED
+        
         if ($uploads->status == '4') {
             foreach ($orders as $i => $order) {
-                $order->ecert = 'A'.$year.($ecertCnt->value + 1);
-                $order->save();
-                $ecertCnt->value = $ecertCnt->value + 1;
-                $ecertCnt->save();
+                if ($order->plan_type != null && $order->plan_type != '' && $order->plan_type != 'NO') {
+                    $order->ecert = 'A'.$year.($ecertCnt->value + 1);
+                    $order->save();
+                    $ecertCnt->value = $ecertCnt->value + 1;
+                    $ecertCnt->save();
+                }
             }
         }
 
