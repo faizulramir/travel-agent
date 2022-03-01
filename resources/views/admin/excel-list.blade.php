@@ -938,7 +938,7 @@
                     row$.append($('<td/>').html(cellValue));
                 }
                 */
-                if (jsondata[i][columns[0]] == "") {}
+                if (jsondata[i][columns[0]] == "" || jsondata[i][columns[0]] == "NO") {}
                 else {
                     for (var colIndex = 0; colIndex < 13; colIndex++) {
                         if (colIndex!=4 && colIndex!=5 && colIndex!=6 && colIndex!=8) {
