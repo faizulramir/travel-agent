@@ -522,7 +522,7 @@ class FinanceController extends Controller
         //------------------------------------------
         $uploads = FileUpload::where('id', $id)->first();
         $user = DashboardUser::where('id', $uploads->user_id)->first();
-        $orders = Order::where('file_id', $uploads->id)->get();
+        $orders = Order::where([['file_id', '=', $uploads->id], ['status', '=', '1']])->get();
         $ecertCnt = EcertCnt::where('id', 1)->first();
 
         $dt = Carbon::now();
