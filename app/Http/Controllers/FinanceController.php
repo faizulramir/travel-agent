@@ -522,7 +522,7 @@ class FinanceController extends Controller
         //------------------------------------------
         $uploads = FileUpload::where('id', $id)->first();
         $user = DashboardUser::where('id', $uploads->user_id)->first();
-        $orders = Order::where([['file_id', '=', $uploads->id], ['status', '=', '1']])->get();
+        $orders = Order::where('file_id', $uploads->id)->get();
         $ecertCnt = EcertCnt::where('id', 1)->first();
 
         $dt = Carbon::now();
@@ -534,12 +534,15 @@ class FinanceController extends Controller
         //dd($uploads->status, $ecertCnt, $orders);
 
         //only generate ECERT number when PAYMENT CONFIRMED
+        
         if ($uploads->status == '4') {
             foreach ($orders as $i => $order) {
-                $order->ecert = 'A'.$year.($ecertCnt->value + 1);
-                $order->save();
-                $ecertCnt->value = $ecertCnt->value + 1;
-                $ecertCnt->save();
+                if ($order->plan_type != null && $order->plan_type != '' && $order->plan_type != 'NO') {
+                    $order->ecert = 'A'.$year.($ecertCnt->value + 1);
+                    $order->save();
+                    $ecertCnt->value = $ecertCnt->value + 1;
+                    $ecertCnt->save();
+                }
             }
         }
 
