@@ -13,7 +13,7 @@ class Order extends Model
      * @var string
      */
     protected $table = 'orders';
-    protected $no_upper = ['dob',  'claim_json'];
+    protected $no_upper = ['dob',  'claim_json', 'pcr_file_name'];
 
     public function upload()
     {
