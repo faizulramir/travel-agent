@@ -26,6 +26,14 @@
                 <i class="fa fa-fw fa-bars"></i>
             </button>
 
+
+            
+            <!--
+            <span style="color:red;font-size:0.95rem;"><br><b>TESTING  ENVIRONMENT</b></span>
+            -->
+
+
+
            <!-- App Search-->
            {{-- <form class="app-search d-none d-lg-block">
             <div class="position-relative">

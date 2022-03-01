@@ -289,7 +289,7 @@
                                                 <i class="bx bxs-cloud-download font-size-24" title="Download Original Excel"></i>
                                             </a>
 
-                                            @if($upload->status != '0' && $upload->status != '2')
+                                            @if($upload->status != '0' && $upload->status != '99')
                                                 <a href="#" class="waves-effect" style="color: black;">
                                                     <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
                                                 </a>
