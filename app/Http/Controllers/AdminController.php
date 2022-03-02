@@ -449,9 +449,24 @@ class AdminController extends Controller
 
         $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
         $inputFileName = $url;
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($url);
-        $spreadsheet = $spreadsheet->getActiveSheet();
-        $data_array =  $spreadsheet->toArray();
+
+        // $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($url);
+        // $spreadsheet = $spreadsheet->getActiveSheet();
+        // $data_array =  $spreadsheet->toArray();
+
+        //create spreadsheet data reader
+        $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+        // Create the reader object
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+        // Instruct the reader to just read cell data
+        $reader->setReadDataOnly(true);
+        // Load the file to read
+        $spreadsheet = $reader->load($inputFileName);
+        // Get the active sheet
+        $ssheet = $spreadsheet->getActiveSheet();
+        //dd($ssheet);
+        //convert to php data array
+        $data_array = $ssheet->toArray();
 
         unset($data_array[0]);
 
@@ -500,6 +515,12 @@ class AdminController extends Controller
         //     $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
         //     $orders->save();
         // }
+
+
+
+
+
+
         return response()->json([
             'isSuccess' => true,
             'Data' => 'Successfully Uploaded!'

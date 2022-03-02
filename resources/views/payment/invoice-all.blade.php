@@ -159,9 +159,9 @@
         <p>Company Name : Al Khairi Care Sdn Bhd <br> Account No : 1225 8001 3002 150 <br> Bank : Alliance Bank </p>
         <p>Should payment has already been made, the slip payment MUST be email to
             finance.alkhairicare@gmail.com or directly sent to our officer.</p>
-        <p>IMPORTANT <br> We do NOT ACCEPT CASH PAYMENT, and any POST DATED CHEQUE. For any Dishonoured
+        <p>IMPORTANT <br> We do NOT ACCEPT CASH PAYMENT, and any POST DATED CHEQUE. For any Dishonoured <br>
             Cheques, RM100.00 will be charged. </p>
-        <p>CANCELLATION <br> Any cancellation for Al Khairi Care Plan or Travel Personal Accident will be charge penalty of RM10.00
+        <p>CANCELLATION <br> Any cancellation for Al Khairi Care Plan or Travel Personal Accident will be charge penalty of RM10.00 <br>
             per pax.</p>
         <pre></pre>
     </body>

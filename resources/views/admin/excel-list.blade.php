@@ -55,7 +55,7 @@
                                                         <tr>
                                                             <th>#</th>
                                                             <th data-priority="1">Name</th>
-                                                            <th data-priority="3">Passport No</th>
+                                                            <th data-priority="1">Passport No</th>
                                                             <th data-priority="1">IC No</th>
                                                             <th data-priority="1">E-Care</th>
                                                             <th data-priority="1">DEP Date</th>

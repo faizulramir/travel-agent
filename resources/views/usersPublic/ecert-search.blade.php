@@ -6,6 +6,17 @@
     <!-- Responsive Table css -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('/assets/libs/rwd-table/rwd-table.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <style>
+        .akc_lady {
+            display: block !important;
+        }
+        @media (max-width: 600px) {
+            .akc_lady {
+                display: none !important;
+            }
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -18,8 +29,8 @@
                         <div class="col-md-4"></div>
                         <div class="col-md-4" style="background-color:#d4daf9;">
                             <div style="height:200px;width:100%;">
-                                <div style="float:left;">
-                                    <img src="{{ URL::asset('/assets/images/wanita2.png') }}" height="200" alt="" class="auth-logo-dark" style="padding:10px;">
+                                <div style="float:left;" class="akc_lady">
+                                    <img src="{{ URL::asset('/assets/images/wanita2.png') }}" height="160" alt="" class="auth-logo-dark" style="margin-top:20px;padding:10px;">
                                 </div>
                                 <div style="float:left;">
                                     <br><br>
