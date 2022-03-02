@@ -22,7 +22,8 @@
                 <div class="card-body">
                     <div class="row">
                         @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif

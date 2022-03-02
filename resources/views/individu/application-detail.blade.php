@@ -43,7 +43,8 @@
                 <div class="card-body">
                     <div class="row">
                         @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
@@ -220,7 +221,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p id="getall_result1">Total ECert to download:</p>
-                            <p id="getall_result2"></p>
+                            <div id="getall_result2" style="display:flex; flex-wrap:wrap;"></div>
                         </div>
                     </div>
                 </div>
@@ -256,7 +257,7 @@
                                     console.log("Page: ", page.page, " - Range: ", page.range, " - Page: ", page.page);
                                     dataHtml1 = "<p>Total ECert to download: <b>" + page.total + "</b></p>";
                                     let click = "downloadall_ecert_page(" + page.id + ", " + page.page + ")";
-                                    dataHtml2 = dataHtml2 + '&nbsp; <a target="_blank" class="btn btn-success" href="/ecert_getall_page/' +page.id+ '/' +page.page+ '" type="submit"> Download ECert ('+ page.range +')</a> &nbsp;';
+                                    dataHtml2 = dataHtml2 + '&nbsp; <a target="_blank" class="btn btn-success" href="/ecert_getall_page/' +page.id+ '/' +page.page+ '" type="submit" style="width:130px;margin:5px;"> Download ECert ('+ page.range +')</a> &nbsp;';
                                 });
                             }
                             $('#getall_result1').html(dataHtml1);

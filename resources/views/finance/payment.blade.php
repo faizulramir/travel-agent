@@ -191,7 +191,11 @@
                                     <label class="form-check-label" for="agreementPay" style="color:red;">
                                         &nbsp;&nbsp;Payment telah disemak dan amaun adalah betul 
                                     </label>
-                                    <br>
+                                    
+                                    @if ($uploads->status == '4')
+                                    <br><br>
+                                    <p><b>Payment status was updated on {{ $pay->created_at }}</b></p>
+                                    @endif
 
                                     <br>
                                     {{-- <input type="hidden" value="{{ $id }}" name="id"> --}}

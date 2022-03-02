@@ -129,7 +129,8 @@
                 <div class="card-body">
                     <div class="row">
                         @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
@@ -175,14 +176,14 @@
                             <thead>
                                 <tr>
                                 <th data-priority="0" width="5%">#</th>
-                                <th data-priority="3" width="10%">Requester</th>
-                                <th data-priority="1" width="10%">Filename</th>
-                                <th data-priority="3" width="5%">Jemaah</th>
+                                <th data-priority="1" width="15%">Requester</th>
+                                <th data-priority="1" width="15%">Filename</th>
+                                <th data-priority="1" width="5%">Jemaah</th>
                                 <th data-priority="1" width="10%">Submission</th>
-                                <th data-priority="3" width="10%">Supp. Docs</th>
+                                <th data-priority="1" width="10%">Supp. Docs</th>
                                 <th data-priority="1" width="10%">Payment</th>
-                                <th data-priority="1">Status</th>
-                                <th data-priority="3">Action</th>
+                                <th data-priority="1" width="10%">Status</th>
+                                <th data-priority="3" width="15%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -208,29 +209,29 @@
 
                                         <td>
                                             @if ($upload->supp_doc == null)
-                                                <span>Not Uploaded</span>
+                                                Not Uploaded
                                             @else
-                                                <span>UPLOADED</span>
+                                                UPLOADED
                                             @endif
                                         </td>
                                         <td>
                                             @if($upload->status == '3')
-                                                <p>INVOICE READY</p>
+                                                INVOICE READY
                                             @elseif($upload->status == '4' || $upload->status == '5')
-                                                <p>PAID</p>
+                                                PAID
                                             @else 
-                                                <p>-</p>
+                                                -
                                             @endif
                                         </td>
                                         <td>
                                             @if ($upload->status == '0' || $upload->status == '2')
                                                 Pending AKC Approval
                                             @elseif ($upload->status == '2.1')
-                                                <p>Pending AKC (Invoice) </p>
+                                                Pending AKC Invoice
                                             @elseif ($upload->status == '2.2')
-                                                <p>Rejected Invoice</p>
+                                                Rejected Invoice
                                             @elseif ($upload->status == '2.3')
-                                                <p>Cancelled Invoice</p>
+                                                Cancelled Invoice
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
@@ -320,11 +321,11 @@
                             <tfoot>
                                 <tr>
                                 <th data-priority="0"></th>
-                                <th data-priority="3"></th>
                                 <th data-priority="1"></th>
-                                <th data-priority="3"></th>
                                 <th data-priority="1"></th>
-                                <th data-priority="3"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="1"></th>
                                 <th data-priority="1"></th>
                                 <th data-priority="1"></th>
                                 <th data-priority="3"></th>
@@ -389,14 +390,14 @@
                             <thead>
                                 <tr>
                                 <th data-priority="0" width="5%">#</th>
-                                <th data-priority="3" width="10%">Requester</th>
-                                <th data-priority="1" width="10%">Filename</th>
-                                <th data-priority="3" width="5%">Jemaah</th>
+                                <th data-priority="1" width="15%">Requester</th>
+                                <th data-priority="1" width="15%">Filename</th>
+                                <th data-priority="1" width="5%">Jemaah</th>
                                 <th data-priority="1" width="10%">Submission</th>
-                                <th data-priority="3" width="10%">Supp. Docs</th>
+                                <th data-priority="1" width="10%">Supp. Docs</th>
                                 <th data-priority="1" width="10%">Payment</th>
-                                <th data-priority="1">Status</th>
-                                <th data-priority="3">Action</th>
+                                <th data-priority="1" width="10%">Status</th>
+                                <th data-priority="3" width="15%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -422,29 +423,29 @@
 
                                         <td>
                                             @if ($upload->supp_doc == null)
-                                                <span>Not Uploaded</span>
+                                                Not Uploaded
                                             @else
-                                                <span>UPLOADED</span>
+                                                UPLOADED
                                             @endif
                                         </td>
                                         <td>
                                             @if($upload->status == '3')
-                                                <p>INVOICE READY</p>
+                                                INVOICE READY
                                             @elseif($upload->status == '4' || $upload->status == '5')
-                                                <p>PAID</p>
+                                                PAID
                                             @else 
-                                                <p>-</p>
+                                                -
                                             @endif
                                         </td>
                                         <td>
                                             @if ($upload->status == '0' || $upload->status == '2')
                                                 Pending AKC Approval
                                             @elseif ($upload->status == '2.1')
-                                                <p>Pending AKC (Invoice) </p>
+                                                Pending AKC (Invoice)
                                             @elseif ($upload->status == '2.2')
-                                                <p>Rejected Invoice</p>
+                                                Rejected Invoice
                                             @elseif ($upload->status == '2.3')
-                                                <p>Cancelled Invoice</p>
+                                                Cancelled Invoice
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
@@ -534,11 +535,11 @@
                             <tfoot>
                                 <tr>
                                 <th data-priority="0"></th>
-                                <th data-priority="3"></th>
                                 <th data-priority="1"></th>
-                                <th data-priority="3"></th>
                                 <th data-priority="1"></th>
-                                <th data-priority="3"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="1"></th>
                                 <th data-priority="1"></th>
                                 <th data-priority="1"></th>
                                 <th data-priority="3"></th>

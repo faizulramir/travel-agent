@@ -204,8 +204,6 @@ class AgentController extends Controller
             return $value[0]!=null && $value[0]!='';
         });
         //dd($orders);
-        //print_r($orders);
-        //die();
 
         //date checking errors
         $error_sts = false;
@@ -282,6 +280,7 @@ class AgentController extends Controller
         }
         */
 
+        //validates excel data
         if ($orders) {
             foreach ($orders as $i => $order) {
                 //dep date
@@ -357,7 +356,7 @@ class AgentController extends Controller
                     }
                     else {
                         $error_sts = true;
-                        $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Approve Process Failed! 3';
+                        $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed! 3';
                     }
                     //dd("catch", $ccheck_date, $tmp_date, $explode, $error_sts, $error_msg);
                 }   

@@ -31,7 +31,8 @@
                 <div class="card-body">
                     <div class="row">
                         @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
@@ -85,35 +86,35 @@
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
                                         <td>
                                             @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
-                                                <span>-</span>
+                                                -
                                             @else 
                                                 @if ($upload->supp_doc == null)
-                                                    <span>Not Uploaded</span>
+                                                    Not Uploaded
                                                 @else
-                                                    <span>UPLOADED</span>
+                                                    UPLOADED
                                                 @endif
                                             @endif
                                         </td>
                                         <td>
                                             @if($upload->status == '3')
-                                                <p>INVOICE READY</p>
+                                                INVOICE READY
                                             @elseif($upload->status == '4' || $upload->status == '5')
-                                                <p>PAID</p>
+                                                PAID
                                             @else 
-                                                <p>-</p>
+                                                -
                                             @endif
                                         </td>
                                         <td>
                                             @if ($upload->status == '0')
                                                 Pending Submission
                                             @elseif ($upload->status == '2')
-                                                <p>Pending AKC (Approval)</p>
+                                                Pending AKC (Approval)
                                             @elseif ($upload->status == '2.1' || $upload->status == '2.2' || $upload->status == '2.3')
-                                                <p>Pending AKC (Invoice)</p>
+                                                Pending AKC (Invoice)
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
-                                                <p>Pending AKC (Payment) Endorsement</p>
+                                                Pending AKC (Payment) Endorsement
                                             @elseif ($upload->status == '5')
                                                 COMPLETED
                                             @elseif ($upload->status == '99')
@@ -717,10 +718,7 @@
                 $('#payreceiptdownload').html('');
                 $('#showSuppDoc').modal('show');
             }
-            
         }
-
-
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

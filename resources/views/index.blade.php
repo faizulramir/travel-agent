@@ -38,7 +38,7 @@
                             <div class="media">
                                 <div class="media-body">
                                     <p class="text-muted fw-medium">Pending Supporting Documents</p>
-                                    <h4 class="mb-0">{{ $cust_pen_doc }}</h4>
+                                    <h4 class="mb-0" style="color:orange;">{{ $cust_pen_doc }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                             <div class="media">
                                 <div class="media-body">
                                     <p class="text-muted fw-medium">Pending Payment</p>
-                                    <h4 class="mb-0">{{ $cust_pen_pay }}</h4>
+                                    <h4 class="mb-0" style="color:orange;">{{ $cust_pen_pay }}</h4>
                                 </div>
                             </div>
                         </div>

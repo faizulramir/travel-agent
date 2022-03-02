@@ -43,7 +43,8 @@
                 <div class="card-body">
                     <div class="row">
                         @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
@@ -57,7 +58,8 @@
                                 <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
                             </a>
                         </div>
-                        <div class="col-md-3 text-right">
+                        <div class="col-md-3 text-left">
+                            <h6>Travel Agent: {{ $uploads->ta_name? strtoupper($uploads->ta_name) : $uploads->ta_name }}</h6>
                             <h6>Filename: {{ $uploads->file_name? strtoupper($uploads->file_name) : $uploads->file_name }}</h6>
                             <h6>Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc == null ||  $uploads->supp_doc == '' ? 'Not Uploaded' : 'UPLOADED' :  'Not Uploaded' }}</h6>
                             <h6>Payment: {{ $payment ? 'PAID' : '-' }}</h6>
@@ -80,19 +82,19 @@
                         <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th data-priority="0">#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="1">Passport No</th>
-                                    <th data-priority="3">IC No</th>
-                                    <th data-priority="1">DEP Date</th>
-                                    <th data-priority="3">RTN Date</th>                                    
-                                    <th data-priority="1">ECare Plan</th>
-                                    <th data-priority="3">PCR</th>
-                                    <th data-priority="3">TPA</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="15%">Name</th>
+                                    <th data-priority="1" width="8%">Passport No</th>
+                                    <th data-priority="1" width="8%">IC No</th>
+                                    <th data-priority="1" width="8%">DEP Date</th>
+                                    <th data-priority="1" width="8%">RTN Date</th>                                    
+                                    <th data-priority="1" width="8%">ECare Plan</th>
+                                    <th data-priority="1" width="5%">PCR</th>
+                                    <th data-priority="1" width="10%">TPA</th>
                                     @if ($uploads->status === '5')
-                                        <th data-priority="1">ECert</th>
+                                        <th data-priority="1" width="5%">ECert</th>
                                     @endif                                    
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="3" width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,27 +119,30 @@
                                             </td>
                                         @endif
                                         <td>
-                                            @if (!$payment && $order->upload->status != '99')
-                                                {{--
-                                                @if ($order->status == '1')
-                                                    <a href="{{ route('update_detail_ta', [$order->id, '0'])}}" onclick="return confirm('Confirm to CANCEL Traveller?');" class="waves-effect" style="color: red;">
-                                                        <i class="bx bx-trash-alt font-size-24" title="Cancel Traveller"></i>
+                                            @if ($order->upload->status != '99')
+                                                @if ($order->status == '0')
+                                                    <a href="#" class="waves-effect" style="color: red;">
+                                                        <i class="bx bx-dislike font-size-24" title="Traveller: CANCELLED"></i>
                                                     </a>
-                                                @else
-                                                    <a href="{{ route('update_detail_ta', [$order->id, '1'])}}" onclick="return confirm('Confirm to ENABLE Traveller?');" class="waves-effect" style="color: green;">
-                                                        <i class="bx bx-paper-plane font-size-24" title="Enable Traveller"></i>
+                                                    @elseif ($order->status == '1')
+                                                    <a href="#" class="waves-effect" style="color: green;">
+                                                        <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
+                                                    </a>
+                                                @elseif ($order->status == '2')
+                                                    <a href="#" class="waves-effect" style="color: red;">
+                                                        <i class="bx bxs-plane-alt font-size-24" title="Traveller: UNBOARDING"></i>
+                                                    </a>
+                                                @elseif ($order->status == '3')
+                                                    <a href="#" class="waves-effect" style="color: blue;">
+                                                        <i class="bx bx-time-five font-size-24" title="Traveller: RESCHEDULE"></i>
                                                     </a>
                                                 @endif
-                                                --}}
-                                            @endif
-                                            @if ($order->status == '1' && $payment && $order->upload->status == '5')
-                                                {{-- <a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: black;" target="_blank">
-                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
-                                                </a> --}}
-                                                @if ($order->plan_type != 'NO')
-                                                    <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
-                                                    </a>
+                                                @if ($payment && $order->upload->status == '5')
+                                                    @if ($order->plan_type != 'NO' && $order->status == '1')
+                                                        <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
+                                                            <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
+                                                        </a>
+                                                    @endif                                                
                                                 @endif
                                             @endif
                                         </td>
@@ -220,7 +225,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p id="getall_result1">Total ECert to download:</p>
-                            <p id="getall_result2"></p>
+                            <div id="getall_result2" style="display:flex; flex-wrap:wrap;"></div>
                         </div>
                     </div>
                 </div>
@@ -253,10 +258,10 @@
                             let dataHtml2 = '';
                             if (pages && pages.length > 0) {
                                 pages.forEach(page => {
-                                    console.log("Page: ", page.page, " - Range: ", page.range, " - Page: ", page.page);
+                                    //console.log("Page: ", page.page, " - Range: ", page.range, " - Page: ", page.page);
                                     dataHtml1 = "<p>Total ECert to download: <b>" + page.total + "</b></p>";
                                     let click = "downloadall_ecert_page(" + page.id + ", " + page.page + ")";
-                                    dataHtml2 = dataHtml2 + '&nbsp; <a target="_blank" class="btn btn-success" href="/ecert_getall_page/' +page.id+ '/' +page.page+ '" type="submit"> Download ECert ('+ page.range +')</a> &nbsp;';
+                                    dataHtml2 = dataHtml2 + '&nbsp; <a target="_blank" class="btn btn-success" href="/ecert_getall_page/' +page.id+ '/' +page.page+ '" type="submit" style="width:130px;margin:5px;"> Download ECert ('+ page.range +')</a> &nbsp;';
                                 });
                             }
                             $('#getall_result1').html(dataHtml1);

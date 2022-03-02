@@ -41,11 +41,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    @if (Session::has('success'))
-                        <div class="alert alert-success text-center">
-                            <p>{{ Session::get('success') }}</p>
-                        </div>
-                    @endif
+                        @if (Session::has('success'))
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <p>{{ Session::get('success') }}</p>
+                            </div>
+                        @endif
 
                     <div class="row">
                         <div class="col-md-3" style="text-align: left;">
@@ -70,18 +71,18 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="20%">Name</th>
+                                    <th data-priority="1" width="15%">Name</th>
                                     <th data-priority="1" width="8%">Passport No</th>
                                     <th data-priority="1" width="8%">IC No</th>
                                     <th data-priority="1" width="8%">DEP Date</th>
                                     <th data-priority="1" width="8%">RTN Date</th>
-                                    <th data-priority="1" width="8%">Plan</th>
+                                    <th data-priority="1" width="8%">ECare Plan</th>
                                     <th data-priority="1" width="5%">PCR</th>
                                     <th data-priority="1" width="10%">TPA</th>
                                     @if ($uploads->status === '5')
                                         <th data-priority="1" width="8%">ECert</th>
                                     @endif                                          
-                                    <th data-priority="3" width="10%">Status</th>
+                                    <th data-priority="3" width="8%">Status</th>
                                 </tr>
                             </thead>
                             <tbody>

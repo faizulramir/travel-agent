@@ -7,13 +7,10 @@
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('/assets/libs/rwd-table/rwd-table.min.css') }}" rel="stylesheet" type="text/css" />
 
-
     <style>
-
         .action_icon {
             font-size: 1.55rem;
         }
-
     </style>
 
 @endsection
@@ -31,7 +28,8 @@
                 <div class="card-body">
                     <div class="row">
                         @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
@@ -53,21 +51,21 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="25%">Filename</th>
-                                    <th data-priority="3" width="5%">Jemaah</th>
-                                    <th data-priority="3" width="10%">Upload Date</th>
+                                    <th data-priority="1" width="20%">Filename</th>
+                                    <th data-priority="1" width="5%">Jemaah</th>
+                                    <th data-priority="1" width="10%">Upload Date</th>
                                     <th data-priority="1" width="10%">Submission</th>
-                                    <th data-priority="3" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Supp. Docs</th>
                                     <th data-priority="1" width="10%">Payment</th>
                                     <th data-priority="1" width="15%">Status</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="3" width="10%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($uploads as $i => $upload)
                                     <tr>
                                         <td>{{ $i+ 1 }}</td>
-                                        <td>{{ $upload->file_name }}</td>
+                                        <td>{{ $upload->file_name }} ({{ $upload->id }})</td>
                                         <td>
                                             @php
                                             $jemaah = count(\App\Models\Order::where([['file_id', $upload->id]])->get());
@@ -80,35 +78,35 @@
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
                                         <td>
                                             @if($upload->status == '0' || $upload->status == '1' || $upload->status == '99')
-                                                <span>-</span>
+                                                -
                                             @else 
                                                 @if ($upload->supp_doc == null)
-                                                    <span>Not Uploaded</span>
+                                                    Not Uploaded
                                                 @else
-                                                    <span>UPLOADED</span>
+                                                    UPLOADED
                                                 @endif
                                             @endif
                                         </td>
                                         <td>
                                             @if($upload->status == '3')
-                                                <p>INVOICE READY</p>
+                                                INVOICE READY
                                             @elseif($upload->status == '4' || $upload->status == '5')
-                                                <p>PAID</p>
+                                                PAID
                                             @else 
-                                                <p>-</p>
+                                                -
                                             @endif
                                         </td>
                                         <td>
                                             @if ($upload->status == '0')
                                                 Pending Submission
                                             @elseif ($upload->status == '2')
-                                                <p>Pending AKC (Approval)</p>
+                                                Pending AKC (Approval)
                                             @elseif ($upload->status == '2.1' || $upload->status == '2.2' || $upload->status == '2.3')
-                                                <p>Pending AKC (Invoice)</p>
+                                                Pending AKC (Invoice)
                                             @elseif ($upload->status == '3')
                                                 Pending Payment
                                             @elseif ($upload->status == '4')
-                                                <p>Pending AKC (Payment) Endorsement</p>
+                                                Pending AKC (Payment) Endorsement
                                             @elseif ($upload->status == '5')
                                                 COMPLETED
                                             @elseif ($upload->status == '99')

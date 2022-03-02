@@ -196,7 +196,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p id="getall_result1">Total ECert to download:</p>
-                            <p id="getall_result2"></p>
+                            <div id="getall_result2" style="display:flex; flex-wrap:wrap;"></div>
                         </div>
                     </div>
                 </div>

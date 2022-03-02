@@ -22,7 +22,8 @@
                 <div class="card-body">
                     <div class="row">
                         @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
@@ -61,7 +62,7 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="20%">Name</th>
+                                    <th data-priority="1" width="15%">Name</th>
                                     <th data-priority="1" width="8%">Passport No</th>
                                     <th data-priority="1" width="8%">IC No</th>
                                     <th data-priority="1" width="8%">DEP Date</th>
@@ -70,9 +71,9 @@
                                     <th data-priority="1" width="5%">PCR</th>
                                     <th data-priority="1" width="10%">TPA</th>
                                     @if ($uploads->status === '5')
-                                        <th data-priority="1" width="10%">ECert</th>
+                                        <th data-priority="1" width="5%">ECert</th>
                                     @endif                                    
-                                    <th data-priority="3" width="10%">Action</th>
+                                    <th data-priority="3" width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -203,7 +204,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p id="getall_result1">Total ECert to download:</p>
-                            <p id="getall_result2"></p>
+                            <div id="getall_result2" style="display:flex; flex-wrap:wrap;"></div>
                         </div>
                     </div>
                 </div>
@@ -239,7 +240,7 @@
                                     console.log("Page: ", page.page, " - Range: ", page.range, " - Page: ", page.page);
                                     dataHtml1 = "<p>Total ECert to download: <b>" + page.total + "</b></p>";
                                     let click = "downloadall_ecert_page(" + page.id + ", " + page.page + ")";
-                                    dataHtml2 = dataHtml2 + '&nbsp; <a target="_blank" class="btn btn-success" href="/ecert_getall_page/' +page.id+ '/' +page.page+ '" type="submit"> Download ECert ('+ page.range +')</a> &nbsp;';
+                                    dataHtml2 = dataHtml2 + '&nbsp; <a target="_blank" class="btn btn-success" href="/ecert_getall_page/' +page.id+ '/' +page.page+ '" type="submit" style="width:130px;margin:5px;"> Download ECert ('+ page.range +')</a> &nbsp;';
                                 });
                             }
                             $('#getall_result1').html(dataHtml1);

@@ -31,7 +31,8 @@ class TravelAgentController extends Controller
     public function excel_list()
     {
         //$uploads = FileUpload::where('user_id', Auth::id())->get();
-        $uploads = FileUpload::where('user_id', Auth::id())->orderBy('upload_date', 'DESC')->orderBy('status', 'ASC')->get();
+        //$uploads = FileUpload::where('user_id', Auth::id())->orderBy('upload_date', 'DESC')->orderBy('status', 'ASC')->get();
+        $uploads = FileUpload::where('user_id', Auth::id())->orderBy('status', 'ASC')->orderBy('submit_date', 'DESC')->get();
 
         return view('travel-agent.excel-list', compact('uploads'));
     }
@@ -185,16 +186,139 @@ class TravelAgentController extends Controller
     public function submit_post_ta(Request $request)
     {
         $dt = Carbon::now();
-
         $uploads = FileUpload::where('id', request()->post('id'))->first();
+
+        //get excel file
+        $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
+        $inputFileName = $url;
+
+        //create spreadsheet data reader
+        $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+        // Create the reader object
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+        // Instruct the reader to just read cell data
+        $reader->setReadDataOnly(true);
+        // Load the file to read
+        $spreadsheet = $reader->load($inputFileName);
+        // Get the active sheet
+        $ssheet = $spreadsheet->getActiveSheet();
+        //dd($ssheet);
+        //convert to php data array
+        $orders = $ssheet->toArray();
+
+        //remove excel header entry
+        unset($orders[0]);
+        unset($orders[9]);
+        //filter only available entry - checking row number availability
+        $orders = \Arr::where($orders, function ($value, $key) {
+            return $value[0]!=null && $value[0]!='';
+        });
+        //dd($orders);
+
+        //date checking errors
+        $error_sts = false;
+        $error_msg = '';
+
+        //validates excel data
+        if ($orders) {
+            foreach ($orders as $i => $order) {
+                //dep date
+                try {
+                    $check_date = ''.date('d-m-Y',\PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($order[9]));
+                    //dd("try9", $check_date);
+                } catch (\Throwable $th) {
+                    $check_date = $order[9];
+                    //dd("catch9", $order[9]);
+
+                    $tmp_date = $order[9];
+                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $explode = explode('-', $tmp_date);
+
+                    if (count($explode)==3) {
+                        if ((int)$explode[1]>0 && (int)$explode[1]<13 && (int)$explode[2]>2000) {
+                            $tmp_date = ''. (int)$explode[0] .'-'. (int)$explode[1] .'-'. (int)$explode[2];
+                            //dd($tmp_date);
+                            $new_date = Carbon::createFromFormat('d-m-Y',  $tmp_date)->format('d-m-Y');
+                            $new_date = strtotime($new_date);
+
+                            if ($new_date<0) {
+                                $error_sts = true;
+                                $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed!';
+                            }
+                            else {
+                                $check_date = date('d-m-Y', $new_date);
+                            }
+                        }
+                        else {
+                            $error_sts = true;
+                            $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed!';
+                        }
+                    }
+                    else {
+                        $error_sts = true;
+                        $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed!';
+                    }
+                    //dd("catch9", $check_date, $tmp_date, $explode, $error_sts, $error_msg);
+                }
+
+                //rtn date
+                try {
+                    $check_date = ''.date('d-m-Y',\PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($order[10]));
+                    //dd("try10", $check_date);
+                } catch (\Throwable $th) {
+                    $check_date = $order[10];
+                    //dd("catch10", $order[10]);
+
+                    $tmp_date = $order[10];
+                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $explode = explode('-', $tmp_date);
+
+                    if (count($explode)==3) {
+                        if ((int)$explode[1]>0 && (int)$explode[1]<13 && (int)$explode[2]>2000) {
+                            $tmp_date = ''. (int)$explode[0] .'-'. (int)$explode[1] .'-'. (int)$explode[2];
+                            //dd($tmp_date);
+                            $new_date = Carbon::createFromFormat('d-m-Y',  $tmp_date)->format('d-m-Y');
+                            $new_date = strtotime($new_date);
+
+                            if ($new_date<0) {
+                                $error_sts = true;
+                                $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed! 1';
+                            }
+                            else {
+                                $check_date = date('d-m-Y', $new_date);
+                            }
+                        }
+                        else {
+                            $error_sts = true;
+                            $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed! 2';
+                        }
+                    }
+                    else {
+                        $error_sts = true;
+                        $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed! 3';
+                    }
+                    //dd("catch10", $check_date, $tmp_date, $explode, $error_sts, $error_msg);
+                }   
+            }
+        }  
+        
+        //if error, stop and abort
+        if ($error_sts) {
+            Session::flash('error', $error_msg);
+            return response()->json([
+                'isSuccess' => false,
+                'Data' => $error_msg,
+            ], 200); // Status code here
+        }
+
         $uploads->status = '2';
-        //$uploads->submit_date = $dt->toDateString();
         $uploads->submit_date = $dt->toDateTimeString();
         $uploads->save();
         
+        Session::flash('success', 'Excel Successfully Submitted.');
         return response()->json([
             'isSuccess' => true,
-            'Data' => 'Successfully Submitted!'
+            'Data' => 'Excel Successfully Submitted!'
         ], 200); // Status code here
     }
 
