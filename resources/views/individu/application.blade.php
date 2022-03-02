@@ -32,13 +32,13 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label class="form-label">Passport Number</label>
-                                    <input class="form-control" type="text" name="passport_no" placeholder="Enter Passport Number">
+                                    <input class="form-control" type="text" name="passport_no" placeholder="Enter Passport Number" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label class="form-label">IC Number</label>
-                                    <input class="form-control" type="text" name="ic_no" placeholder="Enter IC No">
+                                    <input class="form-control" type="text" name="ic_no" placeholder="Enter IC No" required>
                                 </div>
                             </div>
                         </div>
@@ -47,16 +47,13 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label class="form-label">Ex Illness</label>
-                                    <select id="plan" name="ex_ill" class="form-control select2-search-disable" required>
-                                        <option value="NONE" selected>NONE</option>
-                                        <option value="YES">YES</option>
-                                    </select>
+                                    <input class="form-control" type="text" name="ex_ill" placeholder="Enter Ex Illness" value="NONE" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label class="form-label">Phone Number</label>
-                                    <input class="form-control" type="text" name="phone_no" placeholder="Enter Phone No">
+                                    <input class="form-control" type="text" name="phone_no" placeholder="Enter Phone No" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -77,13 +74,13 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="dep_date">Departure Date</label>
-                                    <input class="form-control" type="date" name="dep_date" min="{{ $min_date }}">
+                                    <input class="form-control" type="date" name="dep_date" min="{{ $min_date }}" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label for="return_date">Return Date</label>
-                                    <input class="form-control" type="date" name="return_date">
+                                    <input class="form-control" type="date" name="return_date" required>
                                 </div>
                             </div>
                         </div>
@@ -101,16 +98,34 @@
                             </div>
                             <div class="col-lg-4">
                                 <div>
+                                    <label class="form-label">TPA</label>
+                                    <select id="tpa" name="tpa" class="form-control select2-search-disable" required>
+                                        <option value="NO" selected>NO</option>
+                                        @foreach($tpas as $tpa)
+                                            <option value="{{ $tpa->id }}">{{ $tpa->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- <div class="col-lg-4">
+                                <div>
                                     <label class="form-label">Additional Days</label>
                                     <input class="form-control" type="number" name="add_days" placeholder="Enter Additional Days">
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-4">
+                                <label class="form-label">PCR</label>
+                                <select id="pcr" name="pcr" class="form-control select2-search-disable" required>
+                                    <option value="NO" selected>NO</option>
+                                    <option value="YES">YES</option>
+                                </select>
+                            </div>
+                            {{-- <div class="col-lg-4">
                                 <div>
                                     <label class="form-label">Travel Agent Name</label>
                                     <input class="form-control" type="text" name="travel_agent" placeholder="Enter Travel Agent Name">
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <br>
                         <div class="row">
@@ -126,19 +141,19 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label class="form-label">Passport</label>
-                                    <input class="form-control" type="file" name="passport_file" accept="application/pdf">
+                                    <input class="form-control" type="file" name="passport_file" accept="application/pdf" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label class="form-label">E-Visa</label>
-                                    <input class="form-control" type="file" name="visa_file" accept="application/pdf">
+                                    <input class="form-control" type="file" name="visa_file" accept="application/pdf" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">E-Ticketing</label>
-                                    <input class="form-control" type="file" name="ticket_file" accept="application/pdf">
+                                    <input class="form-control" type="file" name="ticket_file" accept="application/pdf" required>
                                 </div>
                             </div>
                         </div>

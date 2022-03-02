@@ -129,7 +129,7 @@
                 @if (auth()->user()->hasAnyRole('ind'))
                     <li>
                         <a href="{{ route('application_list') }}" class="waves-effect">
-                            <i class="bx bx-message-square-edit"></i>
+                            <i class="bx bx-bolt-circle"></i>
                             <span key="t-ta">APPLICATION</span>
                         </a>
                     </li>

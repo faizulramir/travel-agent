@@ -69,7 +69,7 @@
                                         @elseif (auth()->user()->hasAnyRole('ag'))
                                             {{ $agn_uploads }}
                                         @elseif (auth()->user()->hasAnyRole('ind'))
-                                            {{ $ind_uploads }}
+                                            {{ $diy_uploads }}
                                         @endif
                                     </h4>
                                 </div>

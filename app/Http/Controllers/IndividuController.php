@@ -31,11 +31,12 @@ class IndividuController extends Controller
     
     public function application()
     {
-        $plans = Plan::all();
+        $plans = Plan::whereIn('id', [1, 5, 6, 7])->get();
+        $tpas = Plan::whereNotIn('id', [1, 5, 6, 7, 8])->get();
         $dt = Carbon::now();
         $min_date = $dt->toDateString();
 
-        return view('individu.application',  compact('plans', 'min_date'));
+        return view('individu.application',  compact('plans', 'min_date', 'tpas'));
     }
 
     public function application_list()
@@ -79,8 +80,9 @@ class IndividuController extends Controller
         $orders = Order::where('file_id', $id)->get();
         $uploads = FileUpload::where('id', $id)->first();
         $payment = Payment::where('file_id', $id)->first();
+        $check = FileUpload::where([['id', $id], ['status', '5']])->get();
 
-        return view('individu.application-detail', compact('orders', 'uploads', 'payment'));
+        return view('individu.application-detail', compact('orders', 'uploads', 'payment', 'check',  'id'));
     }
 
     public function submit_post_ind()
@@ -105,8 +107,8 @@ class IndividuController extends Controller
         $uploads = new FileUpload;
         $uploads->upload_date = $dt->toDateString();
         $uploads->status = '0';
-        $uploads->supp_doc = '1';
-        $uploads->ta_name = request()->post('travel_agent');
+        $uploads->supp_doc = 'TVP';
+        $uploads->ta_name = null;
         $uploads->user_id = Auth::id();
 
         $uploads->save();
@@ -120,16 +122,17 @@ class IndividuController extends Controller
         $filename_ticket = $file_ticket->getClientOriginalName();
 
         $request->passport_file->storeAs(
-            Auth::id().'/supp_doc/'.$uploads->id, $filename_passport
+            Auth::id().'/supp_doc/'.$uploads->id.'/passport', $filename_passport
         );
         $request->visa_file->storeAs(
-            Auth::id().'/supp_doc/'.$uploads->id, $filename_visa
+            Auth::id().'/supp_doc/'.$uploads->id.'/visa', $filename_visa
         );
         $request->ticket_file->storeAs(
-            Auth::id().'/supp_doc/'.$uploads->id, $filename_ticket
+            Auth::id().'/supp_doc/'.$uploads->id.'/eticket', $filename_ticket
         );
         
         $plans = Plan::where('id', request()->post('plan'))->first();
+        $tpas = Plan::where('id', request()->post('tpa'))->first();
 
         $order = new Order;
         $order->name = request()->post('name');
@@ -142,6 +145,8 @@ class IndividuController extends Controller
         $order->email = request()->post('email');
         $order->dep_date = request()->post('dep_date');
         $order->return_date = request()->post('return_date');
+        $order->pcr = request()->post('pcr');
+        $order->tpa = $tpas->name;
         $order->user_id = Auth::id();
         $order->file_id = $uploads->id;
 
@@ -153,7 +158,7 @@ class IndividuController extends Controller
         $year  = $orderdate[0];
 
         $orders = Order::where('id', '=' ,$order->id)->first();
-        $orders->ecert = 'A'.$year.$orders->file_id.$orders->id;
+        // $orders->ecert = 'A'.$year.$orders->file_id.$orders->id;
         $orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
 
         $orders->save();
