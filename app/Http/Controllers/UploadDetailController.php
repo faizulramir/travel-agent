@@ -57,8 +57,39 @@ class UploadDetailController extends Controller
         //die();
         */
 
+        $new_orders = array();
+
         //get excel file
+        if (auth()->user()->hasAnyRole('ind')) {
+            $orders = Order::where('file_id', $uploads->id)->get();
+            foreach ($orders as $i => $order) {
+                // dd($order);
+                $tmp_arr = array(
+                    $i,
+                    $order->name, 
+                    $order->passport_no, 
+                    $order->ic_no, 
+                    date(strtotime($order->dob)), 
+                    $order->ex_illness, 
+                    $order->hp_no, 
+                    $order->plan_type, 
+                    $order->email, 
+                    date(strtotime($order->dep_date)), 
+                    date(strtotime($order->return_date)), 
+                    $order->pcr, 
+                    $order->tpa
+                );
+            }
+            
+            array_push($new_orders, $tmp_arr);
+
+            $orders = $new_orders;
+            // dd($orders);
+            return view('upload.detail', compact('orders'));
+        }
+
         $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
+        
         $inputFileName = $url;
 
         //create spreadsheet data reader
@@ -93,8 +124,8 @@ class UploadDetailController extends Controller
         $error_sts = false;
         $error_msg = '';
 
-        $new_orders = array();
-
+        
+        
         if ($orders) {
             //process data jemaah
             foreach ($orders as $i => $order) {
