@@ -24,28 +24,28 @@
                         <br>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Travel Agent Name: <b>{{ $uploads->ta_name }}</b></label>                                
-                            </div>  
+                                <label for="plan">Invoice No: <b>{{ $invoice_num }}</b></label>
+                                @if ($uploads->status == '5' || $uploads->status == '4')
+                                <span style="color:red;">&nbsp;&nbsp;<b>PAID</b></span>
+                                @endif
+                            </div>                            
                             <div class="col-md-4">
-                                <label for="plan">Filename: <b>{{ $uploads->file_name }}</b></label>
-                            </div>  
+                                <label for="plan">Travel Agent Name: <b>{{ $uploads->ta_name }}</b></label>                                
+                            </div>   
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="plan">Invoice No: <b>{{ $invoice_num }}</b></label> &nbsp;&nbsp; 
-                                @if ($uploads->status == '5' || $uploads->status == '4')
-                                <span style="color:red;"><b>PAID</b></span>
-                                @endif
-                            </div>
-                            <div class="col-md-4">
                                 <label for="plan">Total Jemaah: <b>{{ $tot_rec }}</b></label>
                             </div>
+                            <div class="col-md-4">
+                                <label for="plan">Filename: <b>{{ $uploads->file_name }}</b></label>
+                            </div>                                                        
                         </div>
                         <br><br>
 
                         <div class="row">
                             <div class="col-md-3">
-
+                                {{--
                                 <label for="plan">&raquo; Plan E-CARE</label>
                                 <p>
                                     @foreach ($invoice_arr as $inv)
@@ -69,14 +69,55 @@
                                     @else
                                         0 x <b>TPA</b> <br>
                                     @endif
-                                </p>
+                                </p>                                
+                                --}}
+
+                                <table width="100%" class="table table-striped">
+                                    @foreach ($invoice_arr as $inv)
+                                        <tr>
+                                            <td>{{ $inv['COUNT'] }}x</td>
+                                            <td><b>{{ $inv['PLAN'] }}</b></td>
+                                            <td>= RM {{ number_format((float)$inv['COST'], 2, '.', ',') }}</td>
+                                        </tr>
+                                    @endforeach
+
+                                    @if ($pcr_detail && $pcr_detail->cnt>0)
+                                        <tr>
+                                            <td>{{ $pcr_detail->cnt }}x</td>
+                                            <td><b>{{ $pcr_detail->name }}</b></td>
+                                            <td>= RM {{ number_format((float)$pcr_detail->price, 2, '.', ',') }}</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>0x</td>
+                                            <td><b>PCR</b></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    @endif
+
+                                    @if ($tpa_total_arr && count($tpa_total_arr)>0)
+                                        @foreach ($tpa_total_arr as $inv)
+                                        <tr>
+                                            <td>{{ $inv['COUNT'] }}x</td>
+                                            <td><b>{{ $inv['PLAN'] }}</b></td>
+                                            <td>= RM {{ number_format((float)$inv['COST'], 2, '.', ',') }}</td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td>0x</td>
+                                            <td><b>TPA</b></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    @endif                                    
+                                </table>
 
                             </div>
 
                             <div class="col-md-3">
 
                                 <label for="disc">Total</label>
-                                <input class="form-control" type="text" name="tempTotal2" id="tempTotal2" value="{{ number_format((float)$tot_inv + (float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? '' : 'readonly' }}>
+                                <input class="form-control" type="text" name="tempTotal2" id="tempTotal2" value="{{ number_format((float)$tot_inv + (float)$uploads->discount, 2, '.', ',') }}" required {{ $uploads->status == '2.1' ? 'readonly' : 'readonly' }}>
                                 <input class="form-control" type="hidden" name="tempTotal" id="tempTotal" value="{{ number_format((float)$tot_ecert + (float)$uploads->discount, 2, '.', ',') }}">
                                 <br>
 

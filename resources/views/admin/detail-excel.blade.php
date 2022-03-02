@@ -127,18 +127,18 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="10%">Name</th>
-                                    <th data-priority="1" width="10%">Passport No</th>
-                                    <th data-priority="3" width="10%">IC No</th>
-                                    <th data-priority="1" width="10%">DEP Date (DMY)</th>
-                                    <th data-priority="1" width="10%">RTN Date (DMY)</th>
-                                    <th data-priority="1">ECare Plan</th>
-                                    <th data-priority="1">PCR</th>
-                                    <th data-priority="1">TPA</th>
+                                    <th data-priority="1" width="20%">Name</th>
+                                    <th data-priority="1" width="8%">Passport No</th>
+                                    <th data-priority="1" width="8%">IC No</th>
+                                    <th data-priority="1" width="8%">DEP Date</th>
+                                    <th data-priority="1" width="8%">RTN Date</th>
+                                    <th data-priority="1" width="8%">ECare Plan</th>
+                                    <th data-priority="1" width="5%">PCR</th>
+                                    <th data-priority="1" width="10%">TPA</th>
                                     @if ($uploads->status === '5')
-                                        <th data-priority="3">ECert</th>
+                                        <th data-priority="1" width="8%">ECert</th>
                                     @endif                                          
-                                    <th data-priority="3">Status</th>
+                                    <th data-priority="3" width="10%">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -173,7 +173,7 @@
                                                         <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
                                                     </a>
                                                 @elseif ($order->status == '2')
-                                                    <a href="#" class="waves-effect" style="color: black;">
+                                                    <a href="#" class="waves-effect" style="color: red;">
                                                         <i class="bx bxs-plane-alt font-size-24" title="Traveller: UNBOARDING"></i>
                                                     </a>
                                                 @elseif ($order->status == '3')

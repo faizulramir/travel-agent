@@ -347,6 +347,7 @@ class PaymentController extends Controller
 
     public function create_invoice($order_id) {
         $files = FileUpload::where('id', $order_id)->first();
+        //dd($files);
 
         if ($files->json_inv) {
             $data_decode = json_decode($files->json_inv, true);
@@ -369,7 +370,6 @@ class PaymentController extends Controller
             $tpa_pcr_arr = collect($data_decode['tpa_pcr_arr']);
 
             //dd($files->json_inv, $data_decode, $data_decode['disArr']);
-
 
         } else {
             $tot_rec = 0;
@@ -589,13 +589,14 @@ class PaymentController extends Controller
             $tot_inv2 = $tot_inv + ($disArr ? $disArr['COST'] : 0) + $tot_tpa;
         }
         
-
         //dd($tot_inv, $tot_inv2, $disArr);
+
+        $pdfName = $invoice_num ? 'invoice-'.str_replace('/', '-', trim($invoice_num)).'.pdf' : "invoice.pdf";
         
         // dd($invoice_arr);
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.invoice-all', compact('tpa_pcr_arr','files', 'invoice_arr', 'tot_inv', 'tot_inv2', 'disArr', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
-        return $pdf->stream();
+        return $pdf->stream($pdfName);
     }
 
     public function create_cert_ind($order_id) {
@@ -604,6 +605,7 @@ class PaymentController extends Controller
         $url_bg = Storage::path('template/template_cert.png');
 
         $cert_number = $orders->ecert;
+        //dd($cert_number);
 
         //fix birth date
         //dd($orders->ecert, $orders->dob, $orders->dep_date);
@@ -650,10 +652,13 @@ class PaymentController extends Controller
         // $tables = array($dataTable);
         // $amount = $plan->price*1;
 
+        $pdfName = 'ecert-'.str_replace(' ', '', trim($orders->passport_no)).'-'.str_replace(' ', '', trim($cert_number)).'.pdf';
+
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
-        return $pdf->stream();
+        return $pdf->stream($pdfName);
     }
+
 
     public function ecert_all ($id) {
         $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->get();
@@ -679,7 +684,6 @@ class PaymentController extends Controller
             // }
             //dd($orders->dob,  $dobyear, $nowyear, $correctyear, $newbirth->format('Y-m-d'));
             $newbirth = $orders->dob;
-
 
             //fix plan duration date
             //$total_days = $plan->total_days;

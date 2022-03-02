@@ -100,8 +100,19 @@ class UploadDetailController extends Controller
             foreach ($orders as $i => $order) {
                 //dd($order);
                 
+                $dob_date = 0;
                 $dep_date = 0;
                 $rtn_date = 0;
+
+                //dob date
+                try {
+                    $dob_date = ''.date('d-m-Y',\PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($order[4]));
+                    //dd("try4", $order[4], $dob_date);
+                } catch (\Throwable $th) {
+                    $dob_date = ''.$order[4];
+                    //dd("catch4", $order[4], $dob_date);
+                }     
+
 
                 //dep date
                 try {
@@ -112,7 +123,7 @@ class UploadDetailController extends Controller
                     //dd("catch9", $order[9]);
 
                     $tmp_date = $order[9];
-                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $tmp_date = trim(str_replace('/', '-', $tmp_date));
                     $explode = explode('-', $tmp_date);
 
                     if (count($explode)==3) {
@@ -152,7 +163,7 @@ class UploadDetailController extends Controller
                     //dd("catch10", $order[10]);
 
                     $tmp_date = $order[10];
-                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $tmp_date = trim(str_replace('/', '-', $tmp_date));
                     $explode = explode('-', $tmp_date);
 
                     if (count($explode)==3) {
@@ -183,14 +194,13 @@ class UploadDetailController extends Controller
                     //dd("catch10", $order[10], $tmp_date, $explode, $error_sts, $error_msg);
                 }
 
-                $tmp_arr = array($order[0], $order[1], $order[2], $order[3], $order[4], $order[5], $order[6], $order[7], $order[8], $dep_date, $rtn_date, $order[11], $order[12]);
+                $tmp_arr = array($order[0], $order[1], $order[2], $order[3], $dob_date, $order[5], $order[6], $order[7], $order[8], $dep_date, $rtn_date, $order[11], $order[12]);
                 array_push($new_orders, $tmp_arr);
                 //dd($tmp_arr, $new_orders);
             }
         }
 
         $orders = $new_orders;
-
         //dd($orders);
 
         return view('upload.detail', compact('orders'));

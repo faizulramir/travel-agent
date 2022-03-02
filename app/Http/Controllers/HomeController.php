@@ -35,9 +35,148 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        //dd($request);
         $curUser = Auth::id();
+        
         $checkUserRole = DashboardUser::where('id', $curUser)->first();
+        //dd($request, $curUser, $checkUserRole, $user);
+
+        $cust_tot_upl = 0;
+        $cust_pen_sub = 0;
+        $cust_pen_pay = 0;
+        $cust_pen_doc = 0;
+
+        $adm_tot_up = 0;
+        $tra_tot_up = 0;
+        $ag_tot_up = 0;
+        $ind_tot_up = 0;
+
+        $tot_sub = 0;
+        $akc_tot_sub = 0;
+        $tra_tot_sub = 0;
+        $agn_tot_sub = 0;
+        $ind_tot_sub = 0;
+
+        $fin_inv = 0;
+        $fin_pay = 0;
+        $akc_app = 0;
+        $akc_doc = 0;
+
+        $tot_jemaah = 0;
+        $tot_lite = 0;
+        $tot_basic = 0;
+        $tot_standard = 0;
+        $tot_premium = 0;
+        $tot_pcr = 0;
+        $tot_tpa = 0;
+        $tot_can = 0;
+        $tot_res = 0;
+
+        $amt_inv = 0.00;
+        $amt_pay = 0.00;
+
+        $total_uploads = FileUpload::all();
+
+
+        if (!empty($checkUserRole->getRoleNames()[0])) {
+            $user = DashboardUser::where('id', $curUser)->first();
+            //current / customer user
+            if ($user->getRoleNames()[0] == 'tra' || $user->getRoleNames()[0] == 'ag' || $user->getRoleNames()[0] == 'ind') {
+                $cust_tot_upl = FileUpload::where('user_id', $curUser)->where('status', '!=', '0')->get()->count();
+                $cust_pen_sub = FileUpload::where('user_id', $curUser)->where('status', '=', '0')->get()->count();
+                $cust_pen_pay = FileUpload::where('user_id', $curUser)->where('status', '=', '3')->get()->count();
+                $cust_pen_doc = FileUpload::where('user_id', $curUser)->where('status', '!=', '0')->where('status', '!=', '99')->where('supp_doc', '=', null)->get()->count();
+            }
+
+            //admin
+            if ($user->getRoleNames()[0] == 'akc' || $user->getRoleNames()[0] == 'fin' || $user->getRoleNames()[0] == 'mkh') {
+                $uploads = FileUpload::all();
+                if ($uploads) {
+                    $tot_sub = FileUpload::where('status', '!=', '0')->get()->count();
+                    foreach ($uploads as $i => $upload) {
+                        $user = DashboardUser::where('id', $upload->user_id)->first();
+
+                        if ($user->getRoleNames()[0] == 'tra' && $upload->status != '0') {
+                            $tra_tot_sub = $tra_tot_sub + 1;
+                        } else if ($user->getRoleNames()[0] == 'ag' && $upload->status != '0') {
+                            $agn_tot_sub = $agn_tot_sub + 1;
+                        } else if ($user->getRoleNames()[0] == 'ind' && $upload->status != '0') {
+                            $ind_tot_sub = $ind_tot_sub + 1;
+                        } else if ($user->getRoleNames()[0] == 'akc' || $user->getRoleNames()[0] == 'fin' || $user->getRoleNames()[0] == 'mkh') {
+                            $akc_tot_sub = $akc_tot_sub + 1;
+                        } 
+                        
+                        //finance
+                        if ($upload->status == '2.1') {
+                            $fin_inv = $fin_inv + 1;
+                        }
+                        if ($upload->status == '4') {
+                            $fin_pay = $fin_pay + 1;
+                        }  
+                        if ($upload->status == '2') {
+                            $akc_app = $akc_app + 1;
+                        }  
+                        if ($upload->status != '0' && $upload->status != '99' && $upload->supp_doc == null) {
+                            $akc_doc = $akc_doc + 1;
+                        } 
+
+                        //counter
+                        if ($upload->status == '5') {
+                            $orders = Order::where('file_id', $upload->id)->where('status', '1')->get();
+                            $orders1 = Order::where('file_id', $upload->id)->where('status', '0')->orWhere('status', '2')->get();
+                            $orders2 = Order::where('file_id', $upload->id)->where('status', '3')->get();
+                            //dd($orders, count($orders));
+                            $tot_jemaah = $tot_jemaah + count($orders);
+                            $tot_can = $tot_can + count($orders1);
+                            $tot_res = $tot_res + count($orders2);
+    
+                            $orders = Order::where('file_id', $upload->id)->where('status', '1')->where('plan_type', 'LITE')->get();
+                            $tot_lite = $tot_lite + count($orders);
+    
+                            $orders = Order::where('file_id', $upload->id)->where('status', '1')->where('plan_type', 'BASIC')->get();
+                            $tot_basic = $tot_basic + count($orders);     
+                            
+                            $orders = Order::where('file_id', $upload->id)->where('status', '1')->where('plan_type', 'STANDARD')->get();
+                            $tot_standard = $tot_standard + count($orders); 
+    
+                            $orders = Order::where('file_id', $upload->id)->where('status', '1')->where('plan_type', 'PREMIUM')->get();
+                            $tot_premium = $tot_premium + count($orders); 
+    
+                            $orders = Order::where('file_id', $upload->id)->where('status', '1')->where('pcr', 'PCR')->get();
+                            $tot_pcr = $tot_pcr + count($orders);
+    
+                            $orders = Order::where('file_id', $upload->id)->where('status', '1')->where('tpa', 'LIKE', 'TPA%')->get();
+                            $tot_tpa = $tot_tpa + count($orders); 
+                        } 
+
+                        //amount: still invoices
+                        if ($upload->status == '3') {
+                            if ($upload->json_inv) {
+                                $data_decode = json_decode($upload->json_inv, true);
+                                $tot_inv2 = $data_decode['tot_inv2'];
+                                if ($tot_inv2) {
+                                    $amt_inv = 0 + $amt_inv + $tot_inv2;
+                                }
+                            }
+                        }
+
+                        //amount: already paid
+                        if ($upload->status == '4' || $upload->status == '5') {
+                            if ($upload->json_inv) {
+                                $data_decode = json_decode($upload->json_inv, true);
+                                $tot_inv2 = $data_decode['tot_inv2'];
+                                if ($tot_inv2) {
+                                    $amt_pay = 0 + $amt_pay + $tot_inv2;
+                                }
+                            }
+                        }                        
+                    }
+                }
+            }
+        }
+
+
+
+        /*
         if (!empty($checkUserRole->getRoleNames()[0])) {
             //dd($curUser);
 
@@ -57,6 +196,7 @@ class HomeController extends Controller
             if ($uploads) {
                 foreach ($uploads as $i => $upload) {
                     $user = DashboardUser::where('id', $upload->user_id)->first();
+
                     if ($user->getRoleNames()[0] == 'tra' && $upload->status != '0') {
                         $tra_uploads = $tra_uploads + 1;
                         if ($user->id == $upload->user_id) {
@@ -179,13 +319,23 @@ class HomeController extends Controller
             }
         }
         //dd($tot_jemaah, $tot_lite, $tot_basic, $tot_standard, $tot_premium, $tot_pcr, $tot_tpa, $amt_inv, $amt_pay);
+        */
 
         if (view()->exists($request->path())) {
             if (!empty($checkUserRole->getRoleNames()[0])) {
-                return view($request->path(), compact(  'total_uploads', 'agn_uploads', 'diy_uploads', 'tra_uploads', 'akc_uploads', 'tra_pays', 
-                                                        'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 
+                return view($request->path(), compact(  
+                                                        //'total_uploads', 'agn_uploads', 'diy_uploads', 'tra_uploads', 'akc_uploads', 'tra_pays', 'tra_docs', 
+                                                        'total_uploads', 
+                                                        'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 
                                                         'tot_premium', 'tot_pcr', 'tot_tpa', 'tot_can', 'tot_res', 'amt_inv', 'amt_pay',
-                                                        'akc_app', 'akc_doc'));
+                                                        'akc_app', 'akc_doc',
+                                                    
+                                                        'cust_tot_upl', 'cust_pen_sub', 'cust_pen_pay', 'cust_pen_doc',
+                                                        'akc_tot_sub', 'tra_tot_sub', 'agn_tot_sub', 'ind_tot_sub',
+                                                        'tot_sub'
+                                                    
+                                                    
+                                                    ));
             } else {
                 return view($request->path());
             }

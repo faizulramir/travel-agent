@@ -60,19 +60,19 @@
                         <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th data-priority="0">#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="1">Passport No</th>
-                                    <th data-priority="3">IC No</th>
-                                    <th data-priority="1">DEP Date</th>
-                                    <th data-priority="3">RTN Date</th>                                    
-                                    <th data-priority="1">ECare Plan</th>
-                                    <th data-priority="3">PCR</th>
-                                    <th data-priority="3">TPA</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="20%">Name</th>
+                                    <th data-priority="1" width="8%">Passport No</th>
+                                    <th data-priority="1" width="8%">IC No</th>
+                                    <th data-priority="1" width="8%">DEP Date</th>
+                                    <th data-priority="1" width="8%">RTN Date</th>                                    
+                                    <th data-priority="1" width="8%">ECare Plan</th>
+                                    <th data-priority="1" width="5%">PCR</th>
+                                    <th data-priority="1" width="10%">TPA</th>
                                     @if ($uploads->status === '5')
-                                        <th data-priority="1">ECert</th>
+                                        <th data-priority="1" width="10%">ECert</th>
                                     @endif                                    
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="3" width="10%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,30 +97,31 @@
                                             </td>
                                         @endif
                                         <td>
-                                            @if (!$payment && $order->upload->status != '99')
-                                                {{--
-                                                @if ($order->status == '1')
-                                                    <a href="{{ route('update_detail_agent', [$order->id, '0'])}}" onclick="return confirm('Do you really want to disable?');" class="waves-effect" style="color: red;">
-                                                        <i class="bx bx-trash-alt font-size-20" title="Disable"></i>
+                                            @if ($order->upload->status != '99')
+                                                @if ($order->status == '0')
+                                                    <a href="#" class="waves-effect" style="color: red;">
+                                                        <i class="bx bx-dislike font-size-24" title="Traveller: CANCELLED"></i>
                                                     </a>
-                                                @else
-                                                    <a href="{{ route('update_detail_agent', [$order->id, '1'])}}" onclick="return confirm('Do you really want to disable?');" class="waves-effect" style="color: green;">
-                                                        <i class="bx bx-paper-plane font-size-20" title="Enable"></i>
+                                                    @elseif ($order->status == '1')
+                                                    <a href="#" class="waves-effect" style="color: green;">
+                                                        <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
+                                                    </a>
+                                                @elseif ($order->status == '2')
+                                                    <a href="#" class="waves-effect" style="color: red;">
+                                                        <i class="bx bxs-plane-alt font-size-24" title="Traveller: UNBOARDING"></i>
+                                                    </a>
+                                                @elseif ($order->status == '3')
+                                                    <a href="#" class="waves-effect" style="color: blue;">
+                                                        <i class="bx bx-time-five font-size-24" title="Traveller: RESCHEDULE"></i>
                                                     </a>
                                                 @endif
-                                                --}}
-                                            @endif
-                                            @if ($order->status == '1' && $payment && $order->upload->status == '5')
-                                                {{--
-                                                <a href="{{ route('create_invoice_ind', $order->id) }}" class="waves-effect" style="color: blue;" target="_blank">
-                                                    <i class="bx bxs-printer font-size-20" title="Print Invoice"></i>
-                                                </a>
-                                                --}}
-                                                @if ($order->plan_type != 'NO')
-                                                    <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
-                                                    </a>
-                                                @endif                                                
+                                                @if ($payment && $order->upload->status == '5')
+                                                    @if ($order->plan_type != 'NO' && $order->status == '1')
+                                                        <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
+                                                            <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
+                                                        </a>
+                                                    @endif                                                
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>

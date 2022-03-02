@@ -78,7 +78,20 @@
                                         <td>{{ $order[1] ? strtoupper($order[1]) : $order[1] }}</td>
                                         <td>{{ $order[2] ? strtoupper($order[2]) : $order[2] }}</td>
                                         <td>{{ $order[3] }}</td>
-                                        <td>{{ $order[4] ? date('d-m-Y', $order[4]) : '' }}</td>
+                                        <td>
+                                            
+                                            @php
+                                            $temp = $order[4];
+                                            try {
+                                                $temp = date('d-m-Y', $order[4]);
+                                            }
+                                            catch (\Exception $ex) {}
+                                            @endphp
+                                            {{ $temp }}
+                                        
+                                            {{-- {{ $order[4] ? date('d-m-Y', $order[4]) : '' }} --}}
+                                        
+                                        </td>
                                         <td>
                                             {{ $order[9] ? date('d-m-Y', $order[9]) : '' }}
                                         </td>

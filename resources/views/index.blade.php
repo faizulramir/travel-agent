@@ -26,12 +26,11 @@
                             <div class="media">
                                 <div class="media-body">
                                     <p class="text-muted fw-medium">Pending Submission</p>
-                                    <h4 class="mb-0">&nbsp;</h4>
+                                    <h4 class="mb-0">{{ $cust_pen_sub }}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-md-3">
                     <div class="card mini-stats-wid">
@@ -39,7 +38,7 @@
                             <div class="media">
                                 <div class="media-body">
                                     <p class="text-muted fw-medium">Pending Supporting Documents</p>
-                                    <h4 class="mb-0">{{ $tra_docs }}</h4>
+                                    <h4 class="mb-0">{{ $cust_pen_doc }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +50,7 @@
                             <div class="media">
                                 <div class="media-body">
                                     <p class="text-muted fw-medium">Pending Payment</p>
-                                    <h4 class="mb-0">{{ $tra_pays }}</h4>
+                                    <h4 class="mb-0">{{ $cust_pen_pay }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -63,15 +62,7 @@
                             <div class="media">
                                 <div class="media-body">
                                     <p class="text-muted fw-medium">Total Excel Submission</p>
-                                    <h4 class="mb-0">
-                                        @if (auth()->user()->hasAnyRole('tra'))
-                                            {{ $tra_uploads }}
-                                        @elseif (auth()->user()->hasAnyRole('ag'))
-                                            {{ $agn_uploads }}
-                                        @elseif (auth()->user()->hasAnyRole('ind'))
-                                            {{ $ind_uploads }}
-                                        @endif
-                                    </h4>
+                                    <h4 class="mb-0">{{ $cust_tot_upl }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -96,11 +87,11 @@
                                             <tr>
                                                 <td width="50%">
                                                 <p class="text-muted fw-medium">Admin</p>
-                                                <h4 class="mb-0">{{ $akc_uploads }}</h4>
+                                                <h4 class="mb-0">{{ $akc_tot_sub }}</h4>
                                                 </td>
                                                 <td width="50%">
                                                 <p class="text-muted fw-medium">Travel Agent Excel</p>
-                                                <h4 class="mb-0">{{ $tra_uploads }}</h4>
+                                                <h4 class="mb-0">{{ $tra_tot_sub }}</h4>
                                                 </td>                                                                                      
                                             </tr>
                                         </table>                                        
@@ -119,11 +110,11 @@
                                             <tr>
                                                 <td width="50%">
                                                 <p class="text-muted fw-medium">DIY Agent Excel</p>
-                                                <h4 class="mb-0">{{ $agn_uploads }}</h4>
+                                                <h4 class="mb-0">{{ $agn_tot_sub }}</h4>
                                                 </td>
                                                 <td width="50%">
                                                 <p class="text-muted fw-medium">DIY Individu Request</p>
-                                                <h4 class="mb-0">{{ $diy_uploads }}</h4>
+                                                <h4 class="mb-0">&nbsp;</h4>
                                                 </td>                                                                                      
                                             </tr>
                                         </table>                                         
@@ -141,7 +132,7 @@
                                             <tr>
                                                 <td width="40%">
                                                 <p class="text-muted fw-medium">PROCESSED EXCEL</p>
-                                                <h4 class="mb-0">{{ count($total_uploads )}}</h4>
+                                                <h4 class="mb-0">{{ $tot_sub }}</h4>
                                                 </td>
                                                 <td width="40%">
                                                 <p class="text-muted fw-medium">TOTAL JEMAAH</p>
