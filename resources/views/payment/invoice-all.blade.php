@@ -152,11 +152,18 @@
                 </tbody>
             </table>
         </div>
-        
+        <hr style="border: none; height: 1px; color: #333; background-color: #333;">
         <p><b>Terms & Conditions</b></p>
-        <p>Transfer are to be made payable to</p>
-        <p>Company Name : Al Khairi Care Sdn Bhd <br> Account No : 1225 8001 3002 150 <br> Bank : Alliance Islamic Bank Berhad <br> Swift Code : ALSRMYKL</p>
-
+        <p>Please make payment via (Online Transfer / Cheque) before departure.</p>
+        <p>Company's Account Details : </p>
+        <p>Company Name : Al Khairi Care Sdn Bhd <br> Account No : 1225 8001 3002 150 <br> Bank : Alliance Bank </p>
+        <p>Should payment has already been made, the slip payment MUST be email to
+            finance.alkhairicare@gmail.com or directly sent to our officer.</p>
+        <p>IMPORTANT <br> We do NOT ACCEPT CASH PAYMENT, and any POST DATED CHEQUE. For any Dishonoured
+            Cheques, RM100.00 will be charged. </p>
+        <p>CANCELLATION <br> Any cancellation for Al Khairi Care Plan or Travel Personal Accident will be charge penalty of RM10.00
+            per pax.</p>
+        <pre></pre>
     </body>
 </html>
 
