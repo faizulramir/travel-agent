@@ -57,19 +57,16 @@ class HomeController extends Controller
             if ($uploads) {
                 foreach ($uploads as $i => $upload) {
                     $user = DashboardUser::where('id', $upload->user_id)->first();
-                    if ($user->getRoleNames()[0] == 'tra') {
+                    if ($user->getRoleNames()[0] == 'tra' && $upload->status != '0') {
                         $tra_uploads = $tra_uploads + 1;
                         if ($user->id == $upload->user_id) {
                             if ($upload->status == '3') {
                                 $tra_pays = $tra_pays + 1;
                             }
-                            if ($upload->supp_doc == null) {
-                                $tra_docs = $tra_docs + 1;
-                            }
                         }
-                    } else if ($user->getRoleNames()[0] == 'ag') {
+                    } else if ($user->getRoleNames()[0] == 'ag' && $upload->status != '0') {
                         $agn_uploads = $agn_uploads + 1;
-                    } else if ($user->getRoleNames()[0] == 'ind') {
+                    } else if ($user->getRoleNames()[0] == 'ind' && $upload->status != '0') {
                         $diy_uploads = $diy_uploads + 1;
                     } else if ($user->getRoleNames()[0] == 'akc' || $user->getRoleNames()[0] == 'fin') {
                         $akc_uploads = $akc_uploads + 1;
@@ -79,10 +76,12 @@ class HomeController extends Controller
 
             $fin_inv = 0;
             $fin_pay = 0;
+            $akc_app = 0;
+            $akc_doc = 0;
 
             //count invoice/payment
             $user = DashboardUser::where('id', $curUser)->first();
-            if ($user->getRoleNames()[0] == 'fin') {
+            if ($user->getRoleNames()[0] == 'fin' || $user->getRoleNames()[0] == 'akc') {
                 $uploads = FileUpload::all();
                 if ($uploads) {
                     foreach ($uploads as $i => $upload) {
@@ -92,7 +91,13 @@ class HomeController extends Controller
                         }
                         if ($upload->status == '4') {
                             $fin_pay = $fin_pay + 1;
-                        }               
+                        }  
+                        if ($upload->status == '2') {
+                            $akc_app = $akc_app + 1;
+                        }  
+                        if ($upload->status != '0' && $upload->status != '99' && $upload->supp_doc == null) {
+                            $akc_doc = $akc_doc + 1;
+                        }                                      
                     }
                 }
             }
@@ -177,7 +182,10 @@ class HomeController extends Controller
 
         if (view()->exists($request->path())) {
             if (!empty($checkUserRole->getRoleNames()[0])) {
-                return view($request->path(), compact('total_uploads', 'agn_uploads', 'diy_uploads', 'tra_uploads', 'akc_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 'tot_premium', 'tot_pcr', 'tot_tpa', 'tot_can', 'tot_res', 'amt_inv', 'amt_pay'));
+                return view($request->path(), compact(  'total_uploads', 'agn_uploads', 'diy_uploads', 'tra_uploads', 'akc_uploads', 'tra_pays', 
+                                                        'tra_docs', 'fin_inv', 'fin_pay', 'tot_jemaah', 'tot_lite', 'tot_basic', 'tot_standard', 
+                                                        'tot_premium', 'tot_pcr', 'tot_tpa', 'tot_can', 'tot_res', 'amt_inv', 'amt_pay',
+                                                        'akc_app', 'akc_doc'));
             } else {
                 return view($request->path());
             }

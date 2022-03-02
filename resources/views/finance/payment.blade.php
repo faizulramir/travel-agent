@@ -83,7 +83,7 @@
                                 <label for="disc">ECare Discount</label>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <select style="pointer-events: {{ isset($pay) ? 'none' : '' }}" id="percent_disc" name="percent_disc" class="form-control select2-search-disable" required {{ isset($pay) ? 'readonly' : '' }}>
+                                        <select style="pointer-events: {{ isset($pay) ? 'none' : '' }}" id="percent_disc" name="percent_disc" class="form-control select2-search-disable" required {{ isset($pay) || $uploads->status == '3' ? 'readonly' : '' }}>
                                             <option value="0" {{ ($uploads->percent == '0' || $uploads->percent == 0) ? 'selected' : '' }}>0%</option>
                                             <option value="10" {{ ($uploads->percent == '10' || $uploads->percent == 10) ?'selected' : '' }}>10%</option>
                                             <option value="15" {{ ($uploads->percent == '15' || $uploads->percent == 15) ?'selected' : '' }}>15%</option>
@@ -145,7 +145,7 @@
 
                             <input type="hidden" name="checkStatus" id="checkStatus" value="{{ $uploads->status }}">
                             <div class="col-md-4">
-                                <div class="col-lg-12" style="display: {{ $uploads->status == '5' || $uploads->status == '2.1' ? 'none' : 'block' }}">
+                                <div class="col-lg-12" style="display: {{ $uploads->status == '5' || $uploads->status == '3' || $uploads->status == '2.1' ? 'none' : 'block' }}">
                                     <input class="form-check-input" type="checkbox" id="agreementPay">
                                     <label class="form-check-label" for="agreementPay" style="color:red;">
                                         &nbsp;&nbsp;Payment telah disemak dan amaun adalah betul 

@@ -28,10 +28,6 @@ class FinanceController extends Controller
     public function __construct()
     {
         $this->middleware(['role:fin|akc']);
-
-
-
-        
     }
 
     

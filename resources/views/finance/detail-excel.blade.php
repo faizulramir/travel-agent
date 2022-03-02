@@ -62,22 +62,22 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="3">Passport No</th>
-                                    <th data-priority="1">IC No</th>
-                                    <th data-priority="1">DEP Date (DMY)</th>
-                                    <th data-priority="5">RTN Date (DMY)</th>
-                                    <th data-priority="1">Plan</th>
-                                    <th data-priority="3">PCR</th>
-                                    <th data-priority="3">TPA</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="20%">Name</th>
+                                    <th data-priority="1" width="10%">Passport No</th>
+                                    <th data-priority="1" width="10%">IC No</th>
+                                    <th data-priority="1" width="10%">DEP Date</th>
+                                    <th data-priority="1" width="10%">RTN Date</th>
+                                    <th data-priority="1" width="10%">Plan</th>
+                                    <th data-priority="1" width="5%">PCR</th>
+                                    <th data-priority="1" width="10%">TPA</th>
                                     @if ($uploads->status === '5')
-                                        <th data-priority="1">ECert</th>
+                                        <th data-priority="1" width="10%">ECert</th>
                                     @endif                                          
-                                    <th data-priority="3">Status</th>
+                                    <th data-priority="3" width="10%">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,14 +102,24 @@
                                             </td>                                            
                                         @endif
                                         <td>
-                                            @if ($order->status == '0')
-                                                <a href="#" class="waves-effect" style="color: red;">
-                                                    <i class="bx bx-dislike font-size-24" title="Traveller: Cancelled"></i>
-                                                </a>
-                                            @else
+                                            @if ($order->status == '1')
                                                 <a href="#" class="waves-effect" style="color: blue;">
                                                     <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
                                                 </a>
+                                            @else
+                                                @if ($order->status == '0')
+                                                    <a href="#" class="waves-effect" style="color: red;">
+                                                        <i class="bx bx-dislike font-size-24" title="Traveller: Cancelled"></i>
+                                                    </a>   
+                                                @elseif ($order->status == '2') 
+                                                    <a href="#" class="waves-effect" style="color: red;">
+                                                        <i class="bx bx-dislike font-size-24" title="Traveller: Unboarding"></i>
+                                                    </a>
+                                                @elseif ($order->status == '3')  
+                                                    <a href="#" class="waves-effect" style="color: red;">
+                                                        <i class="bx bx-dislike font-size-24" title="Traveller: Reschedule"></i>
+                                                    </a>
+                                                @endif                                          
                                             @endif
                                             @if ($payment && $order->upload->status == '5')
                                                 @if ($order->plan_type != 'NO')

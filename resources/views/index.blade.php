@@ -20,26 +20,18 @@
     <div class="row">
         <div class="col-xl-12">
             <div class="row">
-                {{-- <h4 class="card-title mb-4"></h4> --}}
-                <div class="col-md-3">
+            <div class="col-md-3">
                     <div class="card mini-stats-wid">
                         <div class="card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <p class="text-muted fw-medium">Total Excel Submission</p>
-                                    <h4 class="mb-0">
-                                        @if (auth()->user()->hasAnyRole('tra'))
-                                            {{ $tra_uploads }}
-                                        @elseif (auth()->user()->hasAnyRole('ag'))
-                                            {{ $agn_uploads }}
-                                        @elseif (auth()->user()->hasAnyRole('ind'))
-                                            {{ $ind_uploads }}
-                                        @endif
-                                    </h4>
+                                    <p class="text-muted fw-medium">Pending Submission</p>
+                                    <h4 class="mb-0">&nbsp;</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="col-md-3">
                     <div class="card mini-stats-wid">
@@ -70,14 +62,21 @@
                         <div class="card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <p class="text-muted fw-medium">&nbsp;</p>
-                                    <h4 class="mb-0">&nbsp;</h4>
+                                    <p class="text-muted fw-medium">Total Excel Submission</p>
+                                    <h4 class="mb-0">
+                                        @if (auth()->user()->hasAnyRole('tra'))
+                                            {{ $tra_uploads }}
+                                        @elseif (auth()->user()->hasAnyRole('ag'))
+                                            {{ $agn_uploads }}
+                                        @elseif (auth()->user()->hasAnyRole('ind'))
+                                            {{ $ind_uploads }}
+                                        @endif
+                                    </h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                </div>
+                </div>                
             </div>
         </div>
     </div>
@@ -207,7 +206,31 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                
+                    </div>    
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">Pending Approval</p>
+                                                <h4 class="mb-0" style="color:orange;">{{ $akc_app }}</h4>
+                                                </td>                                                  
+                                                <td width="50%">
+                                                <p class="text-muted fw-medium">Pending Supp. Docs</p>
+                                                <h4 class="mb-0" style="color:orange;">{{ $akc_doc }}</h4>
+                                                </td>      
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+
                     <div class="col-md-3">
                         <div class="card mini-stats-wid">
                             <div class="card-body">
@@ -223,28 +246,6 @@
                                                 <p class="text-muted fw-medium">BASIC</p>
                                                 <h4 class="mb-0">{{ $tot_basic }}</h4>
                                                 </td>                                                                                      
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                    <table width="100%">
-                                            <tr>
-                                                <td width="40%">
-                                                <p class="text-muted fw-medium">PCR</p>
-                                                <h4 class="mb-0">{{ $tot_pcr }}</h4>
-                                                </td>
-                                                <td width="40%">
-                                                <p class="text-muted fw-medium">TPA</p>
-                                                <h4 class="mb-0">{{ $tot_tpa }}</h4>
-                                                </td>                                                                                    
                                             </tr>
                                         </table>
                                     </div>
@@ -288,6 +289,29 @@
                             <div class="card-body">
                                 <div class="media">
                                     <div class="media-body">
+                                    <table width="100%">
+                                            <tr>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">PCR</p>
+                                                <h4 class="mb-0">{{ $tot_pcr }}</h4>
+                                                </td>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">TPA</p>
+                                                <h4 class="mb-0">{{ $tot_tpa }}</h4>
+                                                </td>                                                                                    
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                      
+                    
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
                                         <table width="100%">
                                             <tr>
                                                 <td width="40%">
@@ -305,28 +329,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card mini-stats-wid">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <table width="100%">
-                                            <tr>
-                                                <td width="50%">
-                                                <p class="text-muted fw-medium">&nbsp;</p>
-                                                <h4 class="mb-0">&nbsp;</h4>
-                                                </td>                                                  
-                                                <td width="50%">
-                                                <p class="text-muted fw-medium">&nbsp;</p>
-                                                <h4 class="mb-0">&nbsp;</h4>
-                                                </td>      
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                              
                 </div>
             </div>
         </div>    

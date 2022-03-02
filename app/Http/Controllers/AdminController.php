@@ -511,30 +511,40 @@ class AdminController extends Controller
         $uploads = FileUpload::where('id', $id)->first();
         if ($status == '2.2') {
             $uploads->status = '2.1';
+            $uploads->discount = 0;
+            $uploads->percent = null;
         } else if ($status == '2.3') {
             $uploads->status = '2.1';
+            $uploads->discount = 0;
+            $uploads->percent = null;
         } else {
             $uploads->status = $status;
-
             //dd($uploads);
 
             if ($uploads->file_name) {
+                //get excel file
                 $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
                 $inputFileName = $url;
                 //dd($inputFileName);
 
-                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($url);
-                //dd($spreadsheet);
+                //create spreadsheet data reader
+                $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+                // Create the reader object
+                $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+                // Instruct the reader to just read cell data
+                $reader->setReadDataOnly(true);
+                // Load the file to read
+                $spreadsheet = $reader->load($inputFileName);
+                // Get the active sheet
+                $ssheet = $spreadsheet->getActiveSheet();
+                //dd($ssheet);
+                //convert to php data array
+                $data_array = $ssheet->toArray();
 
-                $spreadsheet = $spreadsheet->getActiveSheet();
-                //dd($spreadsheet);
-
-                $data_array =  $spreadsheet->toArray();
-                //dd($data_array);
-
+                //remove non-data and header rows
                 unset($data_array[0]);
+                unset($data_array[9]);
                 //dd($data_array);
-
     
                 //filter only available entry - checking row number availability
                 $data_array = \Arr::where($data_array, function ($value, $key) {
@@ -543,17 +553,18 @@ class AdminController extends Controller
                 //print_r($data_array);
                 //die();
     
+                //create invoice date 
                 $dt = Carbon::now();
                 $orderdate = $dt->toDateString();
                 $orderdate = explode('-', $orderdate);
                 $year  = $orderdate[0];
                 $month = $orderdate[1];
     
-                // dd($data_array);
-                unset($data_array[9]);
-                //dd($data_array);
+                //date checking errors
+                $error_sts = false;
+                $error_msg = '';
 
-                
+                //process data jemaah
                 foreach ($data_array as $i => $json) {
 
                     //dd($json);
@@ -561,8 +572,11 @@ class AdminController extends Controller
                     $order->name = $json[1];
                     $order->passport_no = $json[2];
                     $order->ic_no = $json[3];
+
+                    //dob date
                     try {
-                        $order->dob = $json[4] ? Carbon::createFromFormat('m/d/Y', $json[4])->format('d-m-Y') : '';
+                        //$order->dob = $json[4] ? Carbon::createFromFormat('m/d/Y', $json[4])->format('d-m-Y') : '';
+                        $order->dob = ''.date('d-m-Y',\PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($json[4]));
                     } catch (\Throwable $th) {
                         $order->dob = $json[4];
                     }
@@ -571,85 +585,115 @@ class AdminController extends Controller
                     $order->plan_type = $json[7];
                     $order->email = $json[8];
 
-                    /* -- original
+                    //dep date
                     try {
-                        $order->dep_date = $json[9] ? Carbon::createFromFormat('m/d/Y', $json[9])->format('d-m-Y') : '';
+                        //$order->dep_date = $json[9] ? Carbon::createFromFormat('d/m/Y', $json[9])->format('d-m-Y') : '';
+                        $order->dep_date = ''.date('d-m-Y',\PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($json[9]));
+                        //dd("try", $order->dep_date);
                     } catch (\Throwable $th) {
                         $order->dep_date = $json[9];
+                        //dd("catch", $order->dep_date);
+
+                        $tmp_date = $json[9];
+                        $tmp_date = str_replace('/', '-', $tmp_date);
+                        $explode = explode('-', $tmp_date);
+
+                        if (count($explode)==3) {
+                            if ((int)$explode[1]>0 && (int)$explode[1]<13 && (int)$explode[2]>2000) {
+                                $tmp_date = ''. (int)$explode[0] .'-'. (int)$explode[1] .'-'. (int)$explode[2];
+                                //dd($tmp_date);
+                                $new_date = Carbon::createFromFormat('d-m-Y',  $tmp_date)->format('d-m-Y');
+                                $new_date = strtotime($new_date);
+    
+                                if ($new_date<0) {
+                                    $error_sts = true;
+                                    $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Approve Process Failed!';
+                                }
+                                else {
+                                    $order->dep_date = date('d-m-Y', $new_date);
+                                }
+                            }
+                            else {
+                                $error_sts = true;
+                                $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Approve Process Failed!';
+                            }
+                        }
+                        else {
+                            $error_sts = true;
+                            $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Approve Process Failed!';
+                        }
+                        //dd("catch", $order->dep_date, $tmp_date, $explode, $error_sts, $error_msg);
                     }
 
-                    try {                      
-                        $order->return_date = $json[10] ? Carbon::createFromFormat('m/d/Y', $json[10])->format('d-m-Y') : '';
+                    //rtn date
+                    try {
+                        //$order->dep_date = $json[9] ? Carbon::createFromFormat('d/m/Y', $json[9])->format('d-m-Y') : '';
+                        $order->return_date = ''.date('d-m-Y',\PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($json[10]));
+                        //dd("try", $order->dep_date);
                     } catch (\Throwable $th) {
                         $order->return_date = $json[10];
-                    }
+                        //dd("catch", $order->return_date);
 
-                    try {
-                        $order->pcr_date = $json[10] ? Carbon::createFromFormat('m/d/Y', $json[10])->format('d-m-Y') : '';
-                    } catch (\Throwable $th) {
-                        $order->pcr_date = $json[10];
-                    }
-                    */
+                        $tmp_date = $json[10];
+                        $tmp_date = str_replace('/', '-', $tmp_date);
+                        $explode = explode('-', $tmp_date);
 
-                    try {
-                        $order->dep_date = $json[9] ? Carbon::createFromFormat('d/m/Y', $json[9])->format('d-m-Y') : '';
-                    } catch (\Throwable $th) {
-                        $order->dep_date = $json[9];
-                    }
-
-                    $tmp_date = ''.$order->dep_date;
-                    $tmp_date = str_replace('/', '-', $tmp_date);
-                    $order->dep_date = date('d-m-Y', strtotime($tmp_date));
-
-                    //dd($json, $json[9], $tmp_date, $order->dep_date);
-
-                    try {                      
-                        $order->return_date = $json[10] ? Carbon::createFromFormat('d/m/Y', $json[10])->format('d-m-Y') : '';
-                    } catch (\Throwable $th) {
-                        $order->return_date = $json[10];
-                    }
-
-                    $tmp_date = ''.$order->return_date;
-                    $tmp_date = str_replace('/', '-', $tmp_date);
-                    $order->return_date = date('d-m-Y', strtotime($tmp_date));
-
-                    //dd($json, $json[9], $order->dep_date, $json[10], $order->return_date);
-
-                    try {
-                        $order->pcr_date = $json[10] ? Carbon::createFromFormat('d/m/Y', $json[10])->format('d-m-Y') : '';
-                    } catch (\Throwable $th) {
-                        $order->pcr_date = $json[10];
-                    }
-
-                    $tmp_date = ''.$order->pcr_date;
-                    $tmp_date = str_replace('/', '-', $tmp_date);
-                    $order->pcr_date = date('d-m-Y', strtotime($tmp_date));
-
-                    //dd($json, $json[9], $order->dep_date, $json[10], $order->return_date, $order->pcr_date);
-
-
+                        if (count($explode)==3) {
+                            if ((int)$explode[1]>0 && (int)$explode[1]<13 && (int)$explode[2]>2000) {
+                                $tmp_date = ''. (int)$explode[0] .'-'. (int)$explode[1] .'-'. (int)$explode[2];
+                                //dd($tmp_date);
+                                $new_date = Carbon::createFromFormat('d-m-Y',  $tmp_date)->format('d-m-Y');
+                                $new_date = strtotime($new_date);
+    
+                                if ($new_date<0) {
+                                    $error_sts = true;
+                                    $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Approve Process Failed!';
+                                }
+                                else {
+                                    $order->return_date = date('d-m-Y', $new_date);
+                                }
+                            }
+                            else {
+                                $error_sts = true;
+                                $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Approve Process Failed!';
+                            }
+                        }
+                        else {
+                            $error_sts = true;
+                            $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Approve Process Failed!';
+                        }
+                        //dd("catch", $order->return_date, $tmp_date, $explode, $error_sts, $error_msg);
+                    }    
                     
+                    //if error, stop and abort
+                    if ($error_sts) {
+                        Session::flash('error', $error_msg);
+                        return redirect()->back();
+                    }
+
+
+                    //pcr date
+                    $order->pcr_date = $order->return_date;
+
                     $order->user_id = $uploads->user_id;
                     $order->file_id = $uploads->id;
-                    // $order->ecert = $uploads->id;
                     $order->invoice = $uploads->id;
 
                     $order->pcr_result = null;
                     $order->pcr = $json[11];
                     $order->tpa = $json[12];
 
-                    $order->save();
-    
-                    $orders = Order::where('id', '=' ,$order->id)->first();
+                    //$orders = Order::where('id', '=' ,$order->id)->first();
                     // $orders->ecert = 'A'.$year.$orders->id;
-                    
                     //$orders->invoice = 'I'.$year.$orders->file_id.$orders->id;
-                    $orders->invoice = $year.'/'.$month.'/'.$orders->file_id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
-    
-                    $orders->save();
-                }
+                    $order->invoice = $year.'/'.$month.'/'.$uploads->id;  //fuad0602:change inv num: YYYY/MM/FILE_ID
+
+                    //dd($order);
+                    $order->save();
+                }                
             }
         }
+
         $uploads->save();
 
         if ($status == '99') {
@@ -657,11 +701,13 @@ class AdminController extends Controller
         } else {
             $body = 'Approved';
         }
+
+        //send noti-email
         $user = DashboardUser::where('id', $uploads->user_id)->first();
         // dd($user);
-
         app('App\Http\Controllers\EmailController')->send_mail('Excel Update', $user->name, $user->email, 'Your request has been '.$body, 'Excel Submission');
         
+        Session::flash('success', 'Excel Submission Approved!');
         return redirect()->back();
     }
 

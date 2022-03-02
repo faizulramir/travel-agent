@@ -94,10 +94,12 @@
                                         </td>
                                         <td>{{ $upload->status == '5' || $upload->status == '4' ? 'PAID' : 'UNPAID' }}</td>
                                         <td>
-                                            @if ($upload->status == '4')
+                                            @if ($upload->status == '3')
+                                                INVOICE ENDORSED
+                                            @elseif ($upload->status == '4')
                                                 Pending (Payment) Endorsement
                                             @elseif ($upload->status == '5')
-                                                ENDORSED
+                                                PAYMENT ENDORSED
                                             @elseif ($upload->status == '2.1')
                                                 Pending (Invoice) Endorsement
                                             @else 
@@ -105,10 +107,6 @@
                                             @endif
                                         </td>
                                         <td>
-
-                                            {{--<a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
-                                                <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
-                                            </a>--}}
 
                                             @if ($upload->status == '5')
                                                 <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">

@@ -35,6 +35,11 @@
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
+                        @if (Session::has('error'))
+                            <div class="alert alert-warning text-center">
+                                <p>{{ Session::get('error') }}</p>
+                            </div>
+                        @endif                        
                         <div class="col-md-6">
                             <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                             <a href="{{ route('download_template_agn') }}" class="btn btn-primary w-md" target="_blank" title="Download current template">Download Excel Template</a>
@@ -54,10 +59,10 @@
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
                                     <th data-priority="1" width="25%">Filename</th>
-                                    <th data-priority="3" width="5%">Jemaah</th>
+                                    <th data-priority="1" width="5%">Jemaah</th>
                                     <th data-priority="3" width="10%">Upload Date</th>
                                     <th data-priority="1" width="10%">Submission</th>
-                                    <th data-priority="3" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Supp. Docs</th>
                                     <th data-priority="1" width="10%">Payment</th>
                                     <th data-priority="1" width="15%">Status</th>
                                     <th data-priority="3">Action</th>
@@ -192,28 +197,32 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Filename: <s style="text-decoration: none" id="filename"></s></h5>
                                     <h5 class="card-title">Total Jemaah: <s style="text-decoration: none" id="total_records"></s></h5>
-                                    <div class="table-rep-plugin">
-                                        <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                            <table id="exceltable" class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th data-priority="1">Name</th>
-                                                        <th data-priority="3">Passport No</th>
-                                                        <th data-priority="1">IC No</th>
-                                                        <th data-priority="1">E-Care</th>
-                                                        <th data-priority="1">DEP Date</th>
-                                                        <th data-priority="1">RTN Date</th>
-                                                        <th data-priority="1">PCR</th>
-                                                        <th data-priority="1">TPA</th>
-                                                        {{-- <th data-priority="3">Add. Days</th> --}}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
+
+                                    <div style="height:400px;overflow:auto">
+                                        <div class="table-rep-plugin">
+                                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                                <table id="exceltable" class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th data-priority="1">Name</th>
+                                                            <th data-priority="3">Passport No</th>
+                                                            <th data-priority="1">IC No</th>
+                                                            <th data-priority="1">E-Care</th>
+                                                            <th data-priority="1">DEP Date</th>
+                                                            <th data-priority="1">RTN Date</th>
+                                                            <th data-priority="1">PCR</th>
+                                                            <th data-priority="1">TPA</th>
+                                                            {{-- <th data-priority="3">Add. Days</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
+
                                     <br><br>
                                     <form action="#" method="POST">
                                         <div class="row">
@@ -223,7 +232,7 @@
                                                     @if (auth()->user()->hasAnyRole('tra'))
                                                         <input class="form-control" type="text" name="travel_agent" id="travel_agent" value="{{ strtoupper(auth()->user()->name) }}" readonly>
                                                     @elseif (auth()->user()->hasAnyRole('ag'))
-                                                        <input class="form-control" type="text" name="travel_agent" id="travel_agent" value="" placeholder="Please Insert Travel Agent">
+                                                        <input class="form-control" type="text" name="travel_agent" id="travel_agent" value="" placeholder="Enter Travel Agent Name">
                                                     @endif
                                                 </div>
                                             </div>

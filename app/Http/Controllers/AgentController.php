@@ -30,7 +30,7 @@ class AgentController extends Controller
     
     public function excel_list_agent()
     {
-        $uploads = FileUpload::where('user_id', Auth::id())->get();
+        $uploads = FileUpload::where('user_id', Auth::id())->orderBy('status', 'ASC')->orderBy('submit_date', 'DESC')->get();
         return view('agent.excel-list', compact('uploads'));
     }
 
@@ -172,15 +172,216 @@ class AgentController extends Controller
     public function submit_post_agent(Request $request)
     {
         $dt = Carbon::now();
-
         $uploads = FileUpload::where('id', request()->post('id'))->first();
+
+        //get excel file
+        $url = Storage::path($uploads->user_id.'/excel/'.$uploads->id.'/'.$uploads->file_name);
+        $inputFileName = $url;
+
+        //$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($url);
+        //$spreadsheet = $spreadsheet->getActiveSheet();
+        //$orders =  $spreadsheet->toArray();
+
+        //create spreadsheet data reader
+        $inputFileType = \PhpOffice\PhpSpreadsheet\IOFactory::identify($inputFileName);
+        // Create the reader object
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+        // Instruct the reader to just read cell data
+        $reader->setReadDataOnly(true);
+        // Load the file to read
+        $spreadsheet = $reader->load($inputFileName);
+        // Get the active sheet
+        $ssheet = $spreadsheet->getActiveSheet();
+        //dd($ssheet);
+        //convert to php data array
+        $orders = $ssheet->toArray();
+
+        //remove excel header entry
+        unset($orders[0]);
+        unset($orders[9]);
+        //filter only available entry - checking row number availability
+        $orders = \Arr::where($orders, function ($value, $key) {
+            return $value[0]!=null && $value[0]!='';
+        });
+        //dd($orders);
+        //print_r($orders);
+        //die();
+
+        //date checking errors
+        $error_sts = false;
+        $error_msg = '';
+
+        /*
+        if ($orders) {
+            foreach ($orders as $i => $order) {
+                if (!$errFormat && $order[9]) {
+                    $tmp_date = str_replace('/', '-', ''.$order[9]);
+                    //dd($order[9], $tmp_date);
+
+                    $explode = explode("-",$tmp_date);
+                    if (count($explode)==3) {
+                        //dd($explode);
+                        $explode[0] = str_pad($explode[0], 2, "0", STR_PAD_LEFT);
+                        $explode[1] = str_pad($explode[1], 2, "0", STR_PAD_LEFT);
+                        $tmp_date = implode('-', $explode);
+                        //dd($tmp_date);
+                    }
+        
+                    $test = Carbon::hasFormatWithModifiers($tmp_date, 'd#m#Y!');
+                    if ($test) {
+                        //echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : ''); //Date:OK
+                    } else {
+                        $test = Carbon::hasFormatWithModifiers($tmp_date, 'Y#m#d!');
+                        if ($test) {
+                            //echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : ''); //Date:OK
+                        } else {
+                            $test = Carbon::hasFormatWithModifiers($tmp_date, 'm#d#Y!');
+                            if ($test) {
+                                //echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : ''); //Date:OK
+                            } else {
+                                $errDate = 'Error DEP Date - Incorrect Date Format: '.$order[9]. ".\nExpected format: dd-mm-yyyy.\n\nSubmission Failed! ";
+                                $errFormat = true;
+                            }
+                        }
+                    }
+                }
+
+                if (!$errFormat && $order[10]) {
+                    $tmp_date = str_replace('/', '-', ''.$order[10]);
+                    //dd($order[9], $tmp_date);
+
+                    $explode = explode("-",$tmp_date);
+                    if (count($explode)==3) {
+                        //dd($explode);
+                        $explode[0] = str_pad($explode[0], 2, "0", STR_PAD_LEFT);
+                        $explode[1] = str_pad($explode[1], 2, "0", STR_PAD_LEFT);
+                        $tmp_date = implode('-', $explode);
+                        //dd($tmp_date);
+                    }                    
+        
+                    $test = Carbon::hasFormatWithModifiers($tmp_date, 'd#m#Y!');
+                    if ($test) {
+                        //echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : ''); //Date:OK
+                    } else {
+                        $test = Carbon::hasFormatWithModifiers($tmp_date, 'Y#m#d!');
+                        if ($test) {
+                            //echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : ''); //Date:OK
+                        } else {
+                            $test = Carbon::hasFormatWithModifiers($tmp_date, 'm#d#Y!');
+                            if ($test) {
+                                //echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : ''); //Date:OK
+                            } else {
+                                $errDate = 'Error RTN Date - Incorrect Date Format: '.$order[10]. ".\nExpected format: dd-mm-yyyy.\n\nSubmission Failed! ";
+                                $errFormat = true;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        */
+
+        if ($orders) {
+            foreach ($orders as $i => $order) {
+                //dep date
+                try {
+                    $check_date = ''.date('d-m-Y',\PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($order[9]));
+                    //dd("try", $check_date);
+                } catch (\Throwable $th) {
+                    $check_date = $order[9];
+                    //dd("catch", $order->dep_date);
+
+                    $tmp_date = $order[9];
+                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $explode = explode('-', $tmp_date);
+
+                    if (count($explode)==3) {
+                        if ((int)$explode[1]>0 && (int)$explode[1]<13 && (int)$explode[2]>2000) {
+                            $tmp_date = ''. (int)$explode[0] .'-'. (int)$explode[1] .'-'. (int)$explode[2];
+                            //dd($tmp_date);
+                            $new_date = Carbon::createFromFormat('d-m-Y',  $tmp_date)->format('d-m-Y');
+                            $new_date = strtotime($new_date);
+
+                            if ($new_date<0) {
+                                $error_sts = true;
+                                $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed!';
+                            }
+                            else {
+                                $check_date = date('d-m-Y', $new_date);
+                            }
+                        }
+                        else {
+                            $error_sts = true;
+                            $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed!';
+                        }
+                    }
+                    else {
+                        $error_sts = true;
+                        $error_msg = 'DEP Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed!';
+                    }
+                    //dd("catch", $ccheck_date, $tmp_date, $explode, $error_sts, $error_msg);
+                }
+
+                //rtn date
+                try {
+                    $check_date = ''.date('d-m-Y',\PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($order[10]));
+                    //dd("try", $check_date);
+                } catch (\Throwable $th) {
+                    $check_date = $order[10];
+                    //dd("catch", $order->dep_date);
+
+                    $tmp_date = $order[10];
+                    $tmp_date = str_replace('/', '-', $tmp_date);
+                    $explode = explode('-', $tmp_date);
+
+                    if (count($explode)==3) {
+                        if ((int)$explode[1]>0 && (int)$explode[1]<13 && (int)$explode[2]>2000) {
+                            $tmp_date = ''. (int)$explode[0] .'-'. (int)$explode[1] .'-'. (int)$explode[2];
+                            //dd($tmp_date);
+                            $new_date = Carbon::createFromFormat('d-m-Y',  $tmp_date)->format('d-m-Y');
+                            $new_date = strtotime($new_date);
+
+                            if ($new_date<0) {
+                                $error_sts = true;
+                                $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed! 1';
+                            }
+                            else {
+                                $check_date = date('d-m-Y', $new_date);
+                            }
+                        }
+                        else {
+                            $error_sts = true;
+                            $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Submmission Process Failed! 2';
+                        }
+                    }
+                    else {
+                        $error_sts = true;
+                        $error_msg = 'RTN Date Incorrect Format. Expected dd-mm-yyyy format. Approve Process Failed! 3';
+                    }
+                    //dd("catch", $ccheck_date, $tmp_date, $explode, $error_sts, $error_msg);
+                }   
+            }
+        }  
+        
+        //if error, stop and abort
+        if ($error_sts) {
+            Session::flash('error', $error_msg);
+            return response()->json([
+                'isSuccess' => false,
+                'Data' => $error_msg,
+            ], 200); // Status code here
+        }
+
+
         $uploads->status = '2';
         $uploads->submit_date = $dt->toDateTimeString();
         $uploads->save();
         
+        Session::flash('success', 'Excel Successfully Submitted.');
         return response()->json([
             'isSuccess' => true,
-            'Data' => 'Successfully Submitted!'
+            'Data' => 'Excel Successfully Submitted!'
         ], 200); // Status code here
     }
 

@@ -50,20 +50,19 @@
                     </div>
                     <br>
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="3">Passport No</th>
-                                    <th data-priority="1">IC No</th>
-                                    <th data-priority="1">Birth Date</th>
-                                    <th data-priority="1">DEP Date</th>
-                                    <th data-priority="3">RTN Date</th>
-                                    <th data-priority="1">Plan</th>
-                                    <th data-priority="1">PCR</th>
-                                    <th data-priority="1">TPA</th>
-                                    {{-- <th data-priority="3">Action</th> --}}
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="20%">Name</th>
+                                    <th data-priority="1" width="10%">Passport No</th>
+                                    <th data-priority="1" width="10%">IC No</th>
+                                    <th data-priority="1" width="8%">Birth Date</th>
+                                    <th data-priority="1" width="10%">DEP Date</th>
+                                    <th data-priority="1" width="10%">RTN Date</th>
+                                    <th data-priority="3" width="8%">ECare Plan</th>
+                                    <th data-priority="3" width="5%">PCR</th>
+                                    <th data-priority="3" width="10%">TPA</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,61 +75,19 @@
                                     @endphp
                                     <tr>
                                         <td>{{ $bil }}</td>
-                                        <td>{{ $order[1] }}</td>
-                                        <td>{{ $order[2] }}</td>
+                                        <td>{{ $order[1] ? strtoupper($order[1]) : $order[1] }}</td>
+                                        <td>{{ $order[2] ? strtoupper($order[2]) : $order[2] }}</td>
                                         <td>{{ $order[3] }}</td>
-                                        <td>{{ $order[4] }}</td>
+                                        <td>{{ $order[4] ? date('d-m-Y', $order[4]) : '' }}</td>
                                         <td>
-                                            {{-- {{ $order[9] ? date('d-m-Y', strtotime($order[9])) : ''}} --}}
-                                            @php
-                                            if ($order[9]) {
-                                                $tmp_date = str_replace('/', '-', ''.$order[9]);
-                                                $test = \Carbon\Carbon::hasFormatWithModifiers($tmp_date, 'd#m#Y!');
-                                                if ($test) {
-                                                    //echo ' ==> '.$tmp_date.'--d#m#Y!--'.$test.' ==> ';
-                                                    echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : '');
-                                                } else {
-                                                    $test = \Carbon\Carbon::hasFormatWithModifiers($tmp_date, 'Y#m#d!');
-                                                    if ($test) {
-                                                        //echo ' ==> '.$tmp_date.'--Y#m#d!--'.$test.' ==> ';
-                                                        echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : '');
-                                                    } else {
-                                                        //echo 'Date format not correct 1 - '.$tmp_date;
-                                                    }
-                                                }
-                                            }
-                                            else {
-                                                //echo 'Date format not correct 2 - '.$tmp_date;
-                                            }
-                                            @endphp
+                                            {{ $order[9] ? date('d-m-Y', $order[9]) : '' }}
                                         </td>
                                         <td>
-                                            {{-- {{ $order[10] ? date('d-m-Y', strtotime($order[10])) : '' }} --}}
-                                            @php
-                                            if ($order[10]) {
-                                                $tmp_date = str_replace('/', '-', ''.$order[10]);
-                                                $test = \Carbon\Carbon::hasFormatWithModifiers($tmp_date, 'd#m#Y!');
-                                                if ($test) {
-                                                    //echo ' ==> '.$tmp_date.'--d#m#Y!--'.$test.' ==> ';
-                                                    echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : '');
-                                                } else {
-                                                    $test = \Carbon\Carbon::hasFormatWithModifiers($tmp_date, 'Y#m#d!');
-                                                    if ($test) {
-                                                        //echo ' ==> '.$tmp_date.'--Y#m#d!--'.$test.' ==> ';
-                                                        echo ($tmp_date ? date('d-m-Y', strtotime($tmp_date)) : '');
-                                                    } else {
-                                                        //echo 'Date format not correct';
-                                                    }
-                                                }
-                                            }
-                                            else {
-                                                //echo 'Date format not correct';
-                                            }
-                                            @endphp                                            
+                                            {{ $order[10] ? date('d-m-Y', $order[10]): '' }} 
                                         </td>
-                                        <td>{{ $order[7] }}</td>
-                                        <td>{{ $order[11] }}</td>
-                                        <td>{{ $order[12] }}</td>
+                                        <td>{{ $order[7] ? strtoupper($order[7]) : $order[7] }}</td>
+                                        <td>{{ $order[11] ? strtoupper($order[11]) : $order[11] }}</td>
+                                        <td>{{ $order[12] ? strtoupper($order[12]) : $order[12] }}</td>
                                         {{-- <td>
                                             @if (!$payment)
                                                 @if ($order->status == '1')

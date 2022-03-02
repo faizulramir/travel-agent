@@ -133,6 +133,11 @@
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
+                        @if (Session::has('error'))
+                            <div class="alert alert-warning text-center">
+                                <p>{{ Session::get('error') }}</p>
+                            </div>
+                        @endif                        
                         <div class="col-md-3">
                             <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                             <a href="{{ route('download_template') }}" class="btn btn-primary w-md" target="_blank">Download Excel Template</a>
