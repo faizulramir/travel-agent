@@ -100,6 +100,8 @@
                                                     AKC Finance
                                                 @elseif ($role->name == 'mkh')
                                                     AKC Makkah                                                    
+                                                @elseif ($role->name == 'disabled')
+                                                    Disabled
                                                 @endif
                                             </option>
                                         @endforeach
@@ -113,13 +115,13 @@
                             <div class="col-lg-4" id="ssm_no" style="display: none;">
                                 <div>
                                     <label for="plan">SSM Number</label>
-                                    <input class="form-control" type="text" name="ssm_no" value="" placeholder="Enter SSM Number" required>
+                                    <input class="form-control" type="text" id="ssm_no_input" name="ssm_no" value="" placeholder="Enter SSM Number">
                                 </div>
                             </div>
                             <div class="col-lg-4" id="ssm_cert" style="display: none;">
                                 <div>
                                     <label for="plan">SSM Cert.</label>
-                                    <input type="file" class="form-control" name="ssm_cert" required>
+                                    <input type="file" class="form-control" id="ssm_cert_input" name="ssm_cert">
                                 </div>
                             </div>
                         </div>
@@ -145,9 +147,13 @@
             if ($('#role').val() == 4 || $('#role').val() == '4' ) {
                 $('#ssm_no').show();
                 $('#ssm_cert').show();
+                $("#ssm_no_input").prop('required',true);
+                $("#ssm_cert_input").prop('required',true);
             } else {
                 $('#ssm_no').hide();
                 $('#ssm_cert').hide();
+                $("#ssm_no_input").prop('required',false);
+                $("#ssm_cert_input").prop('required',false);
             }
         });
     </script>

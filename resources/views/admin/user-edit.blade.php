@@ -58,7 +58,9 @@
                                                 @elseif ($role->name == 'fin')
                                                     AKC Finance
                                                 @elseif ($role->name == 'mkh')
-                                                    AKC Makkah                                                    
+                                                    AKC Makkah                                                 
+                                                @elseif ($role->name == 'disabled')
+                                                    Disabled                                                    
                                                 @endif
                                             </option>
                                         @endforeach
@@ -111,7 +113,7 @@
                                     <input type="file" class="form-control" name="ssm_cert">
                                 </div>
                             </div>
-                            <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                            <div class="col-lg-2" id="ssm_download" style="display: {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] != 'tra' ? 'none': 'block' : 'none' }}">
                                 <div>
                                     <label for="plan">Download</label>
                                     <a style="display: {{ $user->ssm_cert == null ? 'none': 'block' }}" href="{{ route('ssm_cert_download', $user->id) }}" class="btn btn-primary waves-effect waves-light">Download Cert</a>
@@ -133,7 +135,7 @@
                             <br>
                         @endif
 
-                        <div class="col-lg-12">
+                        <div class="col-lg-12" style="text-align: right">
                             <button class="btn btn-primary waves-effect waves-light" type="submit">Submit</button>
                         </div>
                     </form>
@@ -149,4 +151,17 @@
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    <script>
+        $('#role').change(function() {
+            if ($('#role').val() == 4 || $('#role').val() == '4' ) {
+                $('#ssm_no').show();
+                $('#ssm_cert').show();
+                $('#ssm_download').show();
+            } else {
+                $('#ssm_no').hide();
+                $('#ssm_cert').hide();
+                $('#ssm_download').hide();
+            }
+        });
+    </script>
 @endsection
