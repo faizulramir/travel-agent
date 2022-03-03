@@ -71,30 +71,11 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-lg-4" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
-                                <div>
-                                    <label for="plan">SSM Number</label>
-                                    <input class="form-control" type="text" name="ssm_no" value="{{ $user->ssm_no }}" placeholder="Enter SSM Number" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
-                                <div>
-                                    <label for="plan">SSM Cert.</label>
-                                    <br>
-                                    <input type="file" class="form-control" name="ssm_cert">
-                                </div>
-                            </div>
-                            <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
-                                <div>
-                                    <label for="plan">Download</label>
-                                    <a style="display: {{ $user->ssm_cert == null ? 'none': 'block' }}" href="{{ route('ssm_cert_download', $user->id) }}" class="btn btn-primary waves-effect waves-light">Download Cert</a>
-                                </div>
-                            </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Role</label>
                                     <select id="role" name="role" class="form-control select2-search-disable"required>
-                                        <option value="" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>Please Select</option>
+                                        <option value="no_role" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>Please Select</option>
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}" {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] == $role->name ? 'selected' : '' : ''}}>
                                                 @if ($role->name == 'ind')
@@ -107,10 +88,31 @@
                                                     Finance
                                                 @elseif ($role->name == 'mkh')
                                                     Makkah                                                    
+                                                @elseif ($role->name == 'disabled')
+                                                    Disabled
                                                 @endif
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" id="ssm_no" style="display: {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] != 'tra' ? 'none': 'block' : 'none' }}">
+                                <div>
+                                    <label for="plan">SSM Number</label>
+                                    <input class="form-control" type="text" name="ssm_no" value="{{ $user->ssm_no }}" placeholder="Enter SSM Number" {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] != 'tra' ? '' : 'required': '' }}>
+                                </div>
+                            </div>
+                            <div class="col-lg-2" id="ssm_cert" style="display: {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] != 'tra' ? 'none': 'block' : 'none' }}">
+                                <div>
+                                    <label for="plan">SSM Cert.</label>
+                                    <br>
+                                    <input type="file" class="form-control" name="ssm_cert">
+                                </div>
+                            </div>
+                            <div class="col-lg-2" id="ssm_download" style="display: {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] != 'tra' ? 'none': 'block' : 'none' }}">
+                                <div>
+                                    <label for="plan">Download</label>
+                                    <a style="display: {{ $user->ssm_cert == null ? 'none': 'block' }}" href="{{ route('ssm_cert_download', $user->id) }}" class="btn btn-primary waves-effect waves-light">Download Cert</a>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +121,7 @@
                             <p style="color:red;">{{$errors->first()}}</p>
                         @endif
                         <br>
-                        <div class="col-lg-12">
+                        <div class="col-lg-12" style="text-align: right">
                             <button class="btn btn-primary waves-effect waves-light" type="submit">Submit</button>
                         </div>
                     </form>
@@ -135,4 +137,17 @@
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    <script>
+        $('#role').change(function() {
+            if ($('#role').val() == 4 || $('#role').val() == '4' ) {
+                $('#ssm_no').show();
+                $('#ssm_cert').show();
+                $('#ssm_download').show();
+            } else {
+                $('#ssm_no').hide();
+                $('#ssm_cert').hide();
+                $('#ssm_download').hide();
+            }
+        });
+    </script>
 @endsection

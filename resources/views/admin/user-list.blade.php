@@ -48,8 +48,8 @@
                                                 AKC Admin
                                             @else
                                                 <input type="hidden" name="user_id{{$user->id}}" id="user_id{{$user->id}}" value="{{ $user->id }}">
-                                                <select id="role{{$user->id}}" name="role{{$user->id}}" class="form-control select2-search-disable" onclick="clicked(event, {{$user->id}})" required>
-                                                    <option value="" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>No Role (Not Activated)</option>
+                                                <select id="role{{$user->id}}" name="role{{$user->id}}" class="form-control select2-search-disable" onchange="clicked(event, {{$user->id}})" required>
+                                                    <option value="no_role" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>No Role (Not Activated)</option>
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->id }}" {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] == $role->name ? 'selected' : '' : ''}}>
                                                             @if ($role->name == 'ind')
@@ -62,6 +62,8 @@
                                                                 Finance
                                                             @elseif ($role->name == 'mkh')
                                                                 Makkah
+                                                            @elseif ($role->name == 'disabled')
+                                                                Disabled
                                                             @endif
                                                         </option>
                                                     @endforeach
@@ -102,8 +104,8 @@
             // if(!confirm('Are you sure to submit?')) {
             //     e.preventDefault();
             // } else {
-                $("#role" + id).change(function () {
-                    var end = this.value;
+                // $("#role" + id).change(function () {
+                    // var end = this.value;
                     var userId = id;
                     var firstDropVal = $('#role' + id).val();
 
@@ -115,7 +117,7 @@
                             alert(data.Data)
                         }
                     });
-                });
+                // });
             // }
         }
         

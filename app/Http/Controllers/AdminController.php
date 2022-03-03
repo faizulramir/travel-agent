@@ -737,7 +737,7 @@ class AdminController extends Controller
         // $role = Role::create(['name' => 'mkh']);
         // $role = Role::where('id', 3)->first();
         // Auth::user()->assignRole($role);
-        $roles = Role::whereIn('id', [1, 2, 4, 5, 6])->get();
+        $roles = Role::whereIn('id', [1, 2, 4, 5, 6, 7])->get();
         $users = DashboardUser::all();
         return view('admin.user-list', compact('users',  'roles'));
     }
@@ -818,9 +818,16 @@ class AdminController extends Controller
     public function post_role($role_id, $user_id)
     {
         $users = DashboardUser::where('id', $user_id)->first();
-        $roles = Role::whereIn('id', [1, 2, 4])->get();
+        $roles = Role::whereIn('id', [1, 2, 4, 5, 6, 7])->get();
         foreach ($roles as $i => $role) {
             $users->removeRole($role);
+        }
+
+        if($role_id == 'no_role') {
+            return response()->json([
+                'isSuccess' => true,
+                'Data' => 'Successfully Updated!'
+            ], 200);
         }
 
         $role = Role::where('id', $role_id)->first();
@@ -925,7 +932,7 @@ class AdminController extends Controller
     }
 
     public function user_add (Request $request) {
-        $roles = Role::whereIn('id', [1, 2, 4, 5, 6])->get();
+        $roles = Role::whereIn('id', [1, 2, 4, 5, 6, 7])->get();
 
         return view('admin.user-add', compact('roles'));
     }
@@ -950,7 +957,7 @@ class AdminController extends Controller
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator->messages());
         } else {
-            $filename = $request->file('ssm_cert')->getClientOriginalName();
+            $filename = $request->file('ssm_cert') ? $request->file('ssm_cert')->getClientOriginalName() : null;
     
             $user = new DashboardUser;
             $user->email = $request->email;
@@ -965,14 +972,20 @@ class AdminController extends Controller
             
             $user->save();
 
-            $path = $request->file('ssm_cert')->storeAs(
-                $user->id.'/ssm/', $filename
-            );
+            if ($filename) {
+                $path = $request->file('ssm_cert')->storeAs(
+                    $user->id.'/ssm/', $filename
+                );
+            }
+            
+            app('App\Http\Controllers\EmailController')->send_mail('New User', $user->name, $user->email, 'Welcome to Al Khairi Care', 'New User');
+            
+            if($request->role == 'no_role') {
+                return redirect()->route('user_list');
+            }
 
             $role = Role::where('id', $request->role)->first();
             $user->assignRole($role);
-
-            app('App\Http\Controllers\EmailController')->send_mail('New User', $user->name, $user->email, 'Welcome to Al Khairi Care', 'New User');
 
             return redirect()->route('user_list');
         }
@@ -980,7 +993,7 @@ class AdminController extends Controller
     }
 
     public function user_edit ($id) {
-        $roles = Role::whereIn('id', [1, 2, 4, 5, 6])->get();
+        $roles = Role::whereIn('id', [1, 2, 4, 5, 6, 7])->get();
         $user = DashboardUser::where('id', $id)->first();
 
         return view('admin.user-edit', compact('roles', 'user', 'id'));
@@ -988,24 +1001,27 @@ class AdminController extends Controller
 
     public function user_edit_post (Request $request) {
         // dd($request->all());
-        $filename = $request->file('ssm_cert')->getClientOriginalName();
-
+        $filename = $request->file('ssm_cert') ? $request->file('ssm_cert')->getClientOriginalName() : null;
+        // dd($filename);
         $user = DashboardUser::where('id', $request->id)->first();
         $user->email = $request->email;
         $user->name = $request->name;
         $user->dob =  date('Y-m-d', strtotime($request->dob));
         $user->ssm_no = $request->ssm_no;
         $user->ssm_cert = $filename;
-
-        Storage::deleteDirectory('/'.$user->id.'/ssm/');
-        $path = $request->file('ssm_cert')->storeAs(
-            $user->id.'/ssm/', $filename
-        );
-        
+        $user->phone =  $request->phone;
+        $user->company_name =  $request->company_name;
+        $user->company_location =  $request->company_location;
         $user->save();
-        
 
-        $roles = Role::whereIn('id', [1, 2, 4, 5])->get();
+        if ($filename) {
+            Storage::deleteDirectory('/'.$user->id.'/ssm/');
+            $path = $request->file('ssm_cert')->storeAs(
+                $user->id.'/ssm/', $filename
+            );
+        }
+        
+        $roles = Role::whereIn('id', [1, 2, 4, 5, 6, 7])->get();
         foreach ($roles as $i => $role) {
             $user->removeRole($role);
         }
