@@ -24,6 +24,7 @@
                         </a>
                     </div>
                     <br>
+                    
                     <form action="{{ route('user_edit_post', $id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <h4 class="card-title">User Information</h4>
@@ -31,24 +32,65 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div>
-                                    <label class="form-label">Email</label>
+                                    <label class="form-label">Email (Login ID)</label>
                                     <input class="form-control" type="email" name="email" value="{{ $user->email }}" placeholder="Enter Email" readonly>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">Username</label>
+                                    <label for="plan">User Name</label>
                                     <input class="form-control" type="text" name="name" value="{{ $user->name }}" placeholder="Enter Username" required>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Role</label>
+                                    <select id="role" name="role" class="form-control select2-search-disable"required>
+                                        <option value="" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>Please Select</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}" {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] == $role->name ? 'selected' : '' : ''}}>
+                                                @if ($role->name == 'tra')
+                                                    Travel Agent   
+                                                @elseif ($role->name == 'ag')
+                                                    DIY Agent                                                                                                 
+                                                @elseif ($role->name == 'ind')
+                                                    DIY Individu
+                                                @elseif ($role->name == 'fin')
+                                                    AKC Finance
+                                                @elseif ($role->name == 'mkh')
+                                                    AKC Makkah                                                    
+                                                @endif
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Date Of Birth</label>
                                     <input class="form-control" type="date" name="dob" value="{{ $user->dob }}" placeholder="Enter DOB" required>
                                 </div>
                             </div>
+
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Company Name</label>
+                                    <input class="form-control" type="text" name="company_name" value="{{ $user->company_name }}" placeholder="Enter Company Name" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                                <div>
+                                    <label for="plan">SSM/Company Number</label>
+                                    <input class="form-control" type="text" name="ssm_no" value="{{ $user->ssm_no }}" placeholder="Enter SSM Number" required>
+                                </div>
+                            </div>
                         </div>
                         <br>
+
                         <div class="row">
                             <div class="col-lg-4">
                                 <div>
@@ -58,28 +100,13 @@
                             </div>
                             <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">Company Name</label>
-                                    <input class="form-control" type="text" name="company_name" value="{{ $user->company_name }}" placeholder="Enter Company Name" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div>
                                     <label for="plan">Company Location</label>
                                     <input class="form-control" type="text" name="company_location" value="{{ $user->company_location }}" placeholder="Enter Company Location" required>
                                 </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-lg-4" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
-                                <div>
-                                    <label for="plan">SSM Number</label>
-                                    <input class="form-control" type="text" name="ssm_no" value="{{ $user->ssm_no }}" placeholder="Enter SSM Number" required>
-                                </div>
-                            </div>
+                            </div>                            
                             <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
                                 <div>
-                                    <label for="plan">SSM Cert.</label>
+                                    <label for="plan">SSM Certificate</label>
                                     <br>
                                     <input type="file" class="form-control" name="ssm_cert">
                                 </div>
@@ -90,35 +117,22 @@
                                     <a style="display: {{ $user->ssm_cert == null ? 'none': 'block' }}" href="{{ route('ssm_cert_download', $user->id) }}" class="btn btn-primary waves-effect waves-light">Download Cert</a>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div>
-                                    <label for="plan">Role</label>
-                                    <select id="role" name="role" class="form-control select2-search-disable"required>
-                                        <option value="" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>Please Select</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}" {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] == $role->name ? 'selected' : '' : ''}}>
-                                                @if ($role->name == 'ind')
-                                                    Individu
-                                                @elseif ($role->name == 'ag')
-                                                    Agent
-                                                @elseif ($role->name == 'tra')
-                                                    Travel Agent
-                                                @elseif ($role->name == 'fin')
-                                                    Finance
-                                                @elseif ($role->name == 'mkh')
-                                                    Makkah                                                    
-                                                @endif
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                         <br>
-                        @if($errors->any())
-                            <p style="color:red;">{{$errors->first()}}</p>
-                        @endif
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label>Registered on: {{ $user->created_at }}</label>
+                            </div>
+                        </div>   
                         <br>
+
+                        @if($errors->any())
+                            <p style="color:red;">{{ $errors->first() }}</p>
+                            <br>
+                        @endif
+
                         <div class="col-lg-12">
                             <button class="btn btn-primary waves-effect waves-light" type="submit">Submit</button>
                         </div>
