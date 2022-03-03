@@ -32,7 +32,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label class="form-label">Email</label>
-                                    <input class="form-control" type="email" name="email" value="{{ $user->email }}" placeholder="Enter Email" required>
+                                    <input class="form-control" type="email" name="email" value="{{ $user->email }}" placeholder="Enter Email" readonly>
                                 </div>
                             </div>
                             <div class="col-lg-4">
