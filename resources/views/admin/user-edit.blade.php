@@ -41,10 +41,10 @@
                                     <input class="form-control" type="text" name="name" value="{{ $user->name }}" placeholder="Enter Username" required>
                                 </div>
                             </div>
-                            <div class="col-lg-4" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                            <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">SSM Number</label>
-                                    <input class="form-control" type="text" name="ssm_no" value="{{ $user->ssm_no }}" placeholder="Enter SSM Number" required>
+                                    <label for="plan">Date Of Birth</label>
+                                    <input class="form-control" type="date" name="dob" value="{{ $user->dob }}" placeholder="Enter DOB" required>
                                 </div>
                             </div>
                         </div>
@@ -52,8 +52,42 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">Date Of Birth</label>
-                                    <input class="form-control" type="date" name="dob" value="{{ $user->dob }}" placeholder="Enter DOB" required>
+                                    <label class="form-label">Contact Number</label>
+                                    <input class="form-control" type="number" name="phone" value="{{ $user->phone }}" placeholder="Enter Contact Number" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Company Name</label>
+                                    <input class="form-control" type="text" name="company_name" value="{{ $user->company_name }}" placeholder="Enter Company Name" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Company Location</label>
+                                    <input class="form-control" type="text" name="company_location" value="{{ $user->company_location }}" placeholder="Enter Company Location" required>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-4" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                                <div>
+                                    <label for="plan">SSM Number</label>
+                                    <input class="form-control" type="text" name="ssm_no" value="{{ $user->ssm_no }}" placeholder="Enter SSM Number" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                                <div>
+                                    <label for="plan">SSM Cert.</label>
+                                    <br>
+                                    <input type="file" class="form-control" name="ssm_cert">
+                                </div>
+                            </div>
+                            <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                                <div>
+                                    <label for="plan">Download</label>
+                                    <a style="display: {{ $user->ssm_cert == null ? 'none': 'block' }}" href="{{ route('ssm_cert_download', $user->id) }}" class="btn btn-primary waves-effect waves-light">Download Cert</a>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -79,15 +113,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-4" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
-                                <div>
-                                    <label for="plan">SSM Cert.</label>
-                                    <br>
-                                    <a style="display: {{ $user->ssm_cert == null ? 'none': 'block' }}" href="{{ route('ssm_cert_download', $user->id) }}" class="btn btn-primary waves-effect waves-light col-md-6">Download Cert</a>
-                                </div>
-                            </div>
                         </div>
-
+                        <br>
                         @if($errors->any())
                             <p style="color:red;">{{$errors->first()}}</p>
                         @endif

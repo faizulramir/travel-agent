@@ -41,14 +41,34 @@
                                     <input class="form-control" type="text" name="name" value="" placeholder="Enter Username" required>
                                 </div>
                             </div>
-                            <div class="col-lg-4" id="ssm_no" style="display: none;">
+                            <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">SSM Number</label>
-                                    <input class="form-control" type="text" name="ssm_no" value="" placeholder="Enter SSM Number" required>
+                                    <label for="plan">Date Of Birth</label>
+                                    <input class="form-control" type="date" name="dob" value="" placeholder="Enter DOB" required>
                                 </div>
                             </div>
                         </div>
-                        
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div>
+                                    <label class="form-label">Contact Number</label>
+                                    <input class="form-control" type="number" name="phone" value="" placeholder="Enter Contact Number" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Company Name</label>
+                                    <input class="form-control" type="text" name="company_name" value="" placeholder="Enter Company Name" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Company Location</label>
+                                    <input class="form-control" type="text" name="company_location" value="" placeholder="Enter Company Location" required>
+                                </div>
+                            </div>
+                        </div>
                         <br>
                         <div class="row">
                             <div class="col-lg-4">
@@ -63,21 +83,9 @@
                                     <input class="form-control" type="password" name="password_confirmation" value="" placeholder="Confirm Password" required>
                                 </div>
                             </div>
-                            <div class="col-lg-4" id="ssm_cert" style="display: none;">
-                                <div>
-                                    <label for="plan">SSM Cert.</label>
-                                    <input type="file" class="form-control" name="ssm_cert" required>
-                                </div>
-                            </div>
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-lg-4">
-                                <div>
-                                    <label for="plan">Date Of Birth</label>
-                                    <input class="form-control" type="date" name="dob" value="" placeholder="Enter DOB" required>
-                                </div>
-                            </div>
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Role</label>
@@ -99,6 +107,18 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" id="ssm_no" style="display: none;">
+                                <div>
+                                    <label for="plan">SSM Number</label>
+                                    <input class="form-control" type="text" name="ssm_no" value="" placeholder="Enter SSM Number" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" id="ssm_cert" style="display: none;">
+                                <div>
+                                    <label for="plan">SSM Cert.</label>
+                                    <input type="file" class="form-control" name="ssm_cert" required>
                                 </div>
                             </div>
                         </div>
