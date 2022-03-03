@@ -476,7 +476,7 @@ class HomeController extends Controller
                 'Message' => "Your Current password does not matches with the password you provided. Please try again."
             ], 200); // Status code 
         } else {
-            $user = User::find($id);
+            $user = DashboardUser::find($id);
             $user->password = Hash::make($request->get('password'));
             $user->update();
             if ($user) {
