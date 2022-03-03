@@ -17,7 +17,7 @@
                         <img src="{{ URL::asset ('/assets/images/akc-logo.png') }}" alt="" height="18">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ URL::asset ('/assets/images/akc-logo.png') }}" alt="" height="22">
+                        <img src="{{ URL::asset ('/assets/images/Logo-Al-Khairi-Care.png') }}" alt="" height="38">
                     </span>
                 </a>
             </div>
