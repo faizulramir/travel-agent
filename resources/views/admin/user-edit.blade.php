@@ -77,11 +77,17 @@
                                     <input class="form-control" type="text" name="ssm_no" value="{{ $user->ssm_no }}" placeholder="Enter SSM Number" required>
                                 </div>
                             </div>
-                            <div class="col-lg-4" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                            <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
                                 <div>
                                     <label for="plan">SSM Cert.</label>
                                     <br>
-                                    <a style="display: {{ $user->ssm_cert == null ? 'none': 'block' }}" href="{{ route('ssm_cert_download', $user->id) }}" class="btn btn-primary waves-effect waves-light col-md-6">Download Cert</a>
+                                    <input type="file" class="form-control" name="ssm_cert">
+                                </div>
+                            </div>
+                            <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                                <div>
+                                    <label for="plan">Download</label>
+                                    <a style="display: {{ $user->ssm_cert == null ? 'none': 'block' }}" href="{{ route('ssm_cert_download', $user->id) }}" class="btn btn-primary waves-effect waves-light">Download Cert</a>
                                 </div>
                             </div>
                             <div class="col-lg-4">

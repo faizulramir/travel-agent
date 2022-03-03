@@ -988,13 +988,22 @@ class AdminController extends Controller
 
     public function user_edit_post (Request $request) {
         // dd($request->all());
+        $filename = $request->file('ssm_cert')->getClientOriginalName();
+
         $user = DashboardUser::where('id', $request->id)->first();
         $user->email = $request->email;
         $user->name = $request->name;
         $user->dob =  date('Y-m-d', strtotime($request->dob));
         $user->ssm_no = $request->ssm_no;
+        $user->ssm_cert = $filename;
+
+        Storage::deleteDirectory('/'.$user->id.'/ssm/');
+        $path = $request->file('ssm_cert')->storeAs(
+            $user->id.'/ssm/', $filename
+        );
         
         $user->save();
+        
 
         $roles = Role::whereIn('id', [1, 2, 4, 5])->get();
         foreach ($roles as $i => $role) {
