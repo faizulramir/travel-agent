@@ -28,7 +28,6 @@
                         </div>
                         <div class="col-md-6" style="text-align: right;">
                             <a href="{{ route('export_claim', $file_id) }}" class="btn btn-primary w-md">
-                                <!-- <i class="bx bxs-printer font-size-24" title="Export to Excel"></i> -->
                                 Export Claims To Excel
                             </a>
                         </div>
@@ -40,14 +39,14 @@
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
                                     <th data-priority="1" width="15%">Patient Name</th>
-                                    <th data-priority="1" width="10%">Passport No</th>
-                                    <th data-priority="3" width="10%">DEP Date</th>
-                                    <th data-priority="3" width="10%">RTN Date</th>
-                                    <th data-priority="1">ECare</th>
-                                    <th data-priority="3">PCR Date</th>
-                                    <th data-priority="3">TPA</th>
+                                    <th data-priority="1" width="8%">Passport No</th>
+                                    <th data-priority="1" width="8%">DEP Date</th>
+                                    <th data-priority="1" width="8%">RTN Date</th>
+                                    <th data-priority="1" width="8%">ECare</th>
+                                    <th data-priority="1" width="8%">PCR Date</th>
+                                    <th data-priority="1" width="15%">TPA</th>
                                     <th data-priority="1" width="5%">Quarantine</th>
-                                    <th data-priority="1">Action</th>
+                                    <th data-priority="3" width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>

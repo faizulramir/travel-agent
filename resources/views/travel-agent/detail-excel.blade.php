@@ -49,10 +49,11 @@
                             </div>
                         @endif
                         @if (Session::has('error'))
-                            <div class="alert alert-warning text-center">
+                            <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('error') }}</p>
                             </div>
-                        @endif                        
+                        @endif                     
                         <div class="col-md-3" style="text-align: left;">
                             <a href="{{ route('excel_list') }}" class="btn btn-primary w-md">
                                 <i class="bx bx-chevrons-left font-size-24" title="Back"></i>

@@ -18,30 +18,47 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12" style="text-align: right;">
-                            <a href="{{ route('user_add') }}" class="btn btn-primary w-md" >Add User</a>
+                     <div class="row">
+                        <div class="col-md-12 text-center">
+                            @if($errors->any())
+                                <h4 style="color:red;">{{$errors->first()}}</h4>
+                            @endif
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-4" style="text-align: left;">
+                            <a href="{{ route('user_add') }}" class="btn btn-primary w-md" >Add User</a>
+                        </div>
+                        <div class="col-md-4" style="text-align: right;">
+                        </div>  
+                        <div class="col-md-4" style="text-align: right;">
+                            <a href="{{ route('user_list') }}" class="btn btn-primary w-md">Refresh</a>
+                        </div>                                              
+                    </div>
                     <br>
+
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="3">Email</th>
-                                    <th data-priority="1">Register Date</th>
-                                    <th data-priority="3">Role</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="10%">Email</th>
+                                    <th data-priority="1" width="15%">Name</th>
+                                    <th data-priority="1" width="8%">Contact No</th>
+                                    <th data-priority="1" width="10%">Company</th>
+                                    <th data-priority="1" width="10%">Registered</th>
+                                    <th data-priority="1" width="10%">Role</th>
+                                    <th data-priority="3" width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($users as $i => $user)
                                     <tr>
                                         <td>{{ $i + 1 }}</td>
-                                        <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->phone }}</td>
+                                        <td>{{ $user->company_name }}</td>
                                         <td>{{ $user->created_at }}</td>
                                         <td>
                                             @if ($user->hasAnyRole('akc'))
@@ -49,19 +66,19 @@
                                             @else
                                                 <input type="hidden" name="user_id{{$user->id}}" id="user_id{{$user->id}}" value="{{ $user->id }}">
                                                 <select id="role{{$user->id}}" name="role{{$user->id}}" class="form-control select2-search-disable" onchange="clicked(event, {{$user->id}})" required>
-                                                    <option value="no_role" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>No Role (Not Activated)</option>
+                                                    {{-- <option value="no_role" {{ isset($user->getRoleNames()[0]) ? 'selected' : '' }}>No Role (Not Activated)</option> --}}
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->id }}" {{ isset($user->getRoleNames()[0]) ? $user->getRoleNames()[0] == $role->name ? 'selected' : '' : ''}}>
                                                             @if ($role->name == 'ind')
-                                                                Individu
+                                                                DIY Individu
                                                             @elseif ($role->name == 'ag')
-                                                                Agent
+                                                                DIY Agent
                                                             @elseif ($role->name == 'tra')
                                                                 Travel Agent
                                                             @elseif ($role->name == 'fin')
-                                                                Finance
+                                                                AKC Finance
                                                             @elseif ($role->name == 'mkh')
-                                                                Makkah
+                                                                AKC Makkah
                                                             @elseif ($role->name == 'disabled')
                                                                 Disabled
                                                             @endif

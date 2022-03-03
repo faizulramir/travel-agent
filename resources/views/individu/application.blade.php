@@ -31,13 +31,13 @@
                             </div>
                             <div class="col-lg-4">
                                 <div>
-                                    <label class="form-label">Passport Number</label>
+                                    <label class="form-label">Passport No</label>
                                     <input class="form-control" type="text" name="passport_no" placeholder="Enter Passport Number" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
-                                    <label class="form-label">IC Number</label>
+                                    <label class="form-label">IC No</label>
                                     <input class="form-control" type="text" name="ic_no" placeholder="Enter IC No" required>
                                 </div>
                             </div>
@@ -46,13 +46,13 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div>
-                                    <label class="form-label">Ex Illness</label>
+                                    <label class="form-label">Existing Illness</label>
                                     <input class="form-control" type="text" name="ex_ill" placeholder="Enter Ex Illness" value="NONE" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
-                                    <label class="form-label">Phone Number</label>
+                                    <label class="form-label">Phone No</label>
                                     <input class="form-control" type="text" name="phone_no" placeholder="Enter Phone No" required>
                                 </div>
                             </div>

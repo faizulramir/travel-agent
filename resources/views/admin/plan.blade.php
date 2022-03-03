@@ -19,30 +19,36 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12" style="text-align: right;">
-                            <a href="{{ route('plan_add') }}" class="btn btn-primary w-md" >Add Plan</a>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-12 text-center">
                             @if($errors->any())
                                 <h4 style="color:red;">{{$errors->first()}}</h4>
                             @endif
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-4" style="text-align: left;">
+                            <a href="{{ route('plan_add') }}" class="btn btn-primary w-md" >Add Plan</a>
+                        </div>
+                        <div class="col-md-4" style="text-align: right;">
+                        </div>  
+                        <div class="col-md-4" style="text-align: right;">
+                            <a href="{{ route('plan_list') }}" class="btn btn-primary w-md">Refresh</a>
+                        </div>                          
+                    </div>
                     <br>
+
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="20%">Name</th>
+                                    <th data-priority="1" width="12%">Name</th>
                                     <th data-priority="1" width="10%">Price (RM)</th>
-                                    <th data-priority="1" width="15%">Addt. Day Price (RM)</th>
+                                    <th data-priority="1" width="12%">Addt. Day Price (RM)</th>
                                     <th data-priority="1" width="10%">Coverage Days</th>
-                                    <th data-priority="3" width="20%">Description</th>
-                                    <th data-priority="3" width="5%">Quantity</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="1" width="20%">Description</th>
+                                    <th data-priority="1" width="5%">Quantity</th>
+                                    <th data-priority="3" width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,7 +59,6 @@
                                         <td>{{ $plan->price }}</td>
                                         <td>{{ $plan->price_per_day }}</td>
                                         <td>{{ $plan->total_days }}</td>
-                                        {{-- <td>{{ !empty($orders[$i]) ? array_keys($orders[$i])[0] == $plan->name ? $orders[$i][$plan->name] : 0 : 0 }}</td> --}}
                                         <td>{{ $plan->description }}</td>
                                         <td>
                                             @foreach ($orders as $i => $order) 
