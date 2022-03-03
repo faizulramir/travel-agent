@@ -959,6 +959,9 @@ class AdminController extends Controller
             $user->dob =  date('Y-m-d', strtotime($request->dob));
             $user->ssm_cert = $filename;
             $user->ssm_no =  $request->ssm_no;
+            $user->phone =  $request->phone;
+            $user->company_name =  $request->company_name;
+            $user->company_location =  $request->company_location;
             
             $user->save();
 
