@@ -7,6 +7,12 @@
 @section('css')
     <!-- owl.carousel css -->
     <link rel="stylesheet" href="{{ URL::asset('/assets/libs/owl.carousel/owl.carousel.min.css') }}">
+
+    <style>
+        .img2 {
+            margin-top:10%;
+        }
+    </style>
 @endsection
 
 @section('body')
@@ -23,17 +29,26 @@
                     <div class="col-xl-9">
                         <div class="auth-full-bg pt-lg-5 p-4">
                             <div class="w-100">
-                                <div class="bg-overlay"></div>
+                                <div class="bg-overlay">
+
+                                    <div class="img2">
+                                        <div style="float:left;margin-left:20px;">
+                                            <img src="{{ URL::asset('/assets/images/wanita2.png') }}" alt="" class="auth-logo-dark">
+                                        </div>
+                                        <div style="float:left;margin-top:10%;color:#0f3e84;">
+                                            <span style="font-size:2.05rem; font-weight:300;">Just care on your spiritual journey,<span><br>
+                                            <span style="font-size:3.85rem; font-weight:900;margin-top:-30px;">Let us care about you.</span>
+                                        </div>
+                                        <div style="clear:both;"></div>
+                                    </div>
+
+                                </div>
                                 <div class="d-flex h-100 flex-column">
 
                                     <div class="p-4 mt-auto">
                                         <div class="row justify-content-center">
                                             <div class="col-lg-7">
-                                                <div class="text-center">
-                                                    <span class="logo-lg">
-                                                        <img src="{{ URL::asset ('/assets/images/myori.png') }}" alt="" height="100">
-                                                    </span>
-                                                </div>
+                                                <div class="text-center"></div>
                                             </div>
                                         </div>
                                     </div>
