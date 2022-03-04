@@ -33,7 +33,6 @@
             -->
 
 
-
            <!-- App Search-->
            {{-- <form class="app-search d-none d-lg-block">
             <div class="position-relative">
@@ -388,6 +387,26 @@
                 </div>
             </div>
         </div> --}}
+
+
+
+        <div class="dropdown d-inline-block">
+            <button type="button" class="btn header-item waves-effect" id="page-header-noti-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="d-none d-xl-inline-block ms-1" key="t-henry"><i class="bx bx-bell font-size-20"></i></i></span>
+                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" id="page-header-noti-dropdown-data" style="width:100px">
+                {{--
+                <div style="margin:3px;">Noti1 jkhfksdf skdhfsdk skhdfksd sdkhfsdk kshdfksd kshdfksd</div>
+                <div class="dropdown-divider"></div>
+                <div style="margin:3px;">Noti1 jkhfksdf skdhfsdk skhdfksd sdkhfsdk kshdfksd kshdfksd</div>
+                <div class="dropdown-divider"></div>                    
+                <div style="margin:3px;">Noti1 jkhfksdf skdhfsdk skhdfksd sdkhfsdk kshdfksd kshdfksd</div>
+                --}}
+            </div>
+        </div>   
+        
+        
 
         <div class="dropdown d-inline-block">
             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"

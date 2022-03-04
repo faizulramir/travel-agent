@@ -12,7 +12,10 @@
     });
 
     $( document ).ready(function() {
-        setInterval(getNotification, 18000);
+        @if(auth()->user()->hasAnyRole('akc') || auth()->user()->hasAnyRole('fin'))
+            setTimeout(getNotification, 10000);
+            setInterval(getNotification, 90000);    //90s
+        @endif
     });
 
     function getNotification () {
@@ -21,34 +24,43 @@
             type:"GET",
             success:function(data){
                 $("#notificationModalbody").empty();
-                console.log($("#rolesId").val());
+                //console.log("noti: ", data);
+                //console.log("count: ", data.Data.length);
+                //console.log($("#rolesId").val());
                 var roles = $("#rolesId").val();
                 if (data.Data.length > 0 && (roles == 'akc' || roles == 'fin')) {
-                    $("#notificationModal").modal("show");
+                    $("#page-header-noti-dropdown-data").empty();
+                    var loop = 0;
                     data.Data.forEach(e => {
                         var status = ''
                         if (e.status == '0') {
-                            status = 'Pending Submission'
+                            status = ''; //'Pending Submission'
                         } else if (e.status == '2') {
                             status = 'Pending AKC (Approval)'
                         } else if (e.status == '2.1' || e.status == '2.2' || e.status == '2.3') {
                             status = 'Pending AKC (Invoice)'
                         } else if (e.status == '3') {
-                            status = 'Pending Payment'
+                            status = ''; //'Pending Payment'
                         } else if (e.status == '4') {
                             status = 'Pending AKC (Payment) Endorsement'
                         } else if (e.status == '5') {
-                            status = 'COMPLETED'
+                            status = ''; //'COMPLETED'
                         } else if (e.status == '99') {
-                            status = 'EXCEL REJECTED'
+                            status = ''; //'EXCEL REJECTED'
                         }
-                        $("#notificationModalbody").append('<p> '+ status + ' - ' + e.file_name + '</p>');
+
+                        if (status!='') {
+                            loop = loop + 1;
+                            $("#notificationModalbody").append('<p> '+ status + ' - ' + e.file_name + ' - ' + e.ta_name +'</p>');
+                            let html = '<div style="margin:5px;font-size:0.75rem;"><b>' + status + '</b> - ' + e.file_name + ' <b>' + e.ta_name + '</b></div><div class="dropdown-divider"></div>'
+                            $("#page-header-noti-dropdown-data").append(html);
+                        }
                     });
-                    
+                    if (loop > 0) $("#notificationModal").modal("show");
+
                 } else {
                     $("#notificationModal").modal("hide");
                 }
-                
             }
         });
     }
