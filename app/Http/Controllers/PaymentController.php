@@ -699,7 +699,7 @@ class PaymentController extends Controller
             Storage::put(Auth::id().'/ecert/'.$id.'/'.$orders->passport_no.'.pdf',$content);
         }
         
-        $pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
+        $pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'], ['status', '=', '1']])->get();
         $tmpArr = array();
         foreach ($pdf_id as $key => $pdf) {
             array_push($tmpArr, Storage::path(Auth::id().'/ecert/'.$id.'/'.$pdf->passport_no.'.pdf'));
