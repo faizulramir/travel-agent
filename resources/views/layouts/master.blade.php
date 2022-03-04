@@ -36,6 +36,13 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
+                                @if(auth()->user()->hasAnyRole('akc'))
+                                    <input type="hidden" id="rolesId" name="rolesId" value="akc">
+                                @elseif(auth()->user()->hasAnyRole('fin'))
+                                    <input type="hidden" id="rolesId" name="rolesId" value="fin">
+                                @else
+                                    <input type="hidden" id="rolesId" name="rolesId" value="">
+                                @endif
                                 <div class="modal-body" id="notificationModalbody">
                                     
                                 </div>
