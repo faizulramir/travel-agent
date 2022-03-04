@@ -661,7 +661,7 @@ class PaymentController extends Controller
 
 
     public function ecert_all ($id) {
-        $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->get();
+        $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'], ['status', '=', '1']])->get();
 
         if ($order) ini_set('max_execution_time', '500');
 
@@ -699,7 +699,7 @@ class PaymentController extends Controller
             Storage::put(Auth::id().'/ecert/'.$id.'/'.$orders->passport_no.'.pdf',$content);
         }
         
-        $pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
+        $pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'], ['status', '=', '1']])->get();
         $tmpArr = array();
         foreach ($pdf_id as $key => $pdf) {
             array_push($tmpArr, Storage::path(Auth::id().'/ecert/'.$id.'/'.$pdf->passport_no.'.pdf'));
