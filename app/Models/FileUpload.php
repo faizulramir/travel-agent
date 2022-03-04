@@ -20,5 +20,8 @@ class FileUpload extends Model
         return $this->belongsTo(DashboardUser::class, 'user_id');
     }
 
-    
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'file_id', 'id');
+    }
 }
