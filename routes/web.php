@@ -183,3 +183,5 @@ Route::get('/get_claim_json/{id}', [App\Http\Controllers\ClaimController::class,
 Route::get('/export_claim/{id}', [App\Http\Controllers\ClaimController::class, 'export_claim'])->name('export_claim');
 
 
+//notification
+Route::get('/notification', [App\Http\Controllers\NotificationController::class, 'get_notification'])->name('get_notification');
