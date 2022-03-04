@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title') EXCEL DETAIL @endsection
+@section('title') EXCEL LIST @endsection
 
 @section('css')
     <!-- Responsive Table css -->
@@ -13,136 +13,145 @@
 
     @component('components.breadcrumb')
         @slot('li_1') FINANCE @endslot
-        @slot('title') EXCEL DETAIL @endslot
+        @slot('title') EXCEL LIST @endslot
     @endcomponent
-
-    <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Center modal</h5>
-                    <button type="button" id="btnClose" onclick="deleteAll({{$uploads->id}})" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <button class="btn btn-primary" id="btnBefore" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        Loading...
-                    </button>
-
-                    <a id="btnAfter" href="{{ route('download_all_cert', $uploads->id) }}" class="btn btn-primary">
-                        Download
-                    </a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        @if (Session::has('success'))
-                            <div class="alert alert-success text-center alert-dismissible" role="alert">
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                <p>{{ Session::get('success') }}</p>
-                            </div>
-                        @endif
-                        @if (Session::has('error'))
-                            <div class="alert alert-warning text-center alert-dismissible" role="alert">
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                <p>{{ Session::get('error') }}</p>
-                            </div>
-                        @endif 
-                        <div class="col-md-3" style="text-align: left;">
-                            <a href="{{ route('excel_list_finance') }}" class="btn btn-primary w-md">
-                                <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
-                            </a>
+                        <div class="col-md-3">
+                            <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                            <a href="{{ route('download_template') }}" class="btn btn-primary w-md" target="_blank">Download Excel Template</a>
+                            {{-- <button type="submit" class="btn btn-primary w-md" id="add_button">Add Excel</button> --}}
                         </div>
-                        <div class="col-md-3 text-left">
-                            <h6>Travel Agent Name: {{ $uploads->ta_name? strtoupper($uploads->ta_name) : $uploads->ta_name }}</h6>
-                            <h6>Filename: {{ $uploads->file_name? strtoupper($uploads->file_name) : $uploads->file_name }}</h6>
-                            <h6>Supporting Documents: {{ $uploads->supp_doc ? $uploads->supp_doc === '1' ? 'UPLOADED' : 'Not Uploaded' :  'Not Uploaded' }}</h6>
-                            <h6>Payment: {{ $payment ? 'PAID' : '-' }}</h6>
+                        <div class="col-md-7">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="padding:8px;">
+                                            <h4 style="color:orange;">{{ $stats_arr && $stats_arr['pending1'] ? $stats_arr['pending1'] : 0 }} <span class="badge badge-primary align-top" style="color:#606060;vertical-align:top;font-size:0.85rem;">Pending Invoice Endorsement</span></h4>
+                                        </td>
+                                        <td style="padding:8px;">
+                                            <h4 style="color:orange;">{{ $stats_arr && $stats_arr['pending2'] ? $stats_arr['pending2'] : 0 }} <span class="badge badge-primary align-top" style="color:#606060;vertical-align:top;font-size:0.85rem;"">Pending Payment Endorsement</span></h4>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>                        
+                        <div class="col-md-2" style="text-align: right;">
+                            <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">
+                                Refresh
+                                <!--<i class="bx bx-loader-circle font-size-24" title="Refresh"></i>-->
+                            </button>
                         </div>
-                        <div class="col-md-6" style="text-align: right;">
-                            <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" onclick="openDetail({{$uploads->id}},'{{$uploads->supp_doc}}')">Supporting Documents</a>
-                        </div>  
                     </div>
                     <br>
-
                     <div>
                         <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="15%">Name</th>
-                                    <th data-priority="1" width="8%">Passport No</th>
-                                    <th data-priority="1" width="8%">IC No</th>
-                                    <th data-priority="1" width="8%">DEP Date</th>
-                                    <th data-priority="1" width="8%">RTN Date</th>
-                                    <th data-priority="1" width="8%">ECare Plan</th>
-                                    <th data-priority="1" width="5%">PCR</th>
-                                    <th data-priority="1" width="10%">TPA</th>
-                                    @if ($uploads->status === '5')
-                                        <th data-priority="1" width="8%">ECert</th>
-                                    @endif                                          
-                                    <th data-priority="3" width="8%">Status</th>
+                                    <th data-priority="1" width="15%">Requester</th>
+                                    <th data-priority="1" width="15%">Filename</th>
+                                    <th data-priority="1" width="5%">Jemaah</th>
+                                    <th data-priority="1" width="10%">Submission</th>
+                                    <th data-priority="1" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Payment</th>
+                                    <th data-priority="1" width="10%">Status</th>
+                                    <th data-priority="3" width="15%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($orders as $i => $order)
+                                @php
+                                $bil1 = 0
+                                @endphp
+
+                                @foreach ($uploads as $i => $upload)
+                                    @if($upload->status != '5')
+                                    @php 
+                                    $bil1 = $bil1 + 1
+                                    @endphp
                                     <tr>
-                                        <td>{{ $i + 1 }}</td>
-                                        <td>{{ $order->name }}</td>
-                                        <td>{{ $order->passport_no  }}</td>
-                                        <td>{{ $order->ic_no }}</td>
-                                        <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : ''}}</td>
-                                        <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>                                        
-                                        <td>{{ $order->plan_type }} {{ $additional_arr[$i]['DIFDAY'] }}</td>
-                                        <td>{{ $order->pcr }}</td>
-                                        <td>{{ $order->tpa }}</td>
-                                        @if ($uploads->status === '5')
-                                            <td>
-                                                @if ($order->plan_type != 'NO')
-                                                    {{ $order->ecert }}
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>                                            
-                                        @endif
+                                        <td>{{ $bil1 }}</td>
+                                        <td>{{ strtoupper($upload->user->name) }}</td>
+                                        <td>{{ strtoupper($upload->file_name) }}</td>
+
                                         <td>
-                                            @if ($order->status == '1')
-                                                <a href="#" class="waves-effect" style="color: green;">
-                                                    <i class="bx bx-like font-size-24" title="Traveller: OK"></i>
-                                                </a>
+                                            @if($rec_count_arr && $rec_count_arr[$i] && $rec_count_arr[$i] > 0)
+                                                {{ $rec_count_arr[$i] }}
+                                            @endif
+                                        </td>
+
+                                        <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
+                                        <td>
+                                            @if ($upload->supp_doc == null)
+                                                Not Uploaded
                                             @else
-                                                @if ($order->status == '0')
-                                                    <a href="#" class="waves-effect" style="color: red;">
-                                                        <i class="bx bx-dislike font-size-24" title="Traveller: Cancelled"></i>
-                                                    </a>   
-                                                @elseif ($order->status == '2') 
-                                                    <a href="#" class="waves-effect" style="color: red;">
-                                                        <i class="bx bx-dislike font-size-24" title="Traveller: Unboarding"></i>
-                                                    </a>
-                                                @elseif ($order->status == '3')  
-                                                    <a href="#" class="waves-effect" style="color: red;">
-                                                        <i class="bx bx-dislike font-size-24" title="Traveller: Reschedule"></i>
-                                                    </a>
-                                                @endif                                          
+                                                UPLOADED
                                             @endif
-                                            @if ($payment && $order->upload->status == '5')
-                                                @if ($order->plan_type != 'NO')
-                                                    <a href="{{ route('create_cert_ind', $order->id) }}" class="waves-effect" style="color: green;" target="_blank">
-                                                        <i class="bx bx-food-menu font-size-24" title="Print ECert"></i>
-                                                    </a>
-                                                @endif                                                
+                                        </td>
+                                        <td>{{ $upload->status == '5' || $upload->status == '4' ? 'PAID' : 'UNPAID' }}</td>
+                                        <td>
+                                            @if ($upload->status == '3')
+                                                INVOICE ENDORSED
+                                            @elseif ($upload->status == '4')
+                                                Pending (Payment) Endorsement
+                                            @elseif ($upload->status == '5')
+                                                PAYMENT ENDORSED
+                                            @elseif ($upload->status == '2.1')
+                                                Pending (Invoice) Endorsement
+                                            @else 
+                                                -
                                             @endif
+                                        </td>
+                                        <td>
+
+                                            @if ($upload->status == '5')
+                                                <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                </a>
+                                            @endif
+
+                                            <a href="{{ route('payment_detail', $upload->id) }}" class="waves-effect" style="color: green;">
+                                                <i class="bx bx-money font-size-24" title="Payment Detail"></i>
+                                            </a>
+
+                                            {{-- @if ($upload->payment)
+                                                <a href="{{ route('download_payment', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: green;">
+                                                    <i class="bx bx-food-menu font-size-24" title="Show Payslip/Receipt"></i>
+                                                </a>
+                                            @endif --}}
+
+                                            @if($upload->status != '0' && $upload->status != '2')
+                                                <a href="#" class="waves-effect" style="color: black;">
+                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
+                                                </a>
+                                            @endif
+
+                                            <a href="{{ route('excel_detail_finance', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                            </a>
 
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th data-priority="0"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="3"></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -150,7 +159,169 @@
         </div>
     </div>
 
-    <!--
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="card-title">Database</div>
+                        <!--
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="search_by">Search By Year</label>
+                                <select id="search_yy" name="search_yy" class="form-control select2-search-disable" required>
+                                    <option value="2022" selected>2022</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="search_by">Search By Month</label>
+                                <select id="search_mm" name="search_mm" class="form-control select2-search-disable" required>
+                                    <option value="01" selected>JAN</option>
+                                    <option value="02" >FEB</option>
+                                    <option value="03" >MAR</option>
+                                    <option value="04" >APR</option>
+                                    <option value="05" >MAY</option>
+                                    <option value="06" >JUN</option>
+                                    <option value="07" >JUL</option>
+                                    <option value="08" >AUG</option>
+                                    <option value="09" >SEP</option>
+                                    <option value="10" >OCT</option>
+                                    <option value="11" >NOV</option>
+                                    <option value="12" >DEC</option>
+                                </select>
+                            </div>                                
+
+                            {{-- <div class="col-md-4">
+                                <label for="plan">Search Requester Name</label>
+                                <input type="text" class="form-control col-md-2" id="search_val" name="search_val" placeholder="Enter search text">
+                            </div>--}}
+                            <div class="col-md-4">
+                                <label for="plan">&nbsp;</label>
+                                <br>
+                                <button class="btn btn-primary waves-effect waves-light col-md-4" type="button" title="Search Record" id="searchDash">Search</button>
+                            </div>           
+                            <div class="col-md-4"></div>                     
+                        </div>
+                        -->
+                    </div>
+                    <br>
+                    <div>
+                        <table id="datatable2" class="table table-bordered dt-responsive w-100">
+                            <thead>
+                                <tr>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="15%">Requester</th>
+                                    <th data-priority="1" width="15%">Filename</th>
+                                    <th data-priority="1" width="5%">Jemaah</th>
+                                    <th data-priority="1" width="10%">Submission</th>
+                                    <th data-priority="1" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Payment</th>
+                                    <th data-priority="1" width="10%">Status</th>
+                                    <th data-priority="3" width="15%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                $bil2 = 0
+                                @endphp
+
+                                @foreach ($uploads as $i => $upload)
+                                    @if($upload->status == '5')
+                                    @php 
+                                    $bil2 = $bil2 + 1
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $bil2}}</td>
+                                        <td>{{ strtoupper($upload->user->name) }}</td>
+                                        <td>{{ strtoupper($upload->file_name) }}</td>
+
+                                        <td>
+                                            @if($rec_count_arr && $rec_count_arr[$i] && $rec_count_arr[$i] > 0)
+                                                {{ $rec_count_arr[$i] }}
+                                            @endif
+                                        </td>
+
+                                        <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
+                                        <td>
+                                            @if ($upload->supp_doc == null)
+                                                Not Uploaded
+                                            @else
+                                                UPLOADED
+                                            @endif
+                                        </td>
+                                        <td>{{ $upload->status == '5' || $upload->status == '4' ? 'PAID' : 'UNPAID' }}</td>
+                                        <td>
+                                            @if ($upload->status == '4')
+                                                Pending (Payment) Endorsement
+                                            @elseif ($upload->status == '5')
+                                                ENDORSED
+                                            @elseif ($upload->status == '2.1')
+                                                Pending (Invoice) Endorsement
+                                            @else 
+                                                -
+                                            @endif
+                                        </td>
+                                        <td>
+
+                                            {{--<a href="{{ route('upload_detail', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                            </a>--}}
+
+                                            @if ($upload->status == '5')
+                                                <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                                    <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                </a>
+                                            @endif
+
+                                            <a href="{{ route('payment_detail', $upload->id) }}" class="waves-effect" style="color: green;">
+                                                <i class="bx bx-money font-size-24" title="Payment Detail"></i>
+                                            </a>
+
+                                            {{-- @if ($upload->payment)
+                                                <a href="{{ route('download_payment', [$upload->user_id, $upload->id]) }}" class="waves-effect" style="color: green;">
+                                                    <i class="bx bx-food-menu font-size-24" title="Show Payslip/Receipt"></i>
+                                                </a>
+                                            @endif --}}
+
+                                            @if($upload->status != '0' && $upload->status != '2')
+                                                <a href="#" class="waves-effect" style="color: black;">
+                                                    <i onclick="openDetail({{$upload->id}},'{{$upload->supp_doc}}')" class="bx bxs-cloud-upload font-size-24" title="Supporting Documents"></i>
+                                                </a>
+                                            @endif
+
+                                            <a href="{{ route('excel_detail_finance', $upload->id) }}" class="waves-effect" style="color: #ed2994;">
+                                                    <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th data-priority="0"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="3"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!-- 
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -251,9 +422,9 @@
                 </div>
             </div>
         </div>
-    </div> 
-    -->   
-
+    </div>
+    -->
+    
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
@@ -310,7 +481,9 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>   
+
+
 
 @endsection
 @section('script')
@@ -322,46 +495,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-        function openUploadDoc(id) {
-            $('#showSuppDoc').modal('show');
-        }
-
-        function closeDetail() {
-            //alert("close");
-            location.reload();
-        }
-
-        function openDetail (id, docs) {
-            $("#suppId").val(id);
-            $("#suppdocs").val(docs);
-            
-            if (docs.includes('P')) {
-                $('#passportdownload').html('<a href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">Download</a>');
-            } else {
-                $('#passportdownload').html('');
-            }
-
-            if (docs.includes('T')) {
-                $('#eticketdownload').html('<a href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">Download</a>');
-            } else {
-                $('#eticketdownload').html('');
-            }
-
-            if (docs.includes('V')) {
-                $('#visadownload').html('<a href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">Download</a>');
-            } else {
-                $('#visadownload').html('');
-            }
-
-            if (docs.includes('R')) {
-                $('#payreceiptdownload').html('<a href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">Download</a>');
-            } else {
-                $('#payreceiptdownload').html('');
-            }
-
-            $('#showSuppDoc').modal('show');
-        }
 
         function chooseSupDoc (type) {
             if (type == 'eticket') {
@@ -518,6 +651,142 @@
             }
             
         }
+
+        function openDetailX (id, docs) {
+            $("#suppId").val(id);
+            $("#suppdocs").val(docs);
+            
+            if (docs.includes('P')) {
+                $('#passportdownload').html('<a href="/supp_doc_download_admin/' + id + '/passport" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#passportdownload').html('');
+            }
+
+            if (docs.includes('T')) {
+                $('#eticketdownload').html('<a href="/supp_doc_download_admin/' + id + '/eticket" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#eticketdownload').html('');
+            }
+
+            if (docs.includes('V')) {
+                $('#visadownload').html('<a href="/supp_doc_download_admin/' + id + '/visa" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#visadownload').html('');
+            }
+
+            if (docs.includes('R')) {
+                $('#payreceiptdownload').html('<a href="/supp_doc_download_admin/' + id + '/payreceipt" class="btn btn-success" type="submit">Download</a>');
+            } else {
+                $('#payreceiptdownload').html('');
+            }
+
+            $('#showSuppDoc').modal('show');
+
+            
+            // $(document).ready(function() {
+            //     var supp_id = id;
+            //     $("#add_supp_doc" + id).val(null);
+            //     $("#add_supp_doc" + id).trigger("click");
+
+            //     $("#add_supp_doc" + supp_id).change(function () {
+            //         var form_data = new FormData();
+            //         form_data.append("file", $("#add_supp_doc" + supp_id)[0].files[0]);
+            //         form_data.append("id", supp_id);
+            //         $.ajax({
+            //             url: '/supp_doc_post_admin',
+            //             type: 'POST',
+            //             data: form_data,
+            //             dataType: 'JSON',
+            //             cache: false,
+            //             contentType: false,
+            //             processData: false,
+            //             success: function (data) {
+            //                 alert(data.Data)
+            //                 location.reload()
+            //             }
+            //         });
+            //     });
+            // });
+        }
+
+        $("#add_button").click(function () {
+            $("#add_excel").val(null);
+            $("#add_excel").trigger("click");
+        });
+
+        
+
+        $('#refreshBtn').click(function() {
+            $('#datatable').DataTable().state.clear();
+            location.reload();
+        });
+
+        function approved(e)
+        {
+            if(!confirm('Are you sure to Approve?')) {
+                e.preventDefault();
+            }
+        }
+
+        function reject(e)
+        {
+            if(!confirm('Are you sure to Reject?')) {
+                e.preventDefault();
+            }
+        }
+
+        //enabling datatable filters
+        $(document).ready(function() {
+            $('#datatable').DataTable( {
+                saveState: true,
+                initComplete: function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        if (column[0]==1 || column[0]==4 || column[0]==7) {
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    column
+                                        .search( val ? '^'+val+'$' : '', true, false )
+                                        .draw();
+                                } );
+                            column.data().unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'">'+d+'</option>' )
+                            } );
+                        }
+                    } );
+                }
+            } );
+        } );
+
+        $(document).ready(function() {
+            $('#datatable2').DataTable( {
+                saveState: true,
+                initComplete: function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        if (column[0]==1 || column[0]==4 || column[0]==7) {
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    column
+                                        .search( val ? '^'+val+'$' : '', true, false )
+                                        .draw();
+                                } );
+                            column.data().unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'">'+d+'</option>' )
+                            } );
+                        }
+                    } );
+                }
+            } );
+        } );        
 
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

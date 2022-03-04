@@ -108,6 +108,7 @@ Route::post('/supp_doc_post_admin', [App\Http\Controllers\AdminController::class
 Route::get('/supp_doc_download_admin/{id}/{type}', [App\Http\Controllers\AdminController::class, 'supp_doc_download_admin'])->name('supp_doc_download_admin');
 Route::get('/supp_doc_check/{id}/{type}', [App\Http\Controllers\AdminController::class, 'supp_doc_check'])->name('supp_doc_check');
 Route::get('/invoice/cancel/{id}', [App\Http\Controllers\AdminController::class, 'cancel_invoice'])->name('cancel_invoice');
+Route::post('/cancel_excel', [App\Http\Controllers\AdminController::class, 'cancel_excel'])->name('cancel_excel');
 
 //regen json
 Route::get('/regenerate/json', [App\Http\Controllers\RegenJsonController::class, 'regen'])->name('regen');

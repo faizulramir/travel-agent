@@ -33,7 +33,7 @@ class FinanceController extends Controller
     
     public function excel_list_finance()
     {
-        $uploads = FileUpload::whereIn('status', ['3', '4', '5', '2.1'])->orderBy('submit_date', 'DESC')->orderBy('status', 'DESC')->get();
+        $uploads = FileUpload::whereIn('status', ['3', '4', '5', '2.1'])->orderBy('status', 'DESC')->orderBy('submit_date', 'DESC')->get();
 
         $stats_arr = array();
         $pending1 = 0;

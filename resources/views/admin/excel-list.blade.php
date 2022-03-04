@@ -453,7 +453,7 @@
                                             @elseif ($upload->status == '5')
                                                 COMPLETED
                                             @elseif ($upload->status == '99')
-                                                EXCEL REJECTED
+                                                EXCEL REJECTED <br>REASON: {{ $upload->remarks }}
                                             @endif
                                         </td>
                                         <td>
@@ -492,6 +492,9 @@
                                                 </a> --}}
                                                 <a href="{{ route('create_invoice', $upload->id) }}" class="waves-effect" style="color: black;" target="_blank">
                                                     <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
+                                                </a>
+                                                <a href="#" class="waves-effect" style="color: red;">
+                                                    <i onclick="modalUpdateExcel({{$upload->id}})" class="bx bx-pencil font-size-24" title="Cancel Order"></i>
                                                 </a>
                                             @elseif ($upload->status == '99')
                                                 {{-- <a href="#" class="waves-effect" style="color: red;">
@@ -636,6 +639,39 @@
         </div>
     </div>
 
+    <div class="modal fade bs-example-modal-center" id="remarksCancelModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Remarks for Cancellation</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <form action="{{ route('cancel_excel') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="remarks">Remarks</label>
+                                        <input type="text" class="form-control" name="remarks" id="remarks">
+                                        <input type="hidden" name="remarkid" id="remarkid">
+                                        <input type="hidden" name="remarkstatus" id="remarkstatus" value="99">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
@@ -667,6 +703,11 @@
             createTimeOut("$('#pleaseWaitDialog').modal('hide')");
             
         });
+
+        function modalUpdateExcel (id) {
+            $('#remarkid').val(id);
+            $('#remarksCancelModal').modal('show');
+        }
         
         $('#refreshBtn').click(function() {
             $('#datatable').DataTable().state.clear();
