@@ -5,6 +5,50 @@
 <script src="{{ URL::asset('assets/libs/simplebar/simplebar.min.js')}}"></script>
 <script src="{{ URL::asset('assets/libs/node-waves/node-waves.min.js')}}"></script>
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $( document ).ready(function() {
+        setInterval(getNotification, 18000);
+    });
+
+    function getNotification () {
+        $.ajax({
+            url: "/notification",
+            type:"GET",
+            success:function(data){
+                $("#notificationModal").modal("show");
+                console.log(data)
+                if (data.Data.length > 0) {
+                    data.Data.forEach(e => {
+                        var status = ''
+                        if (e.status == '0') {
+                            status = 'Pending Submission'
+                        } else if (e.status == '2') {
+                            status = 'Pending AKC (Approval)'
+                        } else if (e.status == '2.1' || e.status == '2.2' || e.status == '2.3') {
+                            status = 'Pending AKC (Invoice)'
+                        } else if (e.status == '3') {
+                            status = 'Pending Payment'
+                        } else if (e.status == '4') {
+                            status = 'Pending AKC (Payment) Endorsement'
+                        } else if (e.status == '5') {
+                            status = 'COMPLETED'
+                        } else if (e.status == '99') {
+                            status = 'EXCEL REJECTED'
+                        }
+                        $("#notificationModalbody").append('<p> '+ status + ' - ' + e.file_name + '</p>');
+                    });
+                    
+                }
+                
+            }
+        });
+    }
+
     $('#change-password').on('submit',function(event){
         event.preventDefault();
         var Id = $('#data_id').val();
