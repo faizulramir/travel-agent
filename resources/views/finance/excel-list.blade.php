@@ -79,9 +79,7 @@
                                         <td>{{ strtoupper($upload->file_name) }}</td>
 
                                         <td>
-                                            @if($rec_count_arr && $rec_count_arr[$i] && $rec_count_arr[$i] > 0)
-                                                {{ $rec_count_arr[$i] }}
-                                            @endif
+                                            {{ count($upload->order) }}
                                         </td>
 
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
@@ -237,9 +235,7 @@
                                         <td>{{ strtoupper($upload->file_name) }}</td>
 
                                         <td>
-                                            @if($rec_count_arr && $rec_count_arr[$i] && $rec_count_arr[$i] > 0)
-                                                {{ $rec_count_arr[$i] }}
-                                            @endif
+                                            {{ count($upload->order) }}
                                         </td>
 
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
