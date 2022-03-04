@@ -53,14 +53,14 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="3" width="10%">Requester</th>
-                                    <th data-priority="1" width="10%">Filename</th>
-                                    <th data-priority="3" width="5%">Jemaah</th>
+                                    <th data-priority="1" width="15%">Requester</th>
+                                    <th data-priority="1" width="15%">Filename</th>
+                                    <th data-priority="1" width="5%">Jemaah</th>
                                     <th data-priority="1" width="10%">Submission</th>
-                                    <th data-priority="3" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Supp. Docs</th>
                                     <th data-priority="1" width="10%">Payment</th>
-                                    <th data-priority="1">Status</th>
-                                    <th data-priority="3">Action</th> 
+                                    <th data-priority="1" width="10%">Status</th>
+                                    <th data-priority="3" width="15%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,9 +87,9 @@
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
                                         <td>
                                             @if ($upload->supp_doc == null)
-                                                <span>Not Uploaded</span>
+                                                Not Uploaded
                                             @else
-                                                <span>UPLOADED</span>
+                                                UPLOADED
                                             @endif
                                         </td>
                                         <td>{{ $upload->status == '5' || $upload->status == '4' ? 'PAID' : 'UNPAID' }}</td>
@@ -142,11 +142,11 @@
                             <tfoot>
                                 <tr>
                                     <th data-priority="0"></th>
-                                    <th data-priority="3"></th>
                                     <th data-priority="1"></th>
-                                    <th data-priority="3"></th>
                                     <th data-priority="1"></th>
-                                    <th data-priority="3"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="3"></th>
@@ -211,14 +211,14 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="3" width="10%">Requester</th>
-                                    <th data-priority="1" width="10%">Filename</th>
-                                    <th data-priority="3" width="5%">Jemaah</th>
+                                    <th data-priority="1" width="15%">Requester</th>
+                                    <th data-priority="1" width="15%">Filename</th>
+                                    <th data-priority="1" width="5%">Jemaah</th>
                                     <th data-priority="1" width="10%">Submission</th>
-                                    <th data-priority="3" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Supp. Docs</th>
                                     <th data-priority="1" width="10%">Payment</th>
-                                    <th data-priority="1">Status</th>
-                                    <th data-priority="3">Action</th> 
+                                    <th data-priority="1" width="10%">Status</th>
+                                    <th data-priority="3" width="15%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -245,9 +245,9 @@
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
                                         <td>
                                             @if ($upload->supp_doc == null)
-                                                <span>Not Uploaded</span>
+                                                Not Uploaded
                                             @else
-                                                <span>UPLOADED</span>
+                                                UPLOADED
                                             @endif
                                         </td>
                                         <td>{{ $upload->status == '5' || $upload->status == '4' ? 'PAID' : 'UNPAID' }}</td>
@@ -302,11 +302,11 @@
                             <tfoot>
                                 <tr>
                                     <th data-priority="0"></th>
-                                    <th data-priority="3"></th>
                                     <th data-priority="1"></th>
-                                    <th data-priority="3"></th>
                                     <th data-priority="1"></th>
-                                    <th data-priority="3"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
+                                    <th data-priority="1"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="1"></th>
                                     <th data-priority="3"></th>

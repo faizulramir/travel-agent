@@ -31,22 +31,43 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div>
-                                    <label class="form-label">Email</label>
+                                    <label class="form-label">Email (will be used as Login ID)</label>
                                     <input class="form-control" type="email" name="email" value="" placeholder="Enter Email" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">Username</label>
+                                    <label for="plan">User Name</label>
                                     <input class="form-control" type="text" name="name" value="" placeholder="Enter Username" required>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Password</label>
+                                    <input class="form-control" type="password" name="password" value="" placeholder="Enter Password" required>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Date Of Birth</label>
                                     <input class="form-control" type="date" name="dob" value="" placeholder="Enter DOB" required>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Company Name</label>
+                                    <input class="form-control" type="text" name="company_name" value="" placeholder="Enter Company Name">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div>
+                                    <label for="plan">Confirm Password</label>
+                                    <input class="form-control" type="password" name="password_confirmation" value="" placeholder="Confirm Password" required>
+                                </div>
+                            </div>                            
                         </div>
                         <br>
                         <div class="row">
@@ -58,51 +79,27 @@
                             </div>
                             <div class="col-lg-4">
                                 <div>
-                                    <label for="plan">Company Name</label>
-                                    <input class="form-control" type="text" name="company_name" value="" placeholder="Enter Company Name" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div>
                                     <label for="plan">Company Location</label>
-                                    <input class="form-control" type="text" name="company_location" value="" placeholder="Enter Company Location" required>
+                                    <input class="form-control" type="text" name="company_location" value="" placeholder="Enter Company Location">
                                 </div>
                             </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div>
-                                    <label for="plan">Password</label>
-                                    <input class="form-control" type="password" name="password" value="" placeholder="Enter Password" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div>
-                                    <label for="plan">Confirm Password</label>
-                                    <input class="form-control" type="password" name="password_confirmation" value="" placeholder="Confirm Password" required>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Role</label>
-                                    <select id="role" name="role" class="form-control select2-search-disable"required>
-                                        <option value="" selected>Please Select</option>
+                                    <select id="role" name="role" class="form-control select2-search-disable" required>
+                                        <option value="" selected>Please Select Role</option>
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}">
-                                                @if ($role->name == 'ind')
-                                                    Individu
+                                                @if ($role->name == 'tra')
+                                                    Travel Agent   
                                                 @elseif ($role->name == 'ag')
-                                                    Agent
-                                                @elseif ($role->name == 'tra')
-                                                    Travel Agent
+                                                    DIY Agent                                                                                                 
+                                                @elseif ($role->name == 'ind')
+                                                    DIY Individu
                                                 @elseif ($role->name == 'fin')
-                                                    Finance
+                                                    AKC Finance
                                                 @elseif ($role->name == 'mkh')
-                                                    Makkah                                                    
+                                                    AKC Makkah                                                    
                                                 @elseif ($role->name == 'disabled')
                                                     Disabled
                                                 @endif
@@ -110,7 +107,11 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                            </div>                            
+                        </div>
+                        <br>
+                        <div class="row">
+
                             <div class="col-lg-4" id="ssm_no" style="display: none;">
                                 <div>
                                     <label for="plan">SSM Number</label>

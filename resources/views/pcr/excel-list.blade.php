@@ -29,12 +29,18 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        @if (Session::has('success'))
+                    @if (Session::has('success'))
                             <div class="alert alert-success text-center alert-dismissible" role="alert">
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
+                        @if (Session::has('error'))
+                            <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <p>{{ Session::get('error') }}</p>
+                            </div>
+                        @endif 
                         <div class="col-md-6"></div>
                         <div class="col-md-6" style="text-align: right;">
                             <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">Refresh</button>
@@ -48,7 +54,7 @@
                                     <th data-priority="0" width="5%">#</th>
                                     <th data-priority="1" width="15%">Travel Agent</th>
                                     <th data-priority="1" width="20%">Filename</th>
-                                    <th data-priority="3" width="10%">Submission</th>
+                                    <th data-priority="1" width="10%">Submission</th>
                                     <th data-priority="1" width="10%">Status</th>
                                     <th data-priority="1" width="8%">PCR Applicant</th>
                                     <th data-priority="1" width="5%">Quarantine</th>

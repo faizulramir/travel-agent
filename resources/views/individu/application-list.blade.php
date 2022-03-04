@@ -27,6 +27,12 @@
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
+                        @if (Session::has('error'))
+                            <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <p>{{ Session::get('error') }}</p>
+                            </div>
+                        @endif                        
                         <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                         <div class="col-md-6 text-left">
                             <a href="#" class="btn btn-primary w-md" id="button-choose">Apply</a>
@@ -45,12 +51,12 @@
                                     <th data-priority="0" width="5%">#</th>
                                     <th data-priority="1" width="25%">Filename</th>
                                     <th data-priority="3" width="5%">Jemaah</th>
-                                    <th data-priority="3" width="10%">Upload Date</th>
+                                    <th data-priority="3" width="8%">Upload Date</th>
                                     <th data-priority="1" width="10%">Submission</th>
                                     <th data-priority="3" width="10%">Supp. Docs</th>
                                     <th data-priority="1" width="10%">Payment</th>
-                                    <th data-priority="1" width="15%">Status</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="1" width="10%">Status</th>
+                                    <th data-priority="3" width="10%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -182,8 +188,7 @@
             <div class="modal-content ">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirmation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">

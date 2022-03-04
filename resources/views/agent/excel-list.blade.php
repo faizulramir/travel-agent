@@ -37,10 +37,11 @@
                             </div>
                         @endif
                         @if (Session::has('error'))
-                            <div class="alert alert-warning text-center">
+                            <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <p>{{ Session::get('error') }}</p>
                             </div>
-                        @endif                        
+                        @endif                       
                         <div class="col-md-6">
                             <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                             <a href="{{ route('download_template_agn') }}" class="btn btn-primary w-md" target="_blank" title="Download current template">Download Excel Template</a>
@@ -61,12 +62,12 @@
                                     <th data-priority="0" width="5%">#</th>
                                     <th data-priority="1" width="25%">Filename</th>
                                     <th data-priority="1" width="5%">Jemaah</th>
-                                    <th data-priority="3" width="10%">Upload Date</th>
+                                    <th data-priority="1" width="10%">Upload Date</th>
                                     <th data-priority="1" width="10%">Submission</th>
                                     <th data-priority="1" width="10%">Supp. Docs</th>
                                     <th data-priority="1" width="10%">Payment</th>
                                     <th data-priority="1" width="15%">Status</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="3" width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>

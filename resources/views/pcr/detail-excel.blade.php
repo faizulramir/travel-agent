@@ -42,6 +42,18 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
+                        @if (Session::has('success'))
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <p>{{ Session::get('success') }}</p>
+                            </div>
+                        @endif
+                        @if (Session::has('error'))
+                            <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <p>{{ Session::get('error') }}</p>
+                            </div>
+                        @endif                         
                         <div class="col-md-3" style="text-align: left;">
                             <a href="{{ route('excel_list_finance') }}" class="btn btn-primary w-md">
                                 <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
@@ -58,22 +70,22 @@
                     <br>
 
                     <div>
-                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="3">Passport No</th>
-                                    <th data-priority="1">IC No</th>
-                                    <th data-priority="1">DEP Date (DMY)</th>
-                                    <th data-priority="5">RTN Date (DMY)</th>
-                                    <th data-priority="1">Plan</th>
-                                    <th data-priority="3">PCR</th>
-                                    <th data-priority="3">TPA</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="15%">Name</th>
+                                    <th data-priority="1" width="8%">Passport No</th>
+                                    <th data-priority="1" width="8%">IC No</th>
+                                    <th data-priority="1" width="8%">DEP Date</th>
+                                    <th data-priority="1" width="8%">RTN Date</th>
+                                    <th data-priority="1" width="10%">Plan</th>
+                                    <th data-priority="1" width="5%">PCR</th>
+                                    <th data-priority="1" width="10%">TPA</th>
                                     @if ($uploads->status === '5')
-                                        <th data-priority="1">ECert</th>
+                                        <th data-priority="1" width="5%">ECert</th>
                                     @endif                                          
-                                    <th data-priority="3">Status</th>
+                                    <th data-priority="1" width="5%">Status</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -737,7 +737,7 @@ class AdminController extends Controller
         // $role = Role::create(['name' => 'mkh']);
         // $role = Role::where('id', 3)->first();
         // Auth::user()->assignRole($role);
-        $roles = Role::whereIn('id', [1, 2, 4, 5, 6, 7])->get();
+        $roles = Role::whereIn('id', [4, 2, 1, 5, 6, 7])->get();
         $users = DashboardUser::all();
         return view('admin.user-list', compact('users',  'roles'));
     }
@@ -932,7 +932,7 @@ class AdminController extends Controller
     }
 
     public function user_add (Request $request) {
-        $roles = Role::whereIn('id', [1, 2, 4, 5, 6, 7])->get();
+        $roles = Role::whereIn('id', [4, 2, 1, 5, 6, 7])->get();
 
         return view('admin.user-add', compact('roles'));
     }
@@ -993,7 +993,7 @@ class AdminController extends Controller
     }
 
     public function user_edit ($id) {
-        $roles = Role::whereIn('id', [1, 2, 4, 5, 6, 7])->get();
+        $roles = Role::whereIn('id', [4, 2, 1, 5, 6, 7])->get();
         $user = DashboardUser::where('id', $id)->first();
 
         return view('admin.user-edit', compact('roles', 'user', 'id'));

@@ -8,6 +8,12 @@
     <!-- owl.carousel css -->
     <link rel="stylesheet" href="{{ URL::asset('/assets/libs/owl.carousel/owl.carousel.min.css') }}">
     <link href="{{ URL::asset('/assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css">
+
+    <style>
+        .img2 {
+            margin-top:10%;
+        }
+    </style>
 @endsection
 
 @section('body')
@@ -24,7 +30,20 @@
                     <div class="col-xl-9">
                         <div class="auth-full-bg pt-lg-5 p-4">
                             <div class="w-100">
-                                <div class="bg-overlay"></div>
+                                <div class="bg-overlay">
+
+                                    <div class="img2">
+                                        <div style="float:left;margin-left:20px;">
+                                            <img src="{{ URL::asset('/assets/images/wanita2.png') }}" alt="" class="auth-logo-dark">
+                                        </div>
+                                        <div style="float:left;margin-top:10%;color:#0f3e84;">
+                                            <span style="font-size:2.05rem; font-weight:300;">Just care on your spiritual journey,<span><br>
+                                            <span style="font-size:3.85rem; font-weight:900;margin-top:-30px;">Let us care about you.</span>
+                                        </div>
+                                        <div style="clear:both;"></div>
+                                    </div>
+
+                                </div>
                                 <div class="d-flex h-100 flex-column">
 
                                     <div class="p-4 mt-auto">
@@ -54,7 +73,7 @@
                                                 <img src="{{ URL::asset('/assets/images/akc.png') }}" alt="" height="50" class="auth-logo-dark">
                                         </div>
                                         <div>
-                                            <h5 class="text-primary">Register account</h5>
+                                            <h5 class="text-primary">Register Account</h5>
                                         </div>
 
                                         <div class="mt-4">
@@ -72,7 +91,7 @@
                                                 </div>
         
                                                 <div class="mb-3">
-                                                    <label for="username" class="form-label">Username</label>
+                                                    <label for="username" class="form-label">User Name</label>
                                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                                     value="{{ old('name') }}" id="username" name="name" autofocus required
                                                         placeholder="Enter username">
@@ -82,6 +101,35 @@
                                                         </span>
                                                     @enderror
                                                 </div>
+
+                                                <div class="mb-3">
+                                                    <label for="username" class="form-label">Contact No</label>
+                                                    <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                                                    value="{{ old('name') }}" id="phone" name="phone" autofocus required
+                                                        placeholder="Enter Contact Number">
+                                                    @error('phone')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+
+                                                {{--
+                                                <div class="mb-3">
+                                                    <label for="userdob">Date of Birth</label>
+                                                    <div class="input-group" id="datepicker1">
+                                                        <input type="text" class="form-control @error('dob') is-invalid @enderror" placeholder="dd-mm-yyyy"
+                                                            data-date-format="dd-mm-yyyy" data-date-container='#datepicker1' data-date-end-date="0d" value="{{ old('dob') }}"
+                                                            data-provide="datepicker" name="dob" autofocus required>
+                                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                                        @error('dob')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>   
+                                                --}}                                             
         
                                                 <div class="mb-3">
                                                     <label for="userpassword" class="form-label">Password</label>
@@ -103,21 +151,6 @@
                                                             <strong>{{ $message }}</strong>
                                                         </span>
                                                     @enderror
-                                                </div>
-        
-                                                <div class="mb-3">
-                                                    <label for="userdob">Date of Birth</label>
-                                                    <div class="input-group" id="datepicker1">
-                                                        <input type="text" class="form-control @error('dob') is-invalid @enderror" placeholder="dd-mm-yyyy"
-                                                            data-date-format="dd-mm-yyyy" data-date-container='#datepicker1' data-date-end-date="0d" value="{{ old('dob') }}"
-                                                            data-provide="datepicker" name="dob" autofocus required>
-                                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
-                                                        @error('dob')
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </div>
                                                 </div>
         
                                                 {{-- <div class="mb-3">

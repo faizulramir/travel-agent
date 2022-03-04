@@ -21,11 +21,24 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
+                        @if (Session::has('success'))
+                            <div class="alert alert-success text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <p>{{ Session::get('success') }}</p>
+                            </div>
+                        @endif
+                        @if (Session::has('error'))
+                            <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <p>{{ Session::get('error') }}</p>
+                            </div>
+                        @endif  
                         <div class="col-md-6" style="text-align: left;">
                             <a href="{{ route('pcr_excel_list') }}" class="btn btn-primary w-md">
                                 <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
                             </a>
                         </div>
+                        <div class="col-md-6" style="text-align: left;"></div>
                     </div>
                     <br>
                     <div>
@@ -33,17 +46,17 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="1" width="10%">Passport No</th>
-                                    <th data-priority="3" width="10%">DEP Date</th>
-                                    <th data-priority="1" width="10%">RTN Date</th>
+                                    <th data-priority="1" width="15%">Name</th>
+                                    <th data-priority="1" width="8%">Passport No</th>
+                                    <th data-priority="1" width="8%">DEP Date</th>
+                                    <th data-priority="1" width="8%">RTN Date</th>
                                     <th data-priority="1" width="10%">ECare</th>
 
                                     <th data-priority="1" width="5%">PCR</th>
                                     <th data-priority="1" width="10%">PCR Date</th>
 
                                     <th data-priority="1" width="5%">Quarantine</th>
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="3" width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>

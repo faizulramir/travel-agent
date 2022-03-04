@@ -81,19 +81,19 @@
                         <table id="datatable" class="table table-bordered dt-responsive w-100">
                             <thead>
                                 <tr>
-                                    <th data-priority="0">#</th>
-                                    <th data-priority="1">Name</th>
-                                    <th data-priority="1">Passport No</th>
-                                    <th data-priority="3">IC No</th>
-                                    <th data-priority="1">DEP Date</th>
-                                    <th data-priority="3">RTN Date</th>                                    
-                                    <th data-priority="1">ECare Plan</th>
-                                    <th data-priority="3">PCR</th>
-                                    <th data-priority="3">TPA</th>
+                                    <th data-priority="0" width="5%">#</th>
+                                    <th data-priority="1" width="15%">Name</th>
+                                    <th data-priority="1" width="8%">Passport No</th>
+                                    <th data-priority="1" width="8%">IC No</th>
+                                    <th data-priority="1" width="8%">DEP Date</th>
+                                    <th data-priority="1" width="8%">RTN Date</th>                                    
+                                    <th data-priority="1" width="10%">ECare Plan</th>
+                                    <th data-priority="1" width="5%">PCR</th>
+                                    <th data-priority="1" width="10%">TPA</th>
                                     @if ($uploads->status === '5')
-                                        <th data-priority="1">ECert</th>
+                                        <th data-priority="1" width="8%">ECert</th>
                                     @endif                                    
-                                    <th data-priority="3">Action</th>
+                                    <th data-priority="3" width="10%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>

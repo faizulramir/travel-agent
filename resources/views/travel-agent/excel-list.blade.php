@@ -33,16 +33,19 @@
                                 <p>{{ Session::get('success') }}</p>
                             </div>
                         @endif
+                        @if (Session::has('error'))
+                            <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <p>{{ Session::get('error') }}</p>
+                            </div>
+                        @endif                        
                         <div class="col-md-6">
                             <input type="file" name="add_excel" id="add_excel" style="display: none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                             <a href="{{ route('download_template') }}" class="btn btn-primary w-md" target="_blank" title="Download current template">Download Excel Template</a>
                             <button type="submit" class="btn btn-primary w-md" id="add_button" title="Upload a new Excel">Add Excel</button>
                         </div>
                         <div class="col-md-6" style="text-align: right;">
-                            <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">
-                                Refresh
-                                <!--<i class="bx bx-loader-circle font-size-24" title="Refresh"></i>-->
-                            </button>
+                            <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">Refresh</button>
                         </div>
                     </div>
                     <br>

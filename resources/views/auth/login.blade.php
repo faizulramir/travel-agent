@@ -8,12 +8,9 @@
     <!-- owl.carousel css -->
     <link rel="stylesheet" href="{{ URL::asset('/assets/libs/owl.carousel/owl.carousel.min.css') }}">
 
-
     <style>
         .img2 {
             margin-top:10%;
-
-
         }
     </style>
 @endsection
