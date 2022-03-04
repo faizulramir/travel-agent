@@ -21,7 +21,9 @@
             type:"GET",
             success:function(data){
                 $("#notificationModalbody").empty();
-                if (data.Data.length > 0) {
+                console.log($("#rolesId").val());
+                var roles = $("#rolesId").val();
+                if (data.Data.length > 0 && (roles == 'akc' || roles == 'fin')) {
                     $("#notificationModal").modal("show");
                     data.Data.forEach(e => {
                         var status = ''
@@ -43,6 +45,8 @@
                         $("#notificationModalbody").append('<p> '+ status + ' - ' + e.file_name + '</p>');
                     });
                     
+                } else {
+                    $("#notificationModal").modal("hide");
                 }
                 
             }
