@@ -216,7 +216,7 @@ class AdminController extends Controller
     public function excel_list_admin()
     {
         //$uploads = FileUpload::all();
-        $uploads = FileUpload::where('status','!=','0')->orderBy('submit_date', 'DESC')->orderBy('status', 'ASC')->get();
+        $uploads = FileUpload::where('status','!=','0')->orderBy('status', 'ASC')->orderBy('submit_date', 'DESC')->get();
         //dd($uploads);
         $users = DashboardUser::all();
 
@@ -1227,11 +1227,24 @@ class AdminController extends Controller
         }
     }
 
-    public function cancel_invoice ($id) {
+    public function cancel_invoice ($id)
+    {
         $uploads = FileUpload::where('id', $id)->first();
         $uploads->status = '2.3';
         $uploads->save();
 
         return redirect()->route('excel_list_admin');
+    }
+
+    public function cancel_excel (Request $request)
+    {
+        $uploads = FileUpload::where('id', $request->remarkid)->first();
+        $uploads->status = $request->remarkstatus;
+        $uploads->remarks = $request->remarks;
+        $uploads->save();
+
+        Session::flash('success', 'Excel Cancelled!');
+
+        return redirect()->back();
     }
 }

@@ -127,7 +127,7 @@
                                                         <option value="0" >Travel Agent</option>
                                                     </select>
                                                 </div> --}}
-                                                <input type="hidden" value="1" name="role">
+                                                <input type="hidden" value="7" name="role">
                                                 <div class="mt-4 d-grid">
                                                     <button class="btn btn-primary waves-effect waves-light"
                                                         type="submit">Register</button>
