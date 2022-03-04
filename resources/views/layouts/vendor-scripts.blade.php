@@ -12,10 +12,11 @@
     });
 
     $( document ).ready(function() {
-        @if(auth()->user()->hasAnyRole('akc') || auth()->user()->hasAnyRole('fin'))
+        var roles = $("#rolesId").val();
+        if(roles == 'akc' || roles == 'fin') {
             setTimeout(getNotification, 10000);
-            setInterval(getNotification, 90000);    //90s
-        @endif
+            setInterval(getNotification, 90000);
+        }
     });
 
     function getNotification () {
