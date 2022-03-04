@@ -389,7 +389,7 @@
         </div> --}}
 
 
-
+        @if(auth()->user()->hasAnyRole('akc') || auth()->user()->hasAnyRole('fin'))
         <div class="dropdown d-inline-block">
             <button type="button" class="btn header-item waves-effect" id="page-header-noti-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="d-none d-xl-inline-block ms-1" key="t-henry"><i class="bx bx-bell font-size-20"></i></i></span>
@@ -404,7 +404,8 @@
                 <div style="margin:3px;">Noti1 jkhfksdf skdhfsdk skhdfksd sdkhfsdk kshdfksd kshdfksd</div>
                 --}}
             </div>
-        </div>   
+        </div>
+        @endif   
         
         
 
