@@ -20,9 +20,9 @@
             url: "/notification",
             type:"GET",
             success:function(data){
-                $("#notificationModal").modal("show");
-                console.log(data)
+                $("#notificationModalbody").empty();
                 if (data.Data.length > 0) {
+                    $("#notificationModal").modal("show");
                     data.Data.forEach(e => {
                         var status = ''
                         if (e.status == '0') {
