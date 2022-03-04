@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -56,7 +57,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'dob' => ['required', 'date', 'before:today'],
+            // 'dob' => ['required', 'date', 'before:today'],
             // 'role' => ['required', 'string' ,'max:255'],
         ]);
     }
@@ -69,11 +70,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $dt = Carbon::now();
+
         return DashboardUser::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'dob' => date('Y-m-d', strtotime($data['dob'])),
+            'dob' => $dt->toDateString(),
             // 'role' => $data['role'],
         ]);
     }
