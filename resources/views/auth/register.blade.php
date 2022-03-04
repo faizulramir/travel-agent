@@ -153,13 +153,14 @@
                                                     @enderror
                                                 </div>
         
-                                                {{-- <div class="mb-3">
+                                                <div class="mb-3" style="display:none;">
                                                     <label for="role">Role</label>
                                                     <select id="role" name="role" class="form-control select2-search-disable" required>
-                                                        <option value="individu" selected>Individu</option>
+                                                        <option value="7" selected>Disabled</option>
                                                         <option value="0" >Travel Agent</option>
                                                     </select>
-                                                </div> --}}
+                                                </div> 
+
                                                 <input type="hidden" value="1" name="role">
                                                 <div class="mt-4 d-grid">
                                                     <button class="btn btn-primary waves-effect waves-light"

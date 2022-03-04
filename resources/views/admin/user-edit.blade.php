@@ -84,7 +84,7 @@
                                     <input class="form-control" type="text" name="company_name" value="{{ $user->company_name }}" placeholder="Enter Company Name" required>
                                 </div>
                             </div>
-                            <div class="col-lg-4" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                            <div class="col-lg-4" style="display: {{ isset($user->getRoleNames()[0]) && $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
                                 <div>
                                     <label for="plan">SSM/Company Number</label>
                                     <input class="form-control" type="text" name="ssm_no" value="{{ $user->ssm_no }}" placeholder="Enter SSM Number" required>
@@ -106,7 +106,7 @@
                                     <input class="form-control" type="text" name="company_location" value="{{ $user->company_location }}" placeholder="Enter Company Location" required>
                                 </div>
                             </div>                            
-                            <div class="col-lg-2" style="display: {{ $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
+                            <div class="col-lg-2" style="display: {{ isset($user->getRoleNames()[0]) && $user->getRoleNames()[0] != 'tra' ? 'none': 'block' }}">
                                 <div>
                                     <label for="plan">SSM Certificate</label>
                                     <br>

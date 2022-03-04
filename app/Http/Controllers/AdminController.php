@@ -993,8 +993,12 @@ class AdminController extends Controller
     }
 
     public function user_edit ($id) {
+        //dd($id);
         $roles = Role::whereIn('id', [4, 2, 1, 5, 6, 7])->get();
         $user = DashboardUser::where('id', $id)->first();
+
+        //dd($id, $user, $roles);
+        //dd($user->getRoleNames());
 
         return view('admin.user-edit', compact('roles', 'user', 'id'));
     }
