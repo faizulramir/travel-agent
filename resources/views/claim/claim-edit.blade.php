@@ -107,6 +107,7 @@
                         <div class="col-lg-3">
                             <div>
                                 <label for="plan">ECare</label>
+                                <input type="hidden" id="ecert" name="ecert" value="{{ $jemaah->ecert }}"> 
                                 <p class="data-jemaah">{{ $jemaah->plan_type }}   (<b>{{ $jemaah->ecert }}</b>)</p>
                             </div>
                         </div>  
@@ -235,12 +236,14 @@
             });
 
             $('#addBtn').on('click', function () {
+                var ecert = $("#ecert").val();
+                //console.log("ecert: ", ecert);
                 $('#tbody').append(`<tr id="R${++rowIdx}">
                     <td class="row-index text-center">
                         <p>${rowIdx}</p>
                     </td>
                     <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Enter Date" type="date" value=""></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Enter Pt. File#" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Enter Pt. File#" type="text" value="${ecert}"></div></td>
                     <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Enter Invoice#" type="number"></div></td>
                     <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number"></div></td>
                     <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number"></div></td>
