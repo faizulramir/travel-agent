@@ -395,7 +395,7 @@
                 <span class="d-none d-xl-inline-block ms-1" key="t-henry"><i class="bx bx-bell font-size-20"></i></i></span>
                 <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
             </button>
-            <div class="dropdown-menu dropdown-menu-end" id="page-header-noti-dropdown-data" style="width:100px">
+            <div class="dropdown-menu dropdown-menu-end-noti" id="page-header-noti-dropdown-data" style="width:100px">
                 {{--
                 <div style="margin:3px;">Noti1 jkhfksdf skdhfsdk skhdfksd sdkhfsdk kshdfksd kshdfksd</div>
                 <div class="dropdown-divider"></div>

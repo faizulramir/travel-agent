@@ -11,6 +11,13 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('assets/images/akc-logo.png') }}">
     @include('layouts.head-css')
+
+    <style>
+    .dropdown-menu-end-noti[style] {
+        width: 270px !important;
+    }
+    </style>
+
 </head>
 
 @section('body')

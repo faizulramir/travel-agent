@@ -14,8 +14,12 @@
     $( document ).ready(function() {
         var roles = $("#rolesId").val();
         if(roles == 'akc' || roles == 'fin') {
-            setTimeout(getNotification, 10000);
-            setInterval(getNotification, 90000);
+            //setTimeout(getNotification, 10000);
+            //setInterval(getNotification, 15000);
+            setTimeout(function() {
+                getNotification();
+                setInterval(getNotification, 90000);    //do notifications every 90s
+            }, 10000);
         }
     });
 
@@ -53,7 +57,7 @@
                         if (status!='') {
                             loop = loop + 1;
                             $("#notificationModalbody").append('<p> '+ status + ' - ' + e.file_name + ' - ' + e.ta_name +'</p>');
-                            let html = '<div style="margin:5px;font-size:0.75rem;"><b>' + status + '</b> - ' + e.file_name + ' <b>' + e.ta_name + '</b></div><div class="dropdown-divider"></div>'
+                            let html = '<div style="margin:5px;font-size:0.75rem;"><b>' + status + '</b> (' + e.file_name + ') <b>' + e.ta_name + '</b></div><div class="dropdown-divider"></div>'
                             $("#page-header-noti-dropdown-data").append(html);
                         }
                     });
