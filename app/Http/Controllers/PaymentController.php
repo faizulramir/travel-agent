@@ -858,4 +858,62 @@ class PaymentController extends Controller
             'Data' => 'Successfully Cleaned!',
         ], 200);
     }
+
+
+
+
+    public function create_invoice_man (Request $request) {
+
+        $json_data = json_decode(request()->post('jsonData'));
+        //dd($json_data);
+
+        if ($json_data) {
+            $inv_no = $json_data->inv_no;
+            $inv_date = $json_data->inv_date;
+            $inv_company = $json_data->inv_company;
+            $inv_remark = $json_data->inv_remark;
+            $inv_total = $json_data->inv_total;
+            $entries = $json_data->entries;
+        }
+
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $entries);
+
+        $inv_arr = array();
+        if ($entries && count($entries)>0) {
+            
+            $col1 = $entries[0]->rowInput1;
+            $col2 = $entries[0]->rowInput2;
+            $col3 = $entries[0]->rowInput3;
+            $col4 = $entries[0]->rowInput4;
+            
+            foreach ($entries as $i => $entry) {
+                $tempArr = array(
+                    'rowInput1' => $entries[$i]->rowInput1,
+                    'rowInput2' => $entries[$i]->rowInput2,
+                    'rowInput3' => $entries[$i]->rowInput3,
+                    'rowInput4' => $entries[$i]->rowInput4,
+                );
+                array_push($inv_arr, $tempArr);
+            }
+
+        }
+
+        $inv_status = "PAID";
+
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $entries);
+        //dd($col1, $col2, $col3, $col4, $inv_arr);
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $inv_status, $inv_arr);
+        
+
+        $formatted = str_replace('/', '-', trim($inv_no));
+        $formatted = str_replace(' ', '', $formatted);
+        $pdfName = ($inv_no ? 'invoice-'.$formatted.'.pdf' : "invoice.pdf");
+
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $inv_status, $inv_arr, $pdfName);
+        
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('payment.invoice-man', compact('inv_no', 'inv_date', 'inv_company', 'inv_remark', 'inv_total', 'inv_status', 'inv_arr'));
+        //$pdf->download();
+        return $pdf->stream($pdfName);
+    }
 }

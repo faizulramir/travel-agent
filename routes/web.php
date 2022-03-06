@@ -44,6 +44,9 @@ Route::post('/submit_payment', [App\Http\Controllers\PaymentController::class, '
 Route::get('/ecert_getall/{id}', [App\Http\Controllers\PaymentController::class, 'ecert_getall'])->name('ecert_getall');
 Route::get('/ecert_getall_page/{id}/{page}', [App\Http\Controllers\PaymentController::class, 'ecert_getall_page'])->name('ecert_getall_page');
 
+Route::post('/create_invoice/man', [App\Http\Controllers\PaymentController::class, 'create_invoice_man'])->name('create_invoice_man');
+
+
 
 //travel agent
 Route::get('/excel_list', [App\Http\Controllers\TravelAgentController::class, 'excel_list'])->name('excel_list');
@@ -185,3 +188,9 @@ Route::get('/export_claim/{id}', [App\Http\Controllers\ClaimController::class, '
 
 //notification
 Route::get('/notification', [App\Http\Controllers\NotificationController::class, 'get_notification'])->name('get_notification');
+
+
+//invoice
+Route::get('/invoice_list', [App\Http\Controllers\InvoiceController::class, 'invoice_list'])->name('invoice_list');
+Route::get('/invoice_add', [App\Http\Controllers\InvoiceController::class, 'invoice_add'])->name('invoice_add');
+

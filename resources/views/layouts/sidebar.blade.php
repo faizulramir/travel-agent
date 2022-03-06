@@ -59,8 +59,14 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('claim_list') }}" class="waves-effect">
+                        <a href="{{ route('invoice_list') }}" class="waves-effect">
                             <i class="bx bx-money"></i>
+                            <span key="t-ta">INVOICE LIST</span>
+                        </a>
+                    </li> 
+                    <li>
+                        <a href="{{ route('claim_list') }}" class="waves-effect">
+                            <i class=" bx bx-dollar-circle"></i>
                             <span key="t-ta">CLAIM LIST</span>
                         </a>
                     </li> 
