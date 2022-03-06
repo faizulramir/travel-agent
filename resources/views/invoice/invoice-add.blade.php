@@ -250,9 +250,25 @@
                     data: {
                         jsonData: JSON.stringify(master),
                     },
+                    xhr: function () {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 2) {
+                                if (xhr.status == 200) {
+                                    xhr.responseType = "blob";
+                                } else {
+                                    xhr.responseType = "text";
+                                }
+                            }
+                        };
+                        return xhr;
+                    },
                     success: function (data) {
-                        alert(data.Data);
-                        //location.reload();
+                        var blob=new Blob([data]);
+                        var link=document.createElement('a');
+                        link.href=window.URL.createObjectURL(blob);
+                        link.download="invoice.pdf";
+                        link.click();
                     }
                 });
                
