@@ -51,7 +51,7 @@
                 <h4 class="card-title">INVOICE</h4>
             </div>
             <div class="column" style="padding: 0; margin: 0; text-align: right;">
-                <h4 class="card-title" style="color: {{ $inv_status == 'PAID' ? 'green' : 'red'}}">{{ $inv_status }}</h4>
+                <h4 class="card-title" style="color: {{ $filestatus == '1' ? 'green' : 'red' }}">{{ $filestatus == '1' ? $inv_status : 'DRAFT' }}</h4>
             </div>
         </div>
 
@@ -63,6 +63,9 @@
             <div class="column" style="padding: 0; margin: 0; text-align: center;">
                 <br><br>
                 <img src="assets/images/Logo-Al-Khairi-Care.png" alt="" height="50">
+                @if ($filestatus != '1')
+                <img src="assets/images/draft.png" alt="" height="200" style="position:absolute;top:120px;left:-150px;z-index:9999;">
+                @endif
             </div>
         </div>
 
@@ -103,6 +106,7 @@
                         @endforeach
                     @endif
 
+                    @if ($inv_showtotal)
                     <tr>
                         <td colspan="4" style="padding:0;">
                             <hr style="border: none; height: 1px; color: #333; background-color: #333;">
@@ -114,6 +118,7 @@
                         <td style="text-align: right !important;"><b>Grand Total</b></td>
                         <td style="text-align: right !important;">RM {{ number_format((float)$inv_total, 2, '.', ',') }}</td>
                     </tr>
+                    @endif
 
                 </tbody>
             </table>

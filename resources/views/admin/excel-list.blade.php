@@ -746,6 +746,14 @@
         }
 
         $("#eticket_file").change(function () {
+
+            // const size = ($("#eticket_file")[0].files[0].size / 1024 / 1024).toFixed(2);
+            // if (size > 4 || size < 2) {
+            //     alert("File must be between the size of 2-4 MB");
+            // } else {
+            //     $("#output").html('<b>' + 'This file size is: ' + size + " MB" + '</b>');
+            // }
+
             var form_data = new FormData();
             form_data.append("file", $("#eticket_file")[0].files[0]);
             form_data.append("type", 'eticket');

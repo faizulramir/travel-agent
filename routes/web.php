@@ -44,8 +44,8 @@ Route::post('/submit_payment', [App\Http\Controllers\PaymentController::class, '
 Route::get('/ecert_getall/{id}', [App\Http\Controllers\PaymentController::class, 'ecert_getall'])->name('ecert_getall');
 Route::get('/ecert_getall_page/{id}/{page}', [App\Http\Controllers\PaymentController::class, 'ecert_getall_page'])->name('ecert_getall_page');
 
+Route::post('/preview_invoice/man', [App\Http\Controllers\PaymentController::class, 'preview_invoice_man'])->name('preview_invoice_man');
 Route::post('/create_invoice/man', [App\Http\Controllers\PaymentController::class, 'create_invoice_man'])->name('create_invoice_man');
-
 
 
 //travel agent
@@ -193,4 +193,7 @@ Route::get('/notification', [App\Http\Controllers\NotificationController::class,
 //invoice
 Route::get('/invoice_list', [App\Http\Controllers\InvoiceController::class, 'invoice_list'])->name('invoice_list');
 Route::get('/invoice_add', [App\Http\Controllers\InvoiceController::class, 'invoice_add'])->name('invoice_add');
+Route::post('/invoice_save', [App\Http\Controllers\InvoiceController::class, 'invoice_save'])->name('invoice_save');
+
+
 
