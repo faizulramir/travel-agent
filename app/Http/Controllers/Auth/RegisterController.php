@@ -54,13 +54,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         //dd($data);
+        $message = array(
+            'password.regex' => 'The password must be at least 6 characters with 1 uppercase and 1 number.'
+        );
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'password' => ['required', 'string', 'min:6', 'confirmed', 'regex:/[0-9]/', 'regex:/[A-Z]/', 'regex:/[a-z]/'],
             // 'dob' => ['required', 'date', 'before:today'],
-            // 'role' => ['required', 'string' ,'max:255'],
-        ]);
+        ], $message);
     }
 
     /**
@@ -77,7 +79,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'dob' => $dt->toDateString(),
+            'dob' => $dt->toDateString()
             // 'role' => $data['role'],
         ]);
     }
