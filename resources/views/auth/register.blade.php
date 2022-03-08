@@ -153,15 +153,27 @@
                                                     @enderror
                                                 </div>
         
-                                                <div class="mb-3" style="display:none;">
-                                                    <label for="role">Role</label>
+                                                <div class="mb-3">
+                                                    <label for="role">Please Choose Registration Type</label>
                                                     <select id="role" name="role" class="form-control select2-search-disable" required>
-                                                        <option value="7" selected>Disabled</option>
-                                                        <option value="0" >Travel Agent</option>
+                                                        <option value="" selected>Please Select</option>
+                                                        <option value="4">As Travel Agent</option>
+                                                        <option value="2">As DIY Agent</option>
+                                                        <option value="1">As DIY Individu</option>
                                                     </select>
+                                                </div>
+
+                                                <div class="mb-3" id="comp_no_div" style="display: none;">
+                                                    <label for="comp_no">SSM/Company No</label>
+                                                    <input type="text" class="form-control" id="comp_no" name="comp_no" placeholder="Please Insert SSM/Company No">
                                                 </div> 
 
-                                                <input type="hidden" value="7" name="role">
+                                                <div class="mb-3" id="ssm_cert_div" style="display: none;">
+                                                    <label for="ssm_cert">SSM Certificate Upload </label>
+                                                    <input type="file" class="form-control" id="ssm_cert" name="ssm_cert">
+                                                </div>
+
+                                                {{-- <input type="hidden" value="7" name="role"> --}}
                                                 <div class="mt-4 d-grid">
                                                     <button class="btn btn-primary waves-effect waves-light"
                                                         type="submit">Register</button>
@@ -195,4 +207,20 @@
         <script src="{{ URL::asset('/assets/libs/owl.carousel/owl.carousel.min.js') }}"></script>
         <!-- auth-2-carousel init -->
         <script src="{{ URL::asset('/assets/js/pages/auth-2-carousel.init.js') }}"></script>
+        <script>
+            $('#role').change(function() {
+                console.log($('#role').val())
+                if ($('#role').val() == '4') {
+                    $('#ssm_cert_div').show();
+                    $('#comp_no_div').show();
+                    $("#ssm_cert").prop('required',true);
+                    $("#comp_no").prop('required',true);
+                } else {
+                    $('#ssm_cert_div').hide();
+                    $('#comp_no_div').hide();
+                    $("#ssm_cert").prop('required',false);
+                    $("#comp_no").prop('required',false);
+                }
+            });
+        </script>
     @endsection
