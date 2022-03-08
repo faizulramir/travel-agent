@@ -7,6 +7,7 @@ use App\Models\FileUpload;
 use App\Models\Plan;
 use App\Models\Payment;
 use App\Models\Order;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -889,11 +890,18 @@ class PaymentController extends Controller
             $col2 = $entries[0]->rowInput2;
             $col3 = $entries[0]->rowInput3;
             $col4 = $entries[0]->rowInput4;
+
+            //dd($col2);
+            $col2 = nl2br($col2, true);
+            //dd($col2);
+
             
             foreach ($entries as $i => $entry) {
+                $col = strtoupper($entries[$i]->rowInput2);
+                $col = nl2br($col, true);
                 $tempArr = array(
                     'rowInput1' => strtoupper($entries[$i]->rowInput1),
-                    'rowInput2' => strtoupper($entries[$i]->rowInput2),
+                    'rowInput2' => $col,
                     'rowInput3' => $entries[$i]->rowInput3,
                     'rowInput4' => $entries[$i]->rowInput4,
                 );
@@ -944,11 +952,10 @@ class PaymentController extends Controller
         $inv_arr = array();
         if ($entries && count($entries)>0) {
             
-            $col1 = $entries[0]->rowInput1;
-            $col2 = $entries[0]->rowInput2;
-            $col3 = $entries[0]->rowInput3;
-            $col4 = $entries[0]->rowInput4;
-            
+            // $col1 = $entries[0]->rowInput1;
+            // $col2 = $entries[0]->rowInput2;
+            // $col3 = $entries[0]->rowInput3;
+            // $col4 = $entries[0]->rowInput4;
             foreach ($entries as $i => $entry) {
                 $tempArr = array(
                     'rowInput1' => $entries[$i]->rowInput1,
@@ -958,15 +965,74 @@ class PaymentController extends Controller
                 );
                 array_push($inv_arr, $tempArr);
             }
-
         }
-
-        
 
         //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $entries);
         //dd($col1, $col2, $col3, $col4, $inv_arr);
         //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $inv_status, $inv_arr);
+
+        $formatted = str_replace('/', '-', trim($inv_no));
+        $formatted = str_replace(' ', '', $formatted);
+        $pdfName = ($inv_no ? 'invoice-'.$formatted.'.pdf' : "invoice.pdf");
+
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $inv_status, $inv_arr, $pdfName);
         
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('payment.invoice-man', compact('inv_no', 'inv_date', 'inv_company', 'inv_remark', 'inv_total', 'inv_showtotal', 'inv_status', 'inv_arr', 'filestatus'));
+        //$pdf->download();
+        //return response()->download($pdf); //$pdf->stream($pdfName);
+        return $pdf->stream($pdfName);
+    }
+
+    public function print_invoice ($id) {
+
+        $invoice = Invoice::where('id', $id)->first();
+        //dd($invoice);
+
+        if ($invoice) {
+            $inv_no = strtoupper($invoice->inv_no);
+            $inv_date = $invoice->inv_date;
+            $inv_company = strtoupper($invoice->inv_company);
+            $inv_remark = strtoupper($invoice->inv_remark);
+            $inv_status = strtoupper($invoice->inv_status);
+            $inv_total = $invoice->inv_total;
+            $inv_showtotal = $invoice->inv_showtotal;
+            $json_inv = $invoice->json_inv;
+            $filestatus = $invoice->status;
+        }
+        else {
+            return null;
+        }
+
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $json_inv);
+
+        if ($json_inv) $entries = json_decode($json_inv, true);
+
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $json_inv, $entries);
+
+        $inv_arr = array();
+        if ($entries && count($entries)>0) {
+            
+            // $col1 = $entries[0]->rowInput1;
+            // $col2 = $entries[0]->rowInput2;
+            // $col3 = $entries[0]->rowInput3;
+            // $col4 = $entries[0]->rowInput4;
+            foreach ($entries as $i => $entry) {
+                $tempArr = array(
+                    'rowInput1' => strtoupper($entries[$i]['rowInput1']),
+                    'rowInput2' => strtoupper($entries[$i]['rowInput2']),
+                    'rowInput3' => $entries[$i]['rowInput3'],
+                    'rowInput4' => $entries[$i]['rowInput4'],
+                );
+                array_push($inv_arr, $tempArr);
+            }
+
+        }
+
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $entries);
+        //dd($col1, $col2, $col3, $col4, $inv_arr);
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $inv_status, $inv_arr);
+        //dd($inv_no, $inv_date, $inv_company, $inv_remark, $inv_total, $entries, $inv_arr);
 
         $formatted = str_replace('/', '-', trim($inv_no));
         $formatted = str_replace(' ', '', $formatted);

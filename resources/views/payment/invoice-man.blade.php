@@ -1,5 +1,6 @@
 <html>
     <head>
+        <title>{{ $inv_no }}</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -37,7 +38,7 @@
                 text-align: left !important;
             }
 
-            td,th {padding: .5em 1em;}
+            td,th { padding: .5em 1em;  vertical-align: top; }
         </style>
     </head>
     @php
@@ -99,7 +100,7 @@
                         @foreach ($inv_arr as $table)
                             <tr>
                                 <td>{{ $table['rowInput1'] }}</td>
-                                <td>{{ strtoupper($table['rowInput2']) }}</td>
+                                <td>{!! strtoupper($table['rowInput2']) !!}</td>
                                 <td style="text-align: right !important;">{{ number_format((float)$table['rowInput3'], 2, '.', ',') }}</td>
                                 <td style="text-align: right !important;">{{ number_format((float)$table['rowInput4'], 2, '.', ',') }}</td>
                             </tr>

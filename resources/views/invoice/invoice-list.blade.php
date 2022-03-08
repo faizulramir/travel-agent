@@ -51,9 +51,10 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="10%">Date</th>
-                                    <th data-priority="1" width="10%">Invoice No</th>
-                                    <th data-priority="3" width="30%">Invoice To</th>
+                                    <th data-priority="1" width="8%">Date</th>
+                                    <th data-priority="1" width="8%">Invoice No</th>
+                                    <th data-priority="1" width="15%">Invoice To</th>
+                                    <th data-priority="1" width="30%">Remarks</th>
                                     <th data-priority="1" width="10%">Status</th>
                                     <th data-priority="3" width="10%">Action</th>
                                 </tr>
@@ -65,11 +66,16 @@
                                         <td>{{ strtoupper($file->inv_date) }}</td>
                                         <td>{{ strtoupper($file->inv_no) }}</td>
                                         <td>{{ strtoupper($file->inv_company) }}</td>
-                                        <td>{{ $file->status }}</td>
+                                        <td>{{ strtoupper($file->inv_remark) }}</td>
+                                        <td>{{ $file->status == '1' ? 'Endorsed' : 'Draft' }}</td>
                                         <td>
-                                            <a href="{{ route('claim_detail', $file->id) }}" class="waves-effect" style="color:#ed2994;">
-                                                <i class="bx bxs-collection font-size-24" title="Show Detail"></i>
+                                            <a href="{{ route('print_invoice', $file->id) }}" class="waves-effect" style="color: black;" target="_blank">
+                                                <i class="bx bxs-printer font-size-24" title="Print Invoice"></i>
                                             </a>
+                                            <a href="{{ route('invoice_edit', $file->id) }}" class="waves-effect" style="color: black;">
+                                                <i class="bx bx-edit-alt font-size-24" title="Edit Invoice"></i>
+                                            </a>
+
                                         </td>
                                     </tr>
                                 @endforeach

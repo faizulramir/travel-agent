@@ -19,7 +19,6 @@
         .hidden {
             display:none;
         }
-
         textarea.form-control {
             /*min-height: calc(1.5em + 0.94rem + 2px);*/
             min-width: calc(25vw + 50px);
@@ -31,7 +30,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') FINANCE @endslot
-        @slot('title') CREATE INVOICE @endslot
+        @slot('title') EDIT INVOICE @endslot
     @endcomponent
 
     <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
@@ -78,20 +77,22 @@
                     <form name="form1" id="form1" autocomplete="off">
                         @csrf
                         <h4 class="card-title">Invoice Information</h4>
-                        <input type="hidden" name="id" value="0" />
+                        <input type="hidden" name="id" value="{{ $inv_id }}" />
+                        <!-- <input type="hidden" id="rowCount" value="{{ (count($entries)-1) < 0 ? 0 : (count($entries)-1) }}" /> -->
+                        <input type="hidden" id="rowCount" value="{{ count($entries) }}" />
                         <br>
 
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-label">Invoice No</label>
-                                    <input class="form-control" type="text" name="inv_no" value="" placeholder="Enter Invoice Number" required />
+                                    <input class="form-control" type="text" name="inv_no" value="{{ $inv_no }}" placeholder="Enter Invoice Number" required />
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="plan">Invoice For (Bill To)</label>
-                                    <input class="form-control" type="text" name="inv_company" value="" placeholder="Enter Invoice For (ie. Company Name)" required>
+                                    <input class="form-control" type="text" name="inv_company" value="{{ strtoupper($inv_company) }}" placeholder="Enter Invoice For (ie. Company Name)" required>
                                 </div>
                             </div>
                         </div>
@@ -100,13 +101,13 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="plan">Invoice Date</label>
-                                    <input class="form-control" type="date" name="inv_date" value="" placeholder="Enter Invoice Date" required>
+                                    <input class="form-control" type="date" name="inv_date" value="{{ $inv_date }}" placeholder="Enter Invoice Date" required>
                                 </div>
                             </div>                            
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="plan">Invoice Status</label>
-                                    <input class="form-control" type="text" name="inv_status" value="" placeholder="Enter Status (ie. PAID, UNPAID, DRAFT)" required>
+                                    <input class="form-control" type="text" name="inv_status" value="{{ strtoupper($inv_status) }}" placeholder="Enter Status (ie. PAID, UNPAID, DRAFT)" required>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +116,7 @@
                             <div class="col-lg-8">
                                 <div class="form-group">
                                     <label for="plan">Invoice Remarks</label>
-                                    <input class="form-control" type="text" name="inv_remark" value="" placeholder="Enter Remarks (ie. Reason for invoicing)" required>
+                                    <input class="form-control" type="text" name="inv_remark" value="{{ strtoupper($inv_remark) }}" placeholder="Enter Remarks (ie. Reason for invoicing)" required>
                                 </div>
                             </div>
                         </div> 
@@ -138,24 +139,54 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbody">
+                                        @if (isset($entries) && count($entries)>0)
+                                            @foreach ($entries as $i => $entry)
+                                            <tr id="R{{ $i+1 }}">
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input class="form-control" name="rowInput1" placeholder="Qty" type="text" value="{{ $entry['rowInput1'] }}">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" style="width:100%" name="rowInput2" placeholder="Enter Description" type="text" rows="3">{{ strtoupper($entry['rowInput2']) }}</textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input class="form-control" name="rowInput3" placeholder="Unit Price" type="number" value="{{ $entry['rowInput3'] }}">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input class="form-control" name="rowInput4" placeholder="Amount" type="number" value="{{ $entry['rowInput4'] }}">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a class="pull-right waves-effect waves-light remove" style="color: red;" type="button">
+                                                        <i class="bx bx-trash-alt font-size-24" title="Delete Entry"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="2"></td>
                                             <td>
-                                                <input class="form-check-input" type="checkbox" id="include">
+                                                <input class="form-check-input" type="checkbox" id="include" {{ ($inv_showtotal == '1' ? 'checked':'') }}>
                                                 <label class="form-check-label" for="agreement">
                                                 &nbsp;&nbsp;<b>Show Total</b>
                                                 </label>
                                             </td>
-                                            <td><div class="form-group"><input class="form-control" name="inv_total" placeholder="Total Amount" type="number"></div></td>
+                                            <td><div class="form-group"><input class="form-control" name="inv_total" value="{{ $inv_total }}" placeholder="Total Amount" type="number"></div></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td colspan="5">
                                                 <a id="addBtn" class="btn btn-primary pull-left waves-effect waves-light">+ Add Entry</a>
                                                 &nbsp;&nbsp;
-
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light w-md" id="preview_btn">Preview Invoice</button>
                                                 &nbsp;&nbsp;
 
@@ -177,7 +208,6 @@
         </div>
     </div>
 
-
 @endsection
 @section('script')
     <script src="{{ URL::asset('assets/libs/jquery-validation/jquery-validation.min.js')}}"></script>
@@ -193,7 +223,8 @@
         });
 
         $(document).ready(function () {
-            var rowIdx = 0;
+            var rowIdx = $('#rowCount').val();
+            console.log("rowIdx: ", rowIdx);
 
             $('#pleaseWaitDialog').modal({
                 backdrop: 'static',
@@ -209,32 +240,6 @@
                 $('#change_alert').removeClass('hidden');
             });
 
-            /*
-            $.ajax({
-                url: '/get_claim_json/' + $('#jemaahId').val(),
-                type: 'GET',
-                success: function (data) {
-                    if (data.Data) {
-                        data.Data.forEach(e => {
-                            $('#tbody').append(`<tr id="R${++rowIdx}">
-                                <td class="row-index text-center">
-                                    <p>${rowIdx}</p>
-                                </td>
-                                <td><div class="form-group"><input class="form-control" id="rowInput1" name="rowInput1" placeholder="Enter Date" type="date" value="${e.rowInput1}"></div></td>
-                                <td><div class="form-group"><input class="form-control" id="rowInput2" name="rowInput2" placeholder="Enter Pt. File#" type="number" value="${e.rowInput2}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Enter Invoice#" type="number" value="${e.rowInput3}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number" value="${e.rowInput4}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number" value="${e.rowInput5}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Enter Services" type="number" value="${e.rowInput6}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Discount" type="number" value="${e.rowInput7}">
-                                <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
-                                </tr>`);
-                        });
-                    }
-                }
-            });
-            */
-
             $('#addBtn').on('click', function () {
 
                 $("#form1").validate();        
@@ -244,6 +249,7 @@
                     return false;
                 }
 
+                console.log("add-rowIdx: ", rowIdx);
                 $('#tbody').append(`<tr id="R${++rowIdx}">
                     <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Qty" type="text" value=""></div></td>
                     <td><div class="form-group"><textarea class="form-control" style="width:100%" name="rowInput2" placeholder="Enter Description" type="text" value="" rows="3"></textarea></div></td>
@@ -271,6 +277,8 @@
 
                     $('#change_alert').removeClass('hidden');
                 }
+                console.log("removed: ", rowIdx);
+
             });
 
 
