@@ -49,7 +49,7 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="25%">Filename</th>
+                                    <th data-priority="1" width="25%">Application/Filename</th>
                                     <th data-priority="3" width="5%">Jemaah</th>
                                     <th data-priority="3" width="8%">Upload Date</th>
                                     <th data-priority="1" width="10%">Submission</th>
@@ -63,7 +63,7 @@
                                 @foreach ($uploads as $i => $upload)
                                     <tr>
                                         <td>{{ $i+ 1 }}</td>
-                                        <td>{{ $upload->file_name }}</td>
+                                        <td>{{ $upload->file_name ? $upload->file_name : $upload->user->name }}</td>
                                         <td>
                                             @php
                                             $jemaah = count(\App\Models\Order::where([['file_id', $upload->id]])->get());

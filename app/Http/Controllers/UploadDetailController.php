@@ -60,7 +60,7 @@ class UploadDetailController extends Controller
         $new_orders = array();
 
         //get excel file
-        if (auth()->user()->hasAnyRole('ind')) {
+        if (auth()->user()->hasAnyRole('ind') && !$uploads->file_name) {
             $orders = Order::where('file_id', $uploads->id)->get();
             foreach ($orders as $i => $order) {
                 // dd($order);
