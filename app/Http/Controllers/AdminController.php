@@ -712,6 +712,15 @@ class AdminController extends Controller
                     //dd($order);
                     $order->save();
                 }                
+            } else {
+                $dt = Carbon::now();
+                $orderdate = $dt->toDateString();
+                $orderdate = explode('-', $orderdate);
+                $year  = $orderdate[0];
+                $month = $orderdate[1];
+                $order = Order::where('file_id', $uploads->id)->first();
+                $order->invoice = $year.'/'.$month.'/'.$uploads->id;
+                $order->save();
             }
         }
 

@@ -41,7 +41,7 @@ class IndividuController extends Controller
 
     public function application_list()
     {
-        $uploads = FileUpload::where('user_id', Auth::id())->get();
+        $uploads = FileUpload::where('user_id', Auth::id())->orderBy('status', 'ASC')->orderBy('submit_date', 'DESC')->get();
         return view('individu.application-list', compact('uploads'));
     }
 
@@ -91,7 +91,7 @@ class IndividuController extends Controller
 
         $uploads = FileUpload::where('id', request()->post('id'))->first();
         $uploads->status = '2';
-        $uploads->submit_date = $dt->toDateString();
+        $uploads->submit_date = $dt->toDateTimeString();
         $uploads->save();
 
         return response()->json([
@@ -105,7 +105,7 @@ class IndividuController extends Controller
         $dt = Carbon::now();
 
         $uploads = new FileUpload;
-        $uploads->upload_date = $dt->toDateString();
+        $uploads->upload_date = $dt->toDateTimeString();
         $uploads->status = '0';
         $uploads->supp_doc = 'TVP';
         $uploads->ta_name = null;
@@ -132,7 +132,14 @@ class IndividuController extends Controller
         );
         
         $plans = Plan::where('id', request()->post('plan'))->first();
-        $tpas = Plan::where('id', request()->post('tpa'))->first();
+        // dd(request()->post('tpa'));
+        if (request()->post('tpa') == 'NO') {
+            $tpas = request()->post('tpa');
+        } else {
+            $tpas = Plan::where('id', request()->post('tpa'))->first();
+            $tpas = $tpas->name;
+        }
+        
 
         $order = new Order;
         $order->name = request()->post('name');
@@ -146,7 +153,7 @@ class IndividuController extends Controller
         $order->dep_date = request()->post('dep_date');
         $order->return_date = request()->post('return_date');
         $order->pcr = request()->post('pcr');
-        $order->tpa = $tpas->name;
+        $order->tpa = $tpas;
         $order->user_id = Auth::id();
         $order->file_id = $uploads->id;
 

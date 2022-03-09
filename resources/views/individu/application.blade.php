@@ -68,7 +68,7 @@
                             <div class="col-lg-4">
                                 <div>
                                     <label for="plan">Date Of Birth</label>
-                                    <input class="form-control" type="text" name="dob" value="{{ auth()->user()->dob ? date('d-m-Y', strtotime(auth()->user()->dob)) : ''}}" readonly>
+                                    <input class="form-control" type="text" name="dob" value="{{ auth()->user()->dob ? date('d-m-Y', strtotime(auth()->user()->dob)) : ''}}" required>
                                 </div>
                             </div>
                             <div class="col-lg-4">
