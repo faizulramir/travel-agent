@@ -393,7 +393,7 @@
                 var form_data = new FormData();
                 form_data.append("id", id);
                 $.ajax({
-                    url: '/submit_post_ta',
+                    url: '/submit_post_ind',
                     type: 'POST',
                     data: form_data,
                     dataType: 'JSON',

@@ -33,7 +33,13 @@ class FinanceController extends Controller
     
     public function excel_list_finance()
     {
-        $uploads = FileUpload::whereIn('status', ['3', '4', '5', '2.1'])->orderBy('status', 'DESC')->orderBy('submit_date', 'DESC')->get();
+        $uploads = FileUpload::whereIn('status', ['3', '4', '5', '2.1'])->orderBy('status', 'ASC')->orderBy('submit_date', 'DESC')->get();
+
+        //fuad:0903 - use union to prioritise record status 2.1 (endorse invoice), 4 (endorsed payment)
+        $second = FileUpload::whereIn('status', ['3', '5'])->orderBy('status', 'ASC')->orderBy('submit_date', 'DESC')->get();
+        $first = FileUpload::whereIn('status', ['4', '2.1'])->orderBy('status', 'ASC')->orderBy('submit_date', 'DESC')->get();
+
+        //$uploads = $first->union($second)->get();
 
         $stats_arr = array();
         $pending1 = 0;
