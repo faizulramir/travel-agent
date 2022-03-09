@@ -12,7 +12,7 @@
 @section('content')
 
     @component('components.breadcrumb')
-        @slot('li_1') ADMIN @endslot
+        @slot('li_1') AGENT @endslot
         @slot('title') EXCEL DETAIL @endslot
     @endcomponent
 

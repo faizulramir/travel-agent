@@ -198,7 +198,7 @@
                                     <tr>
                                         <td>{{ $bil1 }}</td>
                                         <td>{{ strtoupper($upload->user->name) }}</td>
-                                        <td>{{ $upload->file_name }}</td>
+                                        <td>{{ $upload->file_name ? $upload->file_name : '(APPLY) '.strtoupper($upload->user->name) }}</td>
                                         {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
                                         <td>
                                             {{ count($upload->order) }}
@@ -410,7 +410,7 @@
                                     <tr>
                                         <td>{{ $bil2 }}</td>
                                         <td>{{ strtoupper($upload->user->name) }}</td>
-                                        <td>{{ $upload->file_name }}</td>
+                                        <td>{{ $upload->file_name ? $upload->file_name : '(APPLY) '.strtoupper($upload->user->name) }}</td>
                                         {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
                                         <td>
                                             {{ count($upload->order) }}

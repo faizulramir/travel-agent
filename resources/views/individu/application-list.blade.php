@@ -61,7 +61,7 @@
                                 @foreach ($uploads as $i => $upload)
                                     <tr>
                                         <td>{{ $i+ 1 }}</td>
-                                        <td>{{ $upload->file_name ? $upload->file_name : $upload->user->name }}</td>
+                                        <td>{{ $upload->file_name ? $upload->file_name : '(APPLY) '.strtoupper($upload->user->name) }}</td>
                                         <td>
                                             @php
                                             $jemaah = count(\App\Models\Order::where([['file_id', $upload->id]])->get());
