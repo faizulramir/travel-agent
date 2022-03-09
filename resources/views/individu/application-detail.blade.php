@@ -106,7 +106,7 @@
                                         <td>{{ $order->dep_date ? date('d-m-Y', strtotime($order->dep_date)) : ''}}</td>
                                         <td>{{ $order->return_date ? date('d-m-Y', strtotime($order->return_date)) : '' }}</td>                                        
                                         <td>{{ $order->plan_type }}</td>
-                                        <td>{{ $order->pcr ? $order->pcr == 'PCR' ? 'YES' : 'NO' : 'NO' }}</td>
+                                        <td>{{ $order->pcr ? $order->pcr == 'PCR' ? 'PCR' : 'NO' : 'NO' }}</td>
                                         <td>{{ $order->tpa }}</td>
                                         @if ($uploads->status === '5')
                                             <td>

@@ -154,6 +154,7 @@ class IndividuController extends Controller
         $order->return_date = request()->post('return_date');
         $order->pcr = request()->post('pcr');
         $order->tpa = $tpas;
+
         $order->user_id = Auth::id();
         $order->file_id = $uploads->id;
 

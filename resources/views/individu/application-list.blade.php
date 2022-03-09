@@ -38,9 +38,7 @@
                             <a href="#" class="btn btn-primary w-md" id="button-choose">Apply</a>
                         </div>
                         <div class="col-md-6" style="text-align: right;">
-                            <button type="button" class="btn btn-primary w-md" id="refreshBtn">
-                                <i class="bx bx-loader-circle font-size-20" title="Refresh"></i>
-                            </button>
+                            <button type="button" class="btn btn-primary w-md" id="refreshBtn">Refresh</button>
                         </div>
                     </div>
                     <br>
@@ -49,14 +47,14 @@
                             <thead>
                                 <tr>
                                     <th data-priority="0" width="5%">#</th>
-                                    <th data-priority="1" width="25%">Application/Filename</th>
+                                    <th data-priority="1" width="20%">Application/Filename</th>
                                     <th data-priority="3" width="5%">Jemaah</th>
-                                    <th data-priority="3" width="8%">Upload Date</th>
+                                    <th data-priority="1" width="8%">Upload Date</th>
                                     <th data-priority="1" width="10%">Submission</th>
-                                    <th data-priority="3" width="10%">Supp. Docs</th>
+                                    <th data-priority="1" width="10%">Supp. Docs</th>
                                     <th data-priority="1" width="10%">Payment</th>
                                     <th data-priority="1" width="10%">Status</th>
-                                    <th data-priority="3" width="10%">Action</th>
+                                    <th data-priority="3" width="8%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -187,7 +185,7 @@
         <div class="modal-dialog modal-xs">
             <div class="modal-content ">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmation</h5>
+                    <h5 class="modal-title">Application</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -245,7 +243,7 @@
                                                             <th>#</th>
                                                             <th data-priority="1">Name</th>
                                                             <th data-priority="1">Passport No</th>
-                                                            <th data-priority="3">IC No</th>
+                                                            <th data-priority="1">IC No</th>
                                                             <th data-priority="1">E-Care</th>
                                                             <th data-priority="1">DEP Date</th>
                                                             <th data-priority="1">RTN Date</th>

@@ -117,7 +117,7 @@
                                 <label class="form-label">PCR</label>
                                 <select id="pcr" name="pcr" class="form-control select2-search-disable" required>
                                     <option value="NO" selected>NO</option>
-                                    <option value="YES">YES</option>
+                                    <option value="PCR">YES</option>
                                 </select>
                             </div>
                             {{-- <div class="col-lg-4">

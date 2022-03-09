@@ -1,5 +1,6 @@
 <html>
     <head>
+        <title>{{ $user->invoice }}</title>
         <style>
             * {
                 box-sizing: border-box;

@@ -1,5 +1,6 @@
 <html>
     <head>
+        <title>{{ $cert_number }}</title>
         <style>
             * { 
                 margin: 0;

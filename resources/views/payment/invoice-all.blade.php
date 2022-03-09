@@ -1,5 +1,6 @@
 <html>
     <head>
+        <title>{{ $invoice_num }}</title>
         <style>
             * {
                 box-sizing: border-box;
