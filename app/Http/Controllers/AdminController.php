@@ -1194,8 +1194,14 @@ class AdminController extends Controller
             } catch (\Throwable $th) {
                 $type = explode("-", $type);
                 $ext = pathinfo($files[$type[0]], PATHINFO_EXTENSION);
-
-                Storage::delete($uploads->user_id.'/supp_doc/'.$uploads->id.'/payreceipt/'.basename($files[$type[0]]));
+                if (count($files) == 1) {
+                    Session::flash('error', 'Error! Cannot Delete!');
+                }
+                else {
+                    Storage::delete($uploads->user_id.'/supp_doc/'.$uploads->id.'/payreceipt/'.basename($files[$type[0]]));
+                    Session::flash('success', 'Successfully Deleted!');
+                }
+                
                 return redirect()->back();
             }
             
