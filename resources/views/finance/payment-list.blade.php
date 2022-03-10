@@ -18,6 +18,20 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    @if(session()->has('error'))
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <label for="error" style="color: red;">{{ session()->get('error') }}</label>
+                            </div>
+                        </div>
+                    @endif
+                    @if(session()->has('success'))
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <label for="success" style="color: green;">{{ session()->get('success') }}</label>
+                            </div>
+                        </div>
+                    @endif
                     <table id="datatable" class="table table-bordered dt-responsive w-100">
                         <thead>
                             <tr>
