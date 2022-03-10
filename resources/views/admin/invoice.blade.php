@@ -79,7 +79,7 @@
                                     @foreach ($invoice_arr as $inv)
                                         <tr>
                                             <td>{{ $inv['COUNT'] }}x</td>
-                                            <td><b>{{ $inv['PLAN'] }}</b></td>
+                                            <td><b>{{ $inv['PLAN'] }}</b> {{ isset($inv['ADDT']) ? ($inv['ADDT']>0? '  (+'.$inv['ADDT'].')' : '') : '' }}</td>
                                             <td>= RM {{ number_format((float)$inv['COST'], 2, '.', ',') }}</td>
                                         </tr>
                                     @endforeach

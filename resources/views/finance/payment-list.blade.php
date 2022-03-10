@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title') PAYMENT LIST @endsection
+@section('title') PAYMENT FILE LIST @endsection
 
 @section('css')
     <!-- Responsive Table css -->
@@ -11,7 +11,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') FINANCE @endslot
-        @slot('title') PAYMENT LIST @endslot
+        @slot('title') PAYMENT FILE LIST @endslot
     @endcomponent
 
     <div class="row">
@@ -22,8 +22,8 @@
                         <thead>
                             <tr>
                                 <th data-priority="0" width="5%">#</th>
-                                <th data-priority="1" width="15%">Filename</th>
-                                <th data-priority="2" width="15%">Action</th>
+                                <th data-priority="1" width="50%">Filename</th>
+                                <th data-priority="2" width="10%">Action</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -201,7 +201,7 @@
                                             <button type="submit" class="btn btn-primary w-md" id="add_button">Excel</button>
                                         </div>
                                         <div class="col-6">
-                                            <a href="{{ route('application') }}" class="btn btn-primary w-md" id="download_cert">Form</a>
+                                            {{-- <a href="{{ route('application') }}" class="btn btn-primary w-md" id="download_cert">Form</a> --}}
                                         </div>
                                     </div>
                                     <br>

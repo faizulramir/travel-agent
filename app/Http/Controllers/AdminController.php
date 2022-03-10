@@ -170,9 +170,11 @@ class AdminController extends Controller
         $invoice_arr = array();
         foreach ($plan_arr as $plan => $tot_count) {
             $tot_cost = 0.00;
+            $tot_addt = 0;                                      //fuad1003: add info diff days count
             foreach ($costing_arr as $cost) {
                 if ($cost['PLAN'] == $plan) {
                     $tot_cost = $tot_cost + $cost['COST'];
+                    $tot_addt = $tot_addt + $cost['DIFDAY'];    //fuad1003: add info diff days count
                 }
             }
 
@@ -182,6 +184,7 @@ class AdminController extends Controller
                 'PCR_TOT' => $tot_pcr,
                 'COUNT' => $tot_count,
                 'COST' => $tot_cost,
+                'ADDT' => $tot_addt,    //fuad1003: add info diff days count
             );
             array_push($invoice_arr, $tmpArr); //prepare costing for each record
 

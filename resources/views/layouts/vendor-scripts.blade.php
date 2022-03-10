@@ -18,7 +18,7 @@
             //setInterval(getNotification, 15000);
             setTimeout(function() {
                 getNotification();
-                setInterval(getNotification, 90000);    //do notifications every 90s
+                setInterval(getNotification, 180000);    //do notifications every 90s
             }, 10000);
         }
     });

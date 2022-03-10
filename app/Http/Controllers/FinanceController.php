@@ -218,9 +218,11 @@ class FinanceController extends Controller
         $invoice_arr = array();
         foreach ($plan_arr as $plan => $tot_count) {
             $tot_cost = 0.00;
+            $tot_addt = 0;                                      //fuad1003: add info diff days count
             foreach ($costing_arr as $cost) {
                 if ($cost['PLAN'] == $plan) {
                     $tot_cost = $tot_cost + $cost['COST'];
+                    $tot_addt = $tot_addt + $cost['DIFDAY'];    //fuad1003: add info diff days count
                 }
             }
 
@@ -230,6 +232,7 @@ class FinanceController extends Controller
                 'PCR_TOT' => $tot_pcr,
                 'COUNT' => $tot_count,
                 'COST' => $tot_cost,
+                'ADDT' => $tot_addt,    //fuad1003: add info diff days count
             );
             array_push($invoice_arr, $tmpArr); //prepare costing for each record
 
@@ -262,6 +265,8 @@ class FinanceController extends Controller
         }
 
         //dd($orders[0]);
+        //dd($costing_arr);
+        //dd($invoice_arr);
 
         return view('finance.payment', compact('uploads', 'pay', 'plan_arr', 'plans', 'invoice_arr', 'tot_inv', 'tot_rec', 'tpa_total_arr', 'pcr_detail', 'invoice_num', 'tot_ecert'));
     }
@@ -297,7 +302,7 @@ class FinanceController extends Controller
                 $date2 = date_create($order->return_date);
                 $diff = date_diff($date1, $date2);
 
-                $days = $diff->days + 1;
+                $days = $diff->days + 1;    //10032022: AKC date calculation includs the first day count;
                 $price = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price')->first();
                 $perday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price_per_day')->first();
                 $maxday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('total_days')->first();

@@ -105,8 +105,7 @@
                                                 <div class="mb-3">
                                                     <label for="username" class="form-label">Contact No</label>
                                                     <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                                    value="{{ old('name') }}" id="phone" name="phone" autofocus required
-                                                        placeholder="Enter Contact Number">
+                                                    value="{{ old('name') }}" id="phone" name="phone" autofocus required placeholder="Enter Contact Number">
                                                     @error('phone')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -158,7 +157,7 @@
                                                     <select id="role" name="role" class="form-control select2-search-disable" required>
                                                         <option value="" selected>Please Select</option>
                                                         <option value="4">As Travel Agent</option>
-                                                        <option value="2">As DIY Agent</option>
+                                                        {{-- <option value="2">As DIY Agent</option> --}}
                                                         <option value="1">As DIY Individu</option>
                                                     </select>
                                                 </div>
