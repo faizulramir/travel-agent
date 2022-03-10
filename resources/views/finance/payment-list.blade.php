@@ -18,6 +18,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <!--
                     @if(session()->has('error'))
                         <div class="row">
                             <div class="col-md-12 text-center">
@@ -32,6 +33,25 @@
                             </div>
                         </div>
                     @endif
+                    -->
+                    @if (Session::has('success'))
+                        <div class="alert alert-success text-center alert-dismissible" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <p>{{ Session::get('success') }}</p>
+                        </div>
+                    @endif
+                    @if (Session::has('error'))
+                        <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <p>{{ Session::get('error') }}</p>
+                        </div>
+                    @endif
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: right;">
+                            <button type="button" class="btn btn-primary w-md" id="refreshBtn" title="Refresh display">Refresh</button>
+                        </div>
+                    </div>
+                    <br>
                     <table id="datatable" class="table table-bordered dt-responsive w-100">
                         <thead>
                             <tr>
@@ -47,7 +67,7 @@
                                     <td>{{ $file }}</td>
                                     <td>
                                         <a class="btn btn-success btn-md" target="_blank" href="{{ route('supp_doc_download_admin', [$id, $i]) }}" type="submit">Download</a>
-                                        <a class="btn btn-danger btn-md" href="{{ route('supp_doc_download_admin', [$id, $i.'-delete']) }}" type="submit">Delete</a>
+                                        <a class="btn btn-danger btn-md" onclick="return confirm('Do you really want to Delete?');" href="{{ route('supp_doc_download_admin', [$id, $i.'-delete']) }}" type="submit">Delete</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -66,6 +86,11 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+
+        $('#refreshBtn').click(function() {
+            $('#datatable').DataTable().state.clear();
+            location.reload();
         });
 
     </script>
