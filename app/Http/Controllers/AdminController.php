@@ -73,7 +73,7 @@ class AdminController extends Controller
                 $date2 = date_create($order->return_date);
                 $diff = date_diff($date1, $date2);
 
-                $days = $diff->days;
+                $days = $diff->days + 1;
                 $price = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price')->first();
                 $perday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price_per_day')->first();
                 $maxday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('total_days')->first();
@@ -366,7 +366,7 @@ class AdminController extends Controller
                 $date2 = date_create($order->return_date);
                 $diff = date_diff($date1, $date2);
 
-                $days = $diff->days;
+                $days = $diff->days + 1;
                 $maxday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('total_days')->first();
 
                 $difday = 0;
@@ -1134,7 +1134,9 @@ class AdminController extends Controller
         $filename = $file->getClientOriginalName();
 
         try {
-            Storage::deleteDirectory($uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$collection['type']);
+            if ($collection['type'] != 'payreceipt') {
+                Storage::deleteDirectory($uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$collection['type']);
+            }
         }
         catch(\Exception $ex) {
             //
@@ -1172,26 +1174,54 @@ class AdminController extends Controller
 
     public function supp_doc_download_admin(Request $req, $id, $type)
     {
-        //dd($id, $type);
         $uploads = FileUpload::where('id', $id)->first();
-        //dd($uploads);
 
-        $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$type;
-        //dd($directory);
+        if (auth()->user()->hasAnyRole('fin') && $type == 'payreceipt') {
+            $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$type;
+            $files = Storage::allFiles($directory);
+            $files_arr = array();
+            if (!empty($files)) {
+                foreach ($files as $file) {
+                    array_push($files_arr, basename($file));
+                }
+            }
+            return view('finance.payment-list', compact('files_arr', 'id'));
+        } else if (auth()->user()->hasAnyRole('fin') && $type != 'payreceipt' && $type != 'visa' && $type != 'eticket' && $type != 'passport') {
+            $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/payreceipt';
+            $files = Storage::allFiles($directory);
+            try {
+                $ext = pathinfo($files[$type], PATHINFO_EXTENSION);
+            } catch (\Throwable $th) {
+                $type = explode("-", $type);
+                $ext = pathinfo($files[$type[0]], PATHINFO_EXTENSION);
 
-        $files = Storage::allFiles($directory);
-        //dd($files[0], basename($files[0]));
-
-        if (!empty($files)) {
-            $files = collect(Storage::allFiles($directory));
-            $ext = pathinfo($files[0], PATHINFO_EXTENSION);
+                Storage::delete($uploads->user_id.'/supp_doc/'.$uploads->id.'/payreceipt/'.basename($files[$type[0]]));
+                return redirect()->back();
+            }
+            
             $ext = strtolower($ext);
             if ($ext == 'pdf' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
-                //header('Content-disposition','attachment; filename="test"');
-                return response()->file(Storage::path($files[0]), [ 'Content-Disposition' => 'filename="'.basename($files[0]).'"' ]);
-    
+                return response()->file(Storage::path($files[$type]), [ 'Content-Disposition' => 'filename="'.basename($files[$type]).'"' ]);
             }
-            return Storage::download($files[0]);
+            return Storage::download($files[$type]);
+        } else {
+            $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$type;
+            $files = Storage::allFiles($directory);
+            if (!empty($files)) {
+                $files = Storage::allFiles($directory);
+                $timestamps = array();
+                foreach ($files as $i => $file) {
+                    $timestamps[$i] = Storage::lastModified($files[$i]);
+                }
+                array_multisort($timestamps, SORT_DESC, $files);
+                $ext = pathinfo($files[0], PATHINFO_EXTENSION);
+                $ext = strtolower($ext);
+                if ($ext == 'pdf' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
+                    return response()->file(Storage::path($files[0]), [ 'Content-Disposition' => 'filename="'.basename($files[0]).'"' ]);
+        
+                }
+                return Storage::download($files[0]);
+            }
         }
     }
     
@@ -1225,6 +1255,11 @@ class AdminController extends Controller
             foreach ($typeArr as $key => $arr) {
                 $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/'.$arr;
                 $files = Storage::allFiles($directory);
+                $timestamps = array();
+                foreach ($files as $i => $file) {
+                    $timestamps[$i] = Storage::lastModified($files[$i]);
+                }
+                array_multisort($timestamps, SORT_DESC, $files);
                 if (!empty($files)) {
                     $tempArr = array(
                         $arr => basename($files[0])

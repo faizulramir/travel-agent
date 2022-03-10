@@ -114,7 +114,7 @@ class FinanceController extends Controller
                 $date2 = date_create($order->return_date);
                 $diff = date_diff($date1, $date2);
 
-                $days = $diff->days;
+                $days = $diff->days + 1;
                 $price = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price')->first();
                 $perday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price_per_day')->first();
                 $maxday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('total_days')->first();
@@ -297,7 +297,7 @@ class FinanceController extends Controller
                 $date2 = date_create($order->return_date);
                 $diff = date_diff($date1, $date2);
 
-                $days = $diff->days;
+                $days = $diff->days + 1;
                 $price = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price')->first();
                 $perday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price_per_day')->first();
                 $maxday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('total_days')->first();
@@ -599,7 +599,7 @@ class FinanceController extends Controller
                 $date2 = date_create($order->return_date);
                 $diff = date_diff($date1, $date2);
 
-                $days = $diff->days;
+                $days = $diff->days + 1;
                 $maxday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('total_days')->first();
 
                 $difday = 0;

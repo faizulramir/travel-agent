@@ -630,7 +630,7 @@
                         }
 
                         if (docs.includes('R') && objr!=null && objr!=undefined) {
-                            $('#payreceiptdownload').html('<a target="_blank" href="/supp_doc_download_admin/' + id + '/payreceipt" type="submit">'+ objr.payreceipt +'</a>');
+                            $('#payreceiptdownload').html('<a class="btn btn-success btn-md" href="/supp_doc_download_admin/' + id + '/payreceipt" type="submit">Open</a>');
                         } else {
                             $('#payreceiptdownload').html('');
                         }
