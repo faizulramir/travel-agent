@@ -141,7 +141,7 @@
                                     @if (auth()->user()->hasAnyRole('akc') || auth()->user()->hasAnyRole('fin'))
                                         <input class="form-control" type="file" name="pay_file">
                                     @else 
-                                        <input class="form-control" type="file" name="pay_file" required>
+                                        <input class="form-control" type="file" name="pay_file" id="pay_file" required>
                                     @endif
                                     <br>
                                 </div>
@@ -173,10 +173,10 @@
         $('#pay_by').change(function() {
             if ($('#pay_by').val() == 'OTHER') {
                 $('#pay_upload').show();
-                $("#pay_upload").prop('required',true);
+                $("#pay_file").prop('required',true);
             } else {
                 $('#pay_upload').hide();
-                $("#pay_upload").prop('required',false);
+                $("#pay_file").prop('required',false);
             }
         });
     </script>

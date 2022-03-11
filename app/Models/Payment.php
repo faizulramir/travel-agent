@@ -13,7 +13,7 @@ class Payment extends Model
      *
      * @var string
      */
-    protected $no_upper = ['pay_file'];
+    protected $no_upper = ['pay_file', 'stripe_link'];
 
     protected $table = 'payment';
 }
