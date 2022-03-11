@@ -49,51 +49,67 @@ class StripeController extends Controller
      */
     public function stripePost(Request $request)
     {
-        $str_1 = str_replace("RM", "", $request->pay_total);
-        $str_2 = str_replace(",", "", $str_1);
-        $str_3 = str_replace(" ", "", $str_2);
-        $str_4 = str_replace(".00", "", $str_3);
+        //dd($request);
 
-        if ($request->pay_name == 'cc') {
-            Stripe\Stripe::setApiKey('sk_test_51KPICVGHIWVASdQSz2rhGCGTJP00uuxWBynz5PQr1jF4RxVI2rXZp5kzw1KXClhW5QGMZf2IZiR8L2pgbYuIvL2F00UCQl6ZiV');
-            Stripe\Charge::create ([
-                    "amount" => $str_4 * 100,
-                    "currency" => "myr",
-                    "source" => $request->stripeToken,
-                    "description" => "This payment is tested purpose"
-            ]);
-        } else if ($request->pay_name == 'fpx') {
+        try {
+
+            $str_1 = str_replace("RM", "", $request->pay_total);
+            $str_2 = str_replace(",", "", $str_1);
+            $str_3 = str_replace(" ", "", $str_2);
+            $str_4 = str_replace(".00", "", $str_3);
+    
+            if ($request->pay_name == 'cc') {
+                Stripe\Stripe::setApiKey('sk_test_51KPICVGHIWVASdQSz2rhGCGTJP00uuxWBynz5PQr1jF4RxVI2rXZp5kzw1KXClhW5QGMZf2IZiR8L2pgbYuIvL2F00UCQl6ZiV');
+                Stripe\Charge::create ([
+                        "amount" => $str_4 * 100,
+                        "currency" => "myr",
+                        "source" => $request->stripeToken,
+                        "description" => "This payment is tested purpose"
+                ]);
+            } else if ($request->pay_name == 'fpx') {
+                
+            } 
+    
+            // 4242424242424242
+            // 123
+            // dd($request->all());
+            $dt = Carbon::now();
+    
+            $payment =  new Payment;
+            $payment->pay_date = $dt->toDateString();
+            $payment->pay_by = $request->pay_name;
+            $payment->pay_file = $request->pay_name;
+            $payment->pay_total = $request->pay_total;
+            $payment->file_id = $request->pay_id;
+            $payment->save();
+    
+            $upload = FileUpload::where('id', $request->pay_id)->first();
+            $upload->status = '4';
+            $upload->save();
+       
+            Session::flash('success', 'Payment successful!');
             
-        } 
+            // $request->pay_id;
+            if (auth()->user()->hasAnyRole('tra')) {
+                return redirect()->route('excel_list');
+            } else if (auth()->user()->hasAnyRole('akc')) {
+                return redirect()->route('excel_list_admin');
+            } else if (auth()->user()->hasAnyRole('ind')) {
+                return redirect()->route('application_list');
+            } else if (auth()->user()->hasAnyRole('ag')) {
+                return redirect()->route('excel_list_agent');
+            }
 
-        // 4242424242424242
-        // 123
-        // dd($request->all());
-        $dt = Carbon::now();
+        }
+        catch (\Stripe\Exception\CardException $e) {
 
-        $payment =  new Payment;
-        $payment->pay_date = $dt->toDateString();
-        $payment->pay_by = $request->pay_name;
-        $payment->pay_file = $request->pay_name;
-        $payment->pay_total = $request->pay_total;
-        $payment->file_id = $request->pay_id;
-        $payment->save();
+            //dd($e);
+            Session::flash('error', 'Payment Error! - '.$e);
+            return redirect()->back();
 
-        $upload = FileUpload::where('id', $request->pay_id)->first();
-        $upload->status = '4';
-        $upload->save();
-   
-        Session::flash('success', 'Payment successful!');
-        
-        // $request->pay_id;
-        if (auth()->user()->hasAnyRole('tra')) {
-            return redirect()->route('excel_list');
-        } else if (auth()->user()->hasAnyRole('akc')) {
-            return redirect()->route('excel_list_admin');
-        } else if (auth()->user()->hasAnyRole('ind')) {
-            return redirect()->route('application_list');
-        } else if (auth()->user()->hasAnyRole('ag')) {
-            return redirect()->route('excel_list_agent');
-        } 
+        }
+
+
+ 
     }
 }

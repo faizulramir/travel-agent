@@ -22,6 +22,18 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    @if (Session::has('success'))
+                        <div class="alert alert-success text-center alert-dismissible" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <p>{{ Session::get('success') }}</p>
+                        </div>
+                    @endif
+                    @if (Session::has('error'))
+                        <div class="alert alert-warning text-center alert-dismissible" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <p>{{ Session::get('error') }}</p>
+                        </div>
+                    @endif 
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
                            <div class="panel panel-default credit-card-box">
