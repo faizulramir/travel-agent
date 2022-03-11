@@ -322,7 +322,80 @@
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">Paid By CC</p>
+                                                <h4 class="mb-0">{{ $tot_cc }}</h4>
+                                                </td>
+                                                <td width="60%">
+                                                <p class="text-muted fw-medium">Amount</p>
+                                                <h4 class="mb-0">RM {{ number_format((float)$amt_cc, 2, '.', ',') }}</h4>
+                                                </td>                                                                                        
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">Paid By FPX</p>
+                                                <h4 class="mb-0">{{ $tot_fpx }}</h4>
+                                                </td>
+                                                <td width="60%">
+                                                <p class="text-muted fw-medium">Amount</p>
+                                                <h4 class="mb-0">RM {{ number_format((float)$amt_fpx, 2, '.', ',') }}</h4>
+                                                </td>                                                                                        
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                
+                    <div class="col-md-3">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="40%">
+                                                <p class="text-muted fw-medium">Paid By Others</p>
+                                                <h4 class="mb-0">{{ $tot_other }}</h4>
+                                                </td>
+                                                <td width="60%">
+                                                <p class="text-muted fw-medium">Amount</p>
+                                                <h4 class="mb-0">RM {{ number_format((float)$amt_other, 2, '.', ',') }}</h4>
+                                                </td>                                                                                        
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>           
+                </div>
+            </div>
+        </div>  
     @endif
 
     @if (auth()->user()->hasAnyRole('akc', 'fin'))

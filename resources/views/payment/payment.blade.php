@@ -167,8 +167,8 @@
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required>
                                     <option value="">Please Select</option>
                                     <option value="OTHER">Others</option>
-                                    <!-- <option value="fpx">FPX - Online Banking (Coming Soon)</option>
-                                    <option value="cc">Credit Card / Debit Card (Coming Soon)</option> -->
+                                    <option value="fpx">FPX - Online Banking (Coming Soon)</option>
+                                    <option value="cc">Credit Card / Debit Card (Coming Soon)</option>
                                 </select>
                                 <br>
 

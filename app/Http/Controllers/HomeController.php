@@ -74,6 +74,14 @@ class HomeController extends Controller
         $amt_inv = 0.00;
         $amt_pay = 0.00;
 
+        $tot_cc = 0;
+        $tot_fpx = 0;
+        $tot_other = 0;
+
+        $amt_cc = 0.00;
+        $amt_fpx = 0.00;
+        $amt_other = 0.00;
+
         $total_uploads = FileUpload::all();
 
 
@@ -167,13 +175,28 @@ class HomeController extends Controller
                                 if ($tot_inv2) {
                                     $amt_pay = 0 + $amt_pay + $tot_inv2;
                                 }
+                                
+                                $str_1 = str_replace("RM", "", $upload->pay->pay_total);
+                                $str_2 = str_replace(",", "", $str_1);
+                                $str_3 = str_replace(" ", "", $str_2);
+                                $pay_totals = str_replace(".00", "", $str_3);
+
+                                if ($upload->pay->pay_by == 'OTHER') {
+                                    $tot_other = $tot_other + 1;
+                                    $amt_other = $amt_other + $pay_totals;
+                                } else if ($upload->pay->pay_by == 'CC') {
+                                    $tot_cc = $tot_cc + 1;
+                                    $amt_cc = $amt_cc + $pay_totals;
+                                }  else if ($upload->pay->pay_by == 'FPX') {
+                                    $tot_fpx = $tot_fpx + 1;
+                                    $amt_fpx = $amt_fpx + $pay_totals;
+                                }
                             }
                         }                        
                     }
                 }
             }
         }
-
 
 
         /*
@@ -332,7 +355,9 @@ class HomeController extends Controller
                                                     
                                                         'cust_tot_upl', 'cust_pen_sub', 'cust_pen_pay', 'cust_pen_doc',
                                                         'akc_tot_sub', 'tra_tot_sub', 'agn_tot_sub', 'ind_tot_sub',
-                                                        'tot_sub'
+                                                        'tot_sub',
+
+                                                        'tot_cc', 'tot_fpx', 'tot_other', 'amt_cc', 'amt_fpx', 'amt_other'
                                                     
                                                     
                                                     ));
@@ -345,73 +370,6 @@ class HomeController extends Controller
 
     public function root(Request $request)
     {
-        // $curUser = Auth::id();
-        // //dd($curUser);
-        // //$uploads = FileUpload::all();
-        // $uploads = FileUpload::where('user_id', $curUser)->get();
-        // //dd($uploads);
-
-        // $total_uploads = $uploads;
-        // $tra_uploads = 0;
-        // $tra_docs = 0;
-        // $tra_pays = 0;
-
-        // $fin_inv = 0;
-        // $fin_pay = 0;
-        
-
-        // $agent_uploads = 0;
-        // $diy_uploads = 0;
-
-        // if ($uploads) {
-
-        //     foreach ($uploads as $i => $upload) {
-        //         $user = DashboardUser::where('id', $upload->user_id)->first();
-        //         //dd($user);
-        //         if ($user->getRoleNames()[0] == 'tra') {
-        //             $tra_uploads = $tra_uploads + 1;
-        //             if ($user->id == $upload->user_id) {
-        //                 if ($upload->status == '3') {
-        //                     $tra_pays = $tra_pays + 1;
-        //                 }
-        //                 if ($upload->supp_doc == null) {
-        //                     $tra_docs = $tra_docs + 1;
-        //                 }
-        //             }
-    
-        //         } else if ($user->getRoleNames()[0] == 'ag') {
-        //             $agent_uploads = $agent_uploads + 1;
-        //         } else if ($user->getRoleNames()[0] == 'ind') {
-        //             $diy_uploads = $diy_uploads + 1;
-        //         }             
-        //     }
-        // }
-
-        // $user = DashboardUser::where('id', $curUser)->first();
-        // if ($user->getRoleNames()[0] == 'fin') {
-
-        //     $uploads = FileUpload::all();
-        //     if ($uploads) {
-        //         foreach ($uploads as $i => $upload) {
-    
-        //             //echo $upload->status;
-        //             if ($upload->status == '2.1') {
-        //                 $fin_inv = $fin_inv + 1;
-        //             }
-        //             if ($upload->status == '4') {
-        //                 $fin_pay = $fin_pay + 1;
-        //             }               
-        //         }
-    
-        //     }
-        // }
-
-        //dd($fin_inv, $fin_pay);
-        // dd($request->path());
-        // if (view()->exists($request->path())) {
-        //     return view('ex', compact('total_uploads', 'agent_uploads', 'diy_uploads', 'tra_uploads', 'tra_pays', 'tra_docs', 'fin_inv', 'fin_pay'));
-        // }
-        // return abort(404);
         return redirect()->route('index');
     }
 

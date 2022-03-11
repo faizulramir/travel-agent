@@ -24,4 +24,9 @@ class FileUpload extends Model
     {
         return $this->hasMany(Order::class, 'file_id', 'id');
     }
+
+    public function pay()
+    {
+        return $this->hasOne(Payment::class, 'file_id', 'id');
+    }
 }
