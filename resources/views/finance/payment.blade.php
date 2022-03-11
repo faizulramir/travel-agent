@@ -160,22 +160,27 @@
                                 </p>
                                 @endif
 
-                                @if(isset($pay))
-                                    <label for="plan">Payment Receipt</label>
-                                    @if ($pay->pay_file == null)
-                                        <p>Receipt not uploaded</p>
-                                        <!-- <a href="#" class="btn btn-primary waves-effect waves-light">
+                                @if ($pay !== null)
+                                    @if ($pay->pay_file == null && $pay->pay_by == 'OTHER')
+                                        <p>File not found</p>
+                                        <a href="#" class="btn btn-primary waves-effect waves-light">
                                             Upload Payment Receipt
-                                        </a> -->
+                                        </a>
                                         <br>
-                                        <a style="display: {{ $uploads->status !== '0' ? 'inline' : 'none' }};" href="#" class="btn btn-primary w-md" onclick="openDetail({{$uploads->id}},'{{$uploads->supp_doc}}')">Upload Payment Receipt</a>
                                     @else
-                                        <p>
+                                        @if ($pay->stripe_link && $pay->pay_by != 'OTHER')
+                                            <br>
+                                            <a target="_blank" href="{{ $pay->stripe_link }}" class="btn btn-primary waves-effect waves-light">
+                                                Download Receipt
+                                            </a>
+                                        @elseif($pay->pay_by == 'OTHER')
+                                            <br>
                                             <a href="{{ route('download_payment', [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary waves-effect waves-light">
                                                 Download Receipt
                                             </a>
-                                            <a href="{{ route('excel_list_finance') }}" class="btn btn-primary waves-effect waves-light">Cancel</a>
-                                        </p>
+                                        @else
+                                            <p>Stripe receipt not found</p>
+                                        @endif
                                     @endif
                                 @endif
                                 <br>
