@@ -83,9 +83,9 @@ class StripeController extends Controller
             $payment =  new Payment;
             $payment->pay_date = $dt->toDateString();
             $payment->pay_by = $request->pay_name;
-            $payment->pay_file = $request->pay_name;
             $payment->pay_total = $request->pay_total;
             $payment->file_id = $request->pay_id;
+            $payment->stripe_link = $data->receipt_url;
             $payment->save();
     
             $upload = FileUpload::where('id', $request->pay_id)->first();

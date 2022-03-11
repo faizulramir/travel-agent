@@ -173,19 +173,26 @@
 
                                 <label for="plan">Upload Receipt Payment</label>
                                 @if ($pay !== null)
-                                    @if ($pay->pay_file == null)
+                                    @if ($pay->pay_file == null && $pay->pay_by == 'OTHER')
                                         <p>File not found</p>
                                         <a href="#" class="btn btn-primary waves-effect waves-light">
                                             Upload Payment Receipt
                                         </a>
                                         <br>
                                     @else
-                                        <p>
+                                        @if ($pay->stripe_link && $pay->pay_by != 'OTHER')
+                                            <br>
+                                            <a target="_blank" href="{{ $pay->stripe_link }}" class="btn btn-primary waves-effect waves-light">
+                                                Download Receipt
+                                            </a>
+                                        @elseif($pay->pay_by == 'OTHER')
                                             <br>
                                             <a href="{{ route('download_payment', [$uploads->user_id, $uploads->id]) }}" class="btn btn-primary waves-effect waves-light">
                                                 Download Receipt
                                             </a>
-                                        </p>
+                                        @else
+                                            <p>Stripe receipt not found</p>
+                                        @endif
                                     @endif
                                 @endif
                                 <br><br>
