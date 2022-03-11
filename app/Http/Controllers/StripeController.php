@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Stripe;
 use App\Models\DashboardUser;
+use App\Models\StripeLog;
 use App\Models\FileUpload;
 use App\Models\Plan;
 use App\Models\Payment;
@@ -60,7 +61,7 @@ class StripeController extends Controller
     
             if ($request->pay_name == 'cc') {
                 Stripe\Stripe::setApiKey('sk_test_51KPICVGHIWVASdQSz2rhGCGTJP00uuxWBynz5PQr1jF4RxVI2rXZp5kzw1KXClhW5QGMZf2IZiR8L2pgbYuIvL2F00UCQl6ZiV');
-                Stripe\Charge::create ([
+                $data = Stripe\Charge::create ([
                         "amount" => $str_4 * 100,
                         "currency" => "myr",
                         "source" => $request->stripeToken,
@@ -68,8 +69,12 @@ class StripeController extends Controller
                 ]);
             } else if ($request->pay_name == 'fpx') {
                 
-            } 
-    
+            }
+
+            $logs = new StripeLog;
+            $logs->log = $data->status;
+            $logs->file_id = $request->pay_id;
+            $logs->save();
             // 4242424242424242
             // 123
             // dd($request->all());
@@ -102,11 +107,12 @@ class StripeController extends Controller
 
         }
         catch (\Stripe\Exception\CardException $e) {
-
-            //dd($e);
-            Session::flash('error', 'Payment Error! - '.$e);
+            $logs = new StripeLog;
+            $logs->log = $e->getError()->type.': '.$e->getError()->message;
+            $logs->file_id = $request->pay_id;
+            $logs->save();
+            Session::flash('error', 'Payment Error! - '.$e->getError()->message);
             return redirect()->back();
-
         }
 
 

@@ -136,13 +136,16 @@
                                 </select>
                                 <br>
 
-                                <label for="plan">Upload Payment Receipt</label>
-                                @if (auth()->user()->hasAnyRole('akc') || auth()->user()->hasAnyRole('fin'))
-                                    <input class="form-control" type="file" name="pay_file">
-                                @else 
-                                    <input class="form-control" type="file" name="pay_file" required>
-                                @endif
-                                <br>
+                                <div id="pay_upload" style="display: none;">
+                                    <label for="plan">Upload Payment Receipt</label>
+                                    @if (auth()->user()->hasAnyRole('akc') || auth()->user()->hasAnyRole('fin'))
+                                        <input class="form-control" type="file" name="pay_file">
+                                    @else 
+                                        <input class="form-control" type="file" name="pay_file" required>
+                                    @endif
+                                    <br>
+                                </div>
+                                
 
                                 <input type="hidden" value="{{ $id }}" name="id">
                                 @if($uploads->status != '4' && $uploads->status != '5')
@@ -166,4 +169,15 @@
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    <script>
+        $('#pay_by').change(function() {
+            if ($('#pay_by').val() == 'OTHER') {
+                $('#pay_upload').show();
+                $("#pay_upload").prop('required',true);
+            } else {
+                $('#pay_upload').hide();
+                $("#pay_upload").prop('required',false);
+            }
+        });
+    </script>
 @endsection
