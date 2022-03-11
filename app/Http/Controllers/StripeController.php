@@ -21,9 +21,12 @@ class StripeController extends Controller
      */
     public function stripe($pay_id, $pay_total, $pay_name)
     {
+        //dd($pay_id, $pay_total, $pay_name);
+
         if ($pay_name == 'cc') {
             return view('stripe.cc', compact('pay_total', 'pay_id'));
-        } else if ($pay_name == 'fpx') {
+        } 
+        else if ($pay_name == 'fpx') {
             $str_1 = str_replace("RM", "", $pay_total);
             $str_2 = str_replace(",", "", $str_1);
             $str_3 = str_replace(" ", "", $str_2);

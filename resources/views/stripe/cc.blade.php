@@ -136,12 +136,14 @@
             });
             function stripeResponseHandler(status, response) {
                 if (response.error) {
+                    console.log("stripeResponseHandler-err: ", response);
                     $('.error')
                         .removeClass('hide')
                         .find('.alert')
                         .text(response.error.message);
                 } else {
                     /* token contains id, last4, and card type */
+                    console.log("stripeResponseHandler-succ: ", response);
                     var token = response['id'];
                     $form.find('input[type=text]').empty();
                     $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");

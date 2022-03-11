@@ -27,24 +27,6 @@
                         <h4 class="card-title">Invoice Summary</h4>
                         <br>
 
-                        <!--
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="plan">Travel Agent Name: <b>{{ $uploads->ta_name }}</b></label>                                
-                            </div>                             
-                            <div class="col-md-4">
-                                <label for="plan">File Name: <b>{{ $uploads->file_name }}</b></label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="plan">Invoice No: <b>{{ $invoice_num }}</b></label>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="plan">Total Jemaah: <b>{{ $tot_rec }}</b></label>
-                            </div>    
-                        </div>
-                        -->
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="plan">Invoice No: <b>{{ $invoice_num }}</b></label> &nbsp;&nbsp; 
@@ -68,24 +50,6 @@
                         <br>
                         <div class="row">
                             <div class="col-md-3">
-                                {{--
-                                <label for="plan">&raquo;Plan E-CARE</label>
-                                <p>
-                                    @foreach ($invoice_arr as $inv)
-                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
-                                    @endforeach
-                                </p>
-                                <label for="plan">&raquo;Plan PCR</label>
-                                <p>
-                                    {{ $pcr_detail->cnt }} x <b>{{ $pcr_detail->name }}</b> = {{ number_format((float)$pcr_detail->price, 2, '.', ',') }} <br>
-                                </p>
-                                <label for="plan">&raquo;Plan TPA</label>
-                                <p>
-                                    @foreach ($tpa_total_arr as $inv)
-                                        {{ $inv['COUNT'] }} x <b>{{ $inv['PLAN'] }}</b> = RM {{ number_format((float)$inv['COST'], 2, '.', ',') }} <br>
-                                    @endforeach
-                                </p>
-                                --}}
 
                                 <table width="100%" class="table table-striped">
                                     @foreach ($invoice_arr as $inv)
@@ -167,8 +131,8 @@
                                 <select id="pay_by" name="pay_by" class="form-control select2-search-disable" required>
                                     <option value="">Please Select</option>
                                     <option value="OTHER">Others</option>
-                                    <!-- <option value="fpx">FPX - Online Banking (Coming Soon)</option>
-                                    <option value="cc">Credit Card / Debit Card (Coming Soon)</option> -->
+                                    <!-- <option value="fpx">FPX - Online Banking (Coming Soon)</option> -->
+                                    <option value="cc">Credit Card</option>
                                 </select>
                                 <br>
 
@@ -184,8 +148,6 @@
                                 @if($uploads->status != '4' && $uploads->status != '5')
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">Make Payment</button>
                                 @endif
-
-                                {{-- <a href="{{ route('excel_list') }}" class="btn btn-primary waves-effect waves-light">Cancel</a> --}}
 
                             </div>
                         </div>
