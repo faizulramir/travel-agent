@@ -58,6 +58,8 @@ class StripeController extends Controller
             $str_2 = str_replace(",", "", $str_1);
             $str_3 = str_replace(" ", "", $str_2);
             $str_4 = str_replace(".00", "", $str_3);
+
+            $pay_desc = "This payment is tested purpose";
     
             if ($request->pay_name == 'cc') {
                 Stripe\Stripe::setApiKey('sk_test_51KPICVGHIWVASdQSz2rhGCGTJP00uuxWBynz5PQr1jF4RxVI2rXZp5kzw1KXClhW5QGMZf2IZiR8L2pgbYuIvL2F00UCQl6ZiV');
@@ -65,8 +67,9 @@ class StripeController extends Controller
                         "amount" => $str_4 * 100,
                         "currency" => "myr",
                         "source" => $request->stripeToken,
-                        "description" => "This payment is tested purpose"
+                        "description" => $pay_desc
                 ]);
+                //dd($data);
             } else if ($request->pay_name == 'fpx') {
                 
             }
@@ -92,7 +95,7 @@ class StripeController extends Controller
             $upload->status = '4';
             $upload->save();
        
-            Session::flash('success', 'Payment successful!');
+            Session::flash('success', 'Payment: Process Successful! Thank you');
             
             // $request->pay_id;
             if (auth()->user()->hasAnyRole('tra')) {
@@ -111,11 +114,10 @@ class StripeController extends Controller
             $logs->log = $e->getError()->type.': '.$e->getError()->message;
             $logs->file_id = $request->pay_id;
             $logs->save();
-            Session::flash('error', 'Payment Error! - '.$e->getError()->message);
+
+            Session::flash('error', 'Payment: Process Error! '.$e->getError()->message);
             return redirect()->back();
         }
-
-
  
     }
 }
