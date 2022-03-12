@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title') CLAIM LIST @endsection
+@section('title') SERVICES STMT @endsection
 
 @section('css')
     <!-- Responsive Table css -->
@@ -13,7 +13,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') ADMIN @endslot
-        @slot('title') CLAIM LIST @endslot
+        @slot('title') SERVICES STMT @endslot
     @endcomponent
 
     <div class="row">
@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-6" style="text-align: right;">
                             <a href="{{ route('export_claim', $file_id) }}" class="btn btn-primary w-md">
-                                Export Claims To Excel
+                                Export Services To Excel
                             </a>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                                     <th data-priority="1" width="8%">PCR Date</th>
                                     <th data-priority="1" width="15%">TPA</th>
                                     <th data-priority="1" width="5%">Quarantine</th>
-                                    <th data-priority="3" width="5%">Action</th>
+                                    <th data-priority="3" width="10%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,7 +100,7 @@
                                                 @endif                                                
                                             @endif
                                             <a href="{{ route('claim_edit', $order->id) }}" class="waves-effect" style="color: black;">
-                                                <i class="bx bx-edit-alt font-size-24" title="Edit Claim"></i>
+                                                <i class="bx bx-edit-alt font-size-24" title="Edit Services"></i>
                                             </a>
                                         </td>
                                     </tr>

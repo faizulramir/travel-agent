@@ -18,6 +18,22 @@
         $sub_total = 0.00;
     @endphp
 
+    <div class="modal fade bs-example-modal-center" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Loading Data</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <button class="btn btn-primary" id="btnBefore" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -39,7 +55,8 @@
                            <div class="panel panel-default credit-card-box">
                               <div class="panel-heading display-table" >
                                  <div class="row display-tr" >
-                                    <h3 class="panel-title display-td">Payment Details</h3>
+                                    <!-- <h4 class="panel-title display-td">Payment - Card Details</h4> -->
+                                    <div class="card-title">Payment - Card Details</div>
                                  </div>
                               </div>
                               <div class="panel-body">
@@ -52,35 +69,36 @@
                                     data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
                                     id="payment-form">
                                     @csrf
-                                    <div class='form-row row'>
-                                       <div class='col-xs-12 form-group required'>
-                                          <label class='control-label'>Name on Card</label> <input
-                                             class='form-control' type='text'>
-                                       </div>
-                                    </div>
                                     <br>
                                     <div class='form-row row'>
-                                       <div class='col-xs-12 form-group card required'>
+                                       <div class='col-xs-12 col-md-8 form-group card required'>
                                           <label class='control-label'>Card Number</label> <input
                                              autocomplete='off' class='form-control card-number'
                                              type='text'>
                                        </div>
                                     </div>
                                     <div class='form-row row'>
-                                       <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                          <label class='control-label'>CVC</label> <input autocomplete='off'
-                                             class='form-control card-cvc' placeholder='ex. 311' maxlength='3'
+                                       <div class='col-xs-12 col-md-2 form-group cvc required'>
+                                          <label class='control-label'>CVV</label> <input autocomplete='off'
+                                             class='form-control card-cvc' placeholder='' maxlength='3'
                                              type='text'>
                                        </div>
-                                       <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                          <label class='control-label'>Expiration Month</label> <input
+                                       <div class='col-xs-12 col-md-2 form-group expiration required'>
+                                          <label class='control-label'>Expiry Month</label> <input
                                              class='form-control card-expiry-month' placeholder='MM' maxlength='2'
                                              type='text'>
                                        </div>
-                                       <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                          <label class='control-label'>Expiration Year</label> <input
+                                       <div class='col-xs-12 col-md-2 form-group expiration required'>
+                                          <label class='control-label'>Expiry Year</label> <input
                                              class='form-control card-expiry-year' placeholder='YYYY' maxlength='4'
                                              type='text'>
+                                       </div>
+                                    </div>
+                                    <br>
+                                    <div class='form-row row'>
+                                       <div class='col-xs-12 col-md-8 form-group required'>
+                                          <label class='control-label'>Name on Card</label> <input
+                                             class='form-control' type='text'>
                                        </div>
                                     </div>
                                     <br>
@@ -91,9 +109,19 @@
                                           </div>
                                        </div>
                                     </div> --}}
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input class="form-check-input" type="checkbox" id="agreement">
+                                            <label class="form-check-label" style="color:navy;" for="agreement">
+                                                &nbsp;&nbsp;<b>All information are correct</b>
+                                            </label>
+                                        </div>
+                                    </div>   
+                                    <br>                                 
                                     <div class="row">
                                        <div class="col-xs-12">
-                                          <button class="btn btn-primary btn-lg btn-block" type="submit">PAY {{ $pay_total }}</button>
+                                          <button class="btn btn-primary btn-lg btn-block" onclick="doPay()" type="submit">PAY {{ $pay_total }}</button>
                                        </div>
                                     </div>
                                     <input type="hidden" name="pay_id" id="pay_id" value="{{ $pay_id }}">
@@ -113,6 +141,17 @@
 @section('script')
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript">
+
+        function doPay() {
+            //alert("Pay");
+            $('#pleaseWaitDialog').modal('show');
+            setTimeout(function() {
+                $('#pleaseWaitDialog').modal('hide');
+                $('#pleaseWaitDialog').modal('hide');
+                //do something to cancel any active transaction (if any)
+            }, 480000); //clear loading after 8min
+        }
+
         $(function() {
             var $form = $(".require-validation");
             $('form.require-validation').bind('submit', function(e) {
@@ -147,12 +186,17 @@
                 }
             });
             function stripeResponseHandler(status, response) {
+                //$('#pleaseWaitDialog').modal('hide');
+
                 if (response.error) {
                     console.log("stripeResponseHandler-err: ", response);
                     $('.error')
                         .removeClass('hide')
                         .find('.alert')
                         .text(response.error.message);
+                    alert("Payment Error! " + response.error.message);
+                    $('#pleaseWaitDialog').modal('hide');
+                    $('#pleaseWaitDialog').modal('hide');
                 } else {
                     /* token contains id, last4, and card type */
                     console.log("stripeResponseHandler-succ: ", response);

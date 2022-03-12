@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title') CLAIM LIST @endsection
+@section('title') SERVICES STMT @endsection
 
 @section('css')
     <!-- Responsive Table css -->
@@ -21,7 +21,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') ADMIN @endslot
-        @slot('title') CLAIM LIST @endslot
+        @slot('title') SERVICES STMT @endslot
     @endcomponent
 
     <div class="row">
