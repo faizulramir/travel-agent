@@ -72,26 +72,22 @@
                                     <br>
                                     <div class='form-row row'>
                                        <div class='col-xs-12 col-md-8 form-group card required'>
-                                          <label class='control-label'>Card Number</label> <input
-                                             autocomplete='off' class='form-control card-number'
-                                             type='text'>
+                                          <label class='control-label'>Card Number</label>
+                                          <input autocomplete='off' class='form-control card-number' placeholder='' maxlength='16' type='text'>
                                        </div>
                                     </div>
                                     <div class='form-row row'>
+                                       <div class='col-xs-12 col-md-2 form-group expiration required'>
+                                          <label class='control-label'>Expiry Month</label> 
+                                          <input class='form-control card-expiry-month' placeholder='MM' maxlength='2' type='text'>
+                                       </div>
+                                       <div class='col-xs-12 col-md-2 form-group expiration required'>
+                                          <label class='control-label'>Expiry Year</label>
+                                          <input class='form-control card-expiry-year' placeholder='YYYY' maxlength='4' type='text'>
+                                       </div>
                                        <div class='col-xs-12 col-md-2 form-group cvc required'>
-                                          <label class='control-label'>CVV</label> <input autocomplete='off'
-                                             class='form-control card-cvc' placeholder='' maxlength='3'
-                                             type='text'>
-                                       </div>
-                                       <div class='col-xs-12 col-md-2 form-group expiration required'>
-                                          <label class='control-label'>Expiry Month</label> <input
-                                             class='form-control card-expiry-month' placeholder='MM' maxlength='2'
-                                             type='text'>
-                                       </div>
-                                       <div class='col-xs-12 col-md-2 form-group expiration required'>
-                                          <label class='control-label'>Expiry Year</label> <input
-                                             class='form-control card-expiry-year' placeholder='YYYY' maxlength='4'
-                                             type='text'>
+                                          <label class='control-label'>CVV</label> 
+                                          <input autocomplete='off' class='form-control card-cvc' placeholder='' maxlength='3' type='text'>
                                        </div>
                                     </div>
                                     <br>
@@ -121,7 +117,8 @@
                                     <br>                                 
                                     <div class="row">
                                        <div class="col-xs-12">
-                                          <button class="btn btn-primary btn-lg btn-block" onclick="doPay()" type="submit">PAY {{ $pay_total }}</button>
+                                          <button class="btn btn-primary btn-md btn-block" onclick="doPayment()" type="submit"><b>PAY {{ $pay_total }}</b></button>
+                                          <button class="btn btn-primary btn-md btn-block">Cancel</button>
                                        </div>
                                     </div>
                                     <input type="hidden" name="pay_id" id="pay_id" value="{{ $pay_id }}">
@@ -142,14 +139,22 @@
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript">
 
-        function doPay() {
-            //alert("Pay");
+        function doPayment() {
+            //alert("doPayment!");
+
+            //validates here ...
+            //validate card number is not empty and number only
+            //validate MM in 01 02 03 ... 12 and number only
+            //validate YYYY is current year and beyond and number only
+            //validate cvc is not empty and number only
+            //if validation failed do not submit; this will stop card testing attempt from being submitted to stripe
+
             $('#pleaseWaitDialog').modal('show');
             setTimeout(function() {
                 $('#pleaseWaitDialog').modal('hide');
                 $('#pleaseWaitDialog').modal('hide');
-                //do something to cancel any active transaction (if any)
-            }, 480000); //clear loading after 8min
+                //do something to cancel any active/pending transaction (if any)
+            }, 480000); //force to clear loading after 8min
         }
 
         $(function() {
