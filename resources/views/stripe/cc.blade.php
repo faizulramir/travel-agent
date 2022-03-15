@@ -93,8 +93,8 @@
                                     <br>
                                     <div class='form-row row'>
                                        <div class='col-xs-12 col-md-8 form-group required'>
-                                          <label class='control-label'>Name on Card</label> <input
-                                             class='form-control' type='text'>
+                                          <label class='control-label'>Name on Card</label>
+                                          <input class='form-control' placeholder='' maxlength='40' type='text'>
                                        </div>
                                     </div>
                                     <br>
