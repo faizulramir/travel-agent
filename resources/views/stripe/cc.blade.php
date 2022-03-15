@@ -50,6 +50,10 @@
                             <p>{{ Session::get('error') }}</p>
                         </div>
                     @endif 
+                    <div class="alert alert-warning text-center alert-dismissible" role="alert" id="alertjs" style="display: none;">
+                        <button type="button" class="btn-close" onclick="closeAlert()"></button>
+                        <p></p>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
                            <div class="panel panel-default credit-card-box">
@@ -73,28 +77,30 @@
                                     <div class='form-row row'>
                                        <div class='col-xs-12 col-md-8 form-group card required'>
                                           <label class='control-label'>Card Number</label>
-                                          <input autocomplete='off' class='form-control card-number' placeholder='' maxlength='16' type='text'>
+                                          <input autocomplete='off' class='form-control card-number' onkeyup="keypressCheck(event, 'card-number')" placeholder='' maxlength='16' type='text' required>
+                                          <p id="card-number-p" style="color:red; display: none;"></p>
                                        </div>
                                     </div>
                                     <div class='form-row row'>
                                        <div class='col-xs-12 col-md-2 form-group expiration required'>
                                           <label class='control-label'>Expiry Month</label> 
-                                          <input class='form-control card-expiry-month' placeholder='MM' maxlength='2' type='text'>
+                                          <input class='form-control card-expiry-month' id="card-expiry-month" placeholder='MM' onkeyup="keypressCheck(event, 'month')" maxlength='2' type='text' required>
                                        </div>
                                        <div class='col-xs-12 col-md-2 form-group expiration required'>
                                           <label class='control-label'>Expiry Year</label>
-                                          <input class='form-control card-expiry-year' placeholder='YYYY' maxlength='4' type='text'>
+                                          <input class='form-control card-expiry-year' placeholder='YYYY' id="card-expiry-year" onkeyup="keypressCheck(event, 'card-expiry')" maxlength='4' type='text' required>
                                        </div>
                                        <div class='col-xs-12 col-md-2 form-group cvc required'>
                                           <label class='control-label'>CVV</label> 
-                                          <input autocomplete='off' class='form-control card-cvc' placeholder='' maxlength='3' type='text'>
+                                          <input autocomplete='off' class='form-control card-cvc' placeholder='' onkeyup="keypressCheck(event, 'card-cvc')" maxlength='3' type='text' required>
                                        </div>
+                                       <p id="month-exp-cvc-p" style="color:red; display: none;"></p>
                                     </div>
                                     <br>
                                     <div class='form-row row'>
                                        <div class='col-xs-12 col-md-8 form-group required'>
-                                          <label class='control-label'>Name on Card</label>
-                                          <input class='form-control' placeholder='' maxlength='40' type='text'>
+                                          <label class='control-label'>Name on Card</label> 
+                                          <input class='form-control' type='text' onkeyup="keypressCheck(event, 'cardname')" maxlength='40' required>
                                        </div>
                                     </div>
                                     <br>
@@ -117,8 +123,8 @@
                                     <br>                                 
                                     <div class="row">
                                        <div class="col-xs-12">
-                                          <button class="btn btn-primary btn-md btn-block" onclick="doPayment()" type="submit"><b>PAY {{ $pay_total }}</b></button>
-                                          <button class="btn btn-primary btn-md btn-block">Cancel</button>
+                                          <button class="btn btn-primary btn-md btn-block" id="btn-pay" type="submit"><b>PAY {{ $pay_total }}</b></button>
+                                          <a href="{{ route('payment', $pay_id) }}" class="btn btn-primary btn-md btn-block">Cancel</a>
                                        </div>
                                     </div>
                                     <input type="hidden" name="pay_id" id="pay_id" value="{{ $pay_id }}">
@@ -139,6 +145,83 @@
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript">
 
+        function closeAlert() {
+            $('#alertjs').hide();
+        }
+
+        var month = false;
+        var cardNo = false;
+        var expiry = false;
+        var cvc = false;
+        let cardname = false;
+
+        function keypressCheck (e, type) {
+            var today = new Date();
+            var dateNow = today.getFullYear();
+            
+            if (type == 'card-number') {
+                if (!/^[0-9]+$/.test(e.key)) {
+                    $('#card-number-p').show();
+                    $('#card-number-p').text('Numbers Only!');
+                    cardNo = false;
+                } else {
+                    $('#card-number-p').hide();
+                    cardNo = true;
+                }
+            }
+            
+            if (type == 'month') {
+                if (!/^[0-9]+$/.test(e.key)) {
+                    $('#month-exp-cvc-p').show();
+                    $('#month-exp-cvc-p').text('Numbers Only!');
+                    month = false;
+                } else if ($('#card-expiry-month').val() > 12 || $('#card-expiry-month').val() < 1) {
+                    $('#month-exp-cvc-p').show();
+                    $('#month-exp-cvc-p').text('1-12 Month Only!');
+                    month = false;
+                } else {
+                    $('#month-exp-cvc-p').hide();
+                    month = true;
+                }
+            } 
+            
+            if (type == 'card-expiry') {
+                if (!/^[0-9]+$/.test(e.key)) {
+                    $('#month-exp-cvc-p').show();
+                    $('#month-exp-cvc-p').text('Numbers Only!');
+                    expiry = false;
+                } else if ($('#card-expiry-year').val() < dateNow) {
+                    $('#month-exp-cvc-p').show();
+                    $('#month-exp-cvc-p').text('Card must be after year ' + dateNow);
+                    expiry = false;
+                } else {
+                    $('#month-exp-cvc-p').hide();
+                    expiry = true;
+                }
+            }
+            
+            if (type == 'card-cvc') {
+                if (!/^[0-9]+$/.test(e.key)) {
+                    $('#month-exp-cvc-p').show();
+                    $('#month-exp-cvc-p').text('Numbers Only!');
+                    cvc = false;
+                } else {
+                    $('#month-exp-cvc-p').hide();
+                    cvc = true;
+                }
+            }
+            
+            if (type == 'cardname') {
+                cardname = true;
+            }
+
+            if (month && cardNo && expiry && cvc && name) {
+                $('#btn-pay').prop('disabled', false);
+            } else {
+                $('#btn-pay').prop('disabled', true);
+            }
+        }
+
         function doPayment() {
             //alert("doPayment!");
 
@@ -158,8 +241,10 @@
         }
 
         $(function() {
+            $('#btn-pay').prop('disabled', true);
             var $form = $(".require-validation");
             $('form.require-validation').bind('submit', function(e) {
+                // doPayment();
                 var $form = $(".require-validation"),
                     inputSelector = ['input[type=email]', 'input[type=password]',
                         'input[type=text]', 'input[type=file]',
@@ -189,21 +274,20 @@
                         exp_year: $('.card-expiry-year').val()
                     }, stripeResponseHandler);
                 }
+                
             });
             function stripeResponseHandler(status, response) {
                 //$('#pleaseWaitDialog').modal('hide');
-
                 if (response.error) {
                     console.log("stripeResponseHandler-err: ", response);
-                    $('.error')
-                        .removeClass('hide')
-                        .find('.alert')
-                        .text(response.error.message);
-                    alert("Payment Error! " + response.error.message);
-                    $('#pleaseWaitDialog').modal('hide');
-                    $('#pleaseWaitDialog').modal('hide');
+                    $('#alertjs').show();
+                    $('#alertjs > p').text(response.error.message);
+                        // .removeClass('hide')
+                        // .find('.alert')
+                        // .text(response.error.message);
                 } else {
                     /* token contains id, last4, and card type */
+                    doPayment();
                     console.log("stripeResponseHandler-succ: ", response);
                     var token = response['id'];
                     $form.find('input[type=text]').empty();
@@ -212,6 +296,7 @@
                     $form.append("pay_total", $('#pay_total').val());
                     $form.append("pay_name", $('#pay_name').val());
                     $form.get(0).submit();
+                    $('#pleaseWaitDialog').modal('hide');
                 }
             }
         });
