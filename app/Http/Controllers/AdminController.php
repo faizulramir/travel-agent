@@ -1284,6 +1284,25 @@ class AdminController extends Controller
         }
     }
 
+    public function edit_invoice_name (Request $request)
+    {
+        $files = FileUpload::where('id', $request->uploads_id_edit)->first();
+        $temp_arr = $request->invoice_name;
+        if ($files->json_inv) {
+            $json_data = json_decode($files->json_inv, true);
+            array_push($json_data, $temp_arr);
+            $json_data['invoice_name'] = $json_data[0];
+            unset($json_data[0]);
+        }
+
+        $files->json_inv = json_encode($json_data);
+        $files->save();
+
+        Session::flash('success', 'Invoice Name Edited!');
+
+        return redirect()->back();
+    }
+
     public function cancel_invoice ($id)
     {
         $uploads = FileUpload::where('id', $id)->first();
