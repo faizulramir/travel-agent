@@ -352,10 +352,10 @@ class PaymentController extends Controller
 
         if ($files->json_inv) {
             $data_decode = json_decode($files->json_inv, true);
-
             $tpa_pcr_arr = $data_decode['tpa_pcr_arr'];
             // $files = (object)$data_decode['files'];
             // dd($files->id);
+            $bill_to_name = isset($data_decode['invoice_name']) ? $data_decode['invoice_name'] : null;
             $invoice_arr = collect($data_decode['invoice_arr']);
             $tot_inv = $data_decode['tot_inv'];
             $tot_inv2 = $data_decode['tot_inv2'];
@@ -373,6 +373,7 @@ class PaymentController extends Controller
             //dd($files->json_inv, $data_decode, $data_decode['disArr']);
 
         } else {
+            $bill_to_name = null;
             $tot_rec = 0;
             $orders = Order::where([['file_id', '=' ,$order_id],['status', '1']])->get();
             $tot_rec = count($orders);
@@ -596,7 +597,7 @@ class PaymentController extends Controller
         
         // dd($invoice_arr);
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('payment.invoice-all', compact('tpa_pcr_arr','files', 'invoice_arr', 'tot_inv', 'tot_inv2', 'disArr', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
+        $pdf->loadView('payment.invoice-all', compact('bill_to_name', 'tpa_pcr_arr','files', 'invoice_arr', 'tot_inv', 'tot_inv2', 'disArr', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
         return $pdf->stream($pdfName);
     }
 

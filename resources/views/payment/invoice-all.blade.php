@@ -70,7 +70,7 @@
         <div class="row">
             <div class="column" style="padding: 0; margin: 0;">
                 <p><b>Bill To</b></p>
-                <p>{{ strtoupper($files->user->name) }}</p>
+                <p>{{ $bill_to_name ? strtoupper($bill_to_name) : strtoupper($files->user->name) }}</p>
             </div>
             <div class="column-second">
             </div>
