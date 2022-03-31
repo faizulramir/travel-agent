@@ -217,6 +217,7 @@
                 type: 'GET',
                 success: function (data) {
                     if (data.Data) {
+                        var ecert = $("#ecert").val();
                         data.Data.forEach(e => {
                             $('#tbody').append(`<tr id="R${++rowIdx}">
                                 <td class="row-index text-center">
@@ -229,7 +230,7 @@
                                 <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Consultation" type="number" value="${e.rowInput4}"></div></td>
                                 <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Drugs" type="number" value="${e.rowInput5}"></div></td>
                                 <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Services" type="number" value="${e.rowInput6}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Discount" type="number" value="${e.rowInput7}">
+                                <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Discount" type="number" value="${e.rowInput7}"></div></td>
                                 <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
                                 </tr>`);
                         });
@@ -247,11 +248,11 @@
                     <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Date" type="date" value=""></div></td>
                     <td><div class="form-group"><h5><b>${ecert}</b></h5></div></td>
                     <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Pt. File Number" type="text" value=""></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Invoice Number" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Consultation" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Drugs" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Services" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Discount" type="number">
+                    <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Invoice Number" type="number" value=""></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Consultation" type="number" value=""></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Drugs" type="number" value=""></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Services" type="number" value=""></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Discount" type="number"></div></td>
                     <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
                     </tr>`);
             });
