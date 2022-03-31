@@ -98,7 +98,7 @@
                                 <td>{{ $table['COUNT'] }}</td>
                                 <td>{{ strtoupper($table['PLAN']) }}</td>
                                 <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
-                                <td style="text-align: right !important;">{{ number_format((float)$table['COUNT'] * $table['PRICE'], 2, '.', ',') }}</td>
+                                <td style="text-align: right !important;">{{ number_format((float)$table['COUNT'] * $table['COST'], 2, '.', ',') }}</td>
                             </tr>
                             <tr>
                                 <td></td>
