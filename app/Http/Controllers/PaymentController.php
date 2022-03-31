@@ -662,7 +662,8 @@ class PaymentController extends Controller
                 array_push($finalData, array(
                     'PLAN' => $item['PLAN'],
                     'DURATION' => $item['DURATION'],
-                    'PRICE' => $item['COST'],
+                    'PRICE' => $item['PRICE'],
+                    'COST' => $item['COST'],
                     'COUNT' => 0,
                 ));
             }
