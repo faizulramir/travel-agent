@@ -154,6 +154,10 @@
 
                                 @if($uploads->json_inv && $uploads->json_inv!=null && $uploads->json_inv!='')
                                 <p>
+                                    <a href="#" id="edit_invoice_name" class="btn btn-primary waves-effect waves-light">Edit Invoice Name</a>
+                                </p>
+                                
+                                <p>
                                     <a href="{{ route('create_invoice', $uploads->id) }}" target="_blank" class="btn btn-primary waves-effect waves-light">
                                         Download Invoice
                                     </a>
@@ -234,6 +238,39 @@
         </div>
     </div>
 
+    <div class="modal fade bs-example-modal-center" id="editInvoiceModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Edit Invoice Name</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row ">
+                        <div class="col-md-12">
+                            <form action="{{ route('edit_invoice_name') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="editInvoice">Invoice Name</label>
+                                        <input type="hidden" name="user_id_edit" value="{{ $uploads->user_id }}">
+                                        <input type="hidden" name="uploads_id_edit" value="{{ $uploads->id }}">
+                                        <input type="text" name="invoice_name" class="form-control" id="invoice_name" placeholder="Please Input Invoice Name" required>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit" name="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade bs-example-modal-center" id="showSuppDoc" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md">
@@ -302,6 +339,10 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $('#edit_invoice_name').click(function() {
+            $('#editInvoiceModal').modal('show');
+        })
 
         $('#formSubmit').submit(function(){ 
             stat = $('#checkStatus').val();
