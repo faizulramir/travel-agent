@@ -594,7 +594,7 @@ class PaymentController extends Controller
         $dep_dates = Order::where('file_id', $order_id)->pluck('dep_date')->toArray();
         $return_dates = Order::where('file_id', $order_id)->pluck('return_date')->toArray();
         $orders = Order::where('file_id', $order_id)->get();
-
+        
         $tempArrDates = [];
         foreach($dep_dates as $key => $dep) {
             $depdate = new Carbon($dep);
@@ -607,6 +607,30 @@ class PaymentController extends Controller
 
         $tempArrTable = [];
         foreach ($orders as $key => $order) {
+            $date1 = date_create($order->dep_date);
+            $date2 = date_create($order->return_date);
+            $diff = date_diff($date1, $date2);
+
+            $days = $diff->days + 1;
+            $price = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price')->first();
+            $perday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price_per_day')->first();
+            $maxday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('total_days')->first();
+
+            //calculate for ECERT
+            $cost = 0.00;   //plan price
+            $addt = 0.00;   //additional day price
+            $difday = 0;
+            if ($price && $price > 0.00) {
+                $cost = $price;
+                if ($days && $maxday && ($days > $maxday)) {
+                    $difday = ($maxday - $days);
+                    $difday = ($difday>0?$difday:($difday*-1));
+                    if ($perday) {
+                        $addt = ($difday * $perday);
+                        $cost = $cost + $addt;
+                    }
+                }
+            }
             $depdate = new Carbon($order->dep_date);
             $rtndate = new Carbon($order->return_date);
             $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
@@ -617,6 +641,7 @@ class PaymentController extends Controller
                             'PRICE' => $inv_arr['PRICE'],
                             'PCR_COUNT' => $inv_arr['PCR_COUNT'],
                             'PCR_TOT' => $inv_arr['PCR_TOT'],
+                            'COST' => $cost,
                             'COUNT' => 1,
                             'DURATION' => $duration,
                         );
@@ -637,13 +662,12 @@ class PaymentController extends Controller
                 array_push($finalData, array(
                     'PLAN' => $item['PLAN'],
                     'DURATION' => $item['DURATION'],
-                    'PRICE' => $item['PRICE'],
+                    'PRICE' => $item['COST'],
                     'COUNT' => 0,
                 ));
             }
             $finalData[$hash[$hash_key]]['COUNT'] += 1;
         }
- 
         //dd($tot_inv, $tot_inv2, $disArr);
 
         $pdfName = $invoice_num ? 'invoice-'.str_replace('/', '-', trim($invoice_num)).'.pdf' : "invoice.pdf";

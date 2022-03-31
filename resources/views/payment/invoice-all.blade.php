@@ -102,7 +102,7 @@
                             </tr>
                             <tr>
                                 <td></td>
-                                <td style="color: red">{{ strtoupper($table['DURATION']) }}</td>
+                                <td>{{ strtoupper($table['DURATION']) }}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
