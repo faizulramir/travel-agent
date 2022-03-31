@@ -813,7 +813,7 @@ class PaymentController extends Controller
             $pdf->loadView('payment.e-cert', compact('orders', 'plan', 'cert_number', 'url_bg', 'newbirth', 'duration'));
             $content = $pdf->download()->getOriginalContent();
 
-            Storage::put(Auth::id().'/ecert/'.$id.'/'.$orders->passport_no.'.pdf',$content);
+            Storage::put(Auth::id().'/ecert/'.$id.'/'.$orders->id.'.pdf',$content);
         }
         
         //$pdf_id = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO']])->get();
@@ -821,7 +821,7 @@ class PaymentController extends Controller
 
         $tmpArr = array();
         foreach ($pdf_id as $key => $pdf) {
-            array_push($tmpArr, Storage::path(Auth::id().'/ecert/'.$id.'/'.$pdf->passport_no.'.pdf'));
+            array_push($tmpArr, Storage::path(Auth::id().'/ecert/'.$id.'/'.$pdf->id.'.pdf'));
         }
         // dd($tmpArr);
         $merger = new Merger;
