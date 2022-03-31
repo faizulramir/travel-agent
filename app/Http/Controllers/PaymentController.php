@@ -591,13 +591,66 @@ class PaymentController extends Controller
             $tot_inv2 = $tot_inv + ($disArr ? $disArr['COST'] : 0) + $tot_tpa;
         }
         
+        $dep_dates = Order::where('file_id', $order_id)->pluck('dep_date')->toArray();
+        $return_dates = Order::where('file_id', $order_id)->pluck('return_date')->toArray();
+        $orders = Order::where('file_id', $order_id)->get();
+
+        $tempArrDates = [];
+        foreach($dep_dates as $key => $dep) {
+            $depdate = new Carbon($dep);
+            $rtndate = new Carbon($return_dates[0]);
+            $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
+            array_push($tempArrDates, $duration);  
+        }
+        
+        $tempDates = array_count_values($tempArrDates);
+
+        $tempArrTable = [];
+        foreach ($orders as $key => $order) {
+            $depdate = new Carbon($order->dep_date);
+            $rtndate = new Carbon($order->return_date);
+            $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
+            foreach ($tempDates as $dkey => $tempDate) {
+                    foreach ($invoice_arr as $ikey => $inv_arr) {
+                        $tempArrData = array(
+                            'PLAN' => $inv_arr['PLAN'],
+                            'PRICE' => $inv_arr['PRICE'],
+                            'PCR_COUNT' => $inv_arr['PCR_COUNT'],
+                            'PCR_TOT' => $inv_arr['PCR_TOT'],
+                            'COUNT' => 1,
+                            'DURATION' => $duration,
+                        );
+                        
+                    }
+            }
+
+            array_push($tempArrTable, $tempArrData);
+        }
+
+        $hash = array();
+        $finalData = array();
+
+        foreach($tempArrTable as $item) {
+            $hash_key = $item['DURATION'];
+            if(!array_key_exists($hash_key, $hash)) {
+                $hash[$hash_key] = sizeof($finalData);
+                array_push($finalData, array(
+                    'PLAN' => $item['PLAN'],
+                    'DURATION' => $item['DURATION'],
+                    'PRICE' => $item['PRICE'],
+                    'COUNT' => 0,
+                ));
+            }
+            $finalData[$hash[$hash_key]]['COUNT'] += 1;
+        }
+ 
         //dd($tot_inv, $tot_inv2, $disArr);
 
         $pdfName = $invoice_num ? 'invoice-'.str_replace('/', '-', trim($invoice_num)).'.pdf' : "invoice.pdf";
         
         // dd($invoice_arr);
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('payment.invoice-all', compact('bill_to_name', 'tpa_pcr_arr','files', 'invoice_arr', 'tot_inv', 'tot_inv2', 'disArr', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num'));
+        $pdf->loadView('payment.invoice-all', compact('bill_to_name', 'tpa_pcr_arr','files', 'invoice_arr', 'tot_inv', 'tot_inv2', 'disArr', 'tot_rec', 'tpa_arr', 'tpa_total_arr', 'date_today', 'invoice_num', 'finalData'));
         return $pdf->stream($pdfName);
     }
 

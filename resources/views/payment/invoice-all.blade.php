@@ -93,12 +93,18 @@
                 </thead>
                 <tbody>
                     @if ($invoice_arr)
-                        @foreach ($invoice_arr as $table)
+                        @foreach ($finalData as $table)
                             <tr>
                                 <td>{{ $table['COUNT'] }}</td>
                                 <td>{{ strtoupper($table['PLAN']) }}</td>
                                 <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
-                                <td style="text-align: right !important;">{{ number_format((float)$table['COST'], 2, '.', ',') }}</td>
+                                <td style="text-align: right !important;">{{ number_format((float)$table['COUNT'] * $table['PRICE'], 2, '.', ',') }}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="color: red">{{ strtoupper($table['DURATION']) }}</td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         @endforeach
                     @endif
