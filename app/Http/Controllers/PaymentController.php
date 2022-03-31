@@ -724,6 +724,7 @@ class PaymentController extends Controller
 
     public function ecert_getall ($id) {
         $order = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->get();
+        //dd($order);
 
         $max_count = 30;
         $divide = 0;
@@ -735,6 +736,7 @@ class PaymentController extends Controller
             $divide = (int) ($tot_count / $max_count);
             $remain = (int) ($tot_count % $max_count);
             if ($remain>0) $pages = 1 + $divide;
+            else $pages = $divide;
             
             $pages_arr = array();
             for ($x = 0; $x < $pages; $x++) {
@@ -754,6 +756,7 @@ class PaymentController extends Controller
             //$order2 = Order::where([['file_id', '=', $id], ['plan_type', '!=', 'NO'],  ['status', '=', '1']])->offset(1*30)->limit(30)->get();
             //dd(count($order), $divide, $remain, $pages, count($order1), count($order2), $order1[29]->ecert, $order2[0]->ecert, $pages_arr);
             //dd(count($order), $divide, $remain, $pages, $pages_arr);
+
             return response()->json([
                 'isSuccess' => true,
                 'Data' => 'Successfully Merged!',

@@ -81,12 +81,14 @@
                                         <td>{{ $order->tpa }}</td>
                                         <td>{{ ($order->pcr_result == '0' || $order->pcr_result == null) ? 'NO' : 'YES' }}</td>
                                         <td>
+                                            {{--
                                             @if ($order->pcr != 'NO') 
                                             <a href="#" class="waves-effect" style="color: blue;">
                                                 <input type="file" name="add_pcr{{$order->id}}" id="add_pcr{{$order->id}}" style="display: none;">
                                                 <i onclick="openDetail({{$order->id}})" id="uploadPCR{{$order->id}}" class="bx bxs-cloud-upload font-size-24" title="Upload PCR Result"></i>
                                             </a>
                                             @endif
+                                            --}}
                                             @if ($order->pcr_file_name !== null) 
                                                 <a href="{{ route('downloadPCR', [$order->user_id, $order->id, $order->pcr_file_name]) }}" class="waves-effect" style="color: green;">
                                                     <i id="downloadPCR{{$order->id}}" class="bx bxs-cloud-download font-size-24" title="Download PCR Result"></i>

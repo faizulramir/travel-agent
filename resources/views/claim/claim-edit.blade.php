@@ -26,7 +26,7 @@
 
     @component('components.breadcrumb')
         @slot('li_1') ADMIN @endslot
-        @slot('title') EDIT CLAIM @endslot
+        @slot('title') EDIT SERVICES @endslot
     @endcomponent
 
     <div class="row">
@@ -39,7 +39,7 @@
                                 <i class="bx bx-chevrons-left font-size-24" title="Back"></i>
                             </a>
                             <br><br><br>
-                            <h4 class="card-title">Patient/Jemaah Information</h4>
+                            <h4 class="card-title">Traveler/Patient Information</h4>
                         </div>
                         <div class="col-md-9" style="text-align: left;">
                             <h6>Travel Agent Name: {{ $jemaah->upload->ta_name }}</h6>
@@ -143,20 +143,21 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
-                                        <h5>Claim Entries</h5>
+                                        <h5>Services Entries</h5>
                                         <table id="table_claim" class="table table-striped table-advance table-hover w-100">
                                             <form class="form-inline" role="form">
                                                 <thead>
                                                     <tr>
-                                                        <td>#</td>
-                                                        <td>Date</td>
-                                                        <td>Pt. File#</td>
-                                                        <td>Invoice#</td>
-                                                        <td>Consultation</td>
-                                                        <td>Drugs</td>
-                                                        <td>Services</td>
-                                                        <td>Discount</td>
-                                                        <td>Action</td>
+                                                        <td data-priority="0" width="5%">#</td>
+                                                        <td data-priority="0" width="8%">Date</td>
+                                                        <td data-priority="0" width="8%">Company ID</td>
+                                                        <td data-priority="0" width="10%">Pt. File#</td>
+                                                        <td data-priority="0" width="10%">Invoice#</td>
+                                                        <td data-priority="0" width="8%">Consultation</td>
+                                                        <td data-priority="0" width="8%">Drugs</td>
+                                                        <td data-priority="0" width="8%">Services</td>
+                                                        <td data-priority="0" width="8%">Discount</td>
+                                                        <td data-priority="0" width="8%">Action</td>
                                                     </tr>
                                                 </thead>
                                             <tbody id="tbody">
@@ -221,13 +222,14 @@
                                 <td class="row-index text-center">
                                     <p>${rowIdx}</p>
                                 </td>
-                                <td><div class="form-group"><input class="form-control" id="rowInput1" name="rowInput1" placeholder="Enter Date" type="date" value="${e.rowInput1}"></div></td>
-                                <td><div class="form-group"><input class="form-control" id="rowInput2" name="rowInput2" placeholder="Enter Pt. File#" type="number" value="${e.rowInput2}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Enter Invoice#" type="number" value="${e.rowInput3}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number" value="${e.rowInput4}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number" value="${e.rowInput5}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Enter Services" type="number" value="${e.rowInput6}"></div></td>
-                                <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Discount" type="number" value="${e.rowInput7}">
+                                <td><div class="form-group"><input class="form-control" id="rowInput1" name="rowInput1" placeholder="Date" type="date" value="${e.rowInput1}"></div></td>
+                                <td><div class="form-group"><h5><b>${ecert}</b></h5></div></td>
+                                <td><div class="form-group"><input class="form-control" id="rowInput2" name="rowInput2" placeholder="Pt. File Number" type="number" value="${e.rowInput2}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Invoice Number" type="number" value="${e.rowInput3}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Consultation" type="number" value="${e.rowInput4}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Drugs" type="number" value="${e.rowInput5}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Services" type="number" value="${e.rowInput6}"></div></td>
+                                <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Discount" type="number" value="${e.rowInput7}">
                                 <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
                                 </tr>`);
                         });
@@ -242,13 +244,14 @@
                     <td class="row-index text-center">
                         <p>${rowIdx}</p>
                     </td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Enter Date" type="date" value=""></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Enter Pt. File#" type="text" value="${ecert}"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Enter Invoice#" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Enter Consultation" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Enter Drugs" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Enter Services" type="number"></div></td>
-                    <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Enter Discount" type="number">
+                    <td><div class="form-group"><input class="form-control" name="rowInput1" placeholder="Date" type="date" value=""></div></td>
+                    <td><div class="form-group"><h5><b>${ecert}</b></h5></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput2" placeholder="Pt. File Number" type="text" value=""></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput3" placeholder="Invoice Number" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput4" placeholder="Consultation" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput5" placeholder="Drugs" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput6" placeholder="Services" type="number"></div></td>
+                    <td><div class="form-group"><input class="form-control" name="rowInput7" placeholder="Discount" type="number">
                     <td><a class="pull-right waves-effect waves-light remove" style="color: red;" type="button"><i class="bx bx-trash-alt font-size-24" title="Delete Row"></i></a></td>
                     </tr>`);
             });

@@ -201,7 +201,9 @@
                                         <td>{{ $upload->file_name ? $upload->file_name : '(APPLY) '.strtoupper($upload->user->name) }}</td>
                                         {{--<td>{{ $upload->upload_date ? date('d-m-Y', strtotime($upload->upload_date)) : ''}}</td>--}}
                                         <td>
+                                            @if ($upload->status != '0' && $upload->status != '2') 
                                             {{ count($upload->order) }}
+                                            @endif
                                         </td>
                                         <td>{{ $upload->submit_date ? date('d-m-Y H:i:s', strtotime($upload->submit_date)) : '' }}</td>
 

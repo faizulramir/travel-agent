@@ -162,7 +162,7 @@
             if (type == 'card-number') {
                 if (!/^[0-9]+$/.test(e.key)) {
                     $('#card-number-p').show();
-                    $('#card-number-p').text('Numbers Only!');
+                    $('#card-number-p').text('Please enter number only!');
                     cardNo = false;
                 } else {
                     $('#card-number-p').hide();
@@ -173,11 +173,11 @@
             if (type == 'month') {
                 if (!/^[0-9]+$/.test(e.key)) {
                     $('#month-exp-cvc-p').show();
-                    $('#month-exp-cvc-p').text('Numbers Only!');
+                    $('#month-exp-cvc-p').text('Please enter number only!');
                     month = false;
                 } else if ($('#card-expiry-month').val() > 12 || $('#card-expiry-month').val() < 1) {
                     $('#month-exp-cvc-p').show();
-                    $('#month-exp-cvc-p').text('1-12 Month Only!');
+                    $('#month-exp-cvc-p').text('Please check expiring month');
                     month = false;
                 } else {
                     $('#month-exp-cvc-p').hide();
@@ -188,11 +188,11 @@
             if (type == 'card-expiry') {
                 if (!/^[0-9]+$/.test(e.key)) {
                     $('#month-exp-cvc-p').show();
-                    $('#month-exp-cvc-p').text('Numbers Only!');
+                    $('#month-exp-cvc-p').text('Please enter number only!');
                     expiry = false;
                 } else if ($('#card-expiry-year').val() < dateNow) {
                     $('#month-exp-cvc-p').show();
-                    $('#month-exp-cvc-p').text('Card must be after year ' + dateNow);
+                    $('#month-exp-cvc-p').text('Please check expiring year');
                     expiry = false;
                 } else {
                     $('#month-exp-cvc-p').hide();
@@ -203,7 +203,7 @@
             if (type == 'card-cvc') {
                 if (!/^[0-9]+$/.test(e.key)) {
                     $('#month-exp-cvc-p').show();
-                    $('#month-exp-cvc-p').text('Numbers Only!');
+                    $('#month-exp-cvc-p').text('Please enter number only!');
                     cvc = false;
                 } else {
                     $('#month-exp-cvc-p').hide();
@@ -215,7 +215,7 @@
                 cardname = true;
             }
 
-            if (month && cardNo && expiry && cvc && name) {
+            if (month && cardNo && expiry && cvc && cardname) {
                 $('#btn-pay').prop('disabled', false);
             } else {
                 $('#btn-pay').prop('disabled', true);

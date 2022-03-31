@@ -88,7 +88,7 @@
                     <li>
                         <a href="{{ route('claim_list') }}" class="waves-effect">
                             <i class="bx bx-money"></i>
-                            <span key="t-ta">CLAIM LIST</span>
+                            <span key="t-ta">SERVICES STMT</span>
                         </a>
                     </li> 
                     <li>
@@ -127,7 +127,7 @@
                     <li>
                         <a href="{{ route('claim_list') }}" class="waves-effect">
                             <i class="bx bx-money"></i>
-                            <span key="t-ta">CLAIM LIST</span>
+                            <span key="t-ta">SERVICES STMT</span>
                         </a>
                     </li> 
                 @endif                

@@ -135,7 +135,7 @@
                             <br>
                         @endif
 
-                        <div class="col-lg-12" style="text-align: right">
+                        <div class="col-lg-12" style="text-align: left">
                             <button class="btn btn-primary waves-effect waves-light" type="submit">Submit</button>
                         </div>
                     </form>

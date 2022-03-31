@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
-@section('title') @lang('translation.Dashboards') @endsection
+{{-- @section('title') @lang('translation.Dashboards') @endsection --}}
+@section('title') DASHBOARD @endsection
 
 @section('css')
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -114,7 +115,7 @@
                                                 </td>
                                                 <td width="50%">
                                                 <p class="text-muted fw-medium">DIY Individu Request</p>
-                                                <h4 class="mb-0">&nbsp;</h4>
+                                                <h4 class="mb-0">0&nbsp;</h4>
                                                 </td>                                                                                      
                                             </tr>
                                         </table>                                         
