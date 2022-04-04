@@ -536,11 +536,11 @@ class AdminController extends Controller
         if ($status == '2.2') {
             $uploads->status = '2.1';
             $uploads->discount = 0;
-            $uploads->percent = null;
+            $uploads->percent = '0';
         } else if ($status == '2.3') {
             $uploads->status = '2.1';
             $uploads->discount = 0;
-            $uploads->percent = null;
+            $uploads->percent = '0';
         } else {
             $uploads->status = $status;
             //dd($uploads);
