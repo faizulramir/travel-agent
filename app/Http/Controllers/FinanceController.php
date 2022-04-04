@@ -583,7 +583,25 @@ class FinanceController extends Controller
     
     public function download_payment($user_id, $file_id)
     {
-        $payment = Payment::where('file_id', $file_id)->first();
+        $uploads = FileUpload::where('id', $file_id)->first();
+
+        $directory =  '/'.$uploads->user_id.'/supp_doc/'.$uploads->id.'/payreceipt';
+        $files = Storage::allFiles($directory);
+        if (!empty($files)) {
+            $files = Storage::allFiles($directory);
+            $timestamps = array();
+            foreach ($files as $i => $file) {
+                $timestamps[$i] = Storage::lastModified($files[$i]);
+            }
+            array_multisort($timestamps, SORT_DESC, $files);
+            $ext = pathinfo($files[0], PATHINFO_EXTENSION);
+            $ext = strtolower($ext);
+            if ($ext == 'pdf' || $ext == 'jpg' || $ext == 'jpeg' || $ext == 'png') {
+                return response()->file(Storage::path($files[0]), [ 'Content-Disposition' => 'filename="'.basename($files[0]).'"' ]);
+    
+            }
+            return Storage::download($files[0]);
+        }
 
         return Storage::download('/'.$user_id.'/payment/'.$file_id.'/'.$payment->pay_file);
     }
