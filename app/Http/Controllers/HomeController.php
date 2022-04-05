@@ -36,6 +36,9 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $curUser = Auth::id();
+
+        //$password = Hash::make('umr@h123'); //$2y$10$9d1z2ZpRfoBcMF79qxGrceVF2bmP1NZ7FeyTVtsUZ2LTlKjgYcc6G
+        //dd($password);
         
         $checkUserRole = DashboardUser::where('id', $curUser)->first();
         //dd($request, $curUser, $checkUserRole, $user);
