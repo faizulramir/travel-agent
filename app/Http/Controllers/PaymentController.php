@@ -262,10 +262,6 @@ class PaymentController extends Controller
 
         $file = FileUpload::where('id', request()->post('id'))->first();
         if ($filename){
-            $request->pay_file->storeAs(
-                $file->user_id.'/payment/'.request()->post('id'), $filename
-            );
-
             try {
                 Storage::deleteDirectory($file->user_id.'/supp_doc/'.request()->post('id').'/payreceipt');
             }
