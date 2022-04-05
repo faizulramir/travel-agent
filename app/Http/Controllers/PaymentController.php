@@ -606,7 +606,7 @@ class PaymentController extends Controller
             $date1 = date_create($order->dep_date);
             $date2 = date_create($order->return_date);
             $diff = date_diff($date1, $date2);
-
+            
             $days = $diff->days + 1;
             $price = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price')->first();
             $perday = Plan::where([['name', '=' ,$order->plan_type]])->pluck('price_per_day')->first();
@@ -630,29 +630,32 @@ class PaymentController extends Controller
             $depdate = new Carbon($order->dep_date);
             $rtndate = new Carbon($order->return_date);
             $duration = "(".$depdate->format('d-m-Y').") TO (".$rtndate->format('d-m-Y').")";
-            foreach ($tempDates as $dkey => $tempDate) {
-                    foreach ($invoice_arr as $ikey => $inv_arr) {
-                        $tempArrData = array(
-                            'PLAN' => $inv_arr['PLAN'],
-                            'PRICE' => $inv_arr['PRICE'],
-                            'PCR_COUNT' => $inv_arr['PCR_COUNT'],
-                            'PCR_TOT' => $inv_arr['PCR_TOT'],
-                            'COST' => $cost,
-                            'COUNT' => 1,
-                            'DURATION' => $duration,
-                        );
-                        
-                    }
-            }
+
+            // foreach ($invoice_arr as $ikey => $inv_arr) {
+            $tempArrData = array(
+                'PLAN' => $order->plan_type,
+                'PRICE' => $price,
+                'PCR_COUNT' => 0,
+                'PCR_TOT' => 0,
+                'COST' => $cost,
+                'COUNT' => 1,
+                'DURATION' => $duration,
+            );
+                // dd($tempArrData);
+            // }
 
             array_push($tempArrTable, $tempArrData);
+
+            
         }
+
+        // dd($tempArrTable);
 
         $hash = array();
         $finalData = array();
 
         foreach($tempArrTable as $item) {
-            $hash_key = $item['DURATION'];
+            $hash_key = $item['DURATION'].'|'.$item['PLAN'];
             if(!array_key_exists($hash_key, $hash)) {
                 $hash[$hash_key] = sizeof($finalData);
                 array_push($finalData, array(
@@ -665,6 +668,7 @@ class PaymentController extends Controller
             }
             $finalData[$hash[$hash_key]]['COUNT'] += 1;
         }
+
         //dd($tot_inv, $tot_inv2, $disArr);
 
         $pdfName = $invoice_num ? 'invoice-'.str_replace('/', '-', trim($invoice_num)).'.pdf' : "invoice.pdf";
