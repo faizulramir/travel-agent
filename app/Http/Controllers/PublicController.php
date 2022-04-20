@@ -93,7 +93,7 @@ class PublicController extends Controller
         $newbirth = $newbirth->format('d-m-Y');
 
         $total_days = $plan->total_days;
-        $addDays = (0 + $total_days) - 1;
+        $addDays = (0 + $total_days);
         $depdate = new Carbon($orders->dep_date);
         $rtndate = new Carbon($orders->dep_date);
         $rtndate->addDays($addDays);
