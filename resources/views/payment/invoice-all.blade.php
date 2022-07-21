@@ -85,8 +85,8 @@
             <table border="0">
                 <thead>
                     <tr>
-                        <th width="15%" style="text-align: left !important;">Quantity</th>
-                        <th width="45%" style="text-align: left !important;">Description</th>
+                        <th width="10%" style="text-align: left !important;">Qty</th>
+                        <th width="50%" style="text-align: left !important;">Description</th>
                         <th width="18%" style="text-align: right !important;">Unit Price</th>
                         <th width="22%" style="text-align: right !important;">Amount</th>
                     </tr>
@@ -97,7 +97,11 @@
                             @if($table['PLAN'] !== 'NO')
                                 <tr>
                                     <td>{{ $table['COUNT'] }}</td>
-                                    <td>{{ strtoupper($table['PLAN']) }}</td>
+                                    <td>{{ strtoupper($table['PLAN']) }} 
+                                        @if ($table['DDAY'] && $table['DDAY']>0)
+                                        (Addt. Day {{ $table['DDAY'] }} @RM{{ $table['PDAY'] }})
+                                        @endif
+                                    </td>
                                     <td style="text-align: right !important;">{{ number_format((float)$table['PRICE'], 2, '.', ',') }}</td>
                                     <td style="text-align: right !important;">{{ number_format((float)$table['COUNT'] * $table['COST'], 2, '.', ',') }}</td>
                                 </tr>

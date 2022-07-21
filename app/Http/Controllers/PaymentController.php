@@ -366,7 +366,7 @@ class PaymentController extends Controller
             $invoice_num = $data_decode['invoice_num'];
             $tpa_pcr_arr = collect($data_decode['tpa_pcr_arr']);
 
-            //dd($files->json_inv, $data_decode, $data_decode['disArr']);
+            //dd("0", $files->json_inv, $data_decode, $data_decode['disArr']);
 
         } else {
             $bill_to_name = null;
@@ -491,12 +491,23 @@ class PaymentController extends Controller
             // $pcr_detail->price = $tot_pcr;
             // $pcr_detail->cnt = ;
 
+
+            $depdateX = new Carbon($order->dep_date);
+            $rtndateX = new Carbon($order->return_date);
+            $durationX = "(".$depdateX->format('d-m-Y').") TO (".$rtndateX->format('d-m-Y').")";
+
+
             $pcrArr =  array (
                 'PLAN' => 'PCR',
                 'COUNT' => (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0),
                 'PRICE' => Plan::where([['name', '=' ,'pcr']])->pluck('price')->first(),
                 'COST' => (Plan::where([['name', '=' ,'pcr']])->pluck('price')->first()) * (isset($pcr_arr['PCR']) ? $pcr_arr['PCR'] : 0),
+
+                // 'DURATION' => $durationX,
+
             );
+            dd("1", $pcrArr);
+
 
             $invoice_arr = array();
             $tpa_pcr_arr = array();
@@ -535,6 +546,8 @@ class PaymentController extends Controller
                     'PRICE' => Plan::where([['name', '=' ,$tpa]])->pluck('price')->first(),
                     'COUNT' => $tot_count,
                     'COST' => $tpa_cost,
+
+                    // 'DURATION' => $durationX,
                 );
                 array_push($tpa_pcr_arr, $tmpArr); //prepare costing for each record
                 $tot_tpa = $tot_tpa + $tpa_cost;
@@ -640,6 +653,10 @@ class PaymentController extends Controller
                 'COST' => $cost,
                 'COUNT' => 1,
                 'DURATION' => $duration,
+
+                'DDAY' => $difday,
+                'PDAY' => $perday,
+                'ADDT' => $addt,
             );
                 // dd($tempArrData);
             // }
@@ -649,7 +666,9 @@ class PaymentController extends Controller
             
         }
 
-        // dd($tempArrTable);
+        //dd($tempArrTable);
+        //dd("2", $tpa_pcr_arr);
+        
 
         $hash = array();
         $finalData = array();
@@ -664,12 +683,18 @@ class PaymentController extends Controller
                     'PRICE' => $item['PRICE'],
                     'COST' => $item['COST'],
                     'COUNT' => 0,
+
+                    //'DDAY' => $item['DDAY'],
+                    'DDAY' => 0,
+                    'PDAY' => $item['PDAY'],
                 ));
             }
             $finalData[$hash[$hash_key]]['COUNT'] += 1;
+            $finalData[$hash[$hash_key]]['DDAY'] += $item['DDAY'];
+
         }
 
-        //dd($tot_inv, $tot_inv2, $disArr);
+        //dd($finalData, $tot_inv, $tot_inv2, $disArr);
 
         $pdfName = $invoice_num ? 'invoice-'.str_replace('/', '-', trim($invoice_num)).'.pdf' : "invoice.pdf";
         
@@ -1094,15 +1119,16 @@ class PaymentController extends Controller
 
         $inv_arr = array();
         if ($entries && count($entries)>0) {
-            
             // $col1 = $entries[0]->rowInput1;
             // $col2 = $entries[0]->rowInput2;
             // $col3 = $entries[0]->rowInput3;
             // $col4 = $entries[0]->rowInput4;
             foreach ($entries as $i => $entry) {
+                $col = strtoupper($entries[$i]['rowInput2']);
+                $col = nl2br($col, true);
                 $tempArr = array(
                     'rowInput1' => strtoupper($entries[$i]['rowInput1']),
-                    'rowInput2' => strtoupper($entries[$i]['rowInput2']),
+                    'rowInput2' => $col,
                     'rowInput3' => $entries[$i]['rowInput3'],
                     'rowInput4' => $entries[$i]['rowInput4'],
                 );
